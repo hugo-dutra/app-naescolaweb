@@ -1,0 +1,56 @@
+<!-- ALERTA MOSTRADO NO CASO DE ERRO OU PROBLEMA -->
+<div *ngIf="type=='danger'" class="wrimagecard wrimagecard-topimage">
+  <button type="button" class="close mr-2 mt-2" data-dismiss="alert" aria-label="Close" (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <a class="rounded-top rounded-right rounded-bottom rounded-left">
+    <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9">
+      <div class="text-danger">
+        <i class="fa fa-lg fa-thumbs-down"></i>
+      </div>
+    </div>
+    <div class="wrimagecard-topimage_title text-light text-center">
+      <h5 class="text-center">
+        {{ message }}
+      </h5>
+    </div>
+  </a>
+</div>
+
+<!-- ALERTA MOSTRADO NO SUCESSO OU INFORMAÇÃO ADICIONAL -->
+<div *ngIf="type=='success'" class="wrimagecard wrimagecard-topimage">
+  <button type="button" class="close mr-2 mt-2" data-dismiss="alert" aria-label="Close" (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <a class="rounded-top rounded-right rounded-bottom rounded-left">
+    <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9">
+      <div class="text-success">
+        <i class="fa fa-lg fa-thumbs-up"></i>
+      </div>
+    </div>
+    <div class="wrimagecard-topimage_title text-light text-center">
+      <h5 class="text-center">
+        {{ message }}
+      </h5>
+    </div>
+  </a>
+</div>
+
+<!-- ALERTA MOSTRADO PARA ITENS QUE MERECEM ATENÇÃO -->
+<div *ngIf="type=='warning'" class="wrimagecard wrimagecard-topimage">
+  <button type="button" class="close mr-2 mt-2" data-dismiss="alert" aria-label="Close" (click)="onClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <a class="rounded-top rounded-right rounded-bottom rounded-left">
+    <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9">
+      <div class="text-warning">
+        <i class="fa fa-lg fa-exclamation-triangle"></i>
+      </div>
+    </div>
+    <div class="wrimagecard-topimage_title text-light text-center">
+      <h5 class="text-center">
+        {{ message }}
+      </h5>
+    </div>
+  </a>
+</div>
