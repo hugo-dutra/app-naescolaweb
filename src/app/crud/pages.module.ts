@@ -8,6 +8,7 @@ import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { AlertaModule } from './alerta/alerta.module';
+import { AccessModule } from '../access/access.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { AlertaModule } from './alerta/alerta.module';
     ECommerceModule,
     MiscellaneousModule,
     AlertaModule,
+    AccessModule,
   ],
   declarations: [
     PagesComponent,

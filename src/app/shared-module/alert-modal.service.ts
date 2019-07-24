@@ -8,9 +8,7 @@ export enum AlertTypes {
   WARNING = 'warning'
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AlertModalService {
 
   constructor(private modalService: BsModalService) { }

@@ -5,7 +5,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-import { GerenciarAlertaComponent } from './alerta/gerenciar-alerta/gerenciar-alerta.component';
+import { LoginComponent } from '../access/login/login.component';
 
 const routes: Routes = [{
   path: '',
@@ -13,7 +13,13 @@ const routes: Routes = [{
   children: [
     { path: 'dashboard', component: ECommerceComponent, },
     { path: 'iot-dashboard', component: DashboardComponent, },
+    { path: 'logar', component: LoginComponent },
+
+
     { path: 'gerenciar-alerta-ocorrencia', loadChildren: () => import('./alerta/alerta.module').then(m => m.AlertaModule), },
+    { path: 'listar-area-conhecimento', loadChildren: () => import('./area-conhecimento/area-conhecimento.module').then(m => m.AreaConhecimentoModule), },
+
+
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
     { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },
     { path: 'ui-features', loadChildren: () => import('./ui-features/ui-features.module').then(m => m.UiFeaturesModule), },

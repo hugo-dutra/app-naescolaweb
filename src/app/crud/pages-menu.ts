@@ -45,7 +45,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         children: [
           {
             title: 'Área do conhecimento',
-            link: '/layout/stepper',
+            link: '/listar-area-conhecimento',
           },
           {
             title: 'Diários do professor',

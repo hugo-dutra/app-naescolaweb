@@ -1,5 +1,6 @@
 // import { Turma } from "../crud/turma/turma.model"
 import { Utils } from "./utils.shared";
+import { HttpHeaders } from '@angular/common/http';
 
 export class CONSTANTES {
 

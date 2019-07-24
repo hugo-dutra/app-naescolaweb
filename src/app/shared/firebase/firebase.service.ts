@@ -17,11 +17,11 @@ import { RequestOptions } from 'http';
 @Injectable()
 export class FirebaseService {
   private firestore = firebase.firestore();
-  private sett = { timestampsInSnapshots: true };
+  //private sett = { timestampsInSnapshots: true };
   private http: HttpClient;
 
   constructor() {
-    this.firestore.settings(this.sett);
+    //this.firestore.settings(this.sett);
   }
 
   //****************************************************************************/

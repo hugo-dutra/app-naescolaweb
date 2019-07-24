@@ -25,6 +25,6 @@ import { NbCardModule } from '@nebular/theme';
     CommonModule,
     AlertaRoutingModule,
     NbCardModule,
-  ]
+  ],
 })
 export class AlertaModule { }

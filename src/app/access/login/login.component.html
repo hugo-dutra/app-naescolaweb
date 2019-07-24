@@ -1,0 +1,59 @@
+<div class="container-fluid center-block col-lg-6 col-sm-12 col-md-12" [@chamado]="estado">
+  <div class="card text-center">
+    <div class="card-header bg-dark text-light">
+      Login - NaEscola&reg;
+    </div>
+    <div class="card-body m-5">
+      <h5 class="card-title"><i class="fa fa-lg fa-key"></i> Informe E-mail e senha para acessar o sistema</h5>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text" id="btnGroupAddon">@</div>
+        </div>
+        <input type="email" class="form-control" placeholder="email" (focusout)="listarEscolas($event)"
+          (focusin)="limparDadosLogin()" aria-label="Input group example" aria-describedby="btnGroupAddon"
+          (input)="carregarValor($event)" name="email">
+      </div>
+      <br>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-sm fa-key"></i></div>
+        </div>
+        <input type="password" class="form-control" id="senha" placeholder="senha" aria-label="Input group example"
+          aria-describedby="btnGroupAddon" (input)="carregarValor($event)" name="senha">
+      </div>
+      <br>
+      <div class="input-group">
+        <select [name]="escolas" class="form-control" (change)="selecionarEscola($event)">
+          <option value="">selecione uma escola</option>
+          <option *ngFor="let escola of escolas" [value]="escola.id"> {{ escola.nome }}</option>
+        </select>
+      </div>
+      <br>
+      <input type="button" class="form-control btn btn-primary" value="Login" (click)="logar()">
+
+      <br>
+      <br>
+      <div class="text-danger" [@chamado]="estado">
+        <h4>{{mensagemAlerta}}</h4>
+      </div>
+    </div>
+    <div class="card-footer bg-dark text-light">
+      fale conosco: <a href="#">contato@naescola.com.br</a>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

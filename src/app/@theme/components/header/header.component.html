@@ -16,8 +16,10 @@
       <nb-search type="rotate-layout"></nb-search>
     </nb-action>
     <nb-action class="user-action" *nbIsGranted="['view', 'user']">
-      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="user?.name" [picture]="user?.picture">
-      </nb-user>
+      <!-- <nb-user [nbContextMenu]="userMenu" (click)="logout()" [onlyPicture]="userPictureOnly" [name]="user?.name"
+        [picture]="user?.picture">
+      </nb-user> -->
+      <nb-user (click)="logout()" [name]="nomeUsuario" [picture]="fotoUsuario"></nb-user>
     </nb-action>
   </nb-actions>
 </div>
