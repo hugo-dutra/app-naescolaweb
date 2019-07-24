@@ -10,6 +10,7 @@ import { AlterarAreaConhecimentoComponent } from './alterar-area-conhecimento/al
 import { ExcluirAreaConhecimentoComponent } from './excluir-area-conhecimento/excluir-area-conhecimento.component';
 import { InserirAreaConhecimentoComponent } from './inserir-area-conhecimento/inserir-area-conhecimento.component';
 import { ListarAreaConhecimentoComponent } from './listar-area-conhecimento/listar-area-conhecimento.component';
+import { NbCardModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [

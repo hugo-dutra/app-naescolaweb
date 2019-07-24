@@ -1,17 +1,13 @@
 <div class="container-fluid">
   <div class="card text-center" [@chamado]="estado">
-    <div class="card-header bg-google">
+    <div class="card-header bg-dark">
       <div class="row">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-12 text-center">
-              <i class="fa fa-lg fa-cubes text-light text-center"> Área do conhecimento</i>
-              <button *ngIf="exibirComponente('inserir-area-conhecimento')"
-                class="btn btn-outline-dark text-light btn-sm float-right" (click)="adicionar()">Adicionar</button>
-            </div>
-          </div>
-          <div class="row"></div>
-          <div class="row"></div>
+        <div class="col-lg-10 col-sm-12 text-center">
+          <i class="fa fa-lg fa-cubes text-light text-center"> Área do conhecimento</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light btn-sm form-control"
+            (click)="adicionar()">Adicionar</button>
         </div>
       </div>
     </div>
@@ -20,29 +16,26 @@
         <table class="table table-striped table-hover" [@chamado]="estado">
           <thead class="thead-light">
             <tr class="row">
-              <th class="col-1 text-left" scope="col"></th>
-              <th class="col-7 text-left" scope="col">Nome</th>
-              <th class="col-2" scope="col">Abreviatura</th>
-              <th *ngIf="exibirComponente('alterar-area-conhecimento')" class="col-1" scope="col">Alterar</th>
-              <th *ngIf="exibirComponente('excluir-area-conhecimento')" class="col-1" scope="col">Excluir</th>
+              <th class="col-lg-8 col-sm-4 text-center" scope="col">Nome</th>
+              <th class="col-lg-2 col-sm-4" scope="col">Abreviatura</th>
+              <th *ngIf="exibirComponente('alterar-area-conhecimento')" class="col-lg-1 col-sm-2" scope="col">
+                Alterar</th>
+              <th *ngIf="exibirComponente('excluir-area-conhecimento')" class="col-lg-1 col-sm-2" scope="col">
+                Excluir</th>
             </tr>
           </thead>
           <tbody>
             <tr class="row" *ngFor="let area of areasConhecimento" [@chamado]="estado">
-              <td class="col-1 text-left"></td>
-              <td class="col-7 text-left">{{area.nome}}</td>
-              <td class="col-2">{{ area.abreviatura }}</td>
-              <td *ngIf="exibirComponente('alterar-area-conhecimento')" class="col-1"><button
+              <td class="col-lg-8 col-sm-4 text-center">{{area.nome}}</td>
+              <td class="col-lg-2 col-sm-4">{{ area.abreviatura }}</td>
+              <td *ngIf="exibirComponente('alterar-area-conhecimento')" class="col-lg-1 col-sm-2"><button
                   class="btn btn-warning btn-sm" value="{{ area }}" (click)="alterar(area)">Alterar</button></td>
-              <td *ngIf="exibirComponente('inserir-area-conhecimento')" class="col-1"><button
+              <td *ngIf="exibirComponente('inserir-area-conhecimento')" class="col-lg-1 col-sm-2"><button
                   class="btn btn-danger btn-sm" value="{{ area }}" (click)="excluir(area)">Excluir</button></td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-    <div class="card-footer text-muted bg-google mt-2">
-      <i class="fa fa-lg fa-info-circle text-light"> Listagem de área do conhecimento</i>
     </div>
   </div>
 </div>
@@ -55,7 +48,7 @@
       </div>
       <div class="col-10">
         <h4>
-          <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+          <p class="text-left pr-3">{{ feedbackUsuario }}</p>
         </h4>
       </div>
     </div>

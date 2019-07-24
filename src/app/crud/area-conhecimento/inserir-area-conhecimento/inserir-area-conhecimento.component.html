@@ -1,3 +1,46 @@
-<p>
-  inserir-area-conhecimento works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 text-center">
+          <i class="fa fa-lg fa-cubes text-light text-center"> Área do conhecimento</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light btn-sm form-control" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="formulario" (ngSubmit)="inserir()">
+      <div class="card-body">
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control" formControlName="id">
+          <input autofocus type="text" placeholder="Nome..." class="form-control col-lg-8 col-sm-12 mt-2"
+            formControlName="nome" maxlength="45" required (input)="validar($event)" (focusout)="validar($event)">
+
+          <input type="text" placeholder="Abreviatura..." class="form-control col-lg-4 col-sm-12 mt-2"
+            formControlName="abreviatura" maxlength="5" required (input)="validar($event)" (focusout)="validar($event)">
+        </div>
+        <div class="row form-group">
+          <div class="col-lg-2 col-12-12">
+            <button type="submit" class="btn btn-primary form-control">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
