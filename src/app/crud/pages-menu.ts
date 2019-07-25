@@ -1,190 +1,78 @@
 import { NbMenuItem } from '@nebular/theme';
+import { Utils } from '../shared/utils.shared';
 import { Title } from '@angular/platform-browser';
+
+let localStorageGrupos: Array<Object>;
+let localStorageMenus: Array<Object>;
+let gruposCadastro = new Array<NbMenuItem>();
+let gruposRelatorio = new Array<NbMenuItem>();
+
+try {
+  localStorageGrupos = Object.values(Utils.verificarGrupos());
+  localStorageMenus = Object.values(Utils.verificarMenus());
+
+  for (let idxGrupo = 0; idxGrupo < localStorageGrupos.length; idxGrupo++) {
+
+    if (localStorageGrupos[idxGrupo]['modulo'] == 'cadastro') {
+      let menuItem = new NbMenuItem();
+      menuItem.title = localStorageGrupos[idxGrupo]['texto'];
+      menuItem.icon = 'layout-outline';
+      let menus = new Array<NbMenuItem>();
+      for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
+        if (localStorageGrupos[idxGrupo]['nome'] == localStorageMenus[idxMenu]['grupo']) {
+          const menu = new NbMenuItem;
+          menu.title = localStorageMenus[idxMenu]['texto'];
+          menu.link = `/${localStorageMenus[idxMenu]['link']}`;
+          menus.push(menu);
+        }
+      }
+      menuItem.children = menus;
+      gruposCadastro.push(menuItem);
+    }
+
+    if (localStorageGrupos[idxGrupo]['modulo'] == 'relatorio') {
+      let menuItem = new NbMenuItem();
+      menuItem.title = localStorageGrupos[idxGrupo]['texto'];
+      menuItem.icon = 'layout-outline';
+
+      let menus = new Array<NbMenuItem>();
+      for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
+        if (localStorageGrupos[idxGrupo]['nome'] == localStorageMenus[idxMenu]['grupo']) {
+          const menu = new NbMenuItem;
+          menu.title = localStorageMenus[idxMenu]['texto'];
+          menu.link = `/${localStorageMenus[idxMenu]['link']}`;
+          menus.push(menu);
+        }
+      }
+      menuItem.children = menus;
+      gruposRelatorio.push(menuItem);
+    }
+  }
+} catch (erro) {
+  console.log('Falha ao carregar dados de perfil!');
+}
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Cadastros',
-    children: [
-      {
-        title: 'Gestão',
-        icon: 'layout-outline',
-        children: [
-          {
-            title: 'Diretor',
-            link: '/layout/stepper',
-          },
-          {
-            title: 'Escola',
-            link: '/layout/list',
-          },
-          {
-            title: 'Mensalidade',
-            link: '/layout/infinite-list',
-          },
-          {
-            title: 'Perfil de usuário',
-            link: '/layout/accordion',
-          },
-          {
-            title: 'Rede de ensino',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Região',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Usuário',
-            link: '/listar-usuario',
-          },
-        ],
-      },
-      {
-        title: 'Pedagógico',
-        icon: 'layout-outline',
-        children: [
-          {
-            title: 'Área do conhecimento',
-            link: '/listar-area-conhecimento',
-          },
-          {
-            title: 'Diários do professor',
-            link: '/layout/list',
-          },
-          {
-            title: 'Disciplina',
-            link: '/layout/infinite-list',
-          },
-          {
-            title: 'Etapa do ensino',
-            link: '/layout/accordion',
-          },
-          {
-            title: 'Período letivo',
-            link: '/layout/tabs',
-          },
-        ],
-      },
-      {
-        title: 'Secretaria',
-        icon: 'layout-outline',
-        children: [
-          {
-            title: 'Diário',
-            link: '/layout/stepper',
-          },
-          {
-            title: 'Enturmar estudante',
-            link: '/layout/list',
-          },
-          {
-            title: 'Estudante',
-            link: '/layout/infinite-list',
-          },
-          {
-            title: 'Professor',
-            link: '/layout/accordion',
-          },
-          {
-            title: 'Série',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Turma',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Turno',
-            link: '/layout/tabs',
-          },
-        ],
-      },
-      {
-        title: 'Assistência',
-        icon: 'layout-outline',
-        children: [
-          {
-            title: 'Aplicativo',
-            link: '/layout/stepper',
-          },
-          {
-            title: 'Cartão de acesso',
-            link: '/layout/list',
-          },
-          {
-            title: 'Comunicados',
-            link: '/layout/infinite-list',
-          },
-          {
-            title: 'Entidade estudantil',
-            link: '/layout/accordion',
-          },
-          {
-            title: 'Gerenciar alertas de ocorrência',
-            link: '/gerenciar-alerta-ocorrencia',
-          },
-          {
-            title: 'Observação',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Ocorrência',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Portaria',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Receber alertas de ocorrência',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Saída antecipada',
-            link: '/layout/tabs',
-          },
-          {
-            title: 'Tipo de ocorrência disciplinar',
-            link: '/listar-tipo-ocorrencia-disciplinar',
-          },
-        ],
-      },
-    ]
+    icon: 'edit-2-outline',
+    children: [...gruposCadastro],
   },
   {
     title: 'Relatórios',
-    children: [
-      {
-        title: 'Layout',
-        icon: 'layout-outline',
-        children: [
-          {
-            title: 'Stepper',
-            link: '/layout/stepper',
-          },
-          {
-            title: 'List',
-            link: '/layout/list',
-          },
-          {
-            title: 'Infinite List',
-            link: '/layout/infinite-list',
-          },
-          {
-            title: 'Accordion',
-            link: '/layout/accordion',
-          },
-          {
-            title: 'Tabs',
-            pathMatch: 'prefix',
-            link: '/layout/tabs',
-          },
-        ],
-      },
-    ]
+    icon: 'pie-chart',
+    children: [...gruposRelatorio],
   },
   {
     title: 'Sugestões',
+    icon: 'bell',
     link: ''
   }
 ];
+
+
+
+
+
+
+

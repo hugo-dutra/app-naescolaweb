@@ -50,6 +50,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public emailUsuario: string;
   public idUsuario: number;
   public nomeEscola: string;
+  public esc_id: string;
+  public usr_id: string;
+
 
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
@@ -61,7 +64,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.currentTheme = this.themeService.currentTheme;
+
+    try {
+      const dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
+      this.esc_id = Utils.pegarDadosEscola()['id'];
+      this.usr_id = (dados_usuario['id']);
+
+      if (localStorage.getItem(`default_theme_${this.esc_id}_${this.usr_id}`) == 'default'
+        || localStorage.getItem(`default_theme_${this.esc_id}_${this.usr_id}`) == 'dark'
+        || localStorage.getItem(`default_theme_${this.esc_id}_${this.usr_id}`) == 'cosmic'
+        || localStorage.getItem(`default_theme_${this.esc_id}_${this.usr_id}`) == 'corporate') {
+        this.themeService.changeTheme(localStorage.getItem(`default_theme_${this.esc_id}_${this.usr_id}`));
+      } else {
+        this.themeService.changeTheme('default');
+      }
+    } catch (erro) {
+      console.log('Erro ao carregar Thema.');
+      this.themeService.changeTheme('default');
+    }
 
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
@@ -92,13 +112,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   changeTheme(themeName: string) {
+    localStorage.setItem(`default_theme_${this.esc_id}_${this.usr_id}`, themeName);
     this.themeService.changeTheme(themeName);
   }
 
   toggleSidebar(): boolean {
     this.sidebarService.toggle(true, 'menu-sidebar');
     this.layoutService.changeLayoutSize();
-
     return false;
   }
 
