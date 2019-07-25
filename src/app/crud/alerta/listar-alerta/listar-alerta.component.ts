@@ -4,7 +4,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { AlertaService } from '../alerta.service';
 
@@ -44,7 +44,8 @@ export class ListarAlertaComponent implements OnInit {
     private alertaService: AlertaService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router) { }
+    private router: Router,
+    private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.carregarDados();
@@ -69,7 +70,7 @@ export class ListarAlertaComponent implements OnInit {
         valor_referencia: regra["valor_referencia"]
       }
     }
-    this.router.navigate(["excluir-alerta"], navigationExtras);
+    this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/excluir-alerta`], navigationExtras);
   }
 
   public alterar(regra: Object): void {
@@ -90,7 +91,7 @@ export class ListarAlertaComponent implements OnInit {
         valor_referencia: regra["valor_referencia"]
       }
     }
-    this.router.navigate(["alterar-alerta"], navigationExtras);
+    this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/alterar-alerta`], navigationExtras);
   }
 
   public carregarDados(): void {

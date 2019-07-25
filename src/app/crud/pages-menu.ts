@@ -35,7 +35,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
           },
           {
             title: 'Usuário',
-            link: '/layout/tabs',
+            link: '/listar-usuario',
           },
         ],
       },

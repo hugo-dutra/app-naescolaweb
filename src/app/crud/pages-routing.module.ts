@@ -19,6 +19,7 @@ const routes: Routes = [{
     { path: 'gerenciar-alerta-ocorrencia', loadChildren: () => import('./alerta/alerta.module').then(m => m.AlertaModule), },
     { path: 'listar-area-conhecimento', loadChildren: () => import('./area-conhecimento/area-conhecimento.module').then(m => m.AreaConhecimentoModule), },
     { path: 'listar-tipo-ocorrencia-disciplinar', loadChildren: () => import('./tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.module').then(m => m.TipoOcorrenciaDisciplinarModule), },
+    { path: 'listar-usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), },
     /**************/
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },

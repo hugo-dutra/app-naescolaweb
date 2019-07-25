@@ -1,3 +1,71 @@
-<p>
-  alterar-alerta works!
-</p>
+<div class="container-fluid">
+  <div class="card" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center text-light">
+          <i class="fa fa-lg fa-warning"> Alterar alerta</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-sm form-control btn-dark border-light text-light"
+            (click)="listarAlertas()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+
+        <div class="col-lg-2 col-md-4 col-sm-12 mt-2">
+          <select class="form-control" (change)="selecionarTipoOcorrenciaDisciplinar($event)">
+            <option [value]="tod_id" selected>{{stringDeTipoDeOcorrencia}}</option>
+            <option *ngFor="let tipoOcorrencia of arrayOfTiposOcorrenciasDisciplinares" [value]="tipoOcorrencia.id">
+              {{tipoOcorrencia.nome}}</option>
+          </select>
+        </div>
+
+        <div class="col-lg-2 col-md-4 col-sm-12 mt-2">
+          <select class="form-control" (change)="selecionarOperadorDeAlerta($event)">
+            <option [value]="opa_id" selected>{{stringDeOperadorDeAlerta}}</option>
+            <option *ngFor="let operador of arrayOfOperadorAlerta" [value]="operador.opa_id">
+              [ {{operador.simbolo}} ] {{operador.operador}}</option>
+          </select>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-12 mt-2">
+          <input type="number" step="1" class="form-control" placeholder="Valor para alerta..."
+            (change)="gravarQuantidadeDeOcorrencias($event)" [value]="quantidadeDeOcorrencias">
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-12 mt-2">
+          <input type="date" name="data_inicio" id="data_inicio" [value]="dataInicial" class="form-control"
+            (change)="gravarDataInicial($event)">
+          <label for="data_inicio" class="text-small text-muted">Data inicial</label>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-12 mt-2">
+          <input type="date" name="data_fim" id="data_fim" [value]="dataFinal" class="form-control"
+            (change)="gravarDataFinal($event)">
+          <label for="data_fim" class="text-small text-muted">Data final</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 col-md-6 col-sm-12 mt-2"></div>
+        <div class="col-lg-2 col-md-6 col-sm-12 mt-2">
+          <button class="btn btn-sm form-control btn-primary text-light form-control"
+            (click)="alterarAlerta()">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
