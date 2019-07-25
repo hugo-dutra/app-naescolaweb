@@ -1,3 +1,91 @@
-<p>
-  inserir-alerta works!
-</p>
+<div class="container-fluid">
+  <div class="card" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-11 text-center text-light">
+          <i class="fa fa-lg fa-warning"> Criar alerta</i>
+        </div>
+        <div class="col-1">
+          <button *ngIf="exibirComponente('inserir-alerta')" class="btn btn-outline-primary text-light form-control"
+            (click)="gerenciarAlerta()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-1">
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownTipoOcorrencia"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{stringDeTipoDeOcorrencia}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownTipoOcorrencia">
+              <a *ngFor="let tipoOcorrencia of arrayOfTiposOcorrenciasDisciplinares" class="dropdown-item"
+                [id]="'tod_id_'+tipoOcorrencia.id"
+                (click)="selecionarTipoOcorrenciaDisciplinar(tipoOcorrencia.id,tipoOcorrencia.nome )">{{tipoOcorrencia.nome}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-1">
+          <div class="dropdown">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownOperadores" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              {{stringDeOperadorDeAlerta}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownOperadores">
+              <a *ngFor="let operador of arrayOfOperadorAlerta" class="dropdown-item" [id]="'opa_id_'+operador.opa_id"
+                (click)="selecionarOperadorDeAlerta(operador.opa_id, operador.operador)"> [ {{operador.simbolo}} ]
+                {{operador.operador}}
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-2">
+          <input type="number" step="1" class="form-control" placeholder="Valor para alerta..."
+            (change)="gravarQuantidadeDeOcorrencias($event)">
+        </div>
+        <div class="col-1"></div>
+        <div class="col-2">
+          <input type="date" name="data_inicio" id="data_inicio" [value]="dataInicial" class="form-control"
+            (change)="gravarDataInicial($event)">
+          <label for="data_inicio" class="text-small text-muted">Data inicial</label>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-2">
+          <input type="date" name="data_fim" id="data_fim" [value]="dataFinal" class="form-control"
+            (change)="gravarDataFinal($event)">
+          <label for="data_fim" class="text-small text-muted">Data final</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-10"></div>
+        <div class="col-2">
+          <button class="btn btn-sm btn-primary text-light form-control" (click)="inserirAlerta()">Criar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bg-dark">
+
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

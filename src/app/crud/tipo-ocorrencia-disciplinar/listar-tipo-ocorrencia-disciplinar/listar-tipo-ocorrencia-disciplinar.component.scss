@@ -1,3 +1,21 @@
+.bg-google {
+  background: #4885ed;
+}
+
+span {
+  cursor: pointer;
+}
+
+a {
+  cursor: pointer;
+}
+
+.tiposOcorrencia {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 45vh;
+}
+
 #loadingDiv {
   position: fixed;
   top: 45%;

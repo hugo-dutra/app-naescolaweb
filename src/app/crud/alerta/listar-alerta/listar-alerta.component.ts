@@ -96,14 +96,14 @@ export class ListarAlertaComponent implements OnInit {
   public carregarDados(): void {
     this.dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
     this.dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
-    this.esc_id = parseInt(this.dados_escola['id'], 10);
+    this.esc_id = parseInt(this.dados_escola['id']);
   }
 
   public listarAlertas(): void {
     this.feedbackUsuario = "Carregando alertas, aguarde...";
     this.alertaService.listarRegraAlerta(this.esc_id).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
-      this.arrayOfRegrasAlertas = Object.values(response.json());
+      this.arrayOfRegrasAlertas = Object.values(response);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

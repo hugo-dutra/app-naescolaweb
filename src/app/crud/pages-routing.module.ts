@@ -13,12 +13,13 @@ const routes: Routes = [{
   children: [
     { path: 'dashboard', component: ECommerceComponent, },
     { path: 'iot-dashboard', component: DashboardComponent, },
+
+    /*MEUS MÓDULOS*/
     { path: 'logar', component: LoginComponent },
-
-
     { path: 'gerenciar-alerta-ocorrencia', loadChildren: () => import('./alerta/alerta.module').then(m => m.AlertaModule), },
     { path: 'listar-area-conhecimento', loadChildren: () => import('./area-conhecimento/area-conhecimento.module').then(m => m.AreaConhecimentoModule), },
-
+    { path: 'listar-tipo-ocorrencia-disciplinar', loadChildren: () => import('./tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.module').then(m => m.TipoOcorrenciaDisciplinarModule), },
+    /**************/
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
     { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },

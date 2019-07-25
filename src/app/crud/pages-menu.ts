@@ -145,7 +145,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
           },
           {
             title: 'Tipo de ocorrência disciplinar',
-            link: '/layout/tabs',
+            link: '/listar-tipo-ocorrencia-disciplinar',
           },
         ],
       },

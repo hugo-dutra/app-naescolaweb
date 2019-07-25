@@ -12,33 +12,35 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="regras_alerta">
-        <table class="table table-striped table-hover" [@chamado]="estado">
-          <thead class="thead-light">
-            <tr class="row">
-              <th class="col-3 text-center" scope="col">Tipo de ocorrência</th>
-              <th class="col-2 text-center" scope="col">Operador</th>
-              <th class="col-1 text-center" scope="col">Referência</th>
-              <th class="col-2 text-center" scope="col">Inicio</th>
-              <th class="col-2 text-center" scope="col">Fim</th>
-              <th *ngIf="exibirComponente('alterar-alerta')" class="col-1  text-center" scope="col">Alterar</th>
-              <th *ngIf="exibirComponente('excluir-alerta')" class="col-1  text-center" scope="col">Excluir</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="row" *ngFor="let regra of arrayOfRegrasAlertas" [@chamado]="estado">
-              <td class="col-3 text-center">{{ regra.tipo_ocorrencia }}</td>
-              <td class="col-2 text-center">{{ regra.operador }}</td>
-              <td class="col-1 text-center">{{ regra.valor_referencia }}</td>
-              <td class="col-2 text-center">{{ regra.data_inicio }}</td>
-              <td class="col-2 text-center">{{ regra.data_fim }}</td>
-              <td *ngIf="exibirComponente('alterar-alerta')" class="col-1 text-center"><button
-                  class="btn btn-warning btn-sm" value="{{ regra }}" (click)="alterar(regra)">Alterar</button></td>
-              <td *ngIf="exibirComponente('excluir-alerta')" class="col-1 text-center"><button
-                  class="btn btn-danger btn-sm" value="{{ regra }}" (click)="excluir(regra)">Excluir</button></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="row">
+        <div class="regras_alerta col-lg-12 col-sm-12">
+          <table class="table table-striped table-hover" [@chamado]="estado">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-3 text-center" scope="col">Tipo de ocorrência</th>
+                <th class="col-2 text-center" scope="col">Operador</th>
+                <th class="col-1 text-center" scope="col">Referência</th>
+                <th class="col-2 text-center" scope="col">Inicio</th>
+                <th class="col-2 text-center" scope="col">Fim</th>
+                <th *ngIf="exibirComponente('alterar-alerta')" class="col-1  text-center" scope="col">Alterar</th>
+                <th *ngIf="exibirComponente('excluir-alerta')" class="col-1  text-center" scope="col">Excluir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let regra of arrayOfRegrasAlertas" [@chamado]="estado">
+                <td class="col-3 text-center">{{ regra.tipo_ocorrencia }}</td>
+                <td class="col-2 text-center">{{ regra.operador }}</td>
+                <td class="col-1 text-center">{{ regra.valor_referencia }}</td>
+                <td class="col-2 text-center">{{ regra.data_inicio }}</td>
+                <td class="col-2 text-center">{{ regra.data_fim }}</td>
+                <td *ngIf="exibirComponente('alterar-alerta')" class="col-1 text-center"><button
+                    class="btn btn-warning btn-sm" value="{{ regra }}" (click)="alterar(regra)">Alterar</button></td>
+                <td *ngIf="exibirComponente('excluir-alerta')" class="col-1 text-center"><button
+                    class="btn btn-danger btn-sm" value="{{ regra }}" (click)="excluir(regra)">Excluir</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="card-footer">
