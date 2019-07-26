@@ -1,3 +1,77 @@
-<p>
-  inserir-usuario works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 text-center mt-2">
+          <i class="fa fa-lg fa-user text-light text-center"> Usuário</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light form-control btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="formulario" (ngSubmit)="inserir()">
+        <div class="col-sm-12 col-lg-2  mt-2 bg-dark m-2 p-2 rounded" *ngIf="usuario.foto !== undefined">
+          <img [src]="usuario.foto" class="rounded-circle" width="80" height="80" alt="">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control" formControlName="id">
+          <input type="text" placeholder="Nome..." class="form-control col-lg-12 col-sm-12 mt-2" formControlName="nome"
+            maxlength="150" required (input)="validar($event)" (focusout)="validar($event)">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="email" placeholder="e-mail..." class="form-control col-lg-4 col-sm-12 mt-2"
+            formControlName="email" maxlength="200" required (input)="validar($event)" (focusout)="validar($event)">
+          <div class="col-lg-1 col-sm-12 mt-2"></div>
+          <input type="password" placeholder="senha..." class="form-control col-lg-3 col-sm-12 mt-2"
+            formControlName="senha" maxlength="25" required (input)="validar($event)" (focusout)="validar($event)">
+          <div class="col-lg-1 col-sm-12 mt-2"></div>
+          <input type="password" placeholder="confirmar senha..." class="form-control col-lg-3 col-sm-12 mt-2"
+            formControlName="confirmarSenha" maxlength="25" required (input)="validar($event)"
+            (focusout)="validar($event)">
+        </div>
+        <div class="row m-0 form-group">
+          <label for="files" class="btn btn-warning col-lg-4 col-sm-12 mt-2">Selecionar foto</label>
+          <input type="file" accept=".jpg,.jpeg" (change)="enviarArquivo($event)" id="files" style="visibility: hidden;"
+            class="form-control col-lg-1 col-sm-12 mt-2" formControlName="foto">
+          <div class="col-lg-1 col-sm-12 mt-2"></div>
+          <button type="submit" class="btn btn-primary form-control col-lg-2 col-sm-12 mt-2">Salvar</button>
+        </div>
+
+      </form>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-info-circle text-light"> Novo Usuário</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Todos os campos devem ser preenchidos</div>
+    </div>
+
+    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+      <div>
+        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+          <div class="col-2">
+            <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+          </div>
+          <div class="col-10">
+            <h4>
+              <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="alertDiv" *ngIf="feedbackAlerta !== undefined" [@chamado]="estado">
+      <div>
+        <div class="row mt-2" *ngIf="feedbackAlerta !== undefined">
+          <div class="col-2">
+            <img src="assets/gifs/alert.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+          </div>
+          <div class="col-10">
+            <h4>
+              <p class="text-left pr-3">{{ feedbackAlerta }}</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { PerfilService } from '../../perfil/perfil.service';
-import { UsuarioService } from '../usuario.service';
+import { PerfilService } from '../perfil.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { Utils } from '../../../shared/utils.shared';
+import { Perfil } from '../perfil.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
-import { Usuario } from '../usuario.model';
 
 @Component({
-  selector: 'ngx-excluir-usuario',
-  templateUrl: './excluir-usuario.component.html',
-  styleUrls: ['./excluir-usuario.component.scss'],
-  providers: [UsuarioService, PerfilService],
+  selector: 'ngx-excluir-perfil',
+  templateUrl: './excluir-perfil.component.html',
+  styleUrls: ['./excluir-perfil.component.scss'],
+  providers: [PerfilService],
   animations: [
     trigger("chamado", [
       state(
@@ -29,60 +28,37 @@ import { Usuario } from '../usuario.model';
     ])
   ]
 })
-export class ExcluirUsuarioComponent implements OnInit {
+export class ExcluirPerfilComponent implements OnInit {
 
-  public perfis: Object;
-  public lst_perfil: Object[];
-  public usuario = new Usuario();
+  public perfil = new Perfil();
   public feedbackUsuario: string;
   public estado: string = "visivel";
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirAlerta: boolean = false;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private usuarioService: UsuarioService,
     private perfilService: PerfilService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((usuario: Usuario) => {
-      this.usuario = JSON.parse(usuario["usuario"]);
+    this.route.queryParams.subscribe((perfil: Perfil) => {
+      this.perfil = JSON.parse(perfil["perfil"]);
     });
-    this.listarPerfis();
-  }
-
-  public listarPerfis(): void {
-    this.feedbackUsuario = "Carregando perfis..."
-    this.perfilService
-      .listar()
-      .toPromise()
-      .then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.perfis = response;
-      })
-      .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      });
   }
 
   public excluir(): void {
     this.feedbackUsuario = "Excluindo dados, aguarde...";
-    this.usuarioService
-      .excluir(this.usuario.id)
+    this.perfilService
+      .excluir(this.perfil.id)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
-        this.router.navigate(["listar-usuario"]);
+        this.listar();
       })
       .catch((erro: Response) => {
         //Mostra modal
@@ -96,7 +72,7 @@ export class ExcluirUsuarioComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigate(["listar-usuario"]);
+    this.router.navigate(["listar-perfil"]);
   }
 
 }

@@ -14,7 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     TipoOcorrenciaDisciplinarRoutingModule,
-    CommonModule, HttpClientModule, FormsModule, ReactiveFormsModule
+    HttpClientModule, FormsModule, ReactiveFormsModule
   ]
 })
 export class TipoOcorrenciaDisciplinarModule { }

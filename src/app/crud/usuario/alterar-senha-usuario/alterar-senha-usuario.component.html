@@ -1,3 +1,51 @@
-<p>
-  alterar-senha-usuario works!
-</p>
+<div class="container-fluid" [@chamado]="estado">
+  <div class="row">
+    <div class="col-lg-4 col-sm-12"></div>
+    <div class="card col-lg-4 col-sm-12">
+      <div class="card-header bg-dark text-light text-center">
+        <p>Alterar senha</p>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 mb-4">
+            <input class="form-control" type="password" id="senha1" [value]="senha1"
+              (change)="gravarStringSenha($event)">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 mb-4">
+            <input class="form-control" type="password" id="senha2" [value]="senha2"
+              (change)="gravarStringSenha($event)">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 mb-2">
+            <button class="form-control btn btn-primary" (click)="alterarSenha()">Salvar</button>
+          </div>
+          <div class="col-lg-6 col-sm-12 mb-2">
+            <button class="form-control btn btn-warning" (click)="cancelarAlterarSenha()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-dark text-light text-center">
+        <p>A senha deverá ser igual nos dois campos</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-12"></div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

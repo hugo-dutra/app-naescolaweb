@@ -1,0 +1,71 @@
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 text-center mt-2">
+          <i class="fa fa-lg fa-chain-broken text-light text-center"> Associar perfil e permissões</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light form-control" (click)="listarPerfil()">Listar
+            perfis</button>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="formulario">
+
+        <select name="perfisUsuarios" required class="form-control mt-2 mb-2" name="pru_id" formControlName="pru_id"
+          (change)="listarPermissaoAcessoPerfilUsuario($event)">
+          <option value="" disabled>Selecione um perfil</option>
+          <option *ngFor="let perfil of perfis" value="{{ perfil.id }}">{{ perfil.nome }}</option>
+        </select>
+
+        <div class="row">
+          <div class="permissoes col-lg-12 col-sm-12">
+            <div class="row">
+              <div *ngFor="let permissoes of permissoesExistentes" class="form-group inline col-lg-6 col-sm-12"
+                [@chamado]="estado">
+                <div class="row">
+                  <input type="checkbox" class="checkbox col-lg-1 col-sm-1" [id]="permissoes.id" [name]="permissoes.id"
+                    [checked]="statusCheck" [value]="permissoes.id" formControlName="pac_id">
+                  <label [for]="permissoes.id" class="col-lg-11 col-sm-11 text-left">{{ permissoes.nome }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-lg-10 col-sm-12 mt-2">
+            <input type="checkbox" class="form-control checkbox float-left" id="todos"
+              (change)="selecionarTodos($event)">
+            <label for="todos" class="float-left"><b>&nbsp;Selecionar todos</b></label>
+          </div>
+          <button type="submit" class="btn btn-primary text-light col-lg-2 col-sm-12 form-control"
+            (click)="inserir($event)">Salvar</button>
+        </div>
+      </form>
+
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa fa-info-circle text-light"> Associar perfil e premissões</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* O perfil e alguma premissão devem ser
+        preenchidos</div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
