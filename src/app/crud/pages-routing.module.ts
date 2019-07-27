@@ -1,18 +1,16 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-
 import { PagesComponent } from './pages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { LoginComponent } from '../access/login/login.component';
+import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-atalho.component';
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
-    { path: 'dashboard', component: ECommerceComponent, },
-    { path: 'iot-dashboard', component: DashboardComponent, },
+    //Modificado
+    { path: 'dashboard', component: MenuAtalhoComponent, },
 
     /*MEUS MÓDULOS*/
     { path: 'logar', component: LoginComponent },
@@ -22,10 +20,11 @@ const routes: Routes = [{
     { path: 'listar-tipo-ocorrencia-disciplinar', loadChildren: () => import('./tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.module').then(m => m.TipoOcorrenciaDisciplinarModule), },
     { path: 'listar-usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), },
     { path: 'inserir-usuario-escola', loadChildren: () => import('./usuario-escola/usuario-escola.module').then(m => m.UsuarioEscolaModule), },
+    { path: 'inserir-usuario-professor', loadChildren: () => import('./usuario-professor/usuario-professor.module').then(m => m.UsuarioProfessorModule), },
     { path: 'listar-perfil', loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule), },
     { path: 'inserir-perfil-permissao', loadChildren: () => import('./perfil-permissao/perfil-permissao.module').then(m => m.PerfilPermissaoModule), },
+    { path: 'listar-professor', loadChildren: () => import('./professor/professor.module').then(m => m.ProfessorModule), },
     { path: 'listar-permissao-acesso', loadChildren: () => import('./permissao-acesso/permissao-acesso.module').then(m => m.PermissaoAcessoModule), },
-
     /**************/
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },

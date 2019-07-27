@@ -1,0 +1,92 @@
+<div class="container-fluid" [@chamado]="estado">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-8 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-link text-light text-center"> Associação de professor e usuário</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light btn-sm form-control" (click)="listar()">Listagem</button>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button type="submit" class="btn btn-dark border-light text-light btn-sm form-control"
+            (click)="inserir($event)">Salvar</button>
+        </div>
+      </div>
+    </div>
+    <form action="" [formGroup]="formulario" [@chamado]="estado">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 mt-2">
+            <div>
+              <div class="form-group inline row">
+                <input type="checkbox" class="form-control options col-lg-1 col-sm-1 mt-2 text-dark"
+                  id="exibirTodosUsuarios" name="exibirTodosUsuarios" (click)="exibirTodosUsuarios()">
+                <label for="exibirTodosUsuarios" class="text-left col-lg-5 col-sm-11 mt-2 text-dark">Todos / Não
+                  associados</label>
+                <h5 class="col-lg-5 col-sm-12 mt-2 text-dark mt-2">Usuários</h5>
+              </div>
+            </div>
+            <div>
+              <input type="text" class="form-control mb-2" (input)="filtrarUsuario($event)" placeholder="procurar..."
+                (keydown)="limparFiltroUsuario($event)">
+              <div class="usuarios">
+                <div *ngFor="let usuario of usuarios" class="form-group inline row" [@chamado]="estado">
+                  <input type="radio" class="form-control options col-lg-1 col-sm-1 float-left turma ml-3"
+                    name="option_usuario" [id]="'usr_'+usuario.usr_id" [checked]="statusCheck"
+                    (click)="gravaStatusUsuario($event)" [value]="usuario.usr_id">
+                  <label [for]="'usr_'+usuario.usr_id" class="col-lg-10 col-sm-10 text-left text-dark">
+                    {{ usuario.usuario }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 mt-2">
+            <div>
+              <div class="form-group inline row">
+                <input type="checkbox" class="form-control options col-1" id="exibirTodosProfessores"
+                  name="exibirTodosProfessores" (click)="exibirTodosProfessores()">
+                <label for="exibirTodosProfessores" class="text-left col-lg-5 col-sm-12 mt-2 text-dark">Todos / Não
+                  associados</label>
+                <h5 class="col-lg-6 col-sm-12 mt-2 text-dark">Professores</h5>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input type="text" class="form-control mb-2" (input)="filtrarProfessor($event)"
+                  placeholder="procurar..." (keydown)="limparFiltroProfessor($event)">
+                <div class="professores">
+                  <div *ngFor="let professor of professores" class="form-group inline row" [@chamado]="estado">
+                    <input type="radio"
+                      class="form-control options col-lg-1 col-sm-12 mt-2 text-dark float-left professor ml-3"
+                      name="option_professor" [checked]="statusCheck" (click)="gravaStatusProfessor($event)"
+                      [value]="professor.prf_id" [id]="'prf_'+professor.prf_id">
+                    <label [for]="'prf_'+professor.prf_id" class="col-lg-10 col-sm-12 mt-2 text-left text-dark">
+                      {{ professor.professor }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

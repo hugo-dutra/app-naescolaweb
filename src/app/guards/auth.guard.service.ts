@@ -15,14 +15,14 @@ export class AuthGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-    return true;// Depois que configurar a parte de permissões do local storage, reativar esse recurso
-    /* let permissoes: Object = Utils.verificarPermissoes();
-    let rota: string = route["url"].toString().split(",")[0];
+    const rotaSnapshotString: string = (<string>route['_routerState']['url']).split('?')[0];
+    let permissoes: Object = Utils.verificarPermissoes();
+    const rota: string = rotaSnapshotString.split('/')[rotaSnapshotString.split('/').length - 1]
     for (let key in permissoes) {
       if (permissoes[key]["rota"] == rota) {
         return true;
       }
     }
-    return false; */
+    return false;
   }
 }

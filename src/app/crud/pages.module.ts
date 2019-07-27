@@ -3,19 +3,18 @@ import { NbMenuModule } from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { AlertaModule } from './alerta/alerta.module';
 import { AccessModule } from '../access/access.module';
+import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-atalho.component';
 
 @NgModule({
   imports: [
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,
-    DashboardModule,
     ECommerceModule,
     MiscellaneousModule,
     AlertaModule,
@@ -23,6 +22,7 @@ import { AccessModule } from '../access/access.module';
   ],
   declarations: [
     PagesComponent,
+    MenuAtalhoComponent
   ],
 })
 export class PagesModule {
