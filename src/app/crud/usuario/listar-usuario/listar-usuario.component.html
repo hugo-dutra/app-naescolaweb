@@ -103,16 +103,17 @@
       <nav aria-label="..." class="float-right">
         <ul class="pagination">
           <li class="page-item" *ngIf="navegacaoInicio === undefined || navegacaoInicio === true">
-            <a class="page-link text-danger" (click)="navegarAnterior()">&#9664;</a>
+            <a class="page-link fa fa-arrow-left text-danger" (click)="navegarAnterior()"></a>
           </li>
           <li class="page-item" *ngIf="navegacaoInicio === false">
-            <a class="page-link" (click)="navegarAnterior()">&#9664;</a>
+            <a class="page-link fa fa-arrow-left text-dark" (click)="navegarAnterior()"></a>
           </li>
+
           <li class="page-item" *ngIf="navegacaoFim === true">
-            <a class="page-link text-danger" (click)="navegarProximo()">&#9654;</a>
+            <a class="page-link fa fa-arrow-right text-danger" (click)="navegarProximo()"></a>
           </li>
           <li class="page-item" *ngIf="navegacaoFim === false || navegacaoFim === undefined">
-            <a class="page-link" (click)="navegarProximo()">&#9654;</a>
+            <a class="page-link fa fa-arrow-right text-dark" (click)="navegarProximo()"></a>
           </li>
         </ul>
       </nav>

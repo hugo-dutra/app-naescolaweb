@@ -8,6 +8,7 @@ import { InserirProfessorComponent } from './inserir-professor/inserir-professor
 import { ListarProfessorComponent } from './listar-professor/listar-professor.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AlterarProfessorComponent, ExcluirProfessorComponent, InserirProfessorComponent, ListarProfessorComponent],
@@ -15,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     HttpClientModule,
     FormsModule,
+    NgbModule,
     ReactiveFormsModule,
     ProfessorRoutingModule
   ]

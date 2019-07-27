@@ -102,10 +102,7 @@ export class Utils {
 
   public static verificarDados(): Object {
     try {
-      let str_obj = Utils.decriptAtoB(
-        localStorage.getItem("dados"),
-        CONSTANTES.PASSO_CRIPT
-      );
+      let str_obj = Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT);
       return JSON.parse(str_obj);
     } catch (error) {
       return null;

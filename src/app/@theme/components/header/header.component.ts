@@ -8,16 +8,33 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { CONSTANTES } from '../../../shared/constantes.shared';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
+  animations: [
+    trigger("chamado", [
+      state(
+        "visivel",
+        style({
+          opacity: 1
+        })
+      ),
+      transition("void => visivel", [
+        style({ opacity: 0 }),
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
+      ])
+    ])
+  ]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
   public linkFotoUsuario = "";
+  public toggled: boolean = false;
+  public estado: string = "visivel";
   userPictureOnly: boolean = false;
   user: any;
 
@@ -117,6 +134,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSidebar(): boolean {
+    this.toggled = !this.toggled;
     this.sidebarService.toggle(true, 'menu-sidebar');
     this.layoutService.changeLayoutSize();
     return false;

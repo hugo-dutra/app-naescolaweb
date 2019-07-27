@@ -1,3 +1,167 @@
-<p>
-  listar-professor works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row mb-2 text-center">
+        <i class="fa fa-lg fa-graduation-cap text-light text-center col-lg-12"> Professores</i>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-sm-12 mt-2">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control form-control-sm" placeholder="nome, email, matricula ou cpf..."
+              (keydown)="filtrarEnter($event)" (input)="gravarValorFiltro($event.target.value)"
+              aria-label="buscar por nome" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-dark border-light fa fa-search text-light" (click)="filtrar()"
+                type="button">
+                Procurar</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2"></div>
+
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-professor')"
+            class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
+            (click)="inserir()">Inserir</button>
+        </div>
+
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-professor-escola')"
+            class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
+            (click)="inserirProfessorEscola()"><i class="fa fa-lg fa-chain"></i> Vincular escolas</button>
+        </div>
+
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-professor-disciplina')"
+            class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
+            (click)="inserirProfessorDisciplina()"><i class="fa fa-lg fa-chain"></i> Vincular disciplinas</button>
+        </div>
+
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-professor-turma')"
+            class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
+            (click)="inserirProfessorTurma()"><i class="fa fa-lg fa-chain"></i> Vincular turmas</button>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <select class="form-control col-lg-3 col-sm-12 mb-2" (change)="listarQuantidade($event)">
+          <option [value]="5" selected>Exibir {{ saltarQuantidade }} registros por vez</option>
+          <option [value]="5">5</option>
+          <option [value]="10">10</option>
+          <option [value]="15">15</option>
+          <option [value]="20">20</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+          <option [value]="100">100</option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="professores col-lg-12">
+          <table class="table table-striped table-hover" [@chamado]="estado">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-lg-1 col-sm-12 text-center" scope="col"> Disciplina</th>
+                <th class="col-lg-2 col-sm-12 text-left" scope="col"><span (click)="ordenarColuna('nome')">Nome</span>
+                </th>
+                <th class="col-lg-2 col-sm-12 text-left" scope="col"><span (click)="ordenarColuna('email')">email</span>
+                </th>
+                <th class="col-lg-1 col-sm-12 text-left" scope="col"><span
+                    (click)="ordenarColuna('matricula')">matricula</span></th>
+                <th class="col-lg-2 col-sm-12 text-left" scope="col"><span (click)="ordenarColuna('cpf')">CPF</span>
+                </th>
+                <th class="col-lg-2 col-sm-12 text-left" scope="col"><span
+                    (click)="ordenarColuna('telefone')">telefone</span></th>
+
+                <th *ngIf="exibirComponente('alterar-professor')" class="col-lg-1 col-sm-12 text-center" scope="col">
+                  Alterar</th>
+                <th *ngIf="exibirComponente('excluir-professor')" class="col-lg-1 col-sm-12 text-center" scope="col">
+                  Excluir</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="professores !== null">
+              <tr class="row" *ngFor="let professor of professores" [@chamado]="estado">
+                <td class="col-lg-1 col-sm-12 text-center"> <button (click)="listarDisciplina(professor)"
+                    id="btn_professor_{{ professor.id  }}" type="button" class="btn btn-sm btn-success" placement="top"
+                    container="body" [ngbPopover]="popContentConsulta" [popoverTitle]="popTitleConsulta"><span
+                      class="fa fa-lg fa-question"></span></button></td>
+                <td class="col-lg-2 col-sm-12 text-left">{{ professor.nome }}</td>
+                <td class="col-lg-2 col-sm-12 text-left">{{ professor.email }}</td>
+                <td class="col-lg-1 col-sm-12 text-left">{{ professor.matricula }}</td>
+                <td class="col-lg-2 col-sm-12 text-left">{{ professor.cpf }}</td>
+                <td class="col-lg-2 col-sm-12 text-left">{{ professor.telefone }}</td>
+                <ng-template #popContentConsulta>
+                  <div [@chamado]="estado">
+                    <div class="card">
+                      <div class="card-header">Disciplinas do professor</div>
+                      <div class="card-body">
+                        <p *ngFor="let disciplina of professor.disciplinas" class="text-justify">
+                          {{ disciplina }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template #popTitleConsulta></ng-template>
+                <td *ngIf="exibirComponente('alterar-professor')" class="col-lg-1 col-sm-12 text-center"><button
+                    class="btn btn-warning btn-sm" value="{{ professor }}" (click)="alterar(professor)">Alterar</button>
+                </td>
+                <td *ngIf="exibirComponente('excluir-professor')" class="col-lg-1 col-sm-12 text-center"><button
+                    class="btn btn-danger btn-sm" value="{{ professor }}" (click)="excluir(professor)">Excluir</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <nav aria-label="..." class="float-right mt-2">
+        <ul class="pagination">
+          <li class="page-item" *ngIf="navegacaoInicio === undefined || navegacaoInicio === true">
+            <a class="page-link fa fa-arrow-left text-danger" (click)="navegarAnterior()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoInicio === false">
+            <a class="page-link fa fa-arrow-left text-dark" (click)="navegarAnterior()"></a>
+          </li>
+
+          <li class="page-item" *ngIf="navegacaoFim === true">
+            <a class="page-link fa fa-arrow-right text-danger" (click)="navegarProximo()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoFim === false || navegacaoFim === undefined">
+            <a class="page-link fa fa-arrow-right text-dark" (click)="navegarProximo()"></a>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+    <div class="card-footer text-muted bg-dark text-center">
+      <i *ngIf="feedbackUsuario === undefined && (navegacaoFim === false || navegacaoFim === undefined)"
+        class="fa fa-lg fa-info-circle text-light" [@chamado]="estado"> Listagem de professores - Exibindo
+        {{ offsetRegistros+1 }} ao {{ offsetRegistros + saltarQuantidade
+      > totalRegistros ? totalRegistros : offsetRegistros + saltarQuantidade }} de {{ totalRegistros }}</i>
+      <i *ngIf="feedbackUsuario !== undefined" class="fa fa-lg fa-question-circle text-light" [@chamado]="estado">
+        Atualizando</i>
+      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-lg fa-info-circle text-light"
+        [@chamado]="estado">
+        Listagem de professores - Exibindo registros finais do total de {{ totalRegistros }}</i>
+    </div>
+  </div>
+</div>
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

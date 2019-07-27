@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import {
   NbChatModule,
@@ -33,6 +34,7 @@ import { SharedModuleModule } from './shared-module/shared-module.module';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgbModule,
     ThemeModule.forRoot(),
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
@@ -42,6 +44,7 @@ import { SharedModuleModule } from './shared-module/shared-module.module';
     NbToastrModule.forRoot(),
     ModalModule.forRoot(),
     SharedModuleModule,
+
     NbChatModule.forRoot({
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),

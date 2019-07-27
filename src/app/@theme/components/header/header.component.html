@@ -1,11 +1,12 @@
 <div class="header-container">
   <div class="logo-container">
     <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
-      <nb-icon icon="menu-2-outline"></nb-icon>
+      <nb-icon *ngIf="toggled==false" icon="menu-arrow" [@chamado]="estado" title="Ocultar painel lateral"></nb-icon>
+      <nb-icon *ngIf="toggled==true" icon="layout" [@chamado]="estado" title="Expandir painel lateral"> </nb-icon>
     </a>
     <a class="logo" href="#" (click)="navigateHome()"><span>{{nomeEscola}}</span></a>
   </div>
-  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
+  <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary" title="Tema">
     <nb-option *ngFor="let theme of themes" [value]="theme.value"> {{ theme.name }}</nb-option>
   </nb-select>
 </div>
@@ -13,7 +14,10 @@
 <div class="header-container">
   <nb-actions size="small">
     <nb-action class="user-action" *nbIsGranted="['view', 'user']">
-      <nb-user (click)="logout()" [name]="nomeUsuario" [picture]="fotoUsuario"></nb-user>
+      <nb-user [name]="nomeUsuario" [picture]="fotoUsuario"></nb-user>
+    </nb-action>
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+      <nb-icon (click)="logout()" icon="log-out" title="Sair do sistema"></nb-icon>
     </nb-action>
   </nb-actions>
 </div>
