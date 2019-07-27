@@ -37,7 +37,6 @@
           <button type="submit" class="btn btn-primary form-control col-lg-2 col-sm-2 mt-2">Salvar</button>
         </div>
       </form>
-
       <div class="perfis mt-4">
         <div class="row bg-dark mb-2">
           <div class="col-lg-3 col-sm-12 text-light"><b>Escola</b></div>
@@ -46,18 +45,18 @@
           <div class="col-lg-1 col-sm-12 text-light"><b>Ação</b></div>
         </div>
         <div *ngFor="let perfil of perfis" class="row mb-1" [@chamado]="estado">
-          <div class="col-lg-3 col-sm-12">{{perfil.nome}}</div>
-          <div class="col-lg-4 col-sm-12">{{perfil.perfil_usuario}}</div>
-          <div class="col-lg-3 col-sm-12">{{perfil.status_ativo}}</div>
-          <div class="col-lg-1 col-sm-12">
+          <div class="col-lg-3 col-sm-12 text-dark">{{perfil.nome}}</div>
+          <div class="col-lg-4 col-sm-12 text-dark">{{perfil.perfil_usuario}}</div>
+          <div class="col-lg-3 col-sm-12 text-dark">{{perfil.status_ativo}}</div>
+          <div class="col-lg-1 col-sm-12 text-dark">
             <input *ngIf="perfil.status_ativo=='ativo'" checked type="checkbox" class="form-check-input"
               [id]="'chk_'+perfil.use_id" (click)="alterarStatusUsuario(perfil.use_id,$event)">
-            <label *ngIf="perfil.status_ativo=='ativo'" class="form-check-label"
+            <label *ngIf="perfil.status_ativo=='ativo'" class="form-check-label text-dark"
               [for]="'chk_'+perfil.use_id">Ativar/Desativar</label>
 
             <input *ngIf="perfil.status_ativo=='inativo'" type="checkbox" class="form-check-input"
               [id]="'chk_'+perfil.use_id" (click)="alterarStatusUsuario(perfil.use_id,$event)">
-            <label *ngIf="perfil.status_ativo=='inativo'" class="form-check-label"
+            <label *ngIf="perfil.status_ativo=='inativo'" class="form-check-label text-dark"
               [for]="'chk_'+perfil.use_id">Ativar/Desativar</label>
           </div>
         </div>

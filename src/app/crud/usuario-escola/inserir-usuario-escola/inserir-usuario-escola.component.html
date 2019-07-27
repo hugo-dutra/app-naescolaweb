@@ -1,0 +1,80 @@
+<div class="container-fluid">
+  <div class="card text-center col-12" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-8 col-sm-12 text-center mt-2">
+          <i class="fa fa-lg fa-link text-light text-center"> Associação de usuário e escola</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light btn-sm form-control" (click)="listar()">Listagem</button>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button type="submit" class="btn btn-dark border-light text-light btn-sm form-control"
+            (click)="inserir($event)">Salvar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-6  col-sm-12">
+          <div class="row">
+            <div class="col-lg-12 col-sm-12 mt-2 text-center text-dark">
+              Usuários
+            </div>
+          </div>
+          <div class="row">
+            <input type="checkbox" checked="checked" class="form-control checkbox col-lg-1 col-sm-11 mt-2"
+              id="exibeTodos" name="exibeTodos" (click)="exibirTodos()">
+            <label for="exibeTodos" class="text-dark text-left col-lg-11 col-sm-11">Todos / Não associados</label>
+          </div>
+          <div class="usuarios">
+            <input type="text" (input)="filtrarUsuario($event)" class="form-control mb-2"
+              placeholder="Procurar usuario...">
+            <div *ngFor="let usuario of usuarios" class="form-group inline row mt-2" [@chamado]="estado">
+              <input type="checkbox" class="form-control checkbox col-lg-1 col-sm-12 text-dark float-left usuario"
+                [name]="usuario.id" [checked]="statusCheck" (click)="gravaStatusUsuario($event)" [value]="usuario.id"
+                [id]="usuario.id">
+              <label [for]="usuario.id" class="text-dark col-lg-11 col-sm-12 text-left text-dark">
+                {{ usuario.nome }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+          <div class="col-lg-12 col-sm-12 mt-2 text-center text-dark">
+            Escolas
+          </div>
+          <div class="escolas mt-4">
+            <div *ngFor="let escola of escolas" class="form-group inline row mt-2" [@chamado]="estado">
+              <label [for]="escola.nome" class="col-lg-7 col-sm-12 mt-2 text-center text-dark">{{ escola.nome }}</label>
+              <select [name]="escola.id" required class="form-control col-lg-4 col-sm-12 float-right"
+                (change)="gravaPermissaoEscola($event)">
+                <option value="" disabled>selecione um perfil</option>
+                <option *ngFor="let perfil of perfis" [value]="perfil.id">{{ perfil.nome }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Associar usuário e escola</i>
+      <div class="row">
+        <div *ngIf="exibirAlerta" class="text-warning text-center col-12" [@chamado]="estado">* Marque ao menos um
+          usuário e uma escola</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
