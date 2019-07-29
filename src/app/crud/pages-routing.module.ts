@@ -16,6 +16,7 @@ const routes: Routes = [{
     { path: 'logar', component: LoginComponent },
     { path: 'gerenciar-alerta-ocorrencia', loadChildren: () => import('./alerta/alerta.module').then(m => m.AlertaModule), },
     { path: 'listar-area-conhecimento', loadChildren: () => import('./area-conhecimento/area-conhecimento.module').then(m => m.AreaConhecimentoModule), },
+    { path: 'listar-disciplina', loadChildren: () => import('./disciplina/disciplina.module').then(m => m.DisciplinaModule), },
     { path: 'listar-escola', loadChildren: () => import('./escola/escola.module').then(m => m.EscolaModule), },
     { path: 'listar-tipo-ocorrencia-disciplinar', loadChildren: () => import('./tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.module').then(m => m.TipoOcorrenciaDisciplinarModule), },
     { path: 'listar-usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), },
@@ -24,6 +25,7 @@ const routes: Routes = [{
     { path: 'listar-perfil', loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilModule), },
     { path: 'inserir-perfil-permissao', loadChildren: () => import('./perfil-permissao/perfil-permissao.module').then(m => m.PerfilPermissaoModule), },
     { path: 'listar-professor', loadChildren: () => import('./professor/professor.module').then(m => m.ProfessorModule), },
+    { path: 'inserir-professor-disciplina', loadChildren: () => import('./professor-disciplina/professor-disciplina.module').then(m => m.ProfessorDisciplinaModule), },
     { path: 'listar-permissao-acesso', loadChildren: () => import('./permissao-acesso/permissao-acesso.module').then(m => m.PermissaoAcessoModule), },
     /**************/
 
