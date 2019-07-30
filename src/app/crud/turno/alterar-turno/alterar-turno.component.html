@@ -1,0 +1,71 @@
+<div class="container-fluid" [@chamado]="estado">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-clock-o text-light text-center">&nbsp;Turno</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light btn-sm form-control" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <form>
+      <div class="card-body">
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control">
+          <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-5">
+            <label for="nome" style="display:block" class="text-left">Turno</label>
+            <input type="text" style="display:block" placeholder="Nome..." class="form-control" required name="nome"
+              value="{{ turno.nome }}" maxlength="45" id="nome" (input)="modificarInputs($event)"
+              (focusout)="validar($event)">
+          </div>
+          <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-2">
+            <label for="abreviatura" style="display:block" class="text-left">Abreviatura</label>
+            <input type="text" style="display:block" placeholder="Abreviatura..." class="form-control" required
+              name="abreviatura" value="{{ turno.abreviatura }}" maxlength="5" id="abreviatura"
+              (input)="modificarInputs($event)" (focusout)="validar($event)">
+          </div>
+          <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-2">
+            <label for="horaInicio" style="display:block" class="text-left">Início do turno</label>
+            <input type="time" style="display:block" placeholder="Inicio..." class="form-control" required
+              name="horaInicio" value="{{ turno.horaInicio }}" id="horaInicio" maxlength="10"
+              (input)="modificarInputs($event)" (focusout)="validar($event)">
+          </div>
+          <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-2">
+            <label for="horaFim" style="display:block" class="text-left">Fim do turno</label>
+            <input type="time" style="display:block" placeholder="Fim..." class="form-control" required name="horaFim"
+              value="{{ turno.horaFim }}" id="horaFim" maxlength="10" (input)="modificarInputs($event)"
+              (focusout)="validar($event)">
+          </div>
+        </div>
+        <div class="row m-3 form-group">
+          <div class="col-sm-12 mt-2 col-lg-9"></div>
+          <div class="col-sm-12 mt-2 col-lg-3">
+            <button type="submit" class="btn btn-primary form-control" (click)="alterar()">Salvar</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Alterar turno</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Os campos em vermelho devem ser preenchidos
+      </div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

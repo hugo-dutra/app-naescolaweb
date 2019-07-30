@@ -1,3 +1,92 @@
-<p>
-  inserir-professor-disciplina works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-8 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-link text-light text-center"> Associação de professor e disciplina</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light btn-sm form-control" (click)="listar()">Listagem</button>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button type="submit" class="btn btn-dark border-light text-light btn-sm form-control"
+            (click)="inserir($event)">Salvar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body text-dark bg-light">
+      <form [formGroup]="formulario">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 mt-2">
+            <div>
+              <div class="form-group inline row">
+                <input type="checkbox" checked="checked" class="form-control checkbox col-lg-1" id="exibeTodos"
+                  name="exibeTodos" (click)="exibirTodos()">
+                <label for="exibeTodos" class="text-left col-lg-5">Todos / Não associados</label>
+                <h4 class="col-lg-6 col-sm-12 text-dark mt-2">Professores</h4>
+              </div>
+            </div>
+            <div class="professores bg-light text-dark">
+              <input type="text" (input)="filtrarProfessor($event)" class="form-control mb-2"
+                placeholder="Procurar professor..." (keydown)="limparFiltro($event)">
+              <div class="ml-2">
+                <div *ngFor="let professor of professores" class="form-group inline row" [@chamado]="estado">
+                  <div class="col-lg-1 col-sm-1">
+                    <input type="checkbox" class="form-control checkbox float-left professor"
+                      formControlName="check_professor" [name]="professor.id" [checked]="statusCheck"
+                      (click)="gravaStatusProfessores($event)" [value]="professor.id" [id]="professor.id">
+                  </div>
+                  <div class="col-lg-11 col-sm-11 text-left">
+                    <label [for]="professor.id" class="text-left">
+                      {{ professor.nome }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-sm-12 mt-2">
+            <h4 class="text-dark bg-light">Disciplinas</h4>
+            <div class="disciplinas mt-4 bg-light text-dark">
+              <div class="ml-2">
+                <div *ngFor="let disciplina of disciplinas" class="form-group inline row" [@chamado]="estado">
+                  <div class="col-lg-1 col-sm-1">
+                    <input type="checkbox" class="form-control checkbox float-left disciplina"
+                      formControlName="check_disciplina" [name]="disciplina.id" [checked]="statusCheck"
+                      (click)="gravaStatusDisciplinas($event)" [value]="disciplina.id" [id]="disciplina.nome">
+                  </div>
+                  <div class="col-lg-11 col-sm-11 text-left">
+                    <label [for]="disciplina.nome">
+                      {{ disciplina.nome }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Associar professores e disciplinas</i>
+      <div class="row">
+        <div *ngIf="exibirAlerta" class="text-warning text-center col-lg-12" [@chamado]="estado">* Marque ao menos um
+          professor e uma disciplina</div>
+      </div>
+    </div>
+
+
+    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+      <div>
+        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+          <div class="col-2">
+            <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+          </div>
+          <div class="col-10">
+            <h4>
+              <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>

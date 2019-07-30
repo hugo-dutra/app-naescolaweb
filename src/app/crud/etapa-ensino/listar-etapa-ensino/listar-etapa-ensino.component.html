@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-sm-12 mt-2 col-lg-10 text-center">
+          <i class="fa fa-lg fa-hourglass-half text-light text-center"> Etapa do ensino</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-etapa-ensino')"
+            class="btn btn-dark border-light text-light btn-sm form-control" (click)="adicionar()">Adicionar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="etapasEnsino">
+        <table class="table table-striped table-hover" [@chamado]="estado">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-lg-1 text-center" scope="col"></th>
+              <th class="col-sm-12 col-lg-7 text-center" scope="col">Etapa</th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col">Abreviatura</th>
+              <th *ngIf="exibirComponente('alterar-etapa-ensino')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                Alterar
+              </th>
+              <th *ngIf="exibirComponente('excluir-etapa-ensino')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row" *ngFor="let etapa of etapasEnsino" [@chamado]="estado">
+              <td class="col-sm-12 col-lg-1 text-center"></td>
+              <td class="col-sm-12 col-lg-7 text-center">{{ etapa.nome}}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{ etapa.abreviatura }}</td>
+              <td *ngIf="exibirComponente('alterar-etapa-ensino')" class="col-sm-12 col-lg-1 text-center"><button
+                  class="btn btn-warning btn-sm" value="{{ etapa }}" (click)="alterar(etapa)">Alterar</button></td>
+              <td *ngIf="exibirComponente('excluir-etapa-ensino')" class="col-sm-12 col-lg-1 text-center"><button
+                  class="btn btn-danger btn-sm" value="{{ etapa }}" (click)="excluir(etapa)">Excluir</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

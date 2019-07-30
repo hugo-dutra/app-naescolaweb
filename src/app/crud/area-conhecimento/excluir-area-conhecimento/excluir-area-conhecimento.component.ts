@@ -45,8 +45,8 @@ export class ExcluirAreaConhecimentoComponent implements OnInit {
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
 
   ngOnInit() {
-    this.route.params.subscribe((params: any) => {
-      this.areaConhecimento = JSON.parse(params["objeto"]);
+    this.route.queryParams.subscribe((area: any) => {
+      this.areaConhecimento = JSON.parse(area["area"]);
     });
   }
 

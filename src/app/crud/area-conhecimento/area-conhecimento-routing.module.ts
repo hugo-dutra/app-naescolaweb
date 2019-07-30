@@ -9,8 +9,8 @@ import { AlterarAreaConhecimentoComponent } from './alterar-area-conhecimento/al
 const routes: Routes = [
   { path: "", component: ListarAreaConhecimentoComponent, canActivate: [AuthGuardService] },
   { path: "inserir-area-conhecimento", component: InserirAreaConhecimentoComponent, canActivate: [AuthGuardService] },
-  { path: "excluir-area-conhecimento/:objeto", component: ExcluirAreaConhecimentoComponent, canActivate: [AuthGuardService] },
-  { path: "alterar-area-conhecimento/:objeto", component: AlterarAreaConhecimentoComponent, canActivate: [AuthGuardService] },
+  { path: "excluir-area-conhecimento", component: ExcluirAreaConhecimentoComponent, canActivate: [AuthGuardService] },
+  { path: "alterar-area-conhecimento", component: AlterarAreaConhecimentoComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

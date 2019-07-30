@@ -47,8 +47,8 @@ export class AlterarAreaConhecimentoComponent implements OnInit {
   public exibirAlerta: boolean = false;
 
   ngOnInit() {
-    this.route.params.subscribe((params: AreaConhecimento) => {
-      this.areaConhecimento = JSON.parse(params["objeto"]);
+    this.route.queryParams.subscribe((area: AreaConhecimento) => {
+      this.areaConhecimento = JSON.parse(area["area"]);
     });
   }
 
@@ -81,7 +81,7 @@ export class AlterarAreaConhecimentoComponent implements OnInit {
   }
 
   public listar() {
-    this.router.navigateByUrl("listar-area-conhecimento");
+    this.router.navigate(['listar-area-conhecimento']);
   }
 
   public validar(event: Event) {

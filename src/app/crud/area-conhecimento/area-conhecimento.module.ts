@@ -21,7 +21,6 @@ import { NbCardModule } from '@nebular/theme';
   imports: [
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule,
     RouterModule,
     CommonModule,
     AreaConhecimentoRoutingModule

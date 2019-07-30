@@ -3,7 +3,7 @@ import { AreaConhecimentoService } from '../area-conhecimento.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { AreaConhecimento } from '../area-conhecimento.model';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
@@ -71,12 +71,22 @@ export class ListarAreaConhecimentoComponent implements OnInit {
     this.router.navigate([`${this.router.url}/inserir-area-conhecimento`]);
   }
 
-  public alterar(areaConhecimento: AreaConhecimento) {
-    this.router.navigate([`${this.router.url}/alterar-area-conhecimento/${JSON.stringify(areaConhecimento)}`]);
+  public alterar(areaConhecimento: AreaConhecimento): void {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        area: JSON.stringify(areaConhecimento)
+      }
+    };
+    this.router.navigate([`${this.router.url}/alterar-area-conhecimento`], navigationExtras);
   }
 
-  public excluir(areaConhecimento: AreaConhecimento) {
-    this.router.navigate([`${this.router.url}/excluir-area-conhecimento/${JSON.stringify(areaConhecimento)}`]);
+  public excluir(area: AreaConhecimento) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        area: JSON.stringify(area)
+      }
+    };
+    this.router.navigate([`${this.router.url}/excluir-area-conhecimento`], navigationExtras);
   }
 
   public exibirComponente(rota: string): boolean {

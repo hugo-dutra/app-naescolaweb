@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="card text-center" [@chamado]="estado">
+  <div class="card text-center">
     <div class="card-header bg-dark">
       <div class="row">
         <div class="col-lg-10 col-sm-12 mt-2 text-center">
@@ -17,6 +17,7 @@
           <input autofocus type="text" placeholder="Nome..." class="form-control col-lg-5 col-sm-12 mt-2" name="nome"
             maxlength="45" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
             value="{{ disciplina.nome }}">
+          <div class="col-lg-1 col-sm-12 mt-2"></div>
           <input type="text" placeholder="Abreviatura..." class="form-control col-lg-3 col-sm-12 mt-2"
             name="abreviatura" maxlength="5" required (input)="modificarInputs($event)"
             (focusout)="modificarInputs($event)" value="{{ disciplina.abreviatura }}">
