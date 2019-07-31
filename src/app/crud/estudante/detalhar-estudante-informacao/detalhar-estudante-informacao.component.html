@@ -1,3 +1,113 @@
-<p>
-  detalhar-estudante-informacao works!
-</p>
+<div class="container-fluid" [@chamado]="estado">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row text-center">
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-11">
+          <span><i class="fa fa-lg fa-info-circle text-light"> Informações gerais do estudante</i></span>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-1">
+          <button class="btn btn-sm btn-dark border-light form-control text-light"
+            (click)="detalharEstudante()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-2 rounded bg-dark">
+          <div class="row">
+            <div class="mt-2 col-sm-12 col-md-4 col-lg-12 text-center">
+              <img class="img rounded-circle m-3" width="150" height="150" [@chamado]="estado"
+                src="{{ estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg' }}" alt="">
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-10 p-4">
+          <div class="row">
+            <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+              <div class="row text-muted">Nome</div>
+              <div class="row text-dark">{{estudante.nome}}</div>
+            </div>
+            <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+              <div class="row text-muted">Responsável</div>
+              <div class="row text-dark">{{estudante.responsavel}}</div>
+            </div>
+            <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+              <div class="row text-muted">Pai</div>
+              <div class="row text-dark">{{estudante.pai}}</div>
+            </div>
+            <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+              <div class="row text-muted">Mãe</div>
+              <div class="row text-dark">{{estudante.mae}}</div>
+            </div>
+            <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+              <div class="row text-muted">Matrícula</div>
+              <div class="row text-dark">{{estudante.matricula}}</div>
+            </div>
+            <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+              <div class="row text-muted">Tipo sanguíneo</div>
+              <div class="row text-dark">{{estudante.tipo_sanguineo}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row m-3 border-top" [@chamado]="estado">
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+          <div class="row text-muted">Email</div>
+          <div class="row text-dark">{{estudante.email}}</div>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+          <div class="row text-muted">Endereço</div>
+          <div class="row text-dark">{{estudante.endereco}}</div>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+          <div class="row text-muted">CEP</div>
+          <div class="row text-dark">{{estudante.cep}}</div>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-6">
+          <div class="row text-muted">Data de nascimento</div>
+          <div class="row text-dark">{{estudante.nascimento}}</div>
+        </div>
+      </div>
+      <div class="row m-3 border-top" [@chamado]="estado">
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
+          <div class="row text-muted">Série</div>
+          <div class="row text-dark">{{dadosTurma.serie}}</div>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
+          <div class="row text-muted">Turma</div>
+          <div class="row text-dark">{{dadosTurma.turma}}</div>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
+          <div class="row text-muted">Turno</div>
+          <div class="row text-dark">{{dadosTurma.turno}}</div>
+        </div>
+        <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
+          <div class="row text-muted">Etapa</div>
+          <div class="row text-dark">{{dadosTurma.etapa}}</div>
+        </div>
+      </div>
+      <div class="row m-3 border-top">
+        <div *ngFor="let telefone of telefonesEstudante" class="mt-2 col-sm-12 col-md-4 col-lg-2" [@chamado]="estado">
+          <div class="row text-muted">Telefone</div>
+          <div class="row text-dark">{{telefone.telefone}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

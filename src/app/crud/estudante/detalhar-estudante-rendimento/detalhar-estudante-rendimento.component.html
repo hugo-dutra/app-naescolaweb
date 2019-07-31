@@ -1,3 +1,86 @@
-<p>
-  detalhar-estudante-rendimento works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row text-center">
+        <div class="mt-2 col-sm-12 col-lg-11">
+          <span><i class="fa fa-lg fa-info-circle text-light"> Informações sobre o rendimento do estudante</i></span>
+        </div>
+        <div class="mt-2 col-sm-12 col-lg-1">
+          <button class="btn btn-sm btn-dark border-light form-control text-light"
+            (click)="detalharEstudante()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row mb-2">
+
+
+        <div class="dropdown mt-2 col-sm-12 col-lg-3">
+          <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonPeriodos"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ stringPeriodoSelecionado }}
+          </button>
+          <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonPeriodos">
+            <a *ngFor="let periodo of periodosLetivos" (click)="selecionarPeriodo($event,periodo)" [id]="periodo.id"
+              name="{{ periodo.periodo }} - {{ periodo.inicio | date:'dd-MM-yyyy'}} - {{ periodo.fim | date:'dd-MM-yyyy'}}"
+              class="dropdown-item dropdown">{{ periodo.periodo }} - {{ periodo.inicio | date:'dd-MM-yyyy'}} -
+              {{ periodo.fim | date:'dd-MM-yyyy'}}</a>
+          </div>
+        </div>
+
+
+        <div class="mt-2 col-sm-12 col-lg-2">
+          <div class="row">
+            <input class="form-control" type="number" name="media_nota" id="media_nota" [value]="media"
+              (change)="atualizarMedia($event)" step="0.1" min="0.0" max="10.0">
+            <label class="text-small text-muted" for="media_nota">Média considerada</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="resultados col-lg-12 col-sm-12 mt-2">
+          <table class="table table-striped table-hover" [@chamado]="estado">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-4 col-md-4 col-lg-8 text-left" scope="col">Disciplina</th>
+                <th class="col-sm-4 col-md-4 col-lg-2" scope="col">Nota</th>
+                <th class="col-sm-4 col-md-4 col-lg-2" scope="col">Faltas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let notaFalta of notasFaltasEstudante" [@chamado]="estado">
+                <td class="col-sm-4 col-md-4 col-lg-8 text-left">{{ notaFalta.disciplina}}</td>
+                <td *ngIf="compararValor(notaFalta.nota)=='recuperacao'" style="background-color:#DC3545"
+                  class="col-sm-4 col-md-4 col-lg-2" [@chamado]="estado">
+                  {{ notaFalta.nota }}</td>
+                <td *ngIf="compararValor(notaFalta.nota)=='atencao'" style="background-color:#FFC107"
+                  class="col-sm-4 col-md-4 col-lg-2" [@chamado]="estado">
+                  {{ notaFalta.nota }}</td>
+                <td *ngIf="compararValor(notaFalta.nota)=='aprovado'" style="background-color:#28A745"
+                  class="col-sm-4 col-md-4 col-lg-2" [@chamado]="estado">
+                  {{ notaFalta.nota }}</td>
+                <td class="mt-2 col-sm-12 col-md-4 col-lg-2">{{ notaFalta.falta }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

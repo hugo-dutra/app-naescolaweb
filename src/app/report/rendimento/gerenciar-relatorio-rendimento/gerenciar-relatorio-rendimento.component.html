@@ -1,0 +1,41 @@
+<!--##############################################################################################-->
+<div class="container-fluid container-card">
+  <div class="row">
+    <div class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card *ngIf="exibirComponente('grafico-resumo-periodo-letivo')" (click)="relatorioEstudante()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-line-chart text-primary"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Rendimento por período</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card *ngIf="exibirComponente('grafico-aproveitamento-professor-disciplina-periodo-letivo')"
+        (click)="RelatorioDisciplina()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-bar-chart text-success"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Rendimento por disciplina</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card *ngIf="exibirComponente('grafico-aproveitamento-disciplina-turma-periodo-letivo')"
+        (click)="RelatorioTurma()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-pie-chart text-warning"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Rendimento por turma</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+  </div>
+</div>
+<!--###############################################################################################-->

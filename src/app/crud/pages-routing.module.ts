@@ -12,7 +12,7 @@ const routes: Routes = [{
     //Modificado
     { path: 'dashboard', component: MenuAtalhoComponent, },
 
-    /*MEUS MÓDULOS*/
+    /*CRUDS*/
     { path: 'logar', component: LoginComponent },
     { path: 'gerenciar-alerta-ocorrencia', loadChildren: () => import('./alerta/alerta.module').then(m => m.AlertaModule), },
     { path: 'listar-area-conhecimento', loadChildren: () => import('./area-conhecimento/area-conhecimento.module').then(m => m.AreaConhecimentoModule), },
@@ -31,8 +31,14 @@ const routes: Routes = [{
     { path: 'listar-serie', loadChildren: () => import('./serie/serie.module').then(m => m.SerieModule), },
     { path: 'inserir-professor-disciplina', loadChildren: () => import('./professor-disciplina/professor-disciplina.module').then(m => m.ProfessorDisciplinaModule), },
     { path: 'listar-permissao-acesso', loadChildren: () => import('./permissao-acesso/permissao-acesso.module').then(m => m.PermissaoAcessoModule), },
+    { path: 'listar-periodo-letivo', loadChildren: () => import('./periodo-letivo/periodo-letivo.module').then(m => m.PeriodoLetivoModule), },
     { path: 'listar-estudante', loadChildren: () => import('./estudante/estudante.module').then(m => m.EstudanteModule), },
+
+
+    /* REPORTS */
+    { path: 'gerenciar-relatorio-rendimento', loadChildren: () => import('../report/rendimento/rendimento.module').then(m => m.RendimentoModule), },
     /**************/
+
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
     { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },

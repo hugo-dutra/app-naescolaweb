@@ -1,3 +1,93 @@
-<p>
-  excluir-estudante works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-apple text-light text-center"> Estudante</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light form-control btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <p class="text-danger col-lg-12 col-sm-12 mt-2"><b>Deseja excluir esse registro !?</b></p>
+      </div>
+
+      <form [formGroup]="formulario" (ngSubmit)="excluir()">
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control">
+          <input type="text" placeholder="Nome..." name="nome" class="form-control mt-2 col-sm-12 col-lg-7  "
+            maxlength="250" disabled [value]="estudante.nome">
+          <input type="text" placeholder="Matricula..." name="matricula" class="form-control mt-2 col-sm-12 col-lg-4  "
+            readonly [value]="estudante.matricula">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="text" placeholder="Pai..." name="pai" class="form-control mt-2 col-sm-12 col-lg-5  "
+            maxlength="250" readonly [value]="estudante.pai">
+          <input type="text" placeholder="Mãe..." name="mae" class="form-control mt-2 col-sm-12 col-lg-6  "
+            maxlength="250" readonly [value]="estudante.mae">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="text" placeholder="Responsável..." name="responsavel"
+            class="form-control mt-2 col-sm-12 col-lg-5  " maxlength="250" readonly [value]="estudante.responsavel">
+          <input type="email" placeholder="Email..." name="email" class="form-control mt-2 col-sm-12 col-lg-6  "
+            maxlength="250" readonly [value]="estudante.email">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="text" placeholder="cep..." name="cep" class="form-control mt-2 col-sm-12 col-lg-2" maxlength="20"
+            readonly [value]="estudante.cep">
+          <div class="mt-2 col-sm-12 col-lg-1"></div>
+          <input type="text" placeholder="Endereço..." name="endereco" class="form-control mt-2 col-sm-12 col-lg-8"
+            maxlength="20" readonly [value]="estudante.endereco">
+        </div>
+        <div class="row m-3 form-group">
+          <select name="tipo_sanguineo" class="form-control mt-2 col-sm-12 col-lg-4" disabled>
+            <option value="" disabled>Selecione um tipo sanguíneo</option>
+            <option *ngFor="let tipo_sanguineo of tipos_sanguineos"
+              [selected]="tipo_sanguineo === estudante.tipo_sanguineo ? true : false" value="{{ tipo_sanguineo }}">
+              {{ tipo_sanguineo }}</option>
+          </select>
+          <div class="mt-2 col-sm-12 col-lg-1"></div>
+          <input type="date" placeholder="Nascimento..." name="nascimento" class="form-control mt-2 col-sm-12 col-lg-4"
+            maxlength="150" readonly [value]="estudante.nascimento">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="checkbox" class="form-control checkbox mt-2 col-sm-12 col-lg-1 float-left permissao"
+            [id]="envio_msg_status" name="envio_msg_status" [checked]="msg_status" disabled="disabled">
+          <label class="mt-2 col-sm-12 col-lg-2 text-left text-dark">
+            Envio de mensagens
+          </label>
+
+          <input type="checkbox" class="form-control checkbox mt-2 col-sm-12 col-lg-1 float-left permissao"
+            [id]="status_ativo" name="status_ativo" [checked]="ativo" disabled="disabled">
+          <label class="mt-2 col-sm-12 col-lg-2 text-left text-dark">
+            Estudante ativo
+          </label>
+        </div>
+        <div class="row m-3 form-group">
+          <div class="mt-2 col-sm-12 col-lg-10"></div>
+          <button type="submit" class="btn btn-danger form-control mt-2 col-sm-12 col-lg-2">Excluir</button>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Excluir estudante</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Todos os campos devem ser preenchidos</div>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -49,8 +49,8 @@ export class GerenciarAlertaComponent implements OnInit {
   }
 
   public exibirComponente(rota: string): boolean {
-    //return Utils.exibirComponente(rota);
-    return true;
+    return Utils.exibirComponente(rota);
+    //return true;
   }
 
 }
