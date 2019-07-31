@@ -1,0 +1,128 @@
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-apple text-light text-center"> Estudante</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light text-light form-control btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="formulario" (ngSubmit)="alterar()">
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control">
+          <input type="text" placeholder="Nome..." name="nome" class="form-control col-7 mr-3" maxlength="250" required
+            (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)" [value]="estudante.nome">
+          <input type="text" placeholder="Matricula..." name="matricula" class="form-control col-4 mr-3" maxlength="50"
+            (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)" [value]="estudante.matricula">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="text" placeholder="Pai..." name="pai" class="form-control col-5 mr-3" maxlength="250"
+            (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)" [value]="estudante.pai">
+          <input type="text" placeholder="Mãe..." name="mae" class="form-control col-6 mr-3" maxlength="250"
+            (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)" [value]="estudante.mae">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="text" placeholder="Responsável..." name="responsavel" class="form-control col-5 mr-3"
+            maxlength="250" (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)"
+            [value]="estudante.responsavel">
+          <input type="email" placeholder="Email..." name="email" class="form-control col-6 mr-3" maxlength="250"
+            (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)" [value]="estudante.email">
+        </div>
+        <div class="row m-3 form-group">
+          <select name="tipo_sanguineo" class="form-control col-1 mr-3" (change)="modificarInputs($event)">
+            <option value="" disabled>Selecione um tipo sanguíneo</option>
+            <option *ngFor="let tipo_sanguineo of tipos_sanguineos"
+              [selected]="tipo_sanguineo === estudante.tipo_sanguineo ? true : false" value="{{ tipo_sanguineo }}">
+              {{ tipo_sanguineo }}</option>
+          </select>
+          <input type="date" placeholder="Nascimento..." name="nascimento" class="form-control col-4 mr-3"
+            maxlength="150" (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)"
+            [value]="estudante.nascimento">
+          <input type="text" placeholder="cep..." name="cep" class="form-control col-2" maxlength="20"
+            (input)="modificarInputs($event)" (focusout)="modificarInputs($event)" (focusout)="verificarCEP($event)"
+            [value]="estudante.cep">
+        </div>
+        <div class="row m-3 mb-0 form-group">
+          <input type="text" placeholder="Endereço..." name="endereco" class="form-control col-8" maxlength="150"
+            (input)="modificarInputs($event)" (outfocus)="modificarInputs($event)" [value]="estudante.endereco">
+          <div class="col-4">
+            <label for="files" class="btn btn-warning col-12">Selecionar foto</label>
+            <input type="file" accept=".jpg,.jpeg" (change)="enviarArquivo($event)" id="files"
+              style="visibility: hidden;" class="form-control col-1" formControlName="foto">
+          </div>
+        </div>
+        <div class="row ml-3 form-group">
+          <input type="checkbox" class="form-control checkbox float-left permissao" [id]="envio_msg_status"
+            name="envio_msg_status" [checked]="msg_status" (change)="modificarChecks($event)">
+          <label class="col-3 text-left">
+            <h4>Envio de mensagens</h4>
+          </label>
+          <input type="checkbox" class="form-control checkbox float-left permissao" [id]="status_ativo"
+            name="status_ativo" [checked]="ativo" (change)="modificarChecks($event)">
+          <label class="col-2 text-left">
+            <h4>Estudante ativo</h4>
+          </label>
+        </div>
+
+        <div class="row form-group">
+          <div class="input-group ml-3 col-4">
+            <div class="input-group-prepend">
+              <button class="btn btn-success" type="button" id="button-addon" (click)="adicionarTelefone($event)"><i
+                  class="fa fa-lg fa-plus"></i> Telefone</button>
+            </div>
+            <input type="text" [value]="str_telefone" class="form-control" placeholder=""
+              (input)="gravarTelefone($event)" (keydown)="adicionarTelefoneEnter($event)"
+              aria-label="Example text with button addon" aria-describedby="button-addon">
+          </div>
+        </div>
+        <div class="row form-group ml-3">
+          <div class="col-4 telefones">
+            <div class="row mb-1 bg-dark text-light" *ngFor="let telefone of str_telefones"
+              (click)="excluirTelefone($event)">
+              <div class="col-10 text-left">{{ telefone }}</div>
+              <div class="col-2 text-left"><button class="btn btn-sm btn-danger form-control"><i
+                    class="fa fa-sm fa-close"></i></button></div>
+            </div>
+          </div>
+          <div class="col-6"></div>
+          <div class="col-1 bg-dark m-2 p-2 rounded" *ngIf="estudante.foto !== undefined">
+            <img [src]="estudante.foto" class="rounded-circle" width="80" height="80" alt="">
+          </div>
+        </div>
+        <div class="row form-group mt-0 ml-3">
+          <label for="telefones" class="text-muted">*clique no botao vermelho para excluir um telefone</label>
+        </div>
+        <div class="row m-3 form-group">
+          <div class="col-10"></div>
+          <button type="submit" class="btn btn-primary form-control col-2">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+
+
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Alterar estudante</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Todos os campos devem ser preenchidos</div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

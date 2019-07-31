@@ -1,0 +1,181 @@
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row mb-2 text-center">
+        <div class="col-lg-12 col-sm-12"><i class="fa fa-lg fa-apple text-light text-center"> Estudantes</i></div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-sm-12 mt-2">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control form-control-sm" placeholder="nome, email ou responsável..."
+              (keydown)="filtrarEnter($event)" (input)="gravarValorFiltro($event.target.value)"
+              aria-label="buscar por nome" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-dark border-light fa fa-search form-control-sm" (click)="filtrar()"
+                type="button">
+                Procurar</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-12 mt-2"></div>
+        <div class="col-lg-3 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-estudante')"
+            class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
+            (click)="inserir()">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <select class="form-control col-lg-3 col-sm-12 mb-2" (change)="listarQuantidade($event)">
+          <option [value]="5" selected>Exibir {{ saltarQuantidade }} registros por vez</option>
+          <option [value]="5">5</option>
+          <option [value]="10">10</option>
+          <option [value]="15">15</option>
+          <option [value]="20">20</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+          <option [value]="100">100</option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="estudantes col-lg-12 col-sm-12 mt-2">
+          <table class="table table-striped table-hover" [@chamado]="estado">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span>&nbsp; Foto</span></th>
+                <th class="col-sm-12 col-lg-3 text-center" scope="col"><span (click)="ordenarColuna('nome')">Nome</span>
+                </th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span
+                    (click)="ordenarColuna('matricula')">matricula</span>
+                </th>
+                <th class="col-sm-12 col-lg-3 text-center" scope="col"><span
+                    (click)="ordenarColuna('email')">Email</span>
+                </th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span
+                    (click)="ordenarColuna('responsavel')">Respons.</span>
+                </th>
+                <th *ngIf="exibirComponente('alterar-estudante')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                  Alterar</th>
+                <th *ngIf="exibirComponente('excluir-estudante')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                  Excluir</th>
+                <th *ngIf="exibirComponente('detalhar-estudante')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                  Detalhar
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="estudantes !== null">
+              <tr class="row" *ngFor="let estudante of estudantes" [@chamado]="estado">
+                <td class="col-sm-12 col-lg-1 text-center">
+
+                  <!-- Botão -->
+                  <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.id"><img
+                      class="img rounded-circle ml-2" width="60" height="60"
+                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      alt="foto do estudante"></a>
+
+                  <!-- Modal -->
+                  <div class="modal fade large" id="modelEstudante{{ estudante.id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="modelLabelEstudante" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header bg-warning text-dark">
+                          <div class="col-sm-12 col-lg-9">
+                            <h6 class="modal-title text-center" id="modelLabelEstudante"> <i
+                                class="fa fa-lg fa-photo text-right"></i>
+                              {{ estudante.nome }}</h6>
+                          </div>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-light">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-justify">
+                          <div
+                            *ngIf="estudante.foto != '' && estudante.foto != null && estudante.foto != undefined; else semfoto"
+                            class="row">
+                            <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                              class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
+                          </div>
+                          <ng-template #semfoto>
+                            <div class="col-sm-12 col-lg-9">
+                              <img
+                                [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                                class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
+                            </div>
+                          </ng-template>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-sm-12 col-lg-3 text-center">{{ estudante.nome }}</td>
+                <td class="col-sm-12 col-lg-1 text-center">{{ estudante.matricula }}</td>
+                <td class="col-sm-12 col-lg-3 text-center">{{ estudante.email }}</td>
+                <td class="col-sm-12 col-lg-1 text-col-sm-12 col-lg-">{{ estudante.responsavel }}</td>
+                <td *ngIf="exibirComponente('alterar-estudante')" class="col-sm-12 col-lg-1 text-center"><button
+                    class="btn btn-warning btn-sm" value="{{ estudante }}" (click)="alterar(estudante)">Alterar</button>
+                </td>
+                <td *ngIf="exibirComponente('excluir-estudante')" class="col-sm-12 col-lg-1 text-center"><button
+                    class="btn btn-danger btn-sm" value="{{ estudante }}" (click)="excluir(estudante)">Excluir</button>
+                </td>
+                <td *ngIf="exibirComponente('detalhar-estudante')" class="col-sm-12 col-lg-1 text-center"><button
+                    class="btn btn-primary btn-sm" value="{{ estudante }}"
+                    (click)="detalhar(estudante)">Detalhar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <nav aria-label="..." class="float-right">
+        <ul class="pagination">
+          <li class="page-item" *ngIf="navegacaoInicio === undefined || navegacaoInicio === true">
+            <a class="page-link fa fa-arrow-left text-danger" (click)="navegarAnterior()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoInicio === false">
+            <a class="page-link fa fa-arrow-left" (click)="navegarAnterior()"></a>
+          </li>
+
+          <li class="page-item" *ngIf="navegacaoFim === true">
+            <a class="page-link fa fa-arrow-right text-danger" (click)="navegarProximo()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoFim === false || navegacaoFim === undefined">
+            <a class="page-link fa fa-arrow-right" (click)="navegarProximo()"></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-4 text-center">
+      <i *ngIf="feedbackUsuario === undefined && (navegacaoFim === false || navegacaoFim === undefined)"
+        class="fa fa-lg fa-info-circle text-light" [@chamado]="estado"> Listagem de estudantes - Exibindo
+        {{ offsetRegistros+1 }} ao {{ offsetRegistros +
+          saltarQuantidade
+          > totalRegistros ? totalRegistros : offsetRegistros + saltarQuantidade }} de {{ totalRegistros }}</i>
+      <i *ngIf="feedbackUsuario !== undefined" class="fa fa-lg fa-question-circle text-light" [@chamado]="estado">
+        Atualizando</i>
+      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-lg fa-info-circle text-light"
+        [@chamado]="estado">
+        Listagem de estudantes - Exibindo registros finais do total de {{ totalRegistros }}</i>
+    </div>
+  </div>
+</div>
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

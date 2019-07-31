@@ -1,0 +1,27 @@
+.bg-google {
+  background: #4885ed;
+}
+
+span {
+  cursor: pointer;
+}
+
+.turmas {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 45vh;
+}
+
+#loadingDiv {
+  position: fixed;
+  top: 45%;
+  left: 37%;
+  width: 30%;
+  height: 12%;
+  background-color: #d3d3e27c;
+  border: 2px solid #33333113;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  z-index: 10000000;
+}

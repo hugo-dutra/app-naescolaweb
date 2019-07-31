@@ -20,6 +20,7 @@ const routes: Routes = [{
     { path: 'listar-escola', loadChildren: () => import('./escola/escola.module').then(m => m.EscolaModule), },
     { path: 'listar-etapa-ensino', loadChildren: () => import('./etapa-ensino/etapa-ensino.module').then(m => m.EtapaEnsinoModule), },
     { path: 'listar-tipo-ocorrencia-disciplinar', loadChildren: () => import('./tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.module').then(m => m.TipoOcorrenciaDisciplinarModule), },
+    { path: 'listar-turma', loadChildren: () => import('./turma/turma.module').then(m => m.TurmaModule), },
     { path: 'listar-turno', loadChildren: () => import('./turno/turno.module').then(m => m.TurnoModule), },
     { path: 'listar-usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), },
     { path: 'inserir-usuario-escola', loadChildren: () => import('./usuario-escola/usuario-escola.module').then(m => m.UsuarioEscolaModule), },
@@ -28,9 +29,9 @@ const routes: Routes = [{
     { path: 'inserir-perfil-permissao', loadChildren: () => import('./perfil-permissao/perfil-permissao.module').then(m => m.PerfilPermissaoModule), },
     { path: 'listar-professor', loadChildren: () => import('./professor/professor.module').then(m => m.ProfessorModule), },
     { path: 'listar-serie', loadChildren: () => import('./serie/serie.module').then(m => m.SerieModule), },
-
     { path: 'inserir-professor-disciplina', loadChildren: () => import('./professor-disciplina/professor-disciplina.module').then(m => m.ProfessorDisciplinaModule), },
     { path: 'listar-permissao-acesso', loadChildren: () => import('./permissao-acesso/permissao-acesso.module').then(m => m.PermissaoAcessoModule), },
+    { path: 'listar-estudante', loadChildren: () => import('./estudante/estudante.module').then(m => m.EstudanteModule), },
     /**************/
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },

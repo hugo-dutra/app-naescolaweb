@@ -1,0 +1,110 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-10"></div>
+        <div class="col-2">
+          <button class="btn btn-sm btn-dark border-light form-control" (click)="listarEstudantes()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body detalhes">
+      <div class="row border-bottom m-2 mb-5">
+        <h4 class="text-dark">{{estudante.nome}}</h4>
+      </div>
+      <div class="row mt-4">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-5" *ngIf="exibirComponente('detalhar-estudante-informacao')"
+          (click)="informarDadosGerais()">
+          <div class="wrimagecard wrimagecard-topimage">
+            <a class="rounded-top rounded-right rounded-bottom rounded-left">
+              <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+                <i class="fa fa-lg fa-address-book text-secondary"></i>
+              </div>
+              <div class="wrimagecard-topimage_title text-warning text-center">
+                <b>Informações</b>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-rendimento')"
+          (click)="informarRendimento()">
+          <div class="wrimagecard wrimagecard-topimage">
+            <a class="rounded-top rounded-right rounded-bottom rounded-left">
+              <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+                <i class="fa fa-lg fa-diamond text-warning"></i>
+              </div>
+              <div class="wrimagecard-topimage_title text-warning text-center">
+                <b>Rendimento</b>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-disciplinar')"
+          (click)="informarOcorrenciasDisciplinares()">
+          <div class="wrimagecard wrimagecard-topimage">
+            <a class="rounded-top rounded-right rounded-bottom rounded-left">
+              <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+                <i class="fa fa-lg fa-exclamation-triangle text-danger"></i>
+              </div>
+              <div class="wrimagecard-topimage_title text-warning text-center">
+                <b>Ocorrencias disciplinares</b>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-entrada-saida')"
+          (click)="informarEntradasSaidas()">
+          <div class="wrimagecard wrimagecard-topimage">
+            <a class="rounded-top rounded-right rounded-bottom rounded-left">
+              <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+                <i class="fa fa-lg fa-eye text-success"></i>
+              </div>
+              <div class="wrimagecard-topimage_title text-warning text-center">
+                <b>Entradas e saídas</b>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-notificacao')"
+          (click)="informarStatusNotificacoes()">
+          <div class="wrimagecard wrimagecard-topimage">
+            <a class="rounded-top rounded-right rounded-bottom rounded-left">
+              <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+                <i class="fa fa-lg fa-telegram text-primary"></i>
+              </div>
+              <div class="wrimagecard-topimage_title text-warning text-center">
+                <b>Status de notificações</b>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-nota-observacao')"
+          (click)="informarNotasObservacoes()">
+          <div class="wrimagecard wrimagecard-topimage">
+            <a class="rounded-top rounded-right rounded-bottom rounded-left">
+              <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+                <i class="fa fa-lg fa-comments text-info"></i>
+              </div>
+              <div class="wrimagecard-topimage_title text-warning text-center">
+                <b>Notas e observações</b>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div *ngIf="exibirComponente('detalhar-estudante-saida-antecipada')" class="col-lg-4 col-md-6 col-sm-12"
+          (click)="informarSaidasAntecipadas()">
+          <div class="wrimagecard wrimagecard-topimage">
+            <a class="rounded-top rounded-right rounded-bottom rounded-left">
+              <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+                <i class="fa fa-lg fa-clock-o text-dark"></i>
+              </div>
+              <div class="wrimagecard-topimage_title text-warning text-center">
+                <b>Saídas antecipadas</b>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
