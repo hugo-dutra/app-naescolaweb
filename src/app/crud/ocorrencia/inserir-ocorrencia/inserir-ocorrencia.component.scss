@@ -1,0 +1,57 @@
+a {
+  color: black;
+}
+
+a:active {
+  color: white;
+  background-color: black;
+}
+
+.checkbox {
+  width: 25px;
+  height: 25px;
+}
+
+textarea {
+  height: 350px;
+}
+
+.table_ocorrencia_simples {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 48vh;
+}
+
+.table_ocorrencia_multipla {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 50vh;
+}
+
+.table_procurar_ocorrencia {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 50vh;
+}
+
+.detalhes {
+  overflow-x: scroll;
+  overflow-x: hidden;
+  height: 300px;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.4);
+  border: none;
+}
+
+#loadingDiv {
+  position: fixed;
+  top: 45%;
+  left: 37%;
+  width: 30%;
+  height: 12%;
+  background-color: #d3d3e27c;
+  border: 2px solid #33333113;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  z-index: 10000000;
+}

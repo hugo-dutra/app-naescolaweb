@@ -1,3 +1,105 @@
-<p>
-  detalhar-estudante-notificacao works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row text-center">
+        <div class="col-sm-12 col-md-4 col-lg-11">
+          <span><i class="fa fa-lg fa-telegram text-light"> Informações sobre entrega de notificações</i></span>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-1">
+          <button class="btn btn-sm btn-dark border-light form-control text-light"
+            (click)="detalharEstudante()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="col-sm-12 col-md-4 col-lg-12 comunicados">
+        <table class="table table-striped table-hover" [@chamado]="estado">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-md-4 col-lg-3 text-center" scope="col" (click)="ordenarColuna('data_registro')">
+                <span>
+                  Data</span>
+              </th>
+              <th class="col-sm-12 col-md-4 col-lg-2 text-center" scope="col" (click)="ordenarColuna('hora_registro')">
+                <span>Hora</span></th>
+              <th class="col-sm-12 col-md-4 col-lg-3 text-center" scope="col" (click)="ordenarColuna('tipo')">
+                <span>Tipo</span>
+              </th>
+              <th class="col-sm-12 col-md-4 col-lg-2 text-center" scope="col" (click)="ordenarColuna('detalhe')">
+                <span>Detalhe</span></th>
+              <th class="col-sm-12 col-md-4 col-lg-2 text-center" scope="col" (click)="ordenarColuna('status_entrega')">
+                <span>Status</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="ocorrencias !== null">
+            <tr class="row" *ngFor="let notificacao of notificacoesDiversas" [@chamado]="estado">
+              <td class="col-sm-12 col-md-4 col-lg-3 text-center">{{ notificacao.data_registro }}</td>
+              <td class="col-sm-12 col-md-4 col-lg-2 text-center">{{ notificacao.hora_registro }}</td>
+              <td class="col-sm-12 col-md-4 col-lg-3 text-center">{{ notificacao.tipo }}</td>
+              <td *ngIf="notificacao.tipo == 'comunicado'" class="col-sm-12 col-md-4 col-lg-2 text-center"> <button
+                  type="button" class="btn btn-sm btn-warning" placement="left" container="body"
+                  triggers="mouseenter:mouseleave" [ngbPopover]="popContentConsulta" [popoverTitle]="popTitleConsulta">
+                  <i class="fa fa-lg fa-question"></i></button></td>
+              <ng-template #popContentConsulta>
+                <div [@chamado]="estado">
+                  <div class="card">
+                    <div class="card-header">Detalhe da ocorrência</div>
+                    <div class="card-body">
+                      <p class="text-left">
+                        {{ notificacao.detalhe }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #popTitleConsulta></ng-template>
+              <td *ngIf="notificacao.tipo == 'ocorrencia'" class="col-sm-12 col-md-4 col-lg-2 text-center"> <button
+                  type="button" class="btn btn-sm btn-danger" placement="left" container="body"
+                  triggers="mouseenter:mouseleave" [ngbPopover]="popContentConsulta" [popoverTitle]="popTitleConsulta">
+                  <i class="fa fa-lg fa-question"></i></button></td>
+              <ng-template #popContentConsulta>
+                <div [@chamado]="estado">
+                  <div class="card">
+                    <div class="card-header">Detalhe da ocorrência</div>
+                    <div class="card-body">
+                      <p class="text-left">
+                        {{ notificacao.detalhe }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #popTitleConsulta></ng-template>
+              <td *ngIf="notificacao.tipo == 'frequencia de portaria'" class="col-sm-12 col-md-4 col-lg-2 text-center">
+                <strong>{{ notificacao.detalhe }}</strong>
+              </td>
+              <td *ngIf="notificacao.status_entrega=='Enviada'" class="col-sm-12 col-md-4 col-lg-2 text-center bg-dark">
+                <img src="../../../../assets/images/notificacao_enviada.png" alt="" title="Mensagem enviada"></td>
+              <td *ngIf="notificacao.status_entrega=='Recebida'"
+                class="col-sm-12 col-md-4 col-lg-2 text-center bg-dark"><img
+                  src="../../../../assets/images/notificacao_recebida.png" alt="" title="Mensagem recebida"></td>
+              <td *ngIf="notificacao.status_entrega=='Lida'" class="col-sm-12 col-md-4 col-lg-2 text-center bg-dark">
+                <img src="../../../../assets/images/notificacao_lida_2.png" alt="" title="Mensagem Lida"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

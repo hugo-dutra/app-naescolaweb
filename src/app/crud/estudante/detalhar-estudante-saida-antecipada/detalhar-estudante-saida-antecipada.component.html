@@ -1,3 +1,57 @@
-<p>
-  detalhar-estudante-saida-antecipada works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row text-center">
+        <div class="col-sm-12 col-lg-11">
+          <span><i class="fa fa-lg fa-clock-o text-light"> Saídas antecipadas</i></span>
+        </div>
+        <div class="col-sm-12 col-lg-1">
+          <button class="btn btn-sm btn-dark border-light form-control text-light"
+            (click)="detalharEstudante()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="saidas_antecipadas">
+        <table class="table table-striped table-hover" [@chamado]="estado">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-lg-2 text-center" scope="col"><span (click)="ordenarColuna('data')">Data</span>
+              </th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col"><span (click)="ordenarColuna('hora')">Hora</span>
+              </th>
+              <th class="col-sm-12 col-lg-6 text-center" scope="col"><span
+                  (click)="ordenarColuna('motivo')">Motivo</span></th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col"><span
+                  (click)="ordenarColuna('usuario_responsavel')">Responsável
+                  pela liberação</span></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="saidaAntecipadaEventual !== null">
+            <tr class="row" *ngFor="let saidaAntecipadaEventual of saidasAntecipadasEventuais">
+              <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.data }}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.hora }}</td>
+              <td class="col-sm-12 col-lg-6 text-center">{{ saidaAntecipadaEventual.motivo }}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.usuario_responsavel }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

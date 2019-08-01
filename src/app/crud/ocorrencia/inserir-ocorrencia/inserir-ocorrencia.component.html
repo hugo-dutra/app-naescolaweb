@@ -1,0 +1,360 @@
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item col-sm-4 col-md-4 col-lg-4">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#simples" role="tab" aria-controls="home"
+      aria-selected="true">Ocorrência simples</a>
+  </li>
+  <li class="nav-item col-sm-4 col-md-4 col-lg-4">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#multipla" role="tab" aria-controls="profile"
+      aria-selected="false">Ocorrência multipla</a>
+  </li>
+  <li class="nav-item col-sm-4 col-md-4 col-lg-4">
+    <a class="nav-link" id="messages-tab" data-toggle="tab" href="#consulta" role="tab" aria-controls="messages"
+      aria-selected="false">Consultar ocorrências</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <!-- Ocorrência simples -->
+  <div class="tab-pane active" id="simples" role="tabpanel" aria-labelledby="home-tab">
+    <div class="container-fluid">
+      <div class="card text-center">
+        <div class="card-header bg-dark">
+          <div class="row">
+            <div class="col-lg-10 col-sm-10 text-center mt-2">
+              <i class="fa fa-lg fa-warning text-light text-center"> Ocorrência simples</i>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-sm-12 col-lg-12">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <button class="btn btn-primary" type="button" id="btn-pesquisar" (click)="filtrar()"><i
+                      class="fa fa-lg fa-search">
+                      Pesquisar</i></button>
+                </div>
+                <input type="text" id="input_consulta" class="form-control" (keydown)="filtrarEnter($event)"
+                  (input)="gravarNome($event)" placeholder="Informe o nome..." aria-label="Nome do estudante"
+                  aria-describedat="btn-pesquisar">
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-sm-12 col-lg-9">
+              <div class="table_ocorrencia_simples">
+                <table class="table table-striped table-hover" [@chamado]="estado">
+                  <thead class="thead-light">
+                    <tr class="row">
+                      <th class="col-sm-12 col-lg-1 text-left" scope="col"></th>
+                      <th class="col-sm-12 col-lg-1 text-left" scope="col">Foto</th>
+                      <th class="col-sm-12 col-lg-3 text-left" scope="col">Nome</th>
+                      <th class="col-sm-12 col-lg-2 text-left" scope="col">matricula</th>
+                      <th class="col-sm-12 col-lg-2 text-left" scope="col">Email</th>
+                      <th class="col-sm-12 col-lg-2 text-left" scope="col">Responsável</th>
+                      <th class="col-sm-12 col-lg-1 text-center" scope="col">Obs.</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="estudantes !== null">
+                    <tr class="row" *ngFor="let estudante of estudantes">
+                      <td class="col-sm-12 col-lg-1"><input type="checkbox"
+                          class="form-control form-control-sm checkbox text-center ml-2"
+                          [value]="estudante.id+'|'+estudante.matricula+'|'+estudante.nome"
+                          (click)="gravaStatusEstudantes($event)"></td>
+
+                      <td class="col-sm-12 col-lg-1 text-left  align-self-center">
+                        <img class="img rounded-circle"
+                          [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                          alt="foto do estudante" style="width: 60px; height: 60px;">
+                      </td>
+
+                      <td class="col-sm-12 col-lg-3 text-left">{{ estudante.nome }}</td>
+                      <td class="col-sm-12 col-lg-2 text-left">{{ estudante.matricula }}</td>
+                      <td class="col-sm-12 col-lg-2 text-left">{{ estudante.email }}</td>
+                      <td class="col-sm-12 col-lg-2 text-left">{{ estudante.responsavel }}</td>
+                      <td class="col-sm-12 col-lg-1 text-center">
+                        <ng-template #popContent>
+                          <div class="detalhes">
+                            <div class="card">
+                              <div class="card-header font-weight-bold">Ocorrências: {{ estudante.nome }}</div>
+                              <div class="card-body">
+                                <table class="table table-striped table-hover" [@chamado]="estado">
+                                  <thead class="thead-light">
+                                    <tr class="row">
+                                      <th class="col-sm-12 col-lg-6 text-left" scope="col">Ocorrencia</th>
+                                      <th class="col-sm-12 col-lg-6 text-left" scope="col">Data</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody *ngIf="arrayOfResumoOcorrencias !== null">
+                                    <div *ngFor="let resumos of arrayOfResumoOcorrencias">
+                                      <tr class="row" *ngFor="let resumo of resumos">
+                                        <div *ngIf="resumo.id == estudante.id">
+                                          <td class="col-sm-12 col-lg-6 text-left">{{ resumo.tipo }}</td>
+                                          <td class="col-sm-12 col-lg-6 text-left">
+                                            {{ resumo.data_hora | date:"dd/MM/yyyy HH:mm"}}
+                                          </td>
+                                        </div>
+                                      </tr>
+                                    </div>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="card-footer">
+                                <div class="row">
+                                  <div class="col-sm-12 col-lg-6"><button class="btn btn-sm btn-warning text-white"
+                                      (click)="montarMensagemComunicado($event)"
+                                      [value]="estudante.id">Comunicar</button></div>
+                                  <div class="col-sm-12 col-lg-6"><button class="btn btn-sm btn-danger text-white fa"
+                                      (click)="montarMensagemSuspender($event)"
+                                      [value]="estudante.id">Suspender</button></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <ng-template #popTitle></ng-template>
+                        <button *ngIf="estudante.ocorrencia > 0" type="button" class="btn btn-sm btn-danger"
+                          [ngbPopover]="popContent" placement="right" container="body" [popoverTitle]="popTitle">
+                          {{ estudante.ocorrencia }}
+                        </button>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-sm-12 col-lg-2 mt-2">
+              <div class="row">
+                <select name="tipoOcorrencia" id="input_tipo_ocorrencia" class="form-control col-sm-12 col-lg-12"
+                  (change)="gravarTipoOcorrencia($event)">
+                  <option disabled value="">Tipo de ocorrência</option>
+                  <option *ngFor="let tipoOcorrencia of tiposOcorrenciasDisciplinares"
+                    [value]="tipoOcorrencia.id+'|'+tipoOcorrencia.nome">
+                    {{ tipoOcorrencia.nome }}</option>
+                </select>
+              </div>
+              <div class="row">
+                <textarea maxlength="300" id="input_descricao" spellcheck="true" class="form-control"
+                  (input)="gravaDescricao($event)"
+                  placeholder="Descreva os detalhes da ocorrência disciplinar neste campo. Máximo de 300 caracteres."
+                  class="col-sm-12 col-lg-12"></textarea>
+              </div>
+              <div class="row">
+                <label class="text-muted"> {{ caracteresDisponiveis }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-sm-12 text-center mt-2">
+              <button class="btn btn-primary text-light btn-sm form-control"
+                (click)="montarMensagensNovasOcorrencias()">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ocorrência Multipla -->
+  <div class="tab-pane fade" id="multipla" role="tabpanel" aria-labelledby="profile-tab">
+    <div class="container-fluid">
+      <div class="card text-center">
+        <div class="card-header bg-dark">
+          <div class="row">
+            <div class="col-sm-12 col-lg-12">
+              <div class="row">
+                <div class="col-sm-12 col-lg-12 text-center">
+                  <i class="fa fa-lg fa-warning text-light text-center"> Ocorrência multipla</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form>
+          <div class="card-body">
+            <div class="row">
+              <select name="turmas" id="input_turmas" class="form-control col-sm-12 col-lg-3"
+                (change)="selecionarEstudantePorTurma($event)">
+                <option disabled value="">Selecione uma turma</option>
+                <option *ngFor="let turma of turmas" [value]="turma.id">{{ turma.serie }} {{ turma.nome }} - {{
+                  turma.etapa }} - {{ turma.turno }}</option>
+              </select>
+              <div class="col-sm-12 col-lg-1"></div>
+              <div class="col-sm-12 col-lg-6">
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-sm-12 col-lg-8">
+                <div class="table_ocorrencia_multipla">
+                  <table class="table table-striped table-hover" [@chamado]="estado">
+                    <thead class="thead-light">
+                      <tr class="row">
+                        <th class="col-sm-12 col-lg-1 text-left" scope="col"><input type="checkbox"
+                            class="form-control form-control-sm checkbox checkboxTurma ml-2" name="selecionarTodos"
+                            id="selecionarTodos" (click)="selecionarTodos($event)"></th>
+                        <th class="col-sm-12 col-lg-2 text-left" scope="col">Foto</th>
+                        <th class="col-sm-12 col-lg-7 text-left" scope="col">Nome</th>
+                        <th class="col-sm-12 col-lg-2 text-left" scope="col">matricula</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngIf="estudantes !== null">
+                      <tr class="row" *ngFor="let estudante of estudantesTurma">
+                        <td class="col-sm-12 col-lg-1 text-left"><input type="checkbox"
+                            class="form-control checkbox form-control-sm ml-2" [name]="estudante.id"
+                            [value]="estudante.id+'|'+estudante.matricula+'|'+estudante.nome"
+                            (change)="gravaStatusEstudantesMultiplo($event)"></td>
+
+                        <td class="col-sm-12 col-lg-2 text-left  align-self-center">
+                          <img class="img rounded-circle"
+                            [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                            alt="foto do estudante" style="width: 60px; height: 60px;">
+                        </td>
+                        <td class="col-sm-12 col-lg-7 text-left">{{ estudante.nome }}</td>
+                        <td class="col-sm-12 col-lg-2 text-left">{{ estudante.matricula }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-sm-12 col-lg-3 mt-2">
+                <div class="row">
+                  <select name="tipoOcorrencia" id="input_tipo_ocorrencia_multipla"
+                    class="form-control col-sm-12 col-lg-12" (change)="gravarTipoOcorrenciaMultiplo($event)">
+                    <option disabled value="">Selecione o tipo de ocorrência</option>
+                    <option *ngFor="let tipoOcorrencia of tiposOcorrenciasDisciplinares"
+                      [value]="tipoOcorrencia.id+'|'+tipoOcorrencia.nome">
+                      {{ tipoOcorrencia.nome }}</option>
+                  </select>
+                </div>
+                <div class="row">
+                  <textarea maxlength="300" id="input_descricao_multipla" spellcheck="true" class="form-control"
+                    (input)="gravaDescricaoMultiplo($event)"
+                    placeholder="Descreva os detalhes da ocorrência disciplinar neste campo. Máximo de 300 caracteres."
+                    class="col-sm-12 col-lg-12"></textarea>
+                </div>
+                <div class="row">
+                  <label class="text-muted"> {{ caracteresDisponiveis }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="row mt-2">
+          <div class="col-lg-12 col-sm-12">
+            <button class="btn btn-primary text-light btn-sm form-control"
+              (click)="montarMensagensNovasOcorrenciasMultiplas()">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Consultar informações disciplinares -->
+  <div class="tab-pane fade" id="consulta" role="tabpanel" aria-labelledby="messages-tab">
+    <div class="container-fluid">
+      <div class="card text-center">
+        <div class="card-header bg-dark">
+          <div class="row">
+            <div class="col-sm-12 col-lg-12">
+              <div class="row">
+                <div class="col-sm-12 col-lg-12 text-center">
+                  <i class="fa fa-lg fa-warning text-light text-center"> Consultar ocorrências</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <div class="row">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <button class="btn btn-primary" type="button" id="btn-pesquisar-ocorrencia"
+                    (click)="pesquisarOcorrencia()"><i class="fa fa-lg fa-search">
+                      Procurar ocorrência</i></button>
+                </div>
+                <input type="text" id="input_filtro" class="form-control" (keydown)="filtrarOcorrenciaEnter($event)"
+                  (input)="gravarNomeOcorrencia($event)" placeholder="Informe o nome..." aria-label="Nome do estudante"
+                  aria-describedat="btn-pesquisar">
+              </div>
+            </div>
+            <div class="col-sm-12 col-lg-12 table_procurar_ocorrencia">
+              <table class="table table-striped table-hover" [@chamado]="estado">
+                <thead class="thead-light">
+                  <tr class="row">
+                    <th class="col-sm-12 col-lg-1 text-left" scope="col">Foto</th>
+                    <th class="col-sm-12 col-lg-3 text-left" scope="col">Nome</th>
+                    <th class="col-sm-12 col-lg-1 text-left" scope="col">Série</th>
+                    <th class="col-sm-12 col-lg-1 text-left" scope="col">Etapa</th>
+                    <th class="col-sm-12 col-lg-1 text-left" scope="col">Turma</th>
+                    <th class="col-sm-12 col-lg-1 text-left" scope="col">Turno</th>
+                    <th class="col-sm-12 col-lg-1 text-left" scope="col">Tipo</th>
+                    <th class="col-sm-12 col-lg-2 text-left" scope="col">Data e Hora</th>
+                    <th class="col-sm-12 col-lg-1 text-center" scope="col">Detalhes</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="ocorrencias !== null">
+                  <tr class="row" *ngFor="let ocorrencia of ocorrencias">
+                    <td class="col-sm-12 col-lg-1 text-left align-self-center">
+                      <img class="img rounded-circle"
+                        [src]="ocorrencia.foto !== undefined && ocorrencia.foto || 'assets/images/noavatar.jpg'"
+                        alt="foto do estudante" style="width: 60px; height: 60px;" [id]="'img_'+ocorrencia.nome">
+                    </td>
+                    <td class="col-sm-12 col-lg-3 text-left">{{ ocorrencia.nome }}</td>
+                    <td class="col-sm-12 col-lg-1 text-left">{{ ocorrencia.serie }}</td>
+                    <td class="col-sm-12 col-lg-1 text-left">{{ ocorrencia.etapa }}</td>
+                    <td class="col-sm-12 col-lg-1 text-left">{{ ocorrencia.turma }}</td>
+                    <td class="col-sm-12 col-lg-1 text-left">{{ ocorrencia.turno }}</td>
+                    <td class="col-sm-12 col-lg-1 text-left">{{ ocorrencia.tipo }}</td>
+                    <td class="col-sm-12 col-lg-2 text-left">{{ ocorrencia.data_hora | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="col-sm-12 col-lg-1 text-center"> <button type="button" class="btn btn-sm btn-danger"
+                        placement="left" container="body" triggers="mouseenter:mouseleave"
+                        [ngbPopover]="popContentConsulta" [popoverTitle]="popTitleConsulta">
+                        <i class="fa fa-lg fa-question"></i></button></td>
+                    <ng-template #popContentConsulta>
+                      <div [@chamado]="estado">
+                        <div class="card">
+                          <div class="card-header">Detalhe da ocorrência</div>
+                          <div class="card-body">
+                            <p class="text-justify">
+                              {{ ocorrencia.ocorrencia }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template #popTitleConsulta></ng-template>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2 mb-2">
+          <div class="col-lg-12 col-sm-12">
+            <button *ngIf="exibeBotaoImprimirOcorrenciasEstudante"
+              class="btn btn-sm btn-primary text-light form-control"
+              (click)="imprimirOcorrencias(ocorrencias)">Imprimir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

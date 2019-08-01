@@ -1,3 +1,86 @@
-<p>
-  detalhar-estudante-entrada-saida works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-sm-12 col-lg-11">
+          <div class="row">
+            <div class="col-sm-12 col-lg-12 text-center">
+              <i class="fa fa-lg fa-eye text-light text-center"> Histórico de entrada e saída</i>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-1">
+          <button class="btn btn-sm btn-dark border-light form-controllight"
+            (click)="detalharEstudante()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="entradas_saidas">
+        <table class="table table-striped table-hover" [@chamado]="estado">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-lg-2 text-center" scope="col"><span (click)="ordenarColuna('dia_letivo')">Dia
+                  Letivo</span>
+              </th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col"><span (click)="ordenarColuna('data_registro')">Data
+                  Registro</span></th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col"><span (click)="ordenarColuna('hora')">Hora
+                  Registro</span></th>
+              <th class="col-sm-12 col-lg-3 text-center" scope="col"><span
+                  (click)="ordenarColuna('tipo_movimentacao')">Movimentacao</span></th>
+              <th class="col-sm-12 col-lg-3 text-center" scope="col"><span
+                  (click)="ordenarColuna('portaria')">Portaria</span></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="historicoEntradasSaidas !== null">
+            <tr class="row" *ngFor="let historico of historicoEntradasSaidas" [@chamado]="estado">
+              <!--###-->
+              <td class="col-sm-12 col-lg-2 text-center">{{ historico.dia_letivo }}</td>
+              <!--###-->
+              <td *ngIf="historico.data_registro == '-'" class="col-sm-12 col-lg-2 text-center"><img
+                  src="../../../../assets/images/sem_registro_portaria.png" alt=""></td>
+              <td *ngIf="historico.data_registro != '-'" class="col-sm-12 col-lg-2 text-center">
+                {{ historico.data_registro }}</td>
+              <!--###-->
+              <td *ngIf="historico.data_registro == '-'" class="col-sm-12 col-lg-2 text-center"><img
+                  src="../../../../assets/images/sem_registro_portaria.png" alt=""></td>
+              <td *ngIf="historico.data_registro != '-'" class="col-sm-12 col-lg-2 text-center">{{ historico.hora }}
+              </td>
+              <!--###-->
+              <td *ngIf="historico.tipo_movimentacao == '-'" class="col-sm-12 col-lg-3 text-center"><img
+                  src="../../../../assets/images/sem_registro_portaria.png" alt=""></td>
+              <td *ngIf="historico.tipo_movimentacao == 'Entrada'" class="col-sm-12 col-lg-3 text-success text-center">
+                <strong>{{ historico.tipo_movimentacao }}</strong>
+              </td>
+              <td *ngIf="historico.tipo_movimentacao == 'Saída'" class="col-sm-12 col-lg-3 text-danger text-center">
+                <strong>{{ historico.tipo_movimentacao }}</strong>
+              </td>
+              <!--###-->
+              <td *ngIf="historico.data_registro == '-'" class="col-sm-12 col-lg-3 text-center"><img
+                  src="../../../../assets/images/sem_registro_portaria.png" alt=""></td>
+              <td *ngIf="historico.data_registro != '-'" class="col-sm-12 col-lg-3 text-center">{{ historico.portaria }}
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

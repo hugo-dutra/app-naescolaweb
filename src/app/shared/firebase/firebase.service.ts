@@ -18,30 +18,33 @@ import { RequestOptions } from 'http';
 export class FirebaseService {
   private firestore = firebase.firestore();
   //private sett = { timestampsInSnapshots: true };
-  private http: HttpClient;
-
-  constructor() {
+  constructor(private http: HttpClient) {
     //this.firestore.settings(this.sett);
   }
 
   //****************************************************************************/
   //******************************PUSH******************************************/
   public enviarPushFirebase(topico: string, titulo: string): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders()
-        .append('Content-type', 'application/json')
-        .append('Authorization', 'Key=AAAAH0kr4hA:APA91bGlwDwDSBHclBxLBA74s-GT3otyDdmmmGJpNgoxISElSsrnMq1TevXDea5hBrWRpRsK8JDFsB5Af10wWrkstMkCAqGh-tjGseeZcUjPSJU62JtyD9xNDtC52NzsClr-L5SkmFKE')
+    try {
+      const headers = {
+        headers: new HttpHeaders()
+          .append('Content-type', 'application/json')
+          .append('Authorization', 'Key=AAAAH0kr4hA:APA91bGlwDwDSBHclBxLBA74s-GT3otyDdmmmGJpNgoxISElSsrnMq1TevXDea5hBrWRpRsK8JDFsB5Af10wWrkstMkCAqGh-tjGseeZcUjPSJU62JtyD9xNDtC52NzsClr-L5SkmFKE')
+      }
+
+      var message = {
+        to: "/topics/" + topico,
+        notification: {
+          title: "NaEscola",
+          body: titulo,
+        },
+        TimeToLive: 2400000
+      };
+      return this.http.post("https://fcm.googleapis.com/fcm/send", message, headers);
+    } catch (error) {
+      console.log(error);
     }
 
-    var message = {
-      to: "/topics/" + topico,
-      notification: {
-        title: "NaEscola",
-        body: titulo,
-      },
-      TimeToLive: 2400000
-    };
-    return this.http.post("https://fcm.googleapis.com/fcm/send", message, headers);
   }
 
 

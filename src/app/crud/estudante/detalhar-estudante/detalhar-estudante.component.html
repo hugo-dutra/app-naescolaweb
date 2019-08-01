@@ -12,8 +12,9 @@
       <div class="row border-bottom m-2 mb-5">
         <h4 class="text-dark">{{estudante.nome}}</h4>
       </div>
-      <div class="row mt-4">
-        <div class="col-lg-4 col-md-6 col-sm-12 mb-5" *ngIf="exibirComponente('detalhar-estudante-informacao')"
+      <div class="row">
+
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-4" *ngIf="exibirComponente('detalhar-estudante-informacao')"
           (click)="informarDadosGerais()">
           <div class="wrimagecard wrimagecard-topimage">
             <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -26,7 +27,7 @@
             </a>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-rendimento')"
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-4" *ngIf="exibirComponente('detalhar-estudante-rendimento')"
           (click)="informarRendimento()">
           <div class="wrimagecard wrimagecard-topimage">
             <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -39,7 +40,7 @@
             </a>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-disciplinar')"
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-4" *ngIf="exibirComponente('detalhar-estudante-disciplinar')"
           (click)="informarOcorrenciasDisciplinares()">
           <div class="wrimagecard wrimagecard-topimage">
             <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -52,7 +53,7 @@
             </a>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-entrada-saida')"
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-4" *ngIf="exibirComponente('detalhar-estudante-entrada-saida')"
           (click)="informarEntradasSaidas()">
           <div class="wrimagecard wrimagecard-topimage">
             <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -65,7 +66,7 @@
             </a>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-notificacao')"
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-4" *ngIf="exibirComponente('detalhar-estudante-notificacao')"
           (click)="informarStatusNotificacoes()">
           <div class="wrimagecard wrimagecard-topimage">
             <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -78,7 +79,7 @@
             </a>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="exibirComponente('detalhar-estudante-nota-observacao')"
+        <div class="col-lg-4 col-md-6 col-sm-12 mt-4" *ngIf="exibirComponente('detalhar-estudante-nota-observacao')"
           (click)="informarNotasObservacoes()">
           <div class="wrimagecard wrimagecard-topimage">
             <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -91,7 +92,7 @@
             </a>
           </div>
         </div>
-        <div *ngIf="exibirComponente('detalhar-estudante-saida-antecipada')" class="col-lg-4 col-md-6 col-sm-12"
+        <div *ngIf="exibirComponente('detalhar-estudante-saida-antecipada')" class="col-lg-4 col-md-6 col-sm-12 mt-4"
           (click)="informarSaidasAntecipadas()">
           <div class="wrimagecard wrimagecard-topimage">
             <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -104,6 +105,8 @@
             </a>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>
