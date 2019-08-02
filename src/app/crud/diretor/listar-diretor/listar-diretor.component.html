@@ -1,0 +1,134 @@
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row text-center">
+        <div class="col-sm-12 col-lg-12">
+          <i class="fa fa-lg fa-users text-light text-center float-center"> Diretores</i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-3 mt-2">
+          <div class="input-group mb-0">
+            <input type="text" class="form-control form-control-sm" placeholder="nome,matricula ou email..."
+              (keydown)="filtrarEnter($event)" (input)="gravarValorFiltro($event.target.value)"
+              aria-label="buscar por nome" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-dark border-light fa fa-search text-light btn-sm" (click)="filtrar()"
+                type="button">
+                Procurar</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-5 mt-2"></div>
+        <div class="col-sm-12 col-lg-2 mt-2">
+          <button *ngIf="exibirComponente('inserir-diretor')"
+            class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
+            (click)="inserir()">Adicionar</button>
+        </div>
+        <div class="col-sm-12 col-lg-2 mt-2">
+          <button *ngIf="exibirComponente('inserir-diretor-escola')"
+            class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
+            (click)="inserirDiretorEscola()">
+            Vincular diretor e escola</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dropdown pl-6 pt-2 pl-4 col-sm-12 col-lg-3 mt-2">
+        <button class="btn btn-outline-dark dropdown-toggle float-left" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Exibir {{ saltarQuantidade }} registros por vez
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" (click)="listarQuantidade(5)">5</a>
+          <a class="dropdown-item" (click)="listarQuantidade(10)">10</a>
+          <a class="dropdown-item" (click)="listarQuantidade(15)">15</a>
+          <a class="dropdown-item" (click)="listarQuantidade(20)">20</a>
+          <a class="dropdown-item" (click)="listarQuantidade(25)">25</a>
+          <a class="dropdown-item" (click)="listarQuantidade(50)">50</a>
+          <a class="dropdown-item" (click)="listarQuantidade(100)">100</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="diretores">
+        <table class="table table-striped table-hover" [@chamado]="estado">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-lg-1 text-center" scope="col">Avatar</th>
+              <th class="col-sm-12 col-lg-3 text-left" scope="col"><span (click)="ordenarColuna('nome')">Nome</span>
+              </th>
+              <th class="col-sm-12 col-lg-2 text-left" scope="col"><span
+                  (click)="ordenarColuna('telefone')">telefone</span></th>
+              <th class="col-sm-12 col-lg-3 text-left" scope="col"><span (click)="ordenarColuna('email')">email</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span
+                  (click)="ordenarColuna('matricula')">matricula</span></th>
+              <th *ngIf="exibirComponente('alterar-diretor')" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
+              </th>
+              <th *ngIf="exibirComponente('excluir-diretor')" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
+              </th>
+            </tr>
+          </thead>
+          <tbody *ngIf="diretores !== null" class="diretores">
+            <tr class="row" *ngFor="let diretor of diretores" [@chamado]="estado">
+              <td class="col-sm-12 col-lg-1 text-center"><img class="img rounded-circle" width="40" height="40"
+                  src="{{ diretor.foto !== undefined && diretor.foto || 'assets/images/noavatar.jpg' }}" alt=""></td>
+              <td class="col-sm-12 col-lg-3 text-left">{{ diretor.nome}}</td>
+              <td class="col-sm-12 col-lg-2 text-left">{{ diretor.telefone }}</td>
+              <td class="col-sm-12 col-lg-3 text-left">{{ diretor.email }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ diretor.matricula }}</td>
+              <td *ngIf="exibirComponente('alterar-diretor')" class="col-sm-12 col-lg-1 text-center"><button
+                  class="btn btn-warning btn-sm" value="{{ diretor }}" (click)="alterar(diretor)">Alterar</button></td>
+              <td *ngIf="exibirComponente('excluir-diretor')" class="col-sm-12 col-lg-1 text-center"><button
+                  class="btn btn-danger btn-sm" value="{{ diretor }}" (click)="excluir(diretor)">Excluir</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <nav aria-label="..." class="float-right">
+        <ul class="pagination">
+          <li class="page-item" *ngIf="navegacaoInicio === undefined || navegacaoInicio === true">
+            <a class="page-link fa fa-arrow-left text-danger" (click)="navegarAnterior()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoInicio === false">
+            <a class="page-link fa fa-arrow-left" (click)="navegarAnterior()"></a>
+          </li>
+
+          <li class="page-item" *ngIf="navegacaoFim === true">
+            <a class="page-link fa fa-arrow-right text-danger" (click)="navegarProximo()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoFim === false || navegacaoFim === undefined">
+            <a class="page-link fa fa-arrow-right" (click)="navegarProximo()"></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-0 text-center">
+      <i *ngIf="feedbackUsuario === undefined && (navegacaoFim === false || navegacaoFim === undefined)"
+        class="fa fa-lg fa-info-circle text-light" [@chamado]="estado"> Listagem de professores - Exibindo
+        {{ offsetRegistros+1 }} ao {{ offsetRegistros +
+        saltarQuantidade
+        > totalRegistros ? totalRegistros : offsetRegistros + saltarQuantidade }} de {{ totalRegistros }}</i>
+      <i *ngIf="feedbackUsuario !== undefined" class="fa fa-lg fa-question-circle text-light" [@chamado]="estado">
+        Atualizando</i>
+      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-lg fa-info-circle text-light"
+        [@chamado]="estado">
+        Listagem de diretores - Exibindo registros finais do total de {{ totalRegistros }}</i>
+    </div>
+  </div>
+</div>
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-sm-12 col-lg-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-sm-12 col-lg-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="card text-center" [@chamado]="estado">
+  <div class="card text-center">
     <div class="card-header bg-dark">
       <div class="row">
         <div class="col-lg-10 col-sm-12 text-center">
@@ -41,7 +41,7 @@
               </tr>
             </thead>
             <tbody *ngIf="tiposOcorrenciasDisciplinares !== null">
-              <tr class="row" *ngFor="let tipoOcorrencia of tiposOcorrenciasDisciplinares" [@chamado]="estado">
+              <tr class="row" *ngFor="let tipoOcorrencia of tiposOcorrenciasDisciplinares">
                 <td class="col-lg-5 col-sm-12 text-left">{{ tipoOcorrencia.nome }}</td>
                 <td class="col-lg-3 col-sm-12 text-left">{{ tipoOcorrencia.valor }}</td>
                 <td *ngIf="exibirComponente('alterar-tipo-ocorrencia-disciplinar')"

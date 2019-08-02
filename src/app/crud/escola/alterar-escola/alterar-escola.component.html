@@ -1,3 +1,94 @@
-<p>
-  alterar-escola works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class=" col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-building text-light text-center"> Escolas</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="formulario" (ngSubmit)="alterar()">
+      <div class="card-body">
+        <div class="col-sm-12 col-lg-1 bg-dark m-2 p-2 rounded" *ngIf="escola.logo !== undefined">
+          <img [src]="escola.logo" class="rounded-circle" width="80" height="80" alt="">
+        </div>
+        <div class="row m-3 form-group">
+          <input autofocus type="text" placeholder="Nome..." class="form-control col-sm-12 col-lg-7 mr-5" name="nome"
+            maxlength="50" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+            value="{{ escola.nome }}">
+          <input autofocus type="text" placeholder="Abreviatura..." class="form-control col-sm-12 col-lg-4"
+            name="nome_abreviado" maxlength="50" required (input)="modificarInputs($event)"
+            (focusout)="modificarInputs($event)" value="{{ escola.nome_abreviado }}">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="email" placeholder="email..." class="form-control col-sm-12 col-lg-8" name="email"
+            maxlength="200" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+            value="{{ escola.email }}">
+          <div class="col-sm-12 col-lg-1"></div>
+          <input type="tel" placeholder="telefone..." class="form-control col-sm-12 col-lg-3" name="telefone"
+            maxlength="25" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+            value="{{ escola.telefone }}">
+        </div>
+
+
+        <div class="row m-3 form-group">
+          <input autofocus type="text" placeholder="inep..." class="form-control col-sm-12 col-lg-2" name="inep"
+            maxlength="40" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+            value="{{ escola.inep }}">
+          <div class="col-sm-12 col-lg-1"></div>
+          <input autofocus type="text" placeholder="cnpj..." class="form-control col-sm-12 col-lg-2" name="cnpj"
+            maxlength="25" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+            value="{{ escola.cnpj }}">
+          <div class="col-sm-12 col-lg-1"></div>
+          <input type="email" placeholder="cep..." class="form-control col-sm-12 col-lg-2" name="cep" maxlength="12"
+            required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)" value="{{ escola.cep }}">
+          <div class="col-sm-12 col-lg-1"></div>
+          <select name="regioesEscolas" class="form-control col-sm-12 col-lg-3" required name="ree_id"
+            (change)="modificarInputs($event)">
+            <option value="" disabled>Selecione a região</option>
+            <option *ngFor="let regiao of regioesEscolas" [selected]="regiao.id === escola.ree_id ? true : false"
+              value="{{ regiao.id}}">{{
+              regiao.nome }}</option>
+          </select>
+        </div>
+        <div class="row form-group m-3">
+          <input type="text" placeholder="endereço..." name="endereco" class="form-control col-sm-12 col-lg-7"
+            value="{{ escola.endereco }}" maxlength="200" required (input)="validar($event)"
+            (focusout)="validar($event)" (change)="modificarInputs($event)">
+          <div class="col-sm-12 col-lg-1"></div>
+          <label for="files" class="btn btn-warning col-sm-12 col-lg-4">Selecionar logo</label>
+          <input type="file" accept=".jpg,.jpeg" (change)="enviarArquivo($event)" id="files" style="visibility: hidden;"
+            class="form-control col-sm-12 col-lg-1">
+        </div>
+        <div class="row m-3 form-group">
+          <div class="col-sm-12 col-lg-10"></div>
+          <div class="col-sm-12 col-lg-2">
+            <button type="submit" class="btn btn-primary form-control">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Alterar escola</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Os registros marcados em vermelho devem ser
+        preenchidos</div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

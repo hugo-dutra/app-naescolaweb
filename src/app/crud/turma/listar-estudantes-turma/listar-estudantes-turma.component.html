@@ -22,7 +22,7 @@
               </tr>
             </thead>
             <tbody *ngIf="arrayOfEstudantes !== null">
-              <tr class="row" *ngFor="let estudante of arrayOfEstudantes" [@chamado]="estado">
+              <tr class="row" *ngFor="let estudante of arrayOfEstudantes">
                 <td class="col-lg-2 col-sm-12">
                   <!-- Botão -->
                   <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.id"><img

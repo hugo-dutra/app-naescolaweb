@@ -1,0 +1,83 @@
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 text-center mt-2">
+          <i class="fa fa-lg fa-globe text-light text-center"> Região</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm " (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="formulario" (ngSubmit)="inserir()">
+      <div class="card-body">
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control" formControlName="id">
+          <input autofocus type="text" placeholder="Nome..." class="form-control  col-sm-12 col-lg-5 mt-2"
+            formControlName="nome" maxlength="150" required (input)="validar($event)" (focusout)="validar($event)">
+          <div class=" col-sm-12 col-lg-1"></div>
+          <select class="form-control  col-sm-12 col-lg-2 mt-2" formControlName="uf" required
+            (change)="validar($event)">
+            <option value="AC">Acre AC</option>
+            <option value="AL">Alagoas AL</option>
+            <option value="AP">Amapá AP</option>
+            <option value="AM">Amazonas AM</option>
+            <option value="BA">Bahia BA</option>
+            <option value="CE">Ceará CE</option>
+            <option value="DF">Distrito Federal DF</option>
+            <option value="ES">Espírito Santo ES</option>
+            <option value="GO">Goiás GO</option>
+            <option value="MA">Maranhão MA</option>
+            <option value="MT">Mato Grosso MT</option>
+            <option value="MS">Mato Grosso do Sul MS</option>
+            <option value="MG">Minas Gerais MG</option>
+            <option value="PA">Pará PA</option>
+            <option value="PB">Paraíba PB</option>
+            <option value="PR">Paraná PR</option>
+            <option value="PE">Pernambuco PE</option>
+            <option value="PI">Piauí PI</option>
+            <option value="RJ">Rio de Janeiro RJ</option>
+            <option value="RN">Rio Grande do Norte RN</option>
+            <option value="RS">Rio Grande do Sul RS</option>
+            <option value="RO">Rondônia RO</option>
+            <option value="RR">Roraima RR</option>
+            <option value="SC">Santa Catarina SC</option>
+            <option value="SP">São Paulo SP</option>
+            <option value="SE">Sergipe SE</option>
+            <option value="TO">Tocantins TO</option>
+          </select>
+          <div class=" col-sm-12 col-lg-1"></div>
+          <input type="text" placeholder="Abreviatura..." class="form-control  col-sm-12 col-lg-3 mt-2"
+            formControlName="abreviatura" maxlength="5" required (input)="validar($event)" (focusout)="validar($event)">
+        </div>
+        <div class="row m-3 form-group">
+          <div class=" col-sm-12 col-lg-10"></div>
+          <div class=" col-sm-12 col-lg-2">
+            <button type="submit" class="btn btn-primary form-control">Salvar</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Nova região</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Os registros marcados em vermelho devem ser
+        preenchidos</div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -26,7 +26,7 @@
               <input type="text" (input)="filtrarProfessor($event)" class="form-control mb-2"
                 placeholder="Procurar professor..." (keydown)="limparFiltro($event)">
               <div class="ml-2">
-                <div *ngFor="let professor of professores" class="form-group inline row" [@chamado]="estado">
+                <div *ngFor="let professor of professores" class="form-group inline row">
                   <input type="checkbox" class="form-control checkbox col-1 float-left professor"
                     formControlName="check_professor" [name]="professor.id" [checked]="statusCheck"
                     (click)="gravaStatusProfessores($event)" [value]="professor.id" [id]="professor.id">
@@ -43,7 +43,7 @@
             </div>
             <div class="disciplinas mt-4">
               <div class="ml-2">
-                <div *ngFor="let disciplina of disciplinas" class="form-group inline row" [@chamado]="estado">
+                <div *ngFor="let disciplina of disciplinas" class="form-group inline row">
                   <input type="checkbox" class="form-control checkbox col-1 float-left disciplina"
                     formControlName="check_disciplina" [name]="disciplina.id" [checked]="statusCheck"
                     (click)="gravaStatusDisciplinas($event)" [value]="disciplina.id" [id]="disciplina.nome">

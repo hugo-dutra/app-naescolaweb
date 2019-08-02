@@ -1,0 +1,86 @@
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 text-center mt-2">
+          <i class="fa fa-lg fa-globe text-light text-center"> Região</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="text-danger"><b>Deseja alterar esse registro !?</b></p>
+      <div class="row m-3 form-group">
+        <input type="hidden" class="form-control">
+        <input autofocus type="text " name="nome" placeholder="Nome... " class="form-control  col-sm-12 col-lg-5 mt-2"
+          required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+          value="{{ regiaoEscola.nome }}" maxlength="150 ">
+        <div class=" col-sm-12 col-lg-1 "></div>
+
+        <select class="form-control  col-sm-12 col-lg-2 mt-2" required (focusout)="modificarInputs($event)" name="uf"
+          (change)="modificarInputs($event)">
+          <option [selected]="regiaoEscola.uf == 'AC' ? true : false" value="AC">Acre - AC</option>
+          <option [selected]="regiaoEscola.uf == 'AL' ? true : false" value="AL">Alagoas - AL</option>
+          <option [selected]="regiaoEscola.uf == 'AP' ? true : false" value="AP">Amapá - AP</option>
+          <option [selected]="regiaoEscola.uf == 'AM' ? true : false" value="AM">Amazonas - AM</option>
+          <option [selected]="regiaoEscola.uf == 'BA' ? true : false" value="BA">Bahia - BA</option>
+          <option [selected]="regiaoEscola.uf == 'CE' ? true : false" value="CE">Ceará - CE</option>
+          <option [selected]="regiaoEscola.uf == 'DF' ? true : false" value="DF">Distrito Federal - DF</option>
+          <option [selected]="regiaoEscola.uf == 'ES' ? true : false" value="ES">Espírito Santo - ES</option>
+          <option [selected]="regiaoEscola.uf == 'GO' ? true : false" value="GO">Goiás - GO</option>
+          <option [selected]="regiaoEscola.uf == 'MA' ? true : false" value="MA">Maranhão - MA</option>
+          <option [selected]="regiaoEscola.uf == 'MT' ? true : false" value="MT">Mato Grosso - MT</option>
+          <option [selected]="regiaoEscola.uf == 'MS' ? true : false" value="MS">Mato Grosso do Sul - MS</option>
+          <option [selected]="regiaoEscola.uf == 'MG' ? true : false" value="MG">Minas Gerais - MG</option>
+          <option [selected]="regiaoEscola.uf == 'PA' ? true : false" value="PA">Pará - PA</option>
+          <option [selected]="regiaoEscola.uf == 'PB' ? true : false" value="PB">Paraíba - PB</option>
+          <option [selected]="regiaoEscola.uf == 'PR' ? true : false" value="PR">Paraná - PR</option>
+          <option [selected]="regiaoEscola.uf == 'PE' ? true : false" value="PE">Pernambuco - PE</option>
+          <option [selected]="regiaoEscola.uf == 'PI' ? true : false" value="PI">Piauí - PI</option>
+          <option [selected]="regiaoEscola.uf == 'RJ' ? true : false" value="RJ">Rio de Janeiro - RJ</option>
+          <option [selected]="regiaoEscola.uf == 'RN' ? true : false" value="RN">Rio Grande do Norte - RN</option>
+          <option [selected]="regiaoEscola.uf == 'RS' ? true : false" value="RS">Rio Grande do Sul - RS</option>
+          <option [selected]="regiaoEscola.uf == 'RO' ? true : false" value="RO">Rondônia - RO</option>
+          <option [selected]="regiaoEscola.uf == 'RR' ? true : false" value="RR">Roraima - RR</option>
+          <option [selected]="regiaoEscola.uf == 'SC' ? true : false" value="SC">Santa Catarina - SC</option>
+          <option [selected]="regiaoEscola.uf == 'SP' ? true : false" value="SP">São Paulo - SP</option>
+          <option [selected]="regiaoEscola.uf == 'SE' ? true : false" value="SE">Sergipe - SE</option>
+          <option [selected]="regiaoEscola.uf == 'TO' ? true : false" value="TO">Tocantins - TO</option>
+        </select>
+
+        <div class=" col-sm-12 col-lg-1 "></div>
+        <input type="text " name="abreviatura" placeholder="Abreviatura... "
+          class="form-control  col-sm-12 col-lg-3 mt-2" maxlength="5" required (input)="modificarInputs($event)"
+          (focusout)="modificarInputs($event)" value="{{ regiaoEscola.abreviatura }}">
+      </div>
+      <div class="row m-2 form-group ">
+        <div class=" col-sm-12 col-lg-10 "></div>
+        <div class=" col-sm-12 col-lg-2 ">
+          <button type="submit " class="btn btn-primary form-control" (click)="alterar(regiaoEscola)">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer text-muted bg-dark mt-2 ">
+      <i class="fa fa-lg fa-info-circle text-light "> Alterar região</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Os registros marcados em vermelho devem ser
+        preenchidos</div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="card text-center" [@chamado]="estado">
+  <div class="card text-center">
     <div class="card-header bg-dark">
       <div class="row">
         <div class="col-lg-8 col-sm-12 mt-2 text-center">
@@ -30,7 +30,7 @@
               <input type="text" (input)="filtrarProfessor($event)" class="form-control mb-2"
                 placeholder="Procurar professor..." (keydown)="limparFiltro($event)">
               <div class="ml-2">
-                <div *ngFor="let professor of professores" class="form-group inline row" [@chamado]="estado">
+                <div *ngFor="let professor of professores" class="form-group inline row">
                   <div class="col-lg-1 col-sm-1">
                     <input type="checkbox" class="form-control checkbox float-left professor"
                       formControlName="check_professor" [name]="professor.id" [checked]="statusCheck"
@@ -49,7 +49,7 @@
             <h4 class="text-dark bg-light">Disciplinas</h4>
             <div class="disciplinas mt-4 bg-light text-dark">
               <div class="ml-2">
-                <div *ngFor="let disciplina of disciplinas" class="form-group inline row" [@chamado]="estado">
+                <div *ngFor="let disciplina of disciplinas" class="form-group inline row">
                   <div class="col-lg-1 col-sm-1">
                     <input type="checkbox" class="form-control checkbox float-left disciplina"
                       formControlName="check_disciplina" [name]="disciplina.id" [checked]="statusCheck"

@@ -24,8 +24,7 @@
         <div class="row">
           <div class="permissoes col-lg-12 col-sm-12">
             <div class="row">
-              <div *ngFor="let permissoes of permissoesExistentes" class="form-group inline col-lg-6 col-sm-12"
-                [@chamado]="estado">
+              <div *ngFor="let permissoes of permissoesExistentes" class="form-group inline col-lg-6 col-sm-12">
                 <div class="row">
                   <input type="checkbox" class="checkbox col-lg-1 col-sm-1" [id]="permissoes.id" [name]="permissoes.id"
                     [checked]="statusCheck" [value]="permissoes.id" formControlName="pac_id">

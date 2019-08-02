@@ -5,13 +5,14 @@
         <div class="col-lg-8 col-sm-12 mt-2 text-center">
           <i class="fa fa-lg fa-file text-light"> Perfis</i>
         </div>
+        <div class="col-lg-1 col-sm-12 "></div>
         <button *ngIf="exibirComponente('inserir-perfil')"
-          class="col-lg-2 col-sm-12 mt-2 btn btn-dark text-light border-light btn-sm form-control"
+          class="col-lg-1 col-sm-12 mt-2 btn btn-dark text-light border-light btn-sm form-control"
           (click)="inserir()">Adicionar</button>
+        <div class="col-lg-1 col-sm-12 "></div>
         <button *ngIf="exibirComponente('inserir-perfil-permissao')"
-          class="col-lg-2 col-sm-12 btn btn-dark border-light text-light btn-sm form-control  mt-2"
-          (click)="inserirPerfilPermissao()">Configurar perfis</button>
-
+          class="col-lg-1 col-sm-12 btn btn-dark border-light text-light btn-sm form-control  mt-2"
+          (click)="inserirPerfilPermissao()">Configurar</button>
       </div>
     </div>
     <div class="card-body">
@@ -26,7 +27,7 @@
               </tr>
             </thead>
             <tbody *ngIf="perfis !== null">
-              <tr class="row" *ngFor="let perfil of perfis" [@chamado]="estado">
+              <tr class="row" *ngFor="let perfil of perfis">
                 <td class="col-lg-10 col-sm-12 text-left">{{ perfil.nome }}</td>
                 <td *ngIf="exibirComponente('alterar-perfil')" class="col-lg-1 col-sm-12"><button
                     class="btn btn-warning btn-sm" value="{{ perfil }}" (click)="alterar(perfil)">Alterar</button></td>

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="card text-center" [@chamado]="estado">
+  <div class="card text-center">
     <div class="card-header bg-dark">
       <div class="row mb-2 text-center">
         <i class="fa fa-lg fa-graduation-cap text-light text-center col-lg-12"> Professores</i>
@@ -84,7 +84,7 @@
               </tr>
             </thead>
             <tbody *ngIf="professores !== null">
-              <tr class="row" *ngFor="let professor of professores" [@chamado]="estado">
+              <tr class="row" *ngFor="let professor of professores">
                 <td class="col-lg-1 col-sm-12 text-center"> <button (click)="listarDisciplina(professor)"
                     id="btn_professor_{{ professor.id  }}" type="button" class="btn btn-sm btn-success" placement="top"
                     container="body" [ngbPopover]="popContentConsulta" [popoverTitle]="popTitleConsulta"><span

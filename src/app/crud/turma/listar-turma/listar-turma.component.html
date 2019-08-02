@@ -59,7 +59,7 @@
               </tr>
             </thead>
             <tbody *ngIf="turmas !== null">
-              <tr class="row" *ngFor="let turma of turmas" [@chamado]="estado">
+              <tr class="row" *ngFor="let turma of turmas">
                 <td class="col-sm-12 col-lg-2">{{ turma.escola}}</td>
                 <td class="col-sm-12 col-lg-2">{{ turma.serie}}</td>
                 <td class="col-sm-12 col-lg-2">{{ turma.nome }}</td>

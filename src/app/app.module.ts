@@ -44,7 +44,6 @@ import { SharedModuleModule } from './shared-module/shared-module.module';
     NbToastrModule.forRoot(),
     ModalModule.forRoot(),
     SharedModuleModule,
-
     NbChatModule.forRoot({
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),

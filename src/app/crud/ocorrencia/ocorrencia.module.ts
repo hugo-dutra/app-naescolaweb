@@ -4,9 +4,8 @@ import { CommonModule } from '@angular/common';
 import { OcorrenciaRoutingModule } from './ocorrencia-routing.module';
 import { InserirOcorrenciaComponent } from './inserir-ocorrencia/inserir-ocorrencia.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '../forms/forms.module';
+import { SharedModuleModule } from '../../shared-module/shared-module.module';
 
 @NgModule({
   declarations: [InserirOcorrenciaComponent],
@@ -14,7 +13,8 @@ import { FormsModule } from '../forms/forms.module';
     CommonModule,
     HttpClientModule,
     NgbModule,
-    OcorrenciaRoutingModule
+    OcorrenciaRoutingModule,
+    SharedModuleModule,
   ]
 })
 export class OcorrenciaModule { }

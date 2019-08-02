@@ -34,7 +34,7 @@
             </tr>
           </thead>
           <tbody *ngIf="historicoEntradasSaidas !== null">
-            <tr class="row" *ngFor="let historico of historicoEntradasSaidas" [@chamado]="estado">
+            <tr class="row" *ngFor="let historico of historicoEntradasSaidas">
               <!--###-->
               <td class="col-sm-12 col-lg-2 text-center">{{ historico.dia_letivo }}</td>
               <!--###-->

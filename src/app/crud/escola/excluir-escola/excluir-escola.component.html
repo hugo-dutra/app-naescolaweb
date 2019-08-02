@@ -1,3 +1,68 @@
-<p>
-  excluir-escola works!
-</p>
+<div class="container-fluid" [@chamado]="estado">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-2 mt-2 text-center">
+          <i class="fa fa-lg fa-user text-light text-center"> Diretor</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="text-danger"><b>Deseja excluir esse registro !?</b></p>
+      <form>
+        <div class="col-sm-12 col-lg-1 bg-dark m-2 p-2 rounded" *ngIf="escola.logo !== undefined">
+          <img [src]="escola.logo" class="rounded-circle" data-toggle="tooltip" data-placement="top"
+            title="Logo da escola" width="80" height="80" alt="">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control">
+          <input type="text" data-toggle="tooltip" data-placement="top" title="Nome da escola" placeholder="Nome..."
+            class="form-control col-sm-12 col-lg-3 mt-2" maxlength="50" readonly value="{{ escola.nome }}">
+          <div class="col-sm-12 col-lg-1 mt-2"></div>
+          <input type="text" data-toggle="tooltip" data-placement="top" title="endereço da escola"
+            placeholder="endereço..." class="form-control col-sm-12 col-lg-4 mt-2" maxlength="200" readonly
+            value="{{ escola.endereco }}">
+          <div class="col-sm-12 col-lg-1 mt-2"></div>
+          <input type="text" data-toggle="tooltip" data-placement="top" title="CEP" placeholder="endereço..."
+            class="form-control col-sm-12 col-lg-3 mt-2" maxlength="200" readonly value="{{ escola.cep }}">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="email" data-toggle="tooltip" data-placement="top" title="Email da escola" placeholder="e-mail..."
+            class="form-control col-sm-12 col-lg-7 mt-2" maxlength="200" readonly value="{{ escola.email }}">
+          <div class="col-sm-12 col-lg-1 mt-2"></div>
+          <input type="tel" data-toggle="tooltip" data-placement="top" title="Telefone da escola"
+            placeholder="telefone..." class="form-control col-sm-12 col-lg-4 mt-2" maxlength="25" readonly
+            value="{{ escola.telefone }}">
+        </div>
+        <div class="row m-3 form-group">
+          <input type="text" data-toggle="tooltip" data-placement="top" title="inep da escola"
+            placeholder="matricula..." class="form-control col-sm-12 col-lg-2 mt-2" maxlength="50" readonly
+            value="{{ escola.inep }}">
+          <div class="col-sm-12 col-lg-7 mt-2"></div>
+          <div class="col-sm-12 col-lg-3 mt-2">
+            <button type="submit" class="btn btn-danger form-control float-right" (click)="excluir()">Excluir</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Excluir diretor diretor</i>
+    </div>
+
+    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+      <div>
+        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+          <div class="col-2">
+            <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+          </div>
+          <div class="col-10">
+            <h4>
+              <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -30,7 +30,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let disciplina of disciplinas" [@chamado]="estado">
+              <tr class="row" *ngFor="let disciplina of disciplinas">
                 <td class="col-sm-12 col-lg-8 text-center">{{ disciplina.nome}}</td>
                 <td class="col-sm-12 col-lg-2 text-center">{{ disciplina.abreviatura }}</td>
                 <td *ngIf="exibirComponente('alterar-disciplina')" class="col-sm-12 col-lg-1 text-center"><button

@@ -1,0 +1,68 @@
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-user text-light text-center"> Diretor</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="col-sm-12 col-lg-1 bg-dark m-2 p-2 rounded" *ngIf="diretor.foto !== undefined">
+          <img [src]="diretor.foto" class="rounded-circle" width="80" height="80" alt="">
+        </div>
+        <div class="row   form-group">
+          <input type="hidden" class="form-control" value="diretor.id">
+          <input type="text" placeholder="Nome..." name="nome" class="form-control col-sm-12 col-lg-12  "
+            maxlength="150" required value="{{ diretor.nome }}" (input)="modificarInputs($event)"
+            (outfocus)="modificarInputs($event)">
+        </div>
+        <div class="row   form-group">
+          <input type="email" placeholder="e-mail..." name="email" class="form-control col-sm-12 col-lg-7"
+            maxlength="200" required value="{{ diretor.email }}" (input)="modificarInputs($event)"
+            (outfocus)="modificarInputs($event)">
+          <div class="col-sm-12 col-lg-1"></div>
+          <input type="tel" placeholder="telefone..." name="telefone" class="form-control col-sm-12 col-lg-4"
+            maxlength="25" required value="{{ diretor.telefone }}" (input)="modificarInputs($event)"
+            (outfocus)="modificarInputs($event)">
+        </div>
+        <div class="row   form-group">
+          <input type="text" placeholder="matricula..." name="matricula" class="form-control col-sm-12 col-lg-2"
+            maxlength="50" required value="{{ diretor.matricula }}" (input)="modificarInputs($event)"
+            (outfocus)="modificarInputs($event)">
+          <div class=" col-sm-12 col-lg-1 "></div>
+
+          <label for="files" class="btn btn-warning col-sm-12 col-lg-4 mt-2">Selecionar avatar</label>
+          <input type="file" accept=".jpg,.jpeg" (change)="enviarArquivo($event)" id="files" style="visibility: hidden;"
+            class="form-control col-sm-12 col-lg-1">
+
+          <div class="col-sm-12 col-lg-2 "></div>
+          <button type="submit " class="btn btn-primary form-control col-sm-12 col-lg-2"
+            (click)="alterar(diretor)">Salvar</button>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2 ">
+      <i class="fa fa-lg fa-info-circle text-light "> Alterar dados do diretor</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Os campos em vermelho devem ser preenchidos
+      </div>
+    </div>
+
+    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+      <div>
+        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+          <div class="col-2">
+            <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+          </div>
+          <div class="col-10">
+            <h4>
+              <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="card text-center" [@chamado]="estado">
+  <div class="card text-center">
     <div class="card-header bg-dark">
       <div class="row">
         <div class="col-lg-10 col-sm-12 mt-2 text-center">
@@ -44,7 +44,7 @@
           <div class="col-lg-3 col-sm-12 text-light"><b>Status</b></div>
           <div class="col-lg-1 col-sm-12 text-light"><b>Ação</b></div>
         </div>
-        <div *ngFor="let perfil of perfis" class="row mb-1" [@chamado]="estado">
+        <div *ngFor="let perfil of perfis" class="row mb-1">
           <div class="col-lg-3 col-sm-12 text-dark">{{perfil.nome}}</div>
           <div class="col-lg-4 col-sm-12 text-dark">{{perfil.perfil_usuario}}</div>
           <div class="col-lg-3 col-sm-12 text-dark">{{perfil.status_ativo}}</div>

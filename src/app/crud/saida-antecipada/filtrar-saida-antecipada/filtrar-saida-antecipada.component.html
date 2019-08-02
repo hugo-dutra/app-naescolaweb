@@ -63,7 +63,7 @@
             </tr>
           </thead>
           <tbody *ngIf="saidasAntecipadasEventuais !== null">
-            <tr class="row" *ngFor="let saidaAntecipadaEventual of saidasAntecipadasEventuais" [@chamado]="estado">
+            <tr class="row" *ngFor="let saidaAntecipadaEventual of saidasAntecipadasEventuais">
               <td class="col-4 text-left">&nbsp;&nbsp;{{ saidaAntecipadaEventual.nome }}</td>
               <td class="col-1 text-left">{{ saidaAntecipadaEventual.serie }}</td>
               <td class="col-1 text-left">{{ saidaAntecipadaEventual.turma }}</td>

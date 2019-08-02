@@ -30,7 +30,7 @@
           <div class="usuarios">
             <input type="text" (input)="filtrarUsuario($event)" class="form-control mb-2"
               placeholder="Procurar usuario...">
-            <div *ngFor="let usuario of usuarios" class="form-group inline row mt-2" [@chamado]="estado">
+            <div *ngFor="let usuario of usuarios" class="form-group inline row mt-2">
               <input type="checkbox" class="form-control checkbox col-lg-1 col-sm-12 text-dark float-left usuario"
                 [name]="usuario.id" [checked]="statusCheck" (click)="gravaStatusUsuario($event)" [value]="usuario.id"
                 [id]="usuario.id">
@@ -45,7 +45,7 @@
             Escolas
           </div>
           <div class="escolas mt-4">
-            <div *ngFor="let escola of escolas" class="form-group inline row mt-2" [@chamado]="estado">
+            <div *ngFor="let escola of escolas" class="form-group inline row mt-2">
               <label [for]="escola.nome" class="col-lg-7 col-sm-12 mt-2 text-center text-dark">{{ escola.nome }}</label>
               <select [name]="escola.id" required class="form-control col-lg-4 col-sm-12 float-right"
                 (change)="gravaPermissaoEscola($event)">

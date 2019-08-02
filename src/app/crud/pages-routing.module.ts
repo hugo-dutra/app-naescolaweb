@@ -19,6 +19,8 @@ const routes: Routes = [{
     { path: 'listar-area-conhecimento', loadChildren: () => import('./area-conhecimento/area-conhecimento.module').then(m => m.AreaConhecimentoModule), },
     { path: 'listar-disciplina', loadChildren: () => import('./disciplina/disciplina.module').then(m => m.DisciplinaModule), },
     { path: 'listar-comunicado-diverso', loadChildren: () => import('./comunicado-diverso/comunicado-diverso.module').then(m => m.ComunicadoDiversoModule), },
+    { path: 'listar-diretor', loadChildren: () => import('./diretor/diretor.module').then(m => m.DiretorModule), },
+    { path: 'inserir-diretor-escola', loadChildren: () => import('./diretor-escola/diretor-escola.module').then(m => m.DiretorEscolaModule), },
     { path: 'listar-escola', loadChildren: () => import('./escola/escola.module').then(m => m.EscolaModule), },
     { path: 'listar-etapa-ensino', loadChildren: () => import('./etapa-ensino/etapa-ensino.module').then(m => m.EtapaEnsinoModule), },
     { path: 'listar-tipo-ocorrencia-disciplinar', loadChildren: () => import('./tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.module').then(m => m.TipoOcorrenciaDisciplinarModule), },
@@ -32,17 +34,22 @@ const routes: Routes = [{
     { path: 'inserir-perfil-permissao', loadChildren: () => import('./perfil-permissao/perfil-permissao.module').then(m => m.PerfilPermissaoModule), },
     { path: 'gerenciar-portaria', loadChildren: () => import('./portaria/portaria.module').then(m => m.PortariaModule), },
     { path: 'listar-professor', loadChildren: () => import('./professor/professor.module').then(m => m.ProfessorModule), },
+    { path: 'inserir-rede-ensino', loadChildren: () => import('./rede-ensino/rede-ensino.module').then(m => m.RedeEnsinoModule), },
     { path: 'filtrar-saida-antecipada', loadChildren: () => import('./saida-antecipada/saida-antecipada.module').then(m => m.SaidaAntecipadaModule), },
     { path: 'listar-serie', loadChildren: () => import('./serie/serie.module').then(m => m.SerieModule), },
     { path: 'inserir-professor-disciplina', loadChildren: () => import('./professor-disciplina/professor-disciplina.module').then(m => m.ProfessorDisciplinaModule), },
+    { path: 'listar-regiao-escola', loadChildren: () => import('./regiao-escola/regiao-escola.module').then(m => m.RegiaoEscolaModule), },
     { path: 'listar-permissao-acesso', loadChildren: () => import('./permissao-acesso/permissao-acesso.module').then(m => m.PermissaoAcessoModule), },
     { path: 'listar-periodo-letivo', loadChildren: () => import('./periodo-letivo/periodo-letivo.module').then(m => m.PeriodoLetivoModule), },
     { path: 'listar-estudante', loadChildren: () => import('./estudante/estudante.module').then(m => m.EstudanteModule), },
 
     /* REPORTS */
     { path: 'gerenciar-relatorio-rendimento', loadChildren: () => import('../report/rendimento/rendimento.module').then(m => m.RendimentoModule), },
-    /**************/
+    /***********/
 
+    /* SHARED */
+    { path: 'listar-boleto-bancario-mensalidade', loadChildren: () => import('../shared/financeiro/boleto-bancario/boleto-bancario.module').then(m => m.BoletoBancarioModule), },
+    /***********/
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
     { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },

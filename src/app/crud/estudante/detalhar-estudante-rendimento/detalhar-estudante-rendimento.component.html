@@ -44,16 +44,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let notaFalta of notasFaltasEstudante" [@chamado]="estado">
+              <tr class="row" *ngFor="let notaFalta of notasFaltasEstudante">
                 <td class="col-sm-4 col-md-4 col-lg-8 text-left">{{ notaFalta.disciplina}}</td>
                 <td *ngIf="compararValor(notaFalta.nota)=='recuperacao'" style="background-color:#DC3545"
-                  class="col-sm-4 col-md-4 col-lg-2" [@chamado]="estado">
+                  class="col-sm-4 col-md-4 col-lg-2">
                   {{ notaFalta.nota }}</td>
                 <td *ngIf="compararValor(notaFalta.nota)=='atencao'" style="background-color:#FFC107"
-                  class="col-sm-4 col-md-4 col-lg-2" [@chamado]="estado">
+                  class="col-sm-4 col-md-4 col-lg-2">
                   {{ notaFalta.nota }}</td>
                 <td *ngIf="compararValor(notaFalta.nota)=='aprovado'" style="background-color:#28A745"
-                  class="col-sm-4 col-md-4 col-lg-2" [@chamado]="estado">
+                  class="col-sm-4 col-md-4 col-lg-2">
                   {{ notaFalta.nota }}</td>
                 <td class="mt-2 col-sm-12 col-md-4 col-lg-2">{{ notaFalta.falta }}</td>
               </tr>

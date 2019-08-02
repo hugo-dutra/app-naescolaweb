@@ -31,7 +31,7 @@
               <input type="text" class="form-control mb-2" (input)="filtrarUsuario($event)" placeholder="procurar..."
                 (keydown)="limparFiltroUsuario($event)">
               <div class="usuarios">
-                <div *ngFor="let usuario of usuarios" class="form-group inline row" [@chamado]="estado">
+                <div *ngFor="let usuario of usuarios" class="form-group inline row">
                   <input type="radio" class="form-control options col-lg-1 col-sm-1 float-left turma ml-3"
                     name="option_usuario" [id]="'usr_'+usuario.usr_id" [checked]="statusCheck"
                     (click)="gravaStatusUsuario($event)" [value]="usuario.usr_id">
@@ -57,7 +57,7 @@
                 <input type="text" class="form-control mb-2" (input)="filtrarProfessor($event)"
                   placeholder="procurar..." (keydown)="limparFiltroProfessor($event)">
                 <div class="professores">
-                  <div *ngFor="let professor of professores" class="form-group inline row" [@chamado]="estado">
+                  <div *ngFor="let professor of professores" class="form-group inline row">
                     <input type="radio"
                       class="form-control options col-lg-1 col-sm-12 mt-2 text-dark float-left professor ml-3"
                       name="option_professor" [checked]="statusCheck" (click)="gravaStatusProfessor($event)"
