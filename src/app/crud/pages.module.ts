@@ -22,7 +22,7 @@ import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-a
   ],
   declarations: [
     PagesComponent,
-    MenuAtalhoComponent
+    MenuAtalhoComponent,
   ],
 })
 export class PagesModule {

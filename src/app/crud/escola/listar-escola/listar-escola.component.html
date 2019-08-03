@@ -21,7 +21,7 @@
         </div>
         <div class="col-sm-12 col-lg-5 mt-2"></div>
         <div class="col-sm-12 col-lg-2 mt-2">
-          <button *ngIf="exibirComponente('inserir-escola')"
+          <button *ngIf="exibirComponenteInserir"
             class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
             (click)="inserir()">Inserir</button>
         </div>
@@ -64,9 +64,9 @@
               </th>
               <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('inep')">Inep</span>
               </th>
-              <th *ngIf="exibirComponente('alterar-escola')" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
+              <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
               </th>
-              <th *ngIf="exibirComponente('excluir-escola')" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
+              <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
               </th>
             </tr>
           </thead>
@@ -78,9 +78,9 @@
               <td class="col-sm-12 col-lg-2 text-left">{{ escola.telefone }}</td>
               <td class="col-sm-12 col-lg-3 text-left">{{ escola.email }}</td>
               <td class="col-sm-12 col-lg-1 text-left">{{ escola.inep }}</td>
-              <td *ngIf="exibirComponente('alterar-escola')" class="col-sm-12 col-lg-1 text-center"><button
+              <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
                   class="btn btn-warning btn-sm" value="{{ escola }}" (click)="alterar(escola)">Alterar</button></td>
-              <td *ngIf="exibirComponente('excluir-escola')" class="col-sm-12 col-lg-1 text-center"><button
+              <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
                   class="btn btn-danger btn-sm" value="{{ escola }}" (click)="excluir(escola)">Excluir</button></td>
             </tr>
           </tbody>

@@ -1,0 +1,129 @@
+<!--##############################################################################################-->
+<div class="container-fluid container-card" [@chamado]="estado">
+  <div class="row">
+
+    <div *ngIf="exibirComponente('inserir-registro-diario')" class="col-sm-12 col-md-6 col-lg-4 mb-5"
+      (click)="inserirRegistroDiario()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-pencil-square text-success"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Nova aula
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 mb-5" (click)="alterarRegistroDiario()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-pencil-square text-warning"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Alterar aula
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('inserir-diario-avaliacao')" class="col-sm-12 col-md-6 col-lg-4 mb-5"
+      (click)="inserirDiarioAvaliacao()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-thermometer-quarter text-success"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Nova avaliação
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('alterar-diario-avaliacao')" class="col-sm-12 col-md-6 col-lg-4 mb-5"
+      (click)="alterarRegistroDeAvaliacao()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-thermometer-full text-warning"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Alterar avaliação
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('enviar-nota-boletim')" class="col-sm-12 col-md-6 col-lg-4 mb-5"
+      (click)="EnviarNotaBoletim()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-send text-primary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Enviar notas para boletim
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('listar-turma-disciplina-professor')" class="col-sm-12 col-md-6 col-lg-4 mb-5"
+      (click)="listarTurmaDisciplinaNotasConselho()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-thermometer-three-quarters text-danger"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Lançar notas para conselho de classe
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- <div *ngIf="exibirComponente('inserir-diario-observacao-estudante')" class="col-sm-12 col-md-6 col-lg-4 mb-5" (click)="inserirDiarioObservacaoEstudante()">
+    <div class="wrimagecard wrimagecard-topimage">
+      <a class="rounded-top rounded-right rounded-bottom rounded-left">
+        <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-pencil-square text-warning"></i>
+        </div>
+        <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+          Observação de estudante
+        </div>
+      </a>
+    </div>
+  </div> -->
+
+    <!-- <div *ngIf="exibirComponente('inserir-diario-observacao-geral')" class="col-sm-12 col-md-6 col-lg-4 mb-5" (click)="inserirDiarioObservacaoGeral()">
+    <div class="wrimagecard wrimagecard-topimage">
+      <a class="rounded-top rounded-right rounded-bottom rounded-left">
+        <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-pencil text-secondary"></i>
+        </div>
+        <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+          Observação geral
+        </div>
+      </a>
+    </div>
+  </div> -->
+
+    <!-- <div class="col-sm-12 col-md-6 col-lg-4 mb-5">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+              <i class="fa fa-lg fa-pencil text-success"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Avaliação diagnóstica
+          </div>
+        </a>
+      </div>
+    </div> -->
+
+  </div>
+</div>
+<!--###############################################################################################-->

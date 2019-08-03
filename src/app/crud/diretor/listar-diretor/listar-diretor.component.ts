@@ -50,8 +50,13 @@ export class ListarDiretorComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
 
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
+
   ngOnInit() {
     this.diretores = undefined;
+    this.exibirComponentesEdicao();
     this.listar();
   }
 
@@ -272,6 +277,12 @@ export class ListarDiretorComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-diretor');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-diretor');
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-diretor');
   }
 
 }

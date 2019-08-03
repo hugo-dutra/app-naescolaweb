@@ -6,8 +6,8 @@
           <i class="fa fa-lg fa-clock-o text-light text-center"> Turnos</i>
         </div>
         <div class="col-lg-2 col-sm-12 mt-2">
-          <button *ngIf="exibirComponente('inserir-turno')"
-            class="btn btn-dark border-light text-light btn-sm form-control" (click)="adicionar()">Adicionar</button>
+          <button *ngIf="exibirComponenteInserir" class="btn btn-dark border-light text-light btn-sm form-control"
+            (click)="adicionar()">Adicionar</button>
         </div>
       </div>
     </div>
@@ -21,8 +21,8 @@
                 <th class="col-lg-2 col-sm-12 text-center" scope="col">Abreviatura</th>
                 <th class="col-lg-2 col-sm-12 text-center" scope="col">Início</th>
                 <th class="col-lg-2 col-sm-12 text-center" scope="col">Fim</th>
-                <th *ngIf="exibirComponente('alterar-turno')" class="col-lg-1 col-sm-12" scope="col">Alterar</th>
-                <th *ngIf="exibirComponente('excluir-turno')" class="col-lg-1 col-sm-12" scope="col">Excluir</th>
+                <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12" scope="col">Alterar</th>
+                <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12" scope="col">Excluir</th>
               </tr>
             </thead>
             <tbody>
@@ -31,10 +31,10 @@
                 <td class="col-lg-2 col-sm-12 text-center">{{ turno.abreviatura }}</td>
                 <td class="col-lg-2 col-sm-12 text-center">{{ turno.horaInicio }}</td>
                 <td class="col-lg-2 col-sm-12 text-center">{{ turno.horaFim }}</td>
-                <td *ngIf="exibirComponente('alterar-turno')" class="col-lg-1 col-sm-12"><button
-                    class="btn btn-warning btn-sm" value="{{ turno }}" (click)="alterar(turno)">Alterar</button></td>
-                <td *ngIf="exibirComponente('excluir-turno')" class="col-lg-1 col-sm-12"><button
-                    class="btn btn-danger btn-sm" value="{{ turno }}" (click)="excluir(turno)">Excluir</button></td>
+                <td *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12"><button class="btn btn-warning btn-sm"
+                    value="{{ turno }}" (click)="alterar(turno)">Alterar</button></td>
+                <td *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12"><button class="btn btn-danger btn-sm"
+                    value="{{ turno }}" (click)="excluir(turno)">Excluir</button></td>
               </tr>
             </tbody>
           </table>
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
     <div>
       <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
         <div class="col-2">

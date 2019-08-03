@@ -20,7 +20,7 @@
         <div class="col-lg-1 col-sm-12 mt-2"></div>
 
         <div class="col-lg-2 col-sm-12 mt-2">
-          <button *ngIf="exibirComponente('inserir-professor')"
+          <button *ngIf="exibirComponenteInserir"
             class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
             (click)="inserir()">Inserir</button>
         </div>
@@ -77,9 +77,9 @@
                 <th class="col-lg-2 col-sm-12 text-left" scope="col"><span
                     (click)="ordenarColuna('telefone')">telefone</span></th>
 
-                <th *ngIf="exibirComponente('alterar-professor')" class="col-lg-1 col-sm-12 text-center" scope="col">
+                <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12 text-center" scope="col">
                   Alterar</th>
-                <th *ngIf="exibirComponente('excluir-professor')" class="col-lg-1 col-sm-12 text-center" scope="col">
+                <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12 text-center" scope="col">
                   Excluir</th>
               </tr>
             </thead>
@@ -107,10 +107,10 @@
                   </div>
                 </ng-template>
                 <ng-template #popTitleConsulta></ng-template>
-                <td *ngIf="exibirComponente('alterar-professor')" class="col-lg-1 col-sm-12 text-center"><button
+                <td *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12 text-center"><button
                     class="btn btn-warning btn-sm" value="{{ professor }}" (click)="alterar(professor)">Alterar</button>
                 </td>
-                <td *ngIf="exibirComponente('excluir-professor')" class="col-lg-1 col-sm-12 text-center"><button
+                <td *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12 text-center"><button
                     class="btn btn-danger btn-sm" value="{{ professor }}" (click)="excluir(professor)">Excluir</button>
                 </td>
               </tr>
@@ -151,7 +151,7 @@
     </div>
   </div>
 </div>
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
   <div>
     <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
       <div class="col-2">

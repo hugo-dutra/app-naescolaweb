@@ -44,6 +44,10 @@ export class ListarTurmaComponent implements OnInit {
   public statusFiltro: boolean = false;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
+
 
   constructor(
     private turmaService: TurmaService,
@@ -55,7 +59,14 @@ export class ListarTurmaComponent implements OnInit {
 
   ngOnInit() {
     this.turmas = undefined;
+    this.exibirComponentesEdicao();
     this.listar(this.saltarQuantidade);
+  }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-turma');
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-turma');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-turma');
   }
 
   public listarQuantidade(event: Event) {

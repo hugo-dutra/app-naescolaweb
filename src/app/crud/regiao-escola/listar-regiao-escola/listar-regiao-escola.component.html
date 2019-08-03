@@ -6,8 +6,8 @@
           <i class="fa fa-lg fa-globe text-light text-center"> Regiões</i>
         </div>
         <div class="col-lg-2 col-sm-12 mt-2">
-          <button *ngIf="exibirComponente('inserir-regiao-escola')"
-            class="btn btn-dark border-light form-control text-light btn-sm" (click)="adicionar()">Adicionar</button>
+          <button *ngIf="exibirComponenteInserir" class="btn btn-dark border-light form-control text-light btn-sm"
+            (click)="adicionar()">Adicionar</button>
         </div>
       </div>
     </div>
@@ -20,9 +20,9 @@
                 <th class="col-sm-12 col-lg-6" scope="col">Nome</th>
                 <th class="col-sm-12 col-lg-2" scope="col">Abreviatura</th>
                 <th class="col-sm-12 col-lg-2" scope="col">UF</th>
-                <th *ngIf="exibirComponente('alterar-regiao-escola')" class="col-sm-12 col-lg-1" scope="col">Alterar
+                <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1" scope="col">Alterar
                 </th>
-                <th *ngIf="exibirComponente('excluir-regiao-escola')" class="col-sm-12 col-lg-1" scope="col">Excluir
+                <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1" scope="col">Excluir
                 </th>
               </tr>
             </thead>
@@ -31,10 +31,10 @@
                 <td class="col-sm-12 col-lg-6">{{ regiao.nome}}</td>
                 <td class="col-sm-12 col-lg-2">{{ regiao.abreviatura }}</td>
                 <td class="col-sm-12 col-lg-2">{{ regiao.uf }}</td>
-                <td *ngIf="exibirComponente('alterar-regiao-escola')" class="col-sm-12 col-lg-1"><button
-                    class="btn btn-warning btn-sm" value="{{ regiao }}" (click)="alterar(regiao)">Alterar</button></td>
-                <td *ngIf="exibirComponente('excluir-regiao-escola')" class="col-sm-12 col-lg-1"><button
-                    class="btn btn-danger btn-sm" value="{{ regiao }}" (click)="excluir(regiao)">Excluir</button></td>
+                <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1"><button class="btn btn-warning btn-sm"
+                    value="{{ regiao }}" (click)="alterar(regiao)">Alterar</button></td>
+                <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1"><button class="btn btn-danger btn-sm"
+                    value="{{ regiao }}" (click)="excluir(regiao)">Excluir</button></td>
               </tr>
             </tbody>
           </table>
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
     <div>
       <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
         <div class="col-2">

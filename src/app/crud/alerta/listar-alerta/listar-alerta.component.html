@@ -22,9 +22,9 @@
                 <th class="col-lg-1 col-sm-12 text-center" scope="col">Referência</th>
                 <th class="col-lg-2 col-sm-12 text-center" scope="col">Inicio</th>
                 <th class="col-lg-2 col-sm-12 text-center" scope="col">Fim</th>
-                <th *ngIf="exibirComponente('alterar-alerta')" class="col-lg-1 col-sm-12 text-center" scope="col">
+                <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12 text-center" scope="col">
                   Alterar</th>
-                <th *ngIf="exibirComponente('excluir-alerta')" class="col-lg-1 col-sm-12 text-center" scope="col">
+                <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12 text-center" scope="col">
                   Excluir</th>
               </tr>
             </thead>
@@ -35,10 +35,10 @@
                 <td class="col-lg-1 col-sm-12 text-center">{{ regra.valor_referencia }}</td>
                 <td class="col-lg-2 col-sm-12 text-center">{{ regra.data_inicio }}</td>
                 <td class="col-lg-2 col-sm-12 text-center">{{ regra.data_fim }}</td>
-                <td *ngIf="exibirComponente('alterar-alerta')" class="col-lg-1 col-sm-12 text-center"><button
+                <td *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12 text-center"><button
                     class="btn btn-warning btn-sm form-control" value="{{ regra }}"
                     (click)="alterar(regra)">Alterar</button></td>
-                <td *ngIf="exibirComponente('excluir-alerta')" class="col-lg-1 col-sm-12 text-center"><button
+                <td *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12 text-center"><button
                     class="btn btn-danger btn-sm form-control" value="{{ regra }}"
                     (click)="excluir(regra)">Excluir</button></td>
               </tr>

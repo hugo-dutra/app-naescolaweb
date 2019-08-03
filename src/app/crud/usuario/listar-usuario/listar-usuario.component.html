@@ -23,7 +23,7 @@
         </div>
         <div class="col-lg-3 col-sm-12 mt-2"></div>
         <div class="col-lg-2 col-sm-12 mt-2">
-          <button *ngIf="exibirComponente('inserir-usuario')"
+          <button *ngIf="exibirComponenteInserir"
             class="btn btn-sm btn-dark border-light text-light float-right form-control"
             (click)="inserir()">Inserir</button>
         </div>
@@ -68,14 +68,12 @@
                 <th class="col-lg-3 col-md-4 col-sm-12 text-left" scope="col"><span
                     (click)="ordenarColuna('email')">email</span>
                 </th>
-                <th *ngIf="exibirComponente('alterar-usuario')" class="col-lg-1 col-md-4 col-sm-12 text-right"
-                  scope="col">
+                <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-md-4 col-sm-12 text-right" scope="col">
                   Alterar</th>
-                <th *ngIf="exibirComponente('excluir-usuario')" class="col-lg-1 col-md-4 col-sm-12 text-right"
-                  scope="col">
+                <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-md-4 col-sm-12 text-right" scope="col">
                   Excluir</th>
-                <th *ngIf="exibirComponente('reiniciar-senha-usuario')" class="col-lg-2 col-md-4 col-sm-12 text-right"
-                  scope="col">Reiniciar
+                <th *ngIf="exibirComponenteReiniciarSenha" class="col-lg-2 col-md-4 col-sm-12 text-right" scope="col">
+                  Reiniciar
                   senha</th>
               </tr>
             </thead>
@@ -86,12 +84,12 @@
                     alt=""></td>
                 <td class="col-lg-4 col-md-4 col-sm-12 text-left">{{ usuario.nome }}</td>
                 <td class="col-lg-3 col-md-4 col-sm-12 text-left">{{ usuario.email }}</td>
-                <td *ngIf="exibirComponente('alterar-usuario')" class="col-lg-1 col-md-4 col-sm-12 text-right"><button
+                <td *ngIf="exibirComponenteAlterar" class="col-lg-1 col-md-4 col-sm-12 text-right"><button
                     class="btn btn-warning btn-sm" value="{{ usuario }}" (click)="alterar(usuario)">Alterar</button>
                 </td>
-                <td *ngIf="exibirComponente('excluir-usuario')" class="col-lg-1 col-md-4 col-sm-12 text-right"><button
+                <td *ngIf="exibirComponenteExcluir" class="col-lg-1 col-md-4 col-sm-12 text-right"><button
                     class="btn btn-danger btn-sm" value="{{ usuario }}" (click)="excluir(usuario)">Excluir</button></td>
-                <td *ngIf="exibirComponente('reiniciar-senha-usuario')" class="col-lg-2 col-md-4 col-sm-12 text-right">
+                <td *ngIf="exibirComponenteReiniciarSenha" class="col-lg-2 col-md-4 col-sm-12 text-right">
                   <button class="btn btn-success btn-sm" value="{{ usuario }}"
                     (click)="reiniciarSenha(usuario)">Reiniciar
                     senha</button></td>

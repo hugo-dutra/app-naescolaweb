@@ -38,6 +38,9 @@ export class ListarPerfilComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
 
   constructor(
     private perfilService: PerfilService,
@@ -48,6 +51,7 @@ export class ListarPerfilComponent implements OnInit {
 
   ngOnInit() {
     this.perfis = undefined;
+    this.exibirComponentesEdicao();
     this.listar();
   }
 
@@ -96,5 +100,12 @@ export class ListarPerfilComponent implements OnInit {
   public inserirPerfilPermissao(): void {
     this.router.navigate(['inserir-perfil-permissao']);
   }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-perfil');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-perfil');
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-perfil');
+  }
+
 
 }

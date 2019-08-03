@@ -5,7 +5,7 @@
         <div class="col-lg-10 col-sm-12 text-center">
           <i class="fa fa-lg fa-cubes text-light text-center"> Área do conhecimento</i>
         </div>
-        <div class="col-lg-2 col-sm-12 mt-2">
+        <div *ngIf="exibirComponenteInserir" class="col-lg-2 col-sm-12 mt-2">
           <button class="btn btn-dark border-light text-light btn-sm form-control"
             (click)="adicionar()">Adicionar</button>
         </div>
@@ -19,9 +19,9 @@
               <tr class="row">
                 <th class="col-lg-8 col-sm-4 text-center" scope="col">Nome</th>
                 <th class="col-lg-2 col-sm-4" scope="col">Abreviatura</th>
-                <th *ngIf="exibirComponente('alterar-area-conhecimento')" class="col-lg-1 col-sm-2" scope="col">
+                <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-2" scope="col">
                   Alterar</th>
-                <th *ngIf="exibirComponente('excluir-area-conhecimento')" class="col-lg-1 col-sm-2" scope="col">
+                <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-2" scope="col">
                   Excluir</th>
               </tr>
             </thead>
@@ -29,10 +29,10 @@
               <tr class="row" *ngFor="let area of areasConhecimento">
                 <td class="col-lg-8 col-sm-4 text-center">{{area.nome}}</td>
                 <td class="col-lg-2 col-sm-4">{{ area.abreviatura }}</td>
-                <td *ngIf="exibirComponente('alterar-area-conhecimento')" class="col-lg-1 col-sm-2"><button
-                    class="btn btn-warning btn-sm" value="{{ area }}" (click)="alterar(area)">Alterar</button></td>
-                <td *ngIf="exibirComponente('inserir-area-conhecimento')" class="col-lg-1 col-sm-2"><button
-                    class="btn btn-danger btn-sm" value="{{ area }}" (click)="excluir(area)">Excluir</button></td>
+                <td *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-2"><button class="btn btn-warning btn-sm"
+                    value="{{ area }}" (click)="alterar(area)">Alterar</button></td>
+                <td *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-2"><button class="btn btn-danger btn-sm"
+                    value="{{ area }}" (click)="excluir(area)">Excluir</button></td>
               </tr>
             </tbody>
           </table>
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
   <div>
     <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
       <div class="col-2">

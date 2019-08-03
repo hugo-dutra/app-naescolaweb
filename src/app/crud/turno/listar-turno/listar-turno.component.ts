@@ -36,6 +36,10 @@ export class ListarTurnoComponent implements OnInit {
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
+
 
   constructor(
     private turnoService: TurnoService,
@@ -44,7 +48,14 @@ export class ListarTurnoComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.exibirComponentesEdicao();
     this.listar();
+  }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-turno');
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-turno');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-turno');
   }
 
   public listar(): void {

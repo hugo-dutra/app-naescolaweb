@@ -36,6 +36,9 @@ export class ListarRegiaoEscolaComponent implements OnInit {
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
 
   constructor(
     private regiaoEscolaService: RegiaoEscolaService,
@@ -46,7 +49,13 @@ export class ListarRegiaoEscolaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.exibirComponentesEdicao();
     this.listar();
+  }
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-regiao-escola');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-regiao-escola');
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-regiao-escola');
   }
 
   public ordenarColuna(campo: string): void {

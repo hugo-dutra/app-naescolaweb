@@ -1,3 +1,60 @@
-<p>
-  excluir-periodo-letivo works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-calendar text-light text-center"> Período Letivo</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <form>
+      <div class="card-body">
+        <p class="text-danger"><b>Deseja excluir esse registro !?</b></p>
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control">
+          <div style="float:left; margin-right: 20px;" class="col-sm-12 col-lg-5">
+            <label for="Periodo" style="display:block" class="text-left">Descrição</label>
+            <input type="text" style="display:block" readonly placeholder="Período..." class="form-control" id="Periodo"
+              value="{{ periodoLetivo.periodo }}" maxlength="50">
+          </div>
+          <div style="float:left; margin-right: 20px;" class="col-sm-12 col-lg-3">
+            <label for="Inicio" style="display:block" class="text-left">Início</label>
+            <input type="date" style="display:block" readonly placeholder="Inicio..." class="form-control" id="Inicio"
+              value="{{ periodoLetivo.inicio }}" maxlength="10">
+          </div>
+          <div style="float:left; margin-right: 20px;" class="col-sm-12 col-lg-3">
+            <label for="Fim" style="display:block" class="text-left">Fim</label>
+            <input type="date" style="display:block" readonly placeholder="Inicio..." class="form-control" id="Fim"
+              maxlength="10" value="{{ periodoLetivo.fim }}">
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-sm-12 col-lg-10"></div>
+          <div class="col-sm-12 col-lg-2">
+            <button type="submit" class="btn btn-danger form-control" (click)="excluir()">Excluir</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Excluir período</i>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -6,8 +6,8 @@
           <i class="fa fa-lg fa-level-up text-light text-center"> Série</i>
         </div>
         <div class="col-lg-2 col-sm-12 mt-2">
-          <button *ngIf="exibirComponente('inserir-serie')"
-            class="btn btn-dark border-light text-light btn-sm form-control" (click)="adicionar()">Adicionar</button>
+          <button *ngIf="exibirComponenteInserir" class="btn btn-dark border-light text-light btn-sm form-control"
+            (click)="adicionar()">Adicionar</button>
         </div>
       </div>
     </div>
@@ -19,9 +19,9 @@
               <th class="col-sm-12 col-lg-6 text-center" scope="col">Nome</th>
               <th class="col-sm-12 col-lg-2 text-center" scope="col">Abreviatura</th>
               <th class="col-sm-12 col-lg-2 text-center" scope="col">Etapa</th>
-              <th *ngIf="exibirComponente('alterar-serie')" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
+              <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
               </th>
-              <th *ngIf="exibirComponente('excluir-serie')" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
+              <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
               </th>
             </tr>
           </thead>
@@ -30,9 +30,9 @@
               <td class="col-sm-12 col-lg-6 text-center">{{ serie.nome}}</td>
               <td class="col-sm-12 col-lg-2 text-center">{{ serie.abreviatura }}</td>
               <td class="col-sm-12 col-lg-2 text-center">{{ serie.ete_nome }}</td>
-              <td *ngIf="exibirComponente('alterar-serie')" class="col-sm-12 col-lg-1 text-center"><button
+              <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
                   class="btn btn-warning btn-sm" value="{{ serie }}" (click)="alterar(serie)">Alterar</button></td>
-              <td *ngIf="exibirComponente('excluir-serie')" class="col-sm-12 col-lg-1 text-center"><button
+              <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
                   class="btn btn-danger btn-sm" value="{{ serie }}" (click)="excluir(serie)">Excluir</button></td>
             </tr>
           </tbody>
@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
     <div>
       <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
         <div class="col-2">

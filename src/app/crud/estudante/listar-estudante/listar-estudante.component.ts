@@ -51,10 +51,22 @@ export class ListarEstudanteComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public filtrandoEntrada: boolean = false;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
+  public exibirComponenteDetalhar: Boolean = false;
 
   ngOnInit() {
+    this.exibirComponentesEdicao();
     this.estudantes = undefined;
     this.listar();
+  }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-estudante');
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-estudante');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-estudante');
+    this.exibirComponenteDetalhar = Utils.exibirComponente('detalhar-estudante');
   }
 
   public listarQuantidade(event: Event) {

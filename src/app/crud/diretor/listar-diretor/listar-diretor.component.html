@@ -21,7 +21,7 @@
         </div>
         <div class="col-sm-12 col-lg-5 mt-2"></div>
         <div class="col-sm-12 col-lg-2 mt-2">
-          <button *ngIf="exibirComponente('inserir-diretor')"
+          <button *ngIf="exibirComponenteInserir"
             class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
             (click)="inserir()">Adicionar</button>
         </div>
@@ -64,9 +64,9 @@
               </th>
               <th class="col-sm-12 col-lg-1 text-left" scope="col"><span
                   (click)="ordenarColuna('matricula')">matricula</span></th>
-              <th *ngIf="exibirComponente('alterar-diretor')" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
+              <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
               </th>
-              <th *ngIf="exibirComponente('excluir-diretor')" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
+              <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
               </th>
             </tr>
           </thead>
@@ -78,9 +78,9 @@
               <td class="col-sm-12 col-lg-2 text-left">{{ diretor.telefone }}</td>
               <td class="col-sm-12 col-lg-3 text-left">{{ diretor.email }}</td>
               <td class="col-sm-12 col-lg-1 text-left">{{ diretor.matricula }}</td>
-              <td *ngIf="exibirComponente('alterar-diretor')" class="col-sm-12 col-lg-1 text-center"><button
+              <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
                   class="btn btn-warning btn-sm" value="{{ diretor }}" (click)="alterar(diretor)">Alterar</button></td>
-              <td *ngIf="exibirComponente('excluir-diretor')" class="col-sm-12 col-lg-1 text-center"><button
+              <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
                   class="btn btn-danger btn-sm" value="{{ diretor }}" (click)="excluir(diretor)">Excluir</button></td>
             </tr>
           </tbody>

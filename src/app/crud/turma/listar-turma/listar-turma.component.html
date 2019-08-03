@@ -21,7 +21,7 @@
         </div>
         <div class="col-sm-12 col-lg-6"></div>
         <div class="col-sm-12 col-lg-2">
-          <button *ngIf="exibirComponente('inserir-turma')"
+          <button *ngIf="exibirComponenteInserir"
             class="btn btn-dark border-light text-light btn-sm float-right form-control form-control-sm"
             (click)="inserir()">Inserir</button>
         </div>
@@ -52,9 +52,9 @@
                 <th class="col-sm-12 col-lg-1" scope="col"><span (click)="ordenarColuna('turno')">Turno</span></th>
                 <th class="col-sm-12 col-lg-1" scope="col"><span (click)="ordenarColuna('ano')">Ano</span></th>
                 <th class="col-sm-12 col-lg-1" scope="col"><span>Alunos</span></th>
-                <th *ngIf="exibirComponente('alterar-turma')" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
+                <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
                 </th>
-                <th *ngIf="exibirComponente('excluir-turma')" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
+                <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
                 </th>
               </tr>
             </thead>
@@ -68,9 +68,9 @@
                 <td class="col-sm-12 col-lg-1">{{ turma.ano }}</td>
                 <td class="col-sm-12 col-lg-1"><button class="btn btn-info btn-sm fa fa-question"
                     (click)="listarEstudantes(turma.id)"></button></td>
-                <td *ngIf="exibirComponente('alterar-turma')" class="col-sm-12 col-lg-1 text-center"><button
+                <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
                     class="btn btn-warning btn-sm" value="{{ turma }}" (click)="alterar(turma)">Alterar</button></td>
-                <td *ngIf="exibirComponente('excluir-turma')" class="col-sm-12 col-lg-1 text-center"><button
+                <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
                     class="btn btn-danger btn-sm" value="{{ turma }}" (click)="excluir(turma)">Excluir</button></td>
               </tr>
             </tbody>
@@ -110,7 +110,7 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
   <div>
     <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
       <div class="col-2">

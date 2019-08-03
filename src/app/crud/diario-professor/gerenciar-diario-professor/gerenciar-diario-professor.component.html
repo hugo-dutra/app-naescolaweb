@@ -1,0 +1,75 @@
+<!--##############################################################################################-->
+<div class="container-fluid container-card" [@chamado]="estado">
+
+  <div class="row">
+    <div *ngIf="exibirComponente('inserir-diario-professor')" class="col-lg-4 col-md-6 col-sm-12" (click)="inserir()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-plus text-primary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Criar diários
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('transferir-diario-professor')" class="col-lg-4 col-md-6 col-sm-12"
+      (click)="transferir()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-exchange text-warning"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Transferir diários
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('listar-diario-professor')" class="col-lg-4 col-md-6 col-sm-12" (click)="listar()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-list text-success"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Listar diários
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('arquivar-diario-professor')" class="col-lg-4 col-md-6 col-sm-12" (click)="arquivar()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-archive text-secondary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Arquivar diários
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('importar-nota-boletim')" class="col-sm-12 col-md-6 col-lg-4 mb-5"
+      (click)="importarNotaBoletim()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-file-archive-o text-secondary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center text-warning">
+            Importar notas de planilha
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<!--###############################################################################################-->

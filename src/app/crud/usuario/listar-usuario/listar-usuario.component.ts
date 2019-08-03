@@ -52,8 +52,13 @@ export class ListarUsuarioComponent implements OnInit {
   public statusFiltro: boolean = false;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
+  public exibirComponenteReiniciarSenha: Boolean = false;
 
   ngOnInit() {
+    this.exibirComponentesEdicao();
     this.listarPerfis();
     this.listar();
   }
@@ -69,6 +74,14 @@ export class ListarUsuarioComponent implements OnInit {
       this.listar(this.saltarQuantidade);
     }
   }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-usuario');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-usuario');
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-usuario');
+    this.exibirComponenteReiniciarSenha = Utils.exibirComponente('reiniciar-senha-usuario')
+  }
+
 
   public listarPerfis(): void {
     this.feedbackUsuario = "Carregando dados, aguarde...";

@@ -19,7 +19,7 @@
         </div>
         <div class="col-lg-6 col-sm-12 mt-2"></div>
         <div class="col-lg-3 col-sm-12 mt-2">
-          <button *ngIf="exibirComponente('inserir-estudante')"
+          <button *ngIf="exibirComponenteInserir"
             class="btn btn-dark border-light text-light btn-sm form-control form-control-sm"
             (click)="inserir()">Adicionar</button>
         </div>
@@ -41,7 +41,7 @@
       </div>
       <div class="row">
         <div class="estudantes col-lg-12 col-sm-12 mt-2">
-          <table class="table table-striped table-hover" [@chamado]="estado">
+          <table class="table table-striped table-hover">
             <thead class="thead-light">
               <tr class="row">
                 <th class="col-sm-12 col-lg-1 text-center" scope="col"><span>&nbsp; Foto</span></th>
@@ -56,11 +56,11 @@
                 <th class="col-sm-12 col-lg-1 text-center" scope="col"><span
                     (click)="ordenarColuna('responsavel')">Respons.</span>
                 </th>
-                <th *ngIf="exibirComponente('alterar-estudante')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">
                   Alterar</th>
-                <th *ngIf="exibirComponente('excluir-estudante')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">
                   Excluir</th>
-                <th *ngIf="exibirComponente('detalhar-estudante')" class="col-sm-12 col-lg-1 text-center" scope="col">
+                <th *ngIf="exibirComponenteDetalhar" class="col-sm-12 col-lg-1 text-center" scope="col">
                   Detalhar
                 </th>
               </tr>
@@ -116,13 +116,13 @@
                 <td class="col-sm-12 col-lg-1 text-center">{{ estudante.matricula }}</td>
                 <td class="col-sm-12 col-lg-3 text-center">{{ estudante.email }}</td>
                 <td class="col-sm-12 col-lg-1 text-col-sm-12 col-lg-">{{ estudante.responsavel }}</td>
-                <td *ngIf="exibirComponente('alterar-estudante')" class="col-sm-12 col-lg-1 text-center"><button
+                <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
                     class="btn btn-warning btn-sm" value="{{ estudante }}" (click)="alterar(estudante)">Alterar</button>
                 </td>
-                <td *ngIf="exibirComponente('excluir-estudante')" class="col-sm-12 col-lg-1 text-center"><button
+                <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
                     class="btn btn-danger btn-sm" value="{{ estudante }}" (click)="excluir(estudante)">Excluir</button>
                 </td>
-                <td *ngIf="exibirComponente('detalhar-estudante')" class="col-sm-12 col-lg-1 text-center"><button
+                <td *ngIf="exibirComponenteDetalhar" class="col-sm-12 col-lg-1 text-center"><button
                     class="btn btn-primary btn-sm" value="{{ estudante }}"
                     (click)="detalhar(estudante)">Detalhar</button>
                 </td>
@@ -153,19 +153,18 @@
     </div>
     <div class="card-footer text-muted bg-dark mt-4 text-center">
       <i *ngIf="feedbackUsuario === undefined && (navegacaoFim === false || navegacaoFim === undefined)"
-        class="fa fa-lg fa-info-circle text-light" [@chamado]="estado"> Listagem de estudantes - Exibindo
+        class="fa fa-lg fa-info-circle text-light"> Listagem de estudantes - Exibindo
         {{ offsetRegistros+1 }} ao {{ offsetRegistros +
           saltarQuantidade
           > totalRegistros ? totalRegistros : offsetRegistros + saltarQuantidade }} de {{ totalRegistros }}</i>
-      <i *ngIf="feedbackUsuario !== undefined" class="fa fa-lg fa-question-circle text-light" [@chamado]="estado">
+      <i *ngIf="feedbackUsuario !== undefined" class="fa fa-lg fa-question-circle text-light">
         Atualizando</i>
-      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-lg fa-info-circle text-light"
-        [@chamado]="estado">
+      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-lg fa-info-circle text-light">
         Listagem de estudantes - Exibindo registros finais do total de {{ totalRegistros }}</i>
     </div>
   </div>
 </div>
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
   <div>
     <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
       <div class="col-2">

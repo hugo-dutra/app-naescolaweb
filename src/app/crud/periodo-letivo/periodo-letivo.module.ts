@@ -6,13 +6,14 @@ import { AlterarPeriodoLetivoComponent } from './alterar-periodo-letivo/alterar-
 import { ExcluirPeriodoLetivoComponent } from './excluir-periodo-letivo/excluir-periodo-letivo.component';
 import { InserirPeriodoLetivoComponent } from './inserir-periodo-letivo/inserir-periodo-letivo.component';
 import { ListarPeriodoLetivoComponent } from './listar-periodo-letivo/listar-periodo-letivo.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AlterarPeriodoLetivoComponent, ExcluirPeriodoLetivoComponent, InserirPeriodoLetivoComponent, ListarPeriodoLetivoComponent],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     PeriodoLetivoRoutingModule

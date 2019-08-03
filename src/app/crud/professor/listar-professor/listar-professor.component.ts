@@ -51,10 +51,21 @@ export class ListarProfessorComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public arrayOfDisciplinas = new Array<string>();
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
 
   ngOnInit() {
     this.professores = undefined;
+    this.exibirComponentesEdicao();
     this.listar();
+  }
+
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-professor');
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-professor');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-professor');
   }
 
   public listarDisciplina(professor: Object): void {

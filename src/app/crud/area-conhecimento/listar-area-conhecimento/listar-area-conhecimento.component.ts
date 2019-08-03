@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AreaConhecimentoService } from '../area-conhecimento.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { AreaConhecimento } from '../area-conhecimento.model';
 import { Router, NavigationExtras } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'ngx-listar-area-conhecimento',
@@ -36,6 +36,9 @@ export class ListarAreaConhecimentoComponent implements OnInit {
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
 
   constructor(
     private areaConhecimentoService: AreaConhecimentoService,
@@ -44,6 +47,7 @@ export class ListarAreaConhecimentoComponent implements OnInit {
     private router: Router
   ) { }
   ngOnInit() {
+    this.exibirComponentesEdicao();
     this.listar();
   }
 
@@ -92,4 +96,11 @@ export class ListarAreaConhecimentoComponent implements OnInit {
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
   }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-area-conhecimento');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-area-conhecimento');
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-area-conhecimento');
+  }
+
 }

@@ -51,10 +51,20 @@ export class ListarEscolaComponent implements OnInit {
   public statusFiltro: boolean = false;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
 
   ngOnInit() {
     this.escolas = undefined;
+    this.exibirComponentesEdicao();
     this.listar();
+  }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-escola');
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-escola');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-escola');
   }
 
   public listarQuantidade(limit: number = 5) {

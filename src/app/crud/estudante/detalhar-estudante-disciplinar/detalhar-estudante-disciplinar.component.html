@@ -19,7 +19,7 @@
       <div class="form-group">
 
         <div class="col-sm-12 col-lg-12 table_procurar_ocorrencia">
-          <table class="table table-striped table-hover" [@chamado]="estado">
+          <table class="table table-striped table-hover">
             <thead class="thead-light">
               <tr class="row">
                 <th class="col-sm-12 col-lg-3 text-center" scope="col">Nome</th>
@@ -46,7 +46,7 @@
                     [popoverTitle]="popTitleConsulta">
                     <i class="fa fa-lg fa-question"></i></button></td>
                 <ng-template #popContentConsulta>
-                  <div [@chamado]="estado">
+                  <div>
                     <div class="card">
                       <div class="card-header">Detalhe da ocorrência</div>
                       <div class="card-body">
@@ -70,7 +70,7 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
   <div>
     <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
       <div class="col-2">

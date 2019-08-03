@@ -39,6 +39,9 @@ export class ListarAlertaComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public arrayOfRegrasAlertas: Array<Object>;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
+
 
   constructor(
     private alertaService: AlertaService,
@@ -48,8 +51,14 @@ export class ListarAlertaComponent implements OnInit {
     private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.exibirComponentesEdicao();
     this.carregarDados();
     this.listarAlertas();
+  }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-alerta');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-alerta');
   }
 
   public excluir(regra: Object): void {

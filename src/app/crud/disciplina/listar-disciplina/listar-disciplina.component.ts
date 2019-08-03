@@ -36,6 +36,9 @@ export class ListarDisciplinaComponent implements OnInit {
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteInserir: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
 
   constructor(
     private disciplinaService: DisciplinaService,
@@ -45,8 +48,17 @@ export class ListarDisciplinaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.exibirComponentesEdicao();
     this.listar();
   }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteInserir = Utils.exibirComponente('inserir-disciplina');
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-disciplina');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-disciplina');
+
+  }
+
 
   public listar(): void {
     this.feedbackUsuario = "Carregando dados, aguarde...";
