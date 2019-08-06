@@ -1,0 +1,72 @@
+.bg-google {
+  background: #4885ed;
+}
+
+span {
+  cursor: pointer;
+}
+
+#loadingDiv {
+  position: fixed;
+  top: 45%;
+  left: 37%;
+  width: 30%;
+  height: 12%;
+  background-color: #d3d3e27c;
+  border: 2px solid #33333113;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  z-index: 10000000;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.estudantes_chamada {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 60vh;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+textarea {
+  resize: none;
+  height: 50%;
+}
+
+.c_radio {
+  width: 20px;
+  height: 20px;
+}
+
+.cabecalho_avaliacao {
+  height: 15%;
+}
+
+.border-10 {
+  border-style: solid;
+  border-width: 0px 10px 0px 10px;
+  font-weight: 600;
+}
+
+.checkbox {
+  width: 25px;
+  height: 25px;
+}
+
+.rounded-0 {
+  border-radius: 5px;
+}
+
+i {
+  cursor: pointer;
+  border-radius: 6px;
+}

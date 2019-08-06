@@ -1,3 +1,205 @@
-<p>
-  alterar-diario-avaliacao works!
-</p>
+<div class="container-fluid">
+  <!--############################## TELA DE MODO DE LISTAGEM DE DIÁRIOS ##############################-->
+  <div class="card text-center" *ngIf="modo_tela == modos_tela.listar_diarios">
+    <div class="card-header bg-dark">
+
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-bookmark-o text-light text-center"> Relação de diários - modificar avaliação</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('gerenciar-diario-professor')"
+            class="btn btn-dark border-light form-control text-light btn-sm"
+            (click)="gerenciarDiarioProfessor()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="estudantes_chamada col-lg-12 col-sm-12 mt-2">
+          <table class="table table-striped table-hover">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-8 text-center" scope="col">Nome</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Data da criação</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Alterar avaliação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let diario of arrayOfDiariosProfessor">
+                <td class="col-sm-12 col-lg-8 text-center">{{ diario.diario}} - {{ diario.disciplina }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ diario.data_criacao}}</td>
+                <td class="col-sm-12 col-lg-2 text-center"><button class="btn bg-warning btn-block" [value]="diario"
+                    (click)="listarRegistrosAvaliacao(diario)"><span
+                      class="fa fa-lg fa-pencil-square text-light"></span></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Listagem de Turmas</i>
+    </div>
+  </div>
+
+  <!--############################## TELA DE MODO DE LISTAGEM DE AVALIAÇÕES ##############################-->
+  <div class="card text-center" *ngIf="modo_tela == modos_tela.listar_avaliacoes">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-bookmark-o text-light text-center"> Relação de avaliações - modificar avaliação</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('alterar-diario-avaliacao')"
+            class="btn btn-dark border-light form-control text-light btn-sm"
+            (click)="listarDiarioProfessor()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="estudantes_chamada_2 col-lg-12 col-sm-12 mt-2">
+          <table class="table table-striped table-hover">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Data</th>
+                <th class="col-sm-12 col-lg-5 text-center" scope="col">Metodologia</th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col">Valor</th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col">Peso</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Período</th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col">Alterar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let avaliacao of arrayOfAvaliacoesDiario">
+                <td class="col-sm-12 col-lg-2 text-center">{{ avaliacao.data }}</td>
+                <td class="col-sm-12 col-lg-5 text-center">{{ avaliacao.metodologia }}</td>
+                <td class="col-sm-12 col-lg-1 text-center">{{ avaliacao.valor }}</td>
+                <td class="col-sm-12 col-lg-1 text-center">{{ avaliacao.peso }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ avaliacao.periodo }}</td>
+                <td class="col-sm-12 col-lg-1 text-center"><button class="btn btn-block btn-warning text-center"
+                    (click)="alterarRegistrosAvaliacao(avaliacao)"><span
+                      class="fa fa-lg fa-pencil-square text-light"></span></button></td>
+                <!-- <td class="col-sm-12 col-lg-2 text-center"><button class="btn fa fa-2x fa-plus text-light bg-warning btn-block" [value]="avaliacao" (click)="alterarRegistrosAvaliacao(avaliacao)"></button></td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Listagem de avaliações</i>
+    </div>
+  </div>
+
+  <!--############################## TELA DE MODO DE ALTERAÇÃO DE AVALIAÇÕES ##############################-->
+  <div class="card text-center" *ngIf="modo_tela == modos_tela.alterar">
+    <div class="card-header bg-dark">
+
+      <div class="row">
+        <div class="col-lg-8 col-sm-2 mt-2 text-center">
+          <i class="fa fa-lg fa-bookmark-o text-light text-center"> Relação de notas - modificar avaliação</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('alterar-diario-avaliacao')"
+            class="btn btn-dark border-light form-control text-light btn-sm float-right"
+            (click)="listarAvaliacoesDiario()">Voltar</button>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('alterar-diario-avaliacao')"
+            class="btn btn-dark border-light form-control text-light btn-sm float-right"
+            (click)="salvarAlteracaoAvaliacoesDiario()">Salvar</button>
+        </div>
+        <div *ngIf="exibirAlerta" class="col-lg-12 col-sm-12 mt-2 text-warning text-center">
+          <strong>*Existem notas
+            ou campos não informados o com valores inválidos</strong></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-lg-3">
+          <input (change)="gravarDadosAvaliacao($event)" [value]="diarioAvaliacao.data_avaliacao"
+            (change)="validarGravacaoNotas()" name="data_avaliacao" id="data_avaliacao" class="form-control"
+            type="date">
+          <span class="text-muted"><small>Data da avaliação</small></span>
+        </div>
+        <div class="col-sm-12 col-lg-3">
+          <input type="number" (input)="gravarDadosAvaliacao($event)" [value]="diarioAvaliacao.valor"
+            (input)="validarGravacaoNotas()" (input)="verificarNotasErradas($event)" placeholder="Valor da avaliação..."
+            name="valor" id="valor" class="form-control">
+          <span class="text-muted"><small>Valor da avaliação</small></span>
+        </div>
+        <div class="col-sm-12 col-lg-3">
+          <input type="number" (input)="gravarDadosAvaliacao($event)" [value]="diarioAvaliacao.peso"
+            (input)="validarGravacaoNotas()" placeholder="Peso..." name="peso" id="peso" class="form-control">
+          <span class="text-muted"><small>Peso da avaliação</small></span>
+        </div>
+        <div class="col-sm-12 col-lg-3">
+          <select class="form-control" (change)="validarGravacaoNotas()" (change)="gravarDadosAvaliacao($event)"
+            name="periodo_letivo" id="periodo_letivo">
+            <option value="" disabled="disabled">Selecione o período letivo</option>
+            <option *ngFor="let periodoLetivo of arrayOfPeriodosLetivos"
+              [selected]="periodoLetivo.id === diarioAvaliacao.prl_id ? true : false" id="prl_id_{{ periodoLetivo.id }}"
+              [value]="periodoLetivo.id">{{ periodoLetivo.periodo }}</option>
+          </select>
+          <span class="text-muted"><small>Período letivo da avaliação</small></span>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-sm-12 col-lg-4">
+          <div class="col-sm-12 col-lg-12">
+            <textarea (input)="gravarDadosAvaliacao($event)" [value]="diarioAvaliacao.metodologia"
+              (input)="validarGravacaoNotas()" placeholder="Metodologia..." class="form-control mb-3 mt-2"
+              name="metodologia" id="metodologia" cols="30" rows="7"></textarea>
+          </div>
+          <div class="col-sm-12 col-lg-12">
+            <textarea (input)="gravarDadosAvaliacao($event)" [value]="diarioAvaliacao.objetivo"
+              (input)="validarGravacaoNotas()" placeholder="Objetivo..." class="form-control" name="objetivo"
+              id="objetivo" cols="30" rows="7"></textarea>
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-8">
+          <div class="row ml-2 mr-2 estudantes_chamada_3">
+            <table class="table table-striped table-hover">
+              <thead class="thead-light">
+                <tr class="row">
+                  <th class="col-sm-12 col-lg-2 text-center" scope="col">Matricula</th>
+                  <th class="col-sm-12 col-lg-9 text-center" scope="col">Nome</th>
+                  <th class="col-sm-12 col-lg-1 text-center" scope="col">Nota</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row" *ngFor="let nota of arrayOfRegistrosNotas">
+                  <td class="col-sm-12 col-lg-2 text-center">{{ nota.matricula }}</td>
+                  <td class="col-sm-12 col-lg-9 text-center">{{ nota.estudante }}</td>
+                  <td class="col-sm-12 col-lg-1 text-center"><input type="number" (input)="validarGravacaoNotas()"
+                      (input)="adicionarNotaEstudante(nota,$event)" class="form-control valores_notas"
+                      [value]="nota.valor"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Listagem de notas de estudantes</i>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,3 +1,63 @@
-<p>
-  listar-turma-disciplina-professor works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-11 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-list-ul text-light"> Turmas e disciplinas associadas ao professor</i>
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2">
+          <button class="btn btn-sm  btn-dark border-light text-light form-control"
+            (click)="gerenciarDiarioRegistro()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="turmas">
+        <table class="table table-striped table-hover">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-lg-1 text-center" scope="col">Série</th>
+              <th class="col-sm-12 col-lg-1 text-center" scope="col">Turma</th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col">Turno</th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col">Etapa</th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col">Disciplina</th>
+              <th class="col-sm-12 col-lg-4 text-center" scope="col">Lançar notas bimestrais</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row" *ngFor="let turmaDisciplina of arrayOfProfessorDisciplinasTurmas">
+              <td class="col-sm-12 col-lg-1 text-center">{{turmaDisciplina.serie_abreviada}}</td>
+              <td class="col-sm-12 col-lg-1 text-center">{{turmaDisciplina.turma}}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{turmaDisciplina.turno_abreviado}}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{turmaDisciplina.etapa_ensino_abreviada}}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{turmaDisciplina.disciplina_abreviada}}</td>
+
+              <td class="col-sm-12 col-lg-4 text-center"><button class="btn btn-warning btn-sm" (click)="lancarNotas(
+                      turmaDisciplina.dsp_id,
+                      turmaDisciplina.trm_id,
+                      turmaDisciplina.serie_abreviada,
+                      turmaDisciplina.turma,
+                      turmaDisciplina.turno_abreviado,
+                      turmaDisciplina.etapa_ensino_abreviada)">Lançar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
