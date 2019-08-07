@@ -1,0 +1,221 @@
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-sm-12 col-lg-12 text-center">
+          <i class="fa fa-lg fa-print text-light text-center"> Confeccionar cartões de acesso</i>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          (click)="gerenciarPortaria()">Gerenciar</button>
+        <div class="col-lg-1 col-sm-12"></div>
+        <!--############# CARTÃO SIMPLES - FRENTE id:0 #############-->
+        <button *ngIf="id_layout_selecionado === 0"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 btn-sm mt-2"
+          (click)="gerarCarteirinhaBasicoFrenteCanvasEPdf()">GerarDocumento</button>
+        <div class="col-lg-1 col-sm-12"></div>
+        <!--############# CARTÃO SIMPLES - FRENTE E VERSO id:1 #############-->
+        <button *ngIf="id_layout_selecionado === 1"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          (click)="gerarCarteirinhaBasicoFrenteVersoCanvasEPdf()">GerarDocumento</button>
+        <div class="col-lg-1 col-sm-12"></div>
+        <!--############# ETIQUETAS - id:2 #############-->
+        <button *ngIf="id_layout_selecionado === 2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          (click)="gerarCarteirinhaEtiquetaCanvasEPdf()">GerarDocumento</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="dropdown col-sm-12 col-lg-2">
+          <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonTurmas"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ stringTurmaSelecionada }}
+          </button>
+          <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonTurmas">
+            <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
+              name="{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno_abv }}"
+              class="dropdown-item">{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} -
+              {{ turma.turno_abv }} - Matriculados:&nbsp;<span
+                class="badge badge-success">{{ turma.matriculados }}</span> </a>
+          </div>
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2"></div>
+        <div class="dropdown col-sm-12 col-lg-2">
+          <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonLayouts"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ stringLayoutSelecionado }}
+          </button>
+          <div class="dropdown-menu layouts" aria-labelledby="dropdownMenuButtonLayouts">
+            <a *ngFor="let layout of layouts" (click)="selecionarLayout(layout)"
+              class="dropdown-item">{{ layout.name }}</a>
+          </div>
+        </div>
+      </div>
+
+      <!--############# CARTÃO SIMPLES - FRENTE id:0 #############-->
+      <div *ngIf="id_layout_selecionado === 0" class="row mt-3">
+        <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="card col-sm-12 col-lg-6 mb-4"
+          [id]="'cartao_'+estudante.id">
+          <div class="card-header bg-google text-center">
+            <div class="col-sm-12 col-lg-12 text-center text-dark align-middle">
+              <label>{{nomeRedeEnsino}}</label><br>
+              <label>{{nomeEscola}}</label>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-12 col-lg-3">
+                <div class="bg-white rounded mt-5">
+                  <img class="img rounded-circle" width="120" height="120"
+                    [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                    alt="foto do estudante">
+                </div>
+              </div>
+              <div class="col-sm-12 col-lg-9 text-left text-dark">
+                <div class="border-bottom border-secondary text-dark">
+                  <label class="text-small">Nome:</label><br>
+                  <strong><label>{{estudante.nome}}</label></strong>
+                </div>
+                <div class="border-bottom border-secondary text-dark">
+                  <label>Série-Etapa-turma-turno</label><br>
+                  <strong> <label>{{estudante.serie}} - {{estudante.etapa}} - {{estudante.turma}} -
+                      {{estudante.turno}}</label></strong>
+                </div>
+                <div class="text-dark">
+                  <label>Matricula:</label><br>
+                  <strong><label>{{estudante.matricula}}</label></strong>
+                </div>
+                <label>*documento de uso exclusivo para acesso a esta U.E</label>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-white">
+            <ngx-barcode class="col-sm-12 col-lg-8" [id]="'ngx_Barcode_'+estudante.id"
+              [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75">
+            </ngx-barcode>
+          </div>
+
+        </div>
+      </div>
+
+      <!--############# CARTÃO SIMPLES - FRENTE E VERSO id:1 #############-->
+      <div *ngIf="id_layout_selecionado === 1" class="mt-3">
+        <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="row"
+          [id]="'frente_verso'+estudante.id">
+          <!-- CARD FRENTE -->
+          <div class="card col-sm-12 col-lg-6 mb-4" [id]="'frente_cartao_'+estudante.id">
+            <div class="card-header bg-google text-dark">
+              <div class="row">
+                <div class="col-sm-12 col-lg-3 bg-google float-left">
+                  <img class="img rounded-bottom rounded-top" width="75" height="85"
+                    [src]="linkLogoEscola !== undefined && linkLogoEscola || 'assets/images/nologo.jpg'"
+                    alt="foto do estudante">
+                </div>
+                <div class="col-sm-12 col-lg-9 text-center align-middle">
+                  <label>{{nomeRedeEnsino}}</label>
+                  <label>{{nomeEscola}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="card-body text-dark">
+              <div class="row">
+                <div class="col-sm-12 col-lg-3 align-middle">
+                  <div class="align-middle mt-5">
+                    <img class="img rounded-circle" width="120" height="120"
+                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      alt="foto do estudante">
+                  </div>
+                </div>
+                <div class="col-sm-12 col-lg-9 text-left text-dark">
+                  <div class="border-bottom border-secondary">
+                    <label class="text-small">Nome:</label><br>
+                    <strong><label>{{estudante.nome}}</label></strong>
+                  </div>
+                  <div class="border-bottom border-secondary">
+                    <strong><label>Série-Etapa-turma-turno</label><br></strong>
+                    <strong><label>{{estudante.serie}} - {{estudante.etapa}} - {{estudante.turma}} -
+                        {{estudante.turno}}</label></strong>
+                  </div>
+                  <div>
+                    <strong><label>Matricula:</label></strong><br>
+                    <strong><label>{{estudante.matricula}}</label></strong>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="card-footer bg-google text-small text-dark">
+              <strong>*documento de uso exclusivo para acesso a esta U.E</strong>
+            </div>
+          </div>
+          <!-- CARD VERSO -->
+          <div class="card col-sm-12 col-lg-6 mb-4 text-dark" [id]="'verso_cartao_'+estudante.id">
+            <div class="card-header bg-white text-center">
+              <label>End.: {{enderecoEscola}}</label><br>
+              <label>Tel.: {{telefoneEscola}}</label><br>
+              <label>Cep.: {{cepEscola}}</label>
+            </div>
+            <div class="card-body">
+              <br><br><br>
+              <div class="row">
+                <div class="col-sm-12 col-lg-12 text-center">
+                  <div class="col-sm-12 col-lg-12">
+                    <label>________________________________________________________________________________</label>
+                  </div>
+                  <div class="col-sm-12 col-lg-12">
+                    <label>assinatura do diretor</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer bg-white">
+              <ngx-barcode class="col-sm-12 col-lg-8" [id]="'ngx_Barcode_'+estudante.id"
+                [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75">
+              </ngx-barcode>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--############# ETIQUETAS DE CÓDIGO DE BARRAS id:2 #############-->
+      <div *ngIf="id_layout_selecionado === 2" class="row mt-3">
+        <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="card col-sm-12 col-lg-4 mb-4"
+          [id]="'etiqueta_'+estudante.id">
+          <div class="card-body">
+            <div class="col-sm-12 col-lg-12 text-center">
+              <div class="row">
+                <div class="col-sm-12 col-lg-12 text-small text-center text-dark">
+                  <label>{{estudante.nome}}</label>
+                </div>
+                <div class="col-sm-12 col-lg-12 text-center">
+                  <ngx-barcode [id]="'ngx_Barcode_'+estudante.id" [bc-height]="40"
+                    [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75">
+                  </ngx-barcode>
+                </div>
+                <div class="col-sm-12 col-lg-12 text-small text-center text-dark">
+                  <label>{{estudante.serie}} - {{estudante.etapa}} - {{estudante.turma}} -{{estudante.turno}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

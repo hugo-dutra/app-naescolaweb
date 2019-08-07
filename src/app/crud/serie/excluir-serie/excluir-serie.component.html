@@ -1,3 +1,48 @@
-<p>
-  excluir-serie works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="mt-2 col-sm-12 col-lg-12 text-center">
+          <i class="fa fa-lg fa-level-up text-light text-center"> Série</i>
+          <button class="btn btn-outline-primary text-light btn-sm float-right" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h4>
+        <p class="text-danger">Deseja excluir esse registro !?</p>
+      </h4>
+      <div class="row m-3 form-group">
+        <input type="hidden" class="form-control">
+        <input autofocus type="text " readonly placeholder="Nome... " readonly
+          class="form-control mt-2 col-sm-12 col-lg-4 " value="{{ serie.nome }}" axlength="45 ">
+        <div class="mt-2 col-sm-12 col-lg-1 "></div>
+        <input type="text " readonly placeholder="Abreviatura... " readonly
+          class="form-control mt-2 col-sm-12 col-lg-7 " maxlength="5" value="{{ serie.ete_nome }}">
+      </div>
+      <div class="row m-2 form-group ">
+        <div class="mt-2 col-sm-12 col-lg-10 "></div>
+        <div class="mt-2 col-sm-12 col-lg-2 ">
+          <button type="submit " class="btn btn-danger form-control" (click)="excluir()">Excluir</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2 ">
+      <i class="fa fa-lg fa-info-circle text-light "> Excluir Série</i>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

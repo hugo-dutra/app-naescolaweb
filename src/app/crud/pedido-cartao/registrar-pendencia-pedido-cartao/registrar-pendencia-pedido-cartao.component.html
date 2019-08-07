@@ -1,0 +1,118 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark text-light text-center">
+      <div class="row text-center text-light">
+        <div class="col-sm-12 col-lg-2"></div>
+        <div class="col-sm-12 col-lg-8">
+          <i class="fa fa-lg fa-id-card-o">&nbsp;Procurar pedidos de cartão de acesso</i>
+        </div>
+        <div class="col-sm-12 col-lg-2">
+          <div *ngIf="exibirComponente('listar-pedido-cartao')"><button
+              class="btn btn-dark border-light form-control text-light btn-sm mt-2"
+              (click)="listarPedidos()">Voltar</button>
+          </div>
+        </div>
+      </div>
+      <div class="row float-left mt-2 ml-2">
+        <div class="input-group">
+          <input type="text" class="form-control col-sm-12 col-lg-12" placeholder="nome..."
+            (keydown)="filtrarEnter($event)" (input)="gravarValorFiltro($event)" aria-label="buscar por nome"
+            aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-dark border-light fa fa-search text-light" (click)="filtrarPedidoCartao()"
+              type="button">
+              Procurar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <!--FEEDBACK USUARIO-->
+
+      <!--TABELA COM RESULTADOS-->
+      <div class="row">
+        <div class="col-sm-12 col-lg-12 pedidos">
+          <table class="table table-striped table-hover rounded">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-2 text-center" scope="col"><span
+                    (click)="ordenarColuna('data')"><small>Data</small></span>
+                </th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col"><span
+                    (click)="ordenarColuna('modelo')"><small>Modelo</small></span></th>
+                <th class="col-sm-12 col-lg-3 text-center" scope="col"><span
+                    (click)="ordenarColuna('nome')"><small>Estudante</small></span></th>
+                <th class="col-sm-12 col-lg-3 text-center" scope="col"><span
+                    (click)="ordenarColuna('usuario')"><small>Usuário</small></span></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span
+                    (click)="ordenarColuna('status')"><small>Status</small></span></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span><small>Problema</small></span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let pedido of arrayOfPedidos">
+                <td class="col-sm-12 col-lg-2 text-center">{{ pedido.data | date:'dd/MM/yyyy' }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ pedido.modelo}}</td>
+                <td class="col-sm-12 col-lg-3 text-center">{{ pedido.nome }}</td>
+                <td class="col-sm-12 col-lg-3 text-center">{{ pedido.usuario }}</td>
+                <td class="col-sm-12 col-lg-1 text-center">{{ pedido.status }}</td>
+                <td class="col-sm-12 col-lg-1 text-center">
+
+                  <!-- Botão -->
+                  <button *ngIf="exibirComponente('inserir-pendencia-pedido-cartao')" data-toggle="modal"
+                    [attr.data-target]="'#ModalInserirPendenciaPedido'+pedido.id" class="btn btn-warning btn-sm"> <i
+                      class="fa fa-2x fa-plus-square text-light"></i></button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="ModalInserirPendenciaPedido{{ pedido.id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="InserirPendenciaPedido" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header bg-warning text-light">
+                          <h5 class="modal-title" id="ModalLabelPedido">Registrar problema em pedido</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-center">
+                          <p>Pedido de cartao do(a) estudante <b>{{ pedido.nome }}</b></p>
+                          <br>
+                          <textarea class="form-control" (input)="gravarDetalheProblema($event)"
+                            placeholder="Especifique aqui os detalhes..." name="detalhe_pendencia"
+                            id="detalhe_pendencia" cols="30" rows="10" maxlength="1000"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-info" data-dismiss="modal">Não</button>
+                          <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="registrarPendencia(pedido)">Registrar pendência</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bg-dark text-center text-light">
+      <i class="fa fa-lg fa-info-circle text-light">&nbsp;Comunicar problema ocorrido em solicitação de cartão de
+        acesso.</i>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

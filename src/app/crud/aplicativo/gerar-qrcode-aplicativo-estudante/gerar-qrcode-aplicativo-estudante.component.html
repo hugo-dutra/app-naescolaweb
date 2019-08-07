@@ -1,0 +1,82 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-sm-12 col-lg-10 text-center">
+          <i class="fa fa-lg fa-qrcode text-light text-center"> Gerar QRCode para aplicativo dos pais</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('gerenciar-aplicativo')"
+            class="btn btn-dark border-light form-control text-light btn-sm"
+            (click)="gerenciarAplicativo()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-lg-4 form-group">
+          <div class="dropdown col-sm-12 col-lg-12">
+            <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ stringTurmaSelecionada }}
+            </button>
+            <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButton">
+              <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" (change)="selecionarTurma($event)"
+                [id]="turma.id" name="{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }}"
+                class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
+                Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-6"></div>
+        <div class="col-sm-12 col-lg-2">
+          <button class="btn btn-dark text-light form-control" (click)="gerarQRCodeDocumentoPDF()">Gerar
+            documento</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div *ngIf="stringTurmaSelecionada != 'Selecione uma turma'" class="text-center col-sm-12 col-lg-12">
+          <b>{{stringTurmaSelecionada}}</b>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card col-sm-12 col-lg-6" *ngFor="let estudante of arrayOfEstudantes" [id]="'qrcode_'+estudante.id">
+          <div class="card-header bg-google text-center text-light">
+            {{estudante.nome}}
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="text-center col-md-9 col-lg-5">
+                <qr-code [value]="inep+'_'+estudante.matricula+'_'+estudante.nome" [size]="230"></qr-code>
+              </div>
+              <div class="col-md-3 col-lg-7">
+                <ul class="list-group">
+                  <li class="list-group-item">Baixe o aplicativo "NaEscola" na sua loja de aplicativos</li>
+                  <li class="list-group-item">Ao abrir o aplicativo, pressione o botão "Adicionar estudante"</li>
+                  <li class="list-group-item">Aponte a camera para o QRCode ao lado para concluir o cadastro</li>
+                  <li class="list-group-item">{{ stringTurmaSelecionada }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

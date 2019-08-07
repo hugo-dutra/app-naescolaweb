@@ -19,8 +19,7 @@ import { InserirObservacaoEstudanteComponent } from './inserir-observacao-estuda
 import { ListarEstudanteComponent } from './listar-estudante/listar-estudante.component';
 import { ListarObservacaoEstudanteComponent } from './listar-observacao-estudante/listar-observacao-estudante.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '../forms/forms.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -44,6 +43,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CommonModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     NgbPopoverModule,
     EstudanteRoutingModule

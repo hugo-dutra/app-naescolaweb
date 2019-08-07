@@ -1,3 +1,60 @@
-<p>
-  alterar-serie works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="mt-2 col-sm-12 col-lg-10 text-center">
+          <i class="fa fa-lg fa-level-up text-light text-center"> Série</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="formulario" (ngSubmit)="alterar()">
+      <div class="card-body">
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control">
+          <input autofocus type="text" placeholder="Nome..." class="form-control mt-2 col-sm-12 col-lg-3" name="nome"
+            maxlength="45" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+            value="{{ serie.nome }}">
+          <input type="text" placeholder="Abreviatura..." class="form-control mt-2 col-sm-12 col-lg-3"
+            name="abreviatura" maxlength="5" required (input)="modificarInputs($event)"
+            (focusout)="modificarInputs($event)" value="{{ serie.abreviatura }}">
+          <div class="mt-2 col-sm-12 col-lg-5">
+            <select name="etapasEnsino" class="form-control" required name="ete_id" (change)="modificarInputs($event)">
+              <option value="" disabled selected>Selecione uma etapa do ensino</option>
+              <option *ngFor="let etapa of etapasEnsino" [selected]="etapa.id === serie.ete_id ? true : false"
+                [value]="etapa.id">{{ etapa.abreviatura }} - {{ etapa.nome }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row m-3 form-group">
+          <div class="mt-2 col-sm-12 col-lg-10"></div>
+          <div class="mt-2 col-sm-12 col-lg-2">
+            <button type="submit" class="btn btn-primary form-control">Salvar</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Alterar Série</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Os registros marcados em vermelho devem ser
+        preenchidos</div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

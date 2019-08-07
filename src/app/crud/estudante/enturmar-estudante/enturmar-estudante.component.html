@@ -1,3 +1,73 @@
-<p>
-  enturmar-estudante works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="mt-2 col-sm-12 col-lg-12 text-center">
+          <i class="fa fa-lg fa-share-alt-square text-light text-center"> Enturmar estudantes</i>
+          <button type="submit" class="btn btn-primary btn-sm float-right mr-4"
+            (click)="enturmar($event)">Salvar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form>
+        <div class="row">
+          <div class="mt-2 col-sm-12 col-lg-4 form-group">
+            <div class="row">
+              <div class="dropdown mt-2 col-sm-12 col-lg-12">
+                <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ stringTurmaSelecionada }}
+                </button>
+                <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButton">
+                  <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
+                    name="{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }}"
+                    class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
+                    Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="mt-2 col-sm-12 col-lg-8">
+            <div class="estudantes">
+              <input type="text" class="form-control mb-2" placeholder="filtrar estudante..."
+                (input)="filtrarEstudante($event)" (keydown)="limparFiltro($event)">
+              <div class="ml-2">
+                <div *ngFor="let estudante of estudantes" class="form-group inline row" [@chamado]="estado">
+                  <input type="checkbox" class="form-control checkbox mt-2 col-sm-12 col-lg-1 float-left estudante"
+                    [name]="estudante.id" [checked]="statusCheck" (click)="gravaStatusEstudantes($event)"
+                    [value]="estudante.id" [id]="estudante.id">
+                  <label [for]="estudante.id" class="mt-2 col-sm-12 col-lg-11 text-left">
+                    <h4>{{ estudante.nome }}</h4>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="text-left text-dark">{{ enturmadosTotais }}</div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Enturmar estudantes</i>
+      <div class="row">
+        <div *ngIf="exibirAlerta" class="text-warning text-center mt-2 col-sm-12 col-lg-12">* Marque ao menos um
+          estudante</div>
+      </div>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

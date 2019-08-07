@@ -1,3 +1,63 @@
-<p>
-  importar-nota-boletim works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row text-center text-light">
+        <div class="mt-2 col-sm-12 col-lg-5" *ngIf="trm_id_selecionada > 0">
+          <label><i class="fa fa-lg fa-file-archive-o"></i> Importar boletim de planilha</label>
+        </div>
+        <div class="mt-2 col-sm-12 col-lg-5" *ngIf="trm_id_selecionada === 0">
+          <label><i class="fa fa-lg fa-file-archive-o"></i> Importar boletim de planilha</label>
+        </div>
+        <div class="mt-2 col-sm-12 col-lg-3" *ngIf="trm_id_selecionada > 0">
+          <button class="btn btn-sm btn-dark text-light border-light form-control"
+            (click)="gerarModeloPlanilhaBoletim()"><i class="fa fa-lg fa-download"></i> Baixar modelo
+            de planilha</button>
+        </div>
+        <div class="mt-2 col-sm-12 col-lg-3">
+          <label for="files" class="btn btn-sm text-light border-light form-control"><i class="fa fa-lg fa-upload"></i>
+            Enviar
+            arquivo com notas</label>
+          <input type="file" accept=".xlsx" (change)="enviarArquivo($event)" id="files" style="visibility: hidden;"
+            class="form-control mt-2 col-sm-12 col-lg-1">
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2">
+          <button class="btn btn-sm btn-dark border-light text-light form-control"
+            (click)="gerenciarDiarioProfessor()">Voltar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <select class="form-control mt-2 col-sm-12 col-lg-3" (change)="selecionarTurma($event)">
+          <option [value]="null" select disabled>Selecione uma turma</option>
+          <option *ngFor="let turma of turmas" [value]="turma.id">
+            {{ turma.serie_abv }} - {{ turma.etapa }} -
+            {{ turma.nome }} -
+            {{ turma.turno_abv }}</option>
+        </select>
+        <div class="col-lg-1 col-sm-12 mt-2"></div>
+        <select class="form-control mt-2 col-sm-12 col-lg-3" (change)="selecionarPeriodo($event)">
+          <option [value]="null" select disabled>Selecione um período</option>
+          <option *ngFor="let periodo of periodosLetivos" [value]="periodo.id">
+            {{ periodo.periodo }} - {{ periodo.inicio | date:'dd-MM-yyyy'}} -
+            {{ periodo.fim | date:'dd-MM-yyyy'}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

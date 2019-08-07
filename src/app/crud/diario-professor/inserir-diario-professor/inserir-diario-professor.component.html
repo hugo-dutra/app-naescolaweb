@@ -1,3 +1,124 @@
-<p>
-  inserir-diario-professor works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 text-center mt-2">
+          <i class="fa fa-lg fa-bookmark-o text-light text-center"> Criar diários</i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-3">
+          <div class="input-group">
+            <input type="text" class="form-control-sm" placeholder="nome..." (keydown)="filtrarEnter($event)"
+              (input)="gravarValorFiltro($event.target.value)" aria-label="buscar por nome"
+              aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-dark border-light fa fa-search text-light"
+                (click)="filtrarProfessoresHabilitados()" type="button">
+                Pesquisar</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7 col-sm-12 mt-2"></div>
+        <div class="col-sm-12 col-lg-2 mt-2">
+          <button *ngIf="exibirComponente('gerenciar-diario-professor')"
+            class="btn btn-dark border-light text-light btn-sm form-control"
+            (click)="gerenciarDiarioProfessor()">Gerenciar</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="dropdown pl-6 pt-2 pl-4 pb-2 col-sm-12 col-lg-3">
+        <button class="btn btn-outline-dark dropdown-toggle float-left" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Exibir {{ saltarQuantidade }} registros por vez
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" (click)="listarQuantidade(5)">5</a>
+          <a class="dropdown-item" (click)="listarQuantidade(10)">10</a>
+          <a class="dropdown-item" (click)="listarQuantidade(15)">15</a>
+          <a class="dropdown-item" (click)="listarQuantidade(20)">20</a>
+          <a class="dropdown-item" (click)="listarQuantidade(25)">25</a>
+          <a class="dropdown-item" (click)="listarQuantidade(50)">50</a>
+          <a class="dropdown-item" (click)="listarQuantidade(100)">100</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="professores col-sm-12 col-lg-12 mt-2">
+          <table class="table table-striped table-hover">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-8 text-left" scope="col"><span
+                    (click)="ordenarColuna('professor')">Professor</span></th>
+                <th class="col-sm-12 col-lg-2 text-left" scope="col"><span
+                    (click)="ordenarColuna('disciplina')">Disciplina</span></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span>Criar diários</span></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span>Ver diários</span></th>
+              </tr>
+            </thead>
+            <tbody *ngIf="arrayOfProfessoresHabilitados !== null">
+              <tr class="row" *ngFor="let professorHabilitado of arrayOfProfessoresHabilitados">
+                <td class="col-sm-12 col-lg-8 text-left">{{ professorHabilitado.professor }}</td>
+                <td class="col-sm-12 col-lg-2 text-left">{{ professorHabilitado.disciplina }}</td>
+                <td class="col-sm-12 col-lg-1 text-center"><button
+                    class="btn btn-warning text-white fa fa-lg fa-10x fa-plus-square"
+                    [name]="professorHabilitado.prd_id" [id]="professorHabilitado.prd_id"
+                    [value]="professorHabilitado.prd_id" (click)="criarDiarioProfessorDisciplina($event)"></button></td>
+                <td class="col-sm-12 col-lg-1 text-center"><button
+                    class="btn btn-primary text-white fa fa-lg fa-10x fa-eye" [name]="professorHabilitado.prd_id"
+                    [id]="professorHabilitado.prd_id" [value]="professorHabilitado.prd_id"
+                    (click)="verDiariosProfessorDisciplina(professorHabilitado)"></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <nav aria-label="..." class="float-right">
+        <ul class="pagination">
+          <li class="page-item" *ngIf="navegacaoInicio === undefined || navegacaoInicio === true">
+            <a class="page-link fa fa-arrow-left text-danger" (click)="navegarAnterior()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoInicio === false">
+            <a class="page-link fa fa-arrow-left" (click)="navegarAnterior()"></a>
+          </li>
+
+          <li class="page-item" *ngIf="navegacaoFim === true">
+            <a class="page-link fa fa-arrow-right text-danger" (click)="navegarProximo()"></a>
+          </li>
+          <li class="page-item" *ngIf="navegacaoFim === false || navegacaoFim === undefined">
+            <a class="page-link fa fa-arrow-right" (click)="navegarProximo()"></a>
+          </li>
+        </ul>
+      </nav>
+
+    </div>
+    <div class="card-footer text-muted bg-dark text-center">
+      <i *ngIf="feedbackUsuario === undefined && (navegacaoFim === false || navegacaoFim === undefined)"
+        class="fa fa-lg fa-info-circle text-light"> Listagem de professores e disciplinas - Exibindo
+        {{ offsetRegistros+1 }} ao {{ offsetRegistros +
+        saltarQuantidade
+        > totalRegistros ? totalRegistros : offsetRegistros + saltarQuantidade }} de {{ totalRegistros }}</i>
+      <i *ngIf="feedbackUsuario !== undefined" class="fa fa-lg fa-question-circle text-light">
+        Atualizando</i>
+      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-lg fa-info-circle text-light">
+        Listagem de Escolas - Exibindo registros finais do total de {{ totalRegistros }}</i>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

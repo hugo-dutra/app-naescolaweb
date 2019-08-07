@@ -1,6 +1,7 @@
 // import { Turma } from "../crud/turma/turma.model"
 import { Utils } from "./utils.shared";
 import { HttpHeaders } from '@angular/common/http';
+import { Turma } from '../crud/turma/turma.model';
 
 export class CONSTANTES {
 
@@ -23,7 +24,7 @@ export class CONSTANTES {
   public static GIF_WAITING_HEIGTH = 75;
 
   //*****************LISTAGEM DE TURMAS PADRAO******************/
-  public static TURMAS_PADRAO: Object /*Turma*/[] = [
+  public static TURMAS_PADRAO: Turma /*Turma*/[] = [
     { id: null, ano: null, esc_id: null, nome: "A", sre_id: null, trn_id: null },
     { id: null, ano: null, esc_id: null, nome: "B", sre_id: null, trn_id: null },
     { id: null, ano: null, esc_id: null, nome: "C", sre_id: null, trn_id: null },

@@ -1,0 +1,77 @@
+<!--##############################################################################################-->
+<div class="container-fluid container-card" [@chamado]="estado">
+
+  <div class="row">
+    <div *ngIf="exibirComponente('sincronizar-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4"
+      (click)="sincronizarAplicativo()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-mobile text-primary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Sincronizar estudantes no aplicativo
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')" class="col-sm-12 col-md-4 col-lg-4"
+      (click)="gerarQrcodeAplicativoEstudante()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-qrcode text-dark"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Gerar QRCode para aplicativo
+          </div>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4"
+      (click)="baixarFotosEstudanteAplicativo()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-cloud-download text-success"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Baixar fotos do obtidas pelo aplicativo
+          </div>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')" class="col-sm-12 col-md-4 col-lg-4"
+      (click)="gerarQrcodeAplicativoAdministrativo()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-qrcode text-danger"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Gerar QRCode para aplicativo administrativo
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--###############################################################################################-->

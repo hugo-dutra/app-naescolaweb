@@ -1,3 +1,80 @@
-<p>
-  alterar-turma works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="mt-2 col-sm-12 col-lg-10 text-center">
+          <i class="fa fa-lg fa-group text-light text-center"> Turma</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="formulario" (ngSubmit)="alterar()">
+      <div class="card-body">
+        <div class="row m-3 form-group">
+          <input type="hidden" class="form-control">
+
+          <div class="mt-2 col-sm-12 col-lg-4">
+            <select name="escola" class="form-control" required name="esc_id" (change)="modificarInputs($event)">
+              <option value="" disabled selected>Selecione uma escola</option>
+              <option *ngFor="let escola of escolas" [selected]="escola.id === turma.esc_id ? true : false"
+                [value]="escola.id">{{
+                  escola.nome }}</option>
+            </select>
+          </div>
+          <div class="mt-2 col-sm-12 col-lg-3">
+            <select name="serie" class="form-control" required name="sre_id" (change)="modificarInputs($event)">
+              <option value="" disabled selected>Selecione uma série</option>
+              <option *ngFor="let serie of series" [selected]="serie.id === turma.sre_id ? true : false"
+                [value]="serie.id">{{
+                  serie.nome }} - {{ serie.ete_abreviatura }}</option>
+            </select>
+          </div>
+          <div class="mt-2 col-sm-12 col-lg-3">
+            <select name="turma" class="form-control" required name="nome" (change)="modificarInputs($event)">
+              <option value="" disabled selected>Selecione uma turma</option>
+              <option *ngFor="let trm of turmas" [selected]="trm.nome === turma.nome ? true : false" [value]="trm.nome">{{
+                  trm.nome }}</option>
+            </select>
+          </div>
+
+          <div class="mt-2 col-sm-12 col-lg-2">
+            <select name="etapasEnsino" class="form-control" required name="trn_id" (change)="modificarInputs($event)">
+              <option value="" disabled selected>Selecione um turno</option>
+              <option *ngFor="let turno of turnos" [selected]="turno.id === turma.trn_id ? true : false"
+                [value]="turno.id">{{
+                  turno.nome }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row m-3 form-group">
+          <div class="mt-2 col-sm-12 col-lg-10"></div>
+          <div class="mt-2 col-sm-12 col-lg-2">
+            <button type="submit" class="btn btn-primary form-control">Salvar</button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Alterar turma</i>
+      <div *ngIf="exibirAlerta" class="text-warning">* Os registros marcados em vermelho devem ser
+        preenchidos</div>
+    </div>
+  </div>
+
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>

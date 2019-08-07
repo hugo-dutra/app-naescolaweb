@@ -1,0 +1,146 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 mt-2 text-center">
+          <div class="row">
+            <i class="fa fa-lg fa-id-card-o text-light text-center col-sm-12 col-lg-9 mt-2"> Solicitar cartões de
+              acesso</i>
+            <button *ngIf="exibirComponente('listar-pedido-cartao')"
+              class="btn btn-dark border-light form-control text-light btn-sm col-sm-12 col-lg-1 mt-2"
+              (click)="listarPedido()">Listar
+              pedidos</button>
+            <div class="col-lg-1 col-sm-12 mt-2"></div>
+            <button class="btn btn-dark border-light form-control text-light btn-sm col-sm-12 col-lg-1 mt-2"
+              data-toggle="modal" data-target="#ModalPedido" (click)="calcularTodalPedido()">Enviar pedido</button>
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="ModalPedido" tabindex="-1" role="dialog" aria-labelledby="ModalLabelPedido"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-dark text-light">
+                  <h5 class="modal-title" id="ModalLabelPedido">Confirmar pedido</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h5> Deseja confirmar a solicitação para {{ arrayOfItensPedido.length }} estudantes ?! </h5>
+                  <h5> Total do pedido: {{ totalPedido | currency:'BRL' }} </h5>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
+                  <button type="button" class="btn btn-info" data-dismiss="modal" (click)="efetuarPedido()">Confirmar
+                    pedido</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-lg-4">
+          <select name="turma" id="turma" class="form-control" (change)="selecionarEstudantesTurma($event)">
+            <option value="" disabled="disabled">Selecione uma turma</option>
+            <option *ngFor="let turma of turmas" [value]="turma.id">{{ turma.serie }} {{ turma.nome }} - {{
+                turma.etapa}} - {{ turma.turno }}</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-lg-1"></div>
+        <div class="col-sm-12 col-lg-5">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-12">&nbsp;</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-6">
+          <div class="estudantes">
+            <div class="mb-2">
+              <select name="modelos-cartao-todos" id="modelos-cartao-todos" class="form-control"
+                (change)="adicionarTodos($event)">
+                <option value="" disabled="disabled">Selecione um modelo para todos os estudantes</option>
+                <option *ngFor="let modeloCartao of modelosCartao; index as idx_modelo"
+                  [value]="modeloCartao.id+'|'+modeloCartao.nome+'|'+modeloCartao.valor+'|'+idx_modelo">
+                  {{ modeloCartao.nome }}</option>
+              </select>
+            </div>
+            <table class="table table-striped table-hover">
+              <thead class="thead-light">
+                <th class="row">Selecione um modelo para adicionar o estudante ao pedido</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let estudante of estudantes" class="row">
+                  <td class="col-sm-12 col-lg-5">
+                    <select *ngIf="estudante.foto !='' && estudante.foto != null && estudante.foto != undefined;"
+                      name="modelos-cartao" id="modelos-cartao" class="form-control"
+                      (change)="adicionarEstudante($event)">
+                      <option value="" disabled="disabled">Modelo</option>
+                      <option *ngFor="let modeloCartao of modelosCartao"
+                        [value]="modeloCartao.id+'|'+modeloCartao.nome+'|'+modeloCartao.valor +'|'+estudante.id+'|'+estudante.nome">
+                        {{ modeloCartao.nome }}</option>
+                    </select>
+                  </td>
+                  <td class="col-sm-12 col-lg-7">
+                    <label
+                      *ngIf="estudante.foto !='' && estudante.foto != null && estudante.foto != undefined; else semFoto"
+                      class="text-left" id="estudante.id">{{ estudante.nome }} <br> Pedidos:
+                      <b>{{ estudante.pedidos }}</b> </label>
+                    <ng-template #semFoto>
+                      <label class="text-left text-danger" id="estudante.id">{{ estudante.nome }} <span
+                          class="text-muted text-danger"> *sem foto</span></label>
+                    </ng-template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-lg-6">
+          <div class="estudantes">
+            <table class="table table-striped table-hover">
+              <thead class="thead-light">
+                <th class="row">Estudantes e modelos de cartão selecionados</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let itemPedido of arrayOfItensPedido" class="row">
+                  <td class="col-sm-12 col-lg-2">
+                    <button class="btn btn-danger fa fa-lg fa-remove" [id]="itemPedido.Estudante.id"
+                      (click)="removerItemPedido($event)"></button>
+                  </td>
+                  <td class="col-sm-12 col-lg-9">
+                    <label class="text-left">{{ itemPedido.Estudante.nome }} &nbsp; <i
+                        class="fa fa-lg fa-arrow-circle-o-right"></i>
+                      &nbsp; {{ itemPedido.Modelo.nome }}</label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-light text-center bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Solicitação de cartões acesso</i>
+    </div>
+  </div>
+</div>
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-sm-12 col-lg-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-sm-12 col-lg-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

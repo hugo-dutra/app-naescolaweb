@@ -1,0 +1,35 @@
+<!--##############################################################################################-->
+<div class="container-fluid container-card">
+
+  <div class="row">
+    <div *ngIf="exibirComponente('listar-pedido-cartao')" class="col-lg-3 col-sm-12 mt-2 "
+      (click)="listarPedidoCartao()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-list text-primary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Listar pedidos de cartões
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('confeccionar-cartao-acesso')" class="col-lg-3 col-sm-12 mt-2"
+      (click)="confeccionarCartaoAcesso()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-print text-primary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Confectionar cartão de acesso
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--###############################################################################################-->
