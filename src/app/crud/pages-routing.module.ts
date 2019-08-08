@@ -48,7 +48,13 @@ const routes: Routes = [{
     { path: 'listar-permissao-acesso', loadChildren: () => import('./permissao-acesso/permissao-acesso.module').then(m => m.PermissaoAcessoModule), },
     { path: 'listar-periodo-letivo', loadChildren: () => import('./periodo-letivo/periodo-letivo.module').then(m => m.PeriodoLetivoModule), },
     { path: 'listar-estudante', loadChildren: () => import('./estudante/estudante.module').then(m => m.EstudanteModule), },
+
+    /* REDIRECTS */
     { path: 'enturmar-estudante', redirectTo: 'listar-estudante/enturmar-estudante', pathMatch: 'full', },
+    { path: 'inserir-observacao-estudante', redirectTo: 'listar-estudante/inserir-observacao-estudante', pathMatch: 'full', },
+
+    { path: 'listar-pedido-cartao-entidade', redirectTo: 'gerenciar-pedido-cartao/listar-pedido-cartao-entidade', pathMatch: 'full', },
+
     /* REPORTS */
     { path: 'gerenciar-relatorio-rendimento', loadChildren: () => import('../report/rendimento/rendimento.module').then(m => m.RendimentoModule), },
     /***********/

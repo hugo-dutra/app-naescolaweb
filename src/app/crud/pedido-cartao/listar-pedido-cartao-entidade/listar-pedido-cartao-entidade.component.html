@@ -1,3 +1,129 @@
-<p>
-  listar-pedido-cartao-entidade works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header text-light bg-dark text-center">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2">
+          <i class="fa fa-lg fa-id-card-o">&nbsp;Listar pedidos de cartões de acesso</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('listar-pendencia-pedido-cartao-entidade')"
+            class="btn btn-dark border-light form-control text-light btn-sm float-right"
+            (click)="listarPendencia()">Listar
+            pendências<span *ngIf="problemasPendentes > 0"
+              class="badge badge-danger text-light pull-right bottom-right">
+              <b>{{ problemasPendentes }}</b>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <!--CONSTROLES DO FILTRO-->
+      <div class="row">
+        <div class="form-group col-sm-12 col-lg-2 mr-5">
+          <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ data_inicio }}"
+            (change)="gravarData($event)">
+          <label for="data_inicio" class="text-muted"> <small>Data inicial</small></label>
+        </div>
+        <div class="form-group col-sm-12 col-lg-2 mr-5">
+          <input type="date" class="form-control" id="data_fim" name="data_fim" value="{{ data_fim }}"
+            (change)="gravarData($event)">
+          <label for="data_fim" class="text-muted"> <small>Data final</small></label>
+        </div>
+        <div class="col-sm-12 col-lg-4"></div>
+        <div class="form-group col-sm-12 col-lg-2">
+          <button class="btn btn-primary col-sm-12 col-lg-12" (click)="listar($event)">Listar</button>
+        </div>
+      </div>
+      <!--FEEDBACK USUARIO-->
+
+      <!--TABELA COM RESULTADOS-->
+      <div class="row m-2">
+        <div class="col-sm-12 col-lg-12 pedidosCartao">
+          <table class="table table-striped table-hover rounded">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-1 text-left" scope="col"><small (click)="ordenarColuna('data')">Data</small>
+                </th>
+                <th class="col-sm-12 col-lg-2 text-left" scope="col"><small
+                    (click)="ordenarColuna('usuario')">Usuário</small></th>
+                <th class="col-sm-12 col-lg-1 text-left" scope="col"><small
+                    (click)="ordenarColuna('escola')">Escola</small></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><small
+                    (click)="ordenarColuna('status')">Status</small></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><small
+                    (click)="ordenarColuna('quantidade')">Quant.</small>
+                </th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><small
+                    (click)="ordenarColuna('valor')">Valor</small></th>
+                <th class="col-sm-12 col-lg-1 text-left" scope="col"><small
+                    (click)="ordenarColuna('data_conclusao')">Conclusão</small></th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col"><small
+                    (click)="ordenarColuna('status')">Status</small></th>
+                <th *ngIf="exibirComponente('detalhar-pedido-cartao-entidade')" class="col-sm-12 col-lg-1 text-left"
+                  scope="col">
+                  <small>Detalhes</small></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><small>Pagamento</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let pedido of arrayOfPedidos">
+                <td class="col-sm-12 col-lg-1 text-left"><small>{{ pedido.data | date:'dd/MM/yyyy' }}</small></td>
+                <td class="col-sm-12 col-lg-2 text-left"><small>{{ pedido.usuario }}</small></td>
+                <td class="col-sm-12 col-lg-1 text-left"><small>{{ pedido.escola }}</small></td>
+                <td class="col-sm-12 col-lg-1 text-center" [ngSwitch]="pedido.status">
+                  <span *ngSwitchCase="'pendente'" class="text-warning"><small>{{ pedido.status }}</small></span>
+                  <span *ngSwitchCase="'impresso'" class="text-primary"><small>{{ pedido.status }}</small></span>
+                  <span *ngSwitchCase="'pago'" class="text-muted"><small>{{ pedido.status }}</small></span>
+                  <span *ngSwitchCase="'entregue'" class="text-dark"><small>{{ pedido.status }}</small></span>
+                  <span *ngSwitchCase="'cancelado'" class="text-danger"><small>{{ pedido.status }}</small></span>
+                  <span *ngSwitchCase="'confeccionando'" class="text-success"><small>{{ pedido.status }}</small></span>
+                  <span *ngSwitchDefault>{{ pedido.status }}</span>
+                </td>
+                <td class="col-sm-12 col-lg-1 text-center"><small>{{ pedido.quantidade }}</small></td>
+                <td class="col-sm-12 col-lg-1 text-center"><small>{{ pedido.valor | currency:'BRL' }}</small></td>
+                <td class="col-sm-12 col-lg-1 text-left"><small>{{ pedido.data_conclusao | date:'dd/MM/yyyy' }}</small>
+                </td>
+                <td class="col-sm-12 col-lg-2 text-center">
+                  <select *ngIf="pedido.status!='cancelado'" class="form-control" name="select-status"
+                    id="'select-status'{{ pedido.id }}" (change)="mudarStatusPedido(pedido,$event)">
+                    <option value="" disabled="disabled">Ação...</option>
+                    <option value="0">pendente</option>
+                    <option value="5">confeccionando</option>
+                    <option value="1">Impresso</option>
+                    <option value="2">Pago</option>
+                    <option value="3">Entregue</option>
+                  </select>
+                </td>
+                <td *ngIf="exibirComponenteDetalhar" class="col-sm-12 col-lg-1"><button
+                    class="btn btn-success btn-sm btn-block" value="{{ pedido.id }}"
+                    (click)="detalharPedido(pedido.id)"><i class="fa fa-lg fa-question-circle"></i></button></td>
+                <td class="text-center col-sm-12 col-lg-1"><a [href]="pedido.checkoutUrl" target="_blank"><button
+                      class="btn btn-sm btn-warning btn-block text-light"><i
+                        class="fa fa-lg fa-question-circle"></i></button></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-light bg-dark text-center">
+      <i class="fa fa-lg fa-info-circle">&nbsp;Listagem de solicitações de cartão de acesso</i>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

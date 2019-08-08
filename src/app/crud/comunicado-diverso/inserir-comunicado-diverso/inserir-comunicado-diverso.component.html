@@ -1,3 +1,97 @@
-<p>
-  inserir-comunicado-diverso works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark text-center">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2">
+          <i class="fa fa-lg fa-comments text-light">&nbsp;Comunicados</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-comunicado-diverso')"
+            class="btn btn-sm btn-dark border-light form-control text-light" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="row ml-1">
+          <!-- SELECIONAR TURNO E CHAMAR TURMAS DESSE TURNO -->
+          <select name="select-turno" id="select-turno" class="form-control col-sm-12 col-lg-2 mt-2"
+            (change)="selecionarTurno($event)">
+            <option value="" selected="selected">Selecione um turno</option>
+            <option value="-1">Todos os turnos</option>
+            <option *ngFor="let turno of arrayOfTurnos" [value]="turno.id">{{ turno.nome }}</option>
+          </select>
+          <!-- SELECIONAR TURMA E CHAMAR ESTUDANTES RELACIONADOS -->
+          <select name="select-turma" id="select-turma" class="form-control col-sm-12 col-lg-2 mt-2"
+            (change)="selecionarTurma($event)">
+            <option value="" selected="selected">Selecione uma turma</option>
+            <option value="-1">Todas as turmas</option>
+            <option *ngFor="let turma of arrayOfTurmas" [value]="turma.id">{{ turma.serie }} {{ turma.turma }} - {{
+              turma.turno }}</option>
+          </select>
+          <div class="col-sm-12 col-lg-5 mt-2">
+          </div>
+          <div class="col-sm-12 col-lg-2 mt-2">
+            <button class="btn btn-primary float-right" (click)="enviarComunicado()"> <i
+                class="fa fa-lg fa-comment"></i>&nbsp;Enviar
+              comunicado</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row col-sm-12 col-lg-5">
+            <div class="col-sm-12 col-lg-12 mt-2">
+              <input type="text" class="form-control" name="input-titulo" id="input-titulo" placeholder="Assunto..."
+                maxlength="50" (input)="gravarAssunto($event)">
+            </div>
+            <div class="col-sm-12 col-lg-12 mt-2">
+              <textarea name="textarea-conteudo" id="textarea-conteudo" cols="30" rows="20" class="form-control"
+                placeholder="Mensagem..." maxlength="1000" (input)="gravarMensagem($event)"></textarea>
+            </div>
+          </div>
+          <div class="estudantes col-sm-12 col-lg-7 mt-2">
+            <div class="row">
+              <table class="table table-striped table-hover">
+                <thead class="thead-light">
+                  <tr class="row">
+                    <th class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox"
+                        (click)="selecionarTodosEstudantes($event)">
+                    </th>
+                    <th class="col-sm-12 col-lg-11 text-left" scope="col">Nome<small
+                        class="text-muted text-right float-right"> {{
+                      mensagemSelecionados }} </small></th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="arrayOfEstudantes !== null">
+                  <tr class="row" *ngFor="let estudante of arrayOfEstudantes">
+                    <td class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox" [value]="estudante.id"
+                        [name]="estudante.id" [id]="estudante.id" (click)="adicionarComunicado($event)"></td>
+                    <td class="col-sm-12 col-lg-11 text-left">&nbsp;{{ estudante.nome }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bg-dark text-center text-light">
+      <i class="fa fa-lg fa-info-circle">&nbsp;Envio de comunicados diversos</i>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
