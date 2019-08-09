@@ -10,11 +10,25 @@ import { InserirPortariaComponent } from './inserir-portaria/inserir-portaria.co
 import { ListarPortariaComponent } from './listar-portaria/listar-portaria.component';
 import { VerificarAbsenteismoPortariaComponent } from './verificar-absenteismo-portaria/verificar-absenteismo-portaria.component';
 import { VerificarFrequenciaPortariaComponent } from './verificar-frequencia-portaria/verificar-frequencia-portaria.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AlterarPortariaComponent, ExcluirPortariaComponent, GerenciarPortariaComponent, InserirCronogramaPortariaComponent, InserirPortariaComponent, ListarPortariaComponent, VerificarAbsenteismoPortariaComponent, VerificarFrequenciaPortariaComponent],
+  declarations: [
+    AlterarPortariaComponent,
+    ExcluirPortariaComponent,
+    GerenciarPortariaComponent,
+    InserirCronogramaPortariaComponent,
+    InserirPortariaComponent,
+    ListarPortariaComponent,
+    VerificarAbsenteismoPortariaComponent,
+    VerificarFrequenciaPortariaComponent
+  ],
   imports: [
     CommonModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     PortariaRoutingModule
   ]
 })

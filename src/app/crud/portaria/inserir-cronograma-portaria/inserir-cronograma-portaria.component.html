@@ -1,3 +1,83 @@
-<p>
-  inserir-cronograma-portaria works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-id-badge text-light text-center"> Cronograma da portaria ({{nomePortaria}})</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark border-light form-control text-light btn-sm"
+            *ngIf="exibirComponente('listar-portaria')" (click)="listarPortarias()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row border-bottom mb-5">
+        <div class=" col-sm-12 col-lg-2 mt-2">
+          <input class="form-control" type="time" name="horarioInicio" id="horarioInicio"
+            (change)="gravarAtributoCronograma($event)">
+          <label for="horarioInicio" class="text-small text-muted float-left">Horário inicio</label>
+        </div>
+        <div class=" col-sm-12 col-lg-2 mt-2">
+          <input class="form-control" type="time" name="horarioFim" id="horarioFim"
+            (change)="gravarAtributoCronograma($event)">
+          <label for="horarioFim" class="text-small text-muted float-left">Horário fim</label>
+        </div>
+        <div class=" col-sm-12 col-lg-4 mt-2">
+          <select class="form-control text-muted" name="modoPortaria" id="modoPortaria"
+            (change)="gravarAtributoCronograma($event)">
+            <option disabled="disabled">Selecione o modo da portaria</option>
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saida</option>
+          </select>
+        </div>
+        <div class=" col-sm-12 col-lg-2 mt-2"></div>
+        <div class=" col-sm-12 col-lg-2 mt-2">
+          <button class="btn btn-warning form-control" (click)="inserir()"><i
+              class="fa fa-lg fa-plus-square text-light"></i></button>
+        </div>
+      </div>
+      <table class="table table-striped table-hover">
+        <thead class="thead-light">
+          <tr class="row">
+            <th class=" col-sm-12 col-lg-4 text-center" scope="col">Horário início</th>
+            <th class=" col-sm-12 col-lg-4 text-center" scope="col">Horário fim</th>
+            <th class=" col-sm-12 col-lg-2 text-center" scope="col">Moto de operação</th>
+            <th class=" col-sm-12 col-lg-2 text-center" scope="col"><span
+                *ngIf="exibirComponente('excluir-cronograma-portaria')">Excluir</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row" *ngFor="let cronogramaPortaria of cronogramasPortaria" [@chamado]="estado">
+            <td class=" col-sm-12 col-lg-4 text-center">{{ cronogramaPortaria.horario_inicio }}</td>
+            <td class=" col-sm-12 col-lg-4 text-center">{{ cronogramaPortaria.horario_fim }}</td>
+            <td class=" col-sm-12 col-lg-2 text-center">{{ cronogramaPortaria.modo_portaria }}</td>
+            <td class=" col-sm-12 col-lg-2 text-center">
+              <button *ngIf="exibirComponenteExcluir" class="btn btn-danger form-control btn-sm" value="{{ portaria }}"
+                (click)="excluir(cronogramaPortaria)">Excluir</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Cronogramas de mudança automática de função
+        entrada/saída
+      </i>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

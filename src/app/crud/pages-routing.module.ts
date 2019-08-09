@@ -52,16 +52,16 @@ const routes: Routes = [{
     /* REDIRECTS */
     { path: 'enturmar-estudante', redirectTo: 'listar-estudante/enturmar-estudante', pathMatch: 'full', },
     { path: 'inserir-observacao-estudante', redirectTo: 'listar-estudante/inserir-observacao-estudante', pathMatch: 'full', },
-
+    { path: 'receber-alerta-ocorrencia', redirectTo: 'gerenciar-alerta-ocorrencia/receber-alerta-ocorrencia', pathMatch: 'full', },
     { path: 'listar-pedido-cartao-entidade', redirectTo: 'gerenciar-pedido-cartao/listar-pedido-cartao-entidade', pathMatch: 'full', },
 
     /* REPORTS */
     { path: 'gerenciar-relatorio-rendimento', loadChildren: () => import('../report/rendimento/rendimento.module').then(m => m.RendimentoModule), },
-    /***********/
+
 
     /* SHARED */
     { path: 'listar-boleto-bancario-mensalidade', loadChildren: () => import('../shared/financeiro/boleto-bancario/boleto-bancario.module').then(m => m.BoletoBancarioModule), },
-    /***********/
+
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
     { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },

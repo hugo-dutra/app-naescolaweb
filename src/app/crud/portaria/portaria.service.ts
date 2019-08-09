@@ -102,7 +102,6 @@ export class PortariaService {
    */
   public verificarPassagemMaisRecente(esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
     return this.http.post(
       CONSTANTES.HOST_API + "verificar-passagem-recente-escola",
       JSON.stringify({ esc_id: esc_id }),

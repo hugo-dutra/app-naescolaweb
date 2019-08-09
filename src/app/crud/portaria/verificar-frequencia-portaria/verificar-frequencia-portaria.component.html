@@ -1,3 +1,119 @@
-<p>
-  verificar-frequencia-portaria works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="mt-2 col-sm-12 col-lg-12">
+          <div class="row">
+            <div class="mt-2 col-sm-12 col-lg-10 text-center">
+              <i class="fa fa-lg fa-id-badge text-light text-center"> Frequencia de estudantes</i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="mt-2 col-sm-12 col-lg-2 mt-2">
+              <input type="date" class="form-control" id="data-estudantes-presentes" (change)="atualizarData($event)"
+                [value]="dataAtual">
+            </div>
+            <div class="mt-2 col-sm-12 col-lg-2">
+              <div class="dropdown">
+                <button class="btn btn-dark border-light text-light dropdown-toggle" type="button"
+                  id="dropdownMenuButtonTurmas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ stringTurmaSelecionada }}
+                </button>
+                <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonTurmas">
+                  <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
+                    name="{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }}"
+                    class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
+                    Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2 col-sm-12 col-lg-3"></div>
+            <div class="mt-2 col-sm-12 col-lg-2 float-right">
+              <button class="form-control btn btn-dark border-light form-control mt-2 text-light"
+                (click)="verificarEstudantesPresentes()">Verificar presenças</button>
+            </div>
+            <div class="mt-2 col-sm-12 col-lg-1"></div>
+            <div class="col-lg-2 col-sm-12 mt-2">
+              <button class="btn btn-dark border-light form-control mt-2 text-light btn-sm float-right"
+                (click)="gerenciarPortaria()">Gerenciar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div *ngFor="let estudante of estudantesTurmaSelecionada" class="mt-1 col-sm-12 col-md-6 col-lg-3">
+          <div class="card mb-1">
+            <div class="card-body bg-light text-dark rounded">
+              <div class="row">
+                <div class="mt-2 col-sm-12 col-lg-6">
+                  <div *ngIf="estudante.presente == false" class="background-danger p-1 rounded">
+                    <img class="img-fluid rounded-circle" width="75" height="75"
+                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      alt="foto do estudante">
+                  </div>
+                  <div *ngIf="estudante.presente == true" class="background-sucess  p-1 rounded">
+                    <img class="img-fluid rounded-circle" width="75" height="75"
+                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      alt="foto do estudante">
+                  </div>
+                </div>
+                <div class="mt-2 col-sm-12 col-lg-6 text-small capitalize">
+                  <p>{{estudante.nome}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer bg-primary">
+              <!-- Botão -->
+              <div class="float-right">
+                <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.id">
+                  <div class="btn btn-sm btn-primary text-light" (click)="mostrarEstatisticaFrequencia(estudante)">
+                    <i class="fa fa-2x fa-pie-chart"></i></div>
+                </a>
+              </div>
+              <!-- Modal -->
+              <div class="modal fade large" id="modelEstudante{{ estudante.id }}" tabindex="-1" role="dialog"
+                aria-labelledby="modelLabelEstudante" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header bg-warning text-dark">
+                      <div class="mt-2 col-sm-12 col-lg-9">
+                        <h3 class="modal-title text-left" id="modelLabelEstudante">
+                          {{ estudante.nome }}</h3>
+                      </div>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="text-light">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body text-justify">
+                      <canvas [id]="'chartEstatisticaFrequencia' + estudante.id" height="300%"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

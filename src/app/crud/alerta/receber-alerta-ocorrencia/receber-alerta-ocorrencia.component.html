@@ -1,3 +1,96 @@
-<p>
-  receber-alerta-ocorrencia works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-11 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-eye-slash text-light"> Meus alertas de ocorrências</i>
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2">
+          <button class="btn btn-sm form-control btn-dark border-light text-light"
+            (click)="listarAlertasOcorrencia()">Listar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="alertas">
+        <table class="table table-striped table-hover">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-lg-1 text-center" scope="col">Foto</th>
+              <th class="col-sm-12 col-lg-3 text-left" scope="col"><span>Nome</span></th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span>Série</span></th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span>Turma</span></th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span>Turno</span></th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col">Etapa</th>
+              <th class="col-sm-12 col-lg-2 text-left" scope="col">Ocorrência</th>
+              <th class="col-sm-12 col-lg-1 text-center" scope="col">Quantidade</th>
+              <th class="col-sm-12 col-lg-1 text-center" scope="col">Finalizar</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="arrayOfOcorrenciasSelecionadas !== null" class="alertas">
+            <tr class="row" *ngFor="let alertaOcorrencia of arrayOfOcorrenciasSelecionadas">
+              <td class="col-sm-12 col-lg-1 text-center"><img class="img rounded-circle" width="60" height="60"
+                  src="{{ alertaOcorrencia.foto !== undefined && alertaOcorrencia.foto || 'assets/images/noavatar.jpg' }}"
+                  alt="">
+              </td>
+              <td class="col-sm-12 col-lg-3 text-left">{{ alertaOcorrencia.nome}}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ alertaOcorrencia.serie }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ alertaOcorrencia.turma }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ alertaOcorrencia.turno }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ alertaOcorrencia.etapa }}</td>
+              <td class="col-sm-12 col-lg-2 text-left">{{ alertaOcorrencia.tipo_ocorrencia }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ alertaOcorrencia.quantidade }}</td>
+              <td class="col-sm-12 col-lg-1 text-center">
+                <!-- Botão -->
+                <button class="btn btn-warning btn-sm" data-toggle="modal"
+                  [attr.data-target]="'#modalAlerta' + alertaOcorrencia.est_id"
+                  value="{{alertaOcorrencia}}">Finalizar</button>
+                <!-- Modal -->
+                <div class="modal fade large" id="modalAlerta{{ alertaOcorrencia.est_id }}" tabindex="-1" role="dialog"
+                  aria-labelledby="modelLabelAlerta" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-warning text-dark">
+                        <div class="col-sm-12 col-lg-10">
+                          <h4>Descreva os procedimentos adotados ao finalizar esse alerta</h4>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true" class="text-light">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body text-justify">
+                        <div class="row">
+                          <textarea class="form-control col-sm-12 col-lg-12" required placeholder="Digite aqui"
+                            cols="20" rows="15" maxlength="1000" (change)="atualizarObservacao($event)"></textarea>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                          (click)="tratarAlertaOcorrencia(alertaOcorrencia)">Salvar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

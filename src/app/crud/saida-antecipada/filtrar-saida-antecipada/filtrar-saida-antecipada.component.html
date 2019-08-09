@@ -1,16 +1,14 @@
 <div class="container-fluid">
   <div class="card text-center">
     <div class="card-header bg-dark">
-      <div class="row mb-2">
-        <div class="col-3"></div>
-        <div class="col-6">
+      <div class="row mt-2">
+        <div class="col-lg-12 col-sm-12">
           <i class="fa fa-lg fa-eye text-light text-center"> Saídas antecipadas</i>
         </div>
-        <div class="col-3"></div>
       </div>
       <div class="row">
-        <div class="col-3">
-          <div class="input-group mb-3">
+        <div class="col-sm-12 col-lg-3">
+          <div class="input-group mb-3 mt-2">
             <input type="text" class="form-control form-control-sm" placeholder="nome do estudante..."
               (keydown)="filtrarEnter($event)" (input)="gravarValorFiltro($event.target.value)"
               aria-label="buscar por nome" aria-describedby="basic-addon2">
@@ -21,16 +19,16 @@
             </div>
           </div>
         </div>
-        <div class="col-6"></div>
-        <div class="col-3">
+        <div class="col-sm-12 col-lg-6"></div>
+        <div class="col-sm-12 col-lg-3">
           <button *ngIf="exibirComponente('inserir-saida-antecipada')"
-            class="btn btn-sm btn-dark border-light text-light btn-sm float-right"
+            class="btn btn-sm btn-dark border-light text-light btn-sm form-control"
             (click)="inserir()">Adicionar</button>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="dropdown pl-6 pt-2 pl-4 pb-2 col-3">
+      <div class="dropdown pl-6 pt-2 pl-4 pb-2 col-sm-12 col-lg-3">
         <button class="btn btn-outline-dark dropdown-toggle float-left" type="button" id="dropdownMenuButton"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Exibir {{ saltarQuantidade }} registros por vez
@@ -51,25 +49,33 @@
         <table class="table table-striped table-hover" [@chamado]="estado">
           <thead class="thead-light">
             <tr class="row">
-              <th class="col-4 text-left" scope="col"><span (click)="ordenarColuna('nome')">&nbsp;&nbsp;Nome</span></th>
-              <th class="col-1 text-left" scope="col"><span (click)="ordenarColuna('serie')">Série</span></th>
-              <th class="col-1 text-left" scope="col"><span (click)="ordenarColuna('turma')">Turma</span></th>
-              <th class="col-1 text-left" scope="col"><span (click)="ordenarColuna('turno')">Turno</span></th>
-              <th class="col-1 text-left" scope="col"><span (click)="ordenarColuna('etapa')">Etapa</span></th>
-              <th class="col-1 text-left" scope="col"><span (click)="ordenarColuna('motivo')">Motivo</span></th>
-              <th class="col-1 text-left" scope="col"><span (click)="ordenarColuna('data')">Data</span></th>
-              <th class="col-1 text-left" scope="col"><span (click)="ordenarColuna('hora')">Hora</span></th>
-              <th class="col-1 text-center" scope="col">Excluir</th>
+              <th class="col-sm-12 col-lg-4 text-left" scope="col"><span
+                  (click)="ordenarColuna('nome')">&nbsp;&nbsp;Nome</span></th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('serie')">Série</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('turma')">Turma</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('turno')">Turno</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('etapa')">Etapa</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('motivo')">Motivo</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('data')">Data</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('hora')">Hora</span>
+              </th>
+              <th class="col-sm-12 col-lg-1 text-left" scope="col">Excluir</th>
             </tr>
           </thead>
           <tbody *ngIf="saidasAntecipadasEventuais !== null">
             <tr class="row" *ngFor="let saidaAntecipadaEventual of saidasAntecipadasEventuais">
-              <td class="col-4 text-left">&nbsp;&nbsp;{{ saidaAntecipadaEventual.nome }}</td>
-              <td class="col-1 text-left">{{ saidaAntecipadaEventual.serie }}</td>
-              <td class="col-1 text-left">{{ saidaAntecipadaEventual.turma }}</td>
-              <td class="col-1 text-left">{{ saidaAntecipadaEventual.turno }}</td>
-              <td class="col-1 text-left">{{ saidaAntecipadaEventual.etapa }}</td>
-              <td class="col-1 text-center text-success">
+              <td class="col-sm-12 col-lg-4 text-left">&nbsp;&nbsp;{{ saidaAntecipadaEventual.nome }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.serie }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.turma }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.turno }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.etapa }}</td>
+              <td class="col-sm-12 col-lg-1 text-left text-success">
                 <!-- Botão -->
                 <a data-toggle="modal"
                   [attr.data-target]="'#modelSidaAntecipadaEventual' + saidaAntecipadaEventual.id"><i
@@ -95,9 +101,9 @@
                   </div>
                 </div>
               </td>
-              <td class="col-1 text-left">{{ saidaAntecipadaEventual.data }}</td>
-              <td class="col-1 text-left">{{ saidaAntecipadaEventual.hora }}</td>
-              <td class="col-1 text-center"><button class="btn btn-sm btn-danger text-light"
+              <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.data }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.hora }}</td>
+              <td class="col-sm-12 col-lg-1 text-left"><button class="btn btn-sm btn-danger text-light"
                   (click)="excluir(saidaAntecipadaEventual.id,saidaAntecipadaEventual.matricula)"><i
                     class="fa fa-lg fa-remove"></i></button></td>
             </tr>
@@ -145,7 +151,7 @@
       </div>
       <div class="col-10">
         <h4>
-          <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
         </h4>
       </div>
     </div>

@@ -10,6 +10,8 @@ import { FirebaseUpload } from "./firebase.upload.model";
 import { Utils } from "../utils.shared";
 import { CONSTANTES } from "../constantes.shared";
 import { RequestOptions } from 'http';
+import { Portaria } from '../../crud/portaria/portaria.model';
+import { CronogramaPortaria } from '../../crud/portaria/cronograma-portaria.model';
 
 
 
@@ -291,7 +293,7 @@ export class FirebaseService {
    *  Grava configurações da portaria no servidor do FireBase
    * @param portaria
    */
-  /* public gravarConfiguracaoFirebaseFirestorePortaria = async (portaria: Portaria) => new Promise((resolve) => {
+  public gravarConfiguracaoFirebaseFirestorePortaria = async (portaria: Portaria) => new Promise((resolve) => {
     this.firestore
       .collection('portariaWeb')
       .doc(portaria.codigo)
@@ -300,35 +302,35 @@ export class FirebaseService {
       .set(portaria)
       .then(() => { resolve('sucesso') })
       .catch(() => { alert('erro'); });
-  }); */
+  });
 
   /**
    * Grava dados do cronograma da portaria
    *
    * @memberof FirebaseService
    */
-  /*  public gravarCronogramaFirebaseFirestorePortaria = async (cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
-     this.firestore
-       .collection('portariaWeb')
-       .doc(cronogramaPortaria.codigoPortaria)
-       .collection('cronogramas').doc(cronogramaPortaria.crpId.toString()).set({
-         horarioInicio: cronogramaPortaria.horarioInicio,
-         horarioFim: cronogramaPortaria.horarioFim,
-         modoPortaria: cronogramaPortaria.modoPortaria,
-       })
-       .then(() => { resolve('sucesso') });
-   }); */
+  public gravarCronogramaFirebaseFirestorePortaria = async (cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
+    this.firestore
+      .collection('portariaWeb')
+      .doc(cronogramaPortaria.codigoPortaria)
+      .collection('cronogramas').doc(cronogramaPortaria.crpId.toString()).set({
+        horarioInicio: cronogramaPortaria.horarioInicio,
+        horarioFim: cronogramaPortaria.horarioFim,
+        modoPortaria: cronogramaPortaria.modoPortaria,
+      })
+      .then(() => { resolve('sucesso') });
+  });
 
   /**
    *Exclui cronograma INDIVIDUAL de acordo com o crp_id
    * @param cronogramaPortaria
    * @memberof FirebaseService
    */
-  /* public apagarCronogramaFirebaseFirestorePortaria = async (cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
+  public apagarCronogramaFirebaseFirestorePortaria = async (cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
     this.firestore.collection('portariaWeb').doc(cronogramaPortaria['codigo_portaria']).collection('cronogramas').doc(cronogramaPortaria['crp_id'].toString()).delete().then(() => {
       resolve('sucesso');
     });
-  }); */
+  });
 
   /**
    *Exclui matriculado INDIVIDUAL de acordo com a matricula
@@ -358,11 +360,11 @@ export class FirebaseService {
    *
    * @memberof FirebaseService
    */
-  /* public alterarConfiguracaoFirebaseFirestorePortaria = async (portaria: Portaria) => new Promise((resolve) => {
+  public alterarConfiguracaoFirebaseFirestorePortaria = async (portaria: Portaria) => new Promise((resolve) => {
     this.firestore.collection('portariaWeb').doc(portaria.codigo).collection('parametros').doc('configuracao').set(portaria).then(() => {
       resolve('sucesso');
     });
-  }) */
+  })
 
   /**
    * Apaga registro de saída antecipada eventual na portaria
@@ -406,7 +408,7 @@ export class FirebaseService {
    * @param codigo_portaria
    * @memberof FirebaseService
    */
-  /* public apagarCronogramasFirebaseFirestorePortaria = async (codigo_portaria: string) => new Promise((resolve) => {
+  public apagarCronogramasFirebaseFirestorePortaria = async (codigo_portaria: string) => new Promise((resolve) => {
     this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('cronogramas').get().then((retorno) => {
       const cronogramas = retorno.docs;
       let contaExcluiCronogramas = 0;
@@ -426,7 +428,7 @@ export class FirebaseService {
         resolve('ok');
       }
     })
-  }); */
+  });
 
   /**
   * Apaga, em cascata, os dados da portaria. Primeiro as configurações.
@@ -434,7 +436,7 @@ export class FirebaseService {
   * @param codigoPortaria
   * @memberof FirebaseService
   */
-  /* public apagarPortariaFirebaseServicePortaria = async (codigo_portaria: string) => new Promise((resolve) => {
+  public apagarPortariaFirebaseServicePortaria = async (codigo_portaria: string) => new Promise((resolve) => {
     this.apagarConfiguracaoFirebaseFirestorePortaria(codigo_portaria).then(() => {
       this.apagarCronogramasFirebaseFirestorePortaria(codigo_portaria).then(() => {
         this.apagarMatriculadosFirebaseFirestorePortaria(codigo_portaria).then(() => {
@@ -444,7 +446,7 @@ export class FirebaseService {
     }).catch(() => {
       resolve('ok');
     })
-  }); */
+  });
 
   /**
    *  Grava lista de estudantes para serem usados no aplicativo

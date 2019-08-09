@@ -1,3 +1,47 @@
-<p>
-  gerenciar-portaria works!
-</p>
+<!--##############################################################################################-->
+<div class="container-fluid container-card" [@chamado]="estado">
+
+  <div class="row">
+    <div *ngIf="exibirComponente('listar-portaria')" class="col-sm-12 col-md-6 col-lg-4" (click)="listarPortarias()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-list text-primary"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Listar portarias
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('verificar-frequencia-portaria')" class="col-sm-12 col-md-6 col-lg-4"
+      (click)="frequenciaPortaria()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-id-badge text-warning"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Frequencia das portarias
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="exibirComponente('verificar-absenteismo-portaria')" class="col-sm-12 col-md-6 col-lg-4"
+      (click)="absenteismoPortaria()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-shield text-success"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Absenteismo nas portarias
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--###############################################################################################-->

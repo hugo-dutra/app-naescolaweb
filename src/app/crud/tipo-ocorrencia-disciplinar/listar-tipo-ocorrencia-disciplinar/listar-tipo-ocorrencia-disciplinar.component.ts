@@ -52,10 +52,19 @@ export class ListarTipoOcorrenciaDisciplinarComponent implements OnInit {
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public esc_id: number;
 
+  public exibirComponenteAlterar: Boolean = false;
+  public exibirComponenteExcluir: Boolean = false;
+
   ngOnInit() {
     this.tiposOcorrenciasDisciplinares = undefined;
     this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+    this.exibirComponentesEdicao();
     this.listar();
+  }
+
+  public exibirComponentesEdicao(): void {
+    this.exibirComponenteAlterar = Utils.exibirComponente('alterar-tipo-ocorrencia-disciplinar');
+    this.exibirComponenteExcluir = Utils.exibirComponente('excluir-tipo-ocorrencia-disciplinar');
   }
 
   public listarQuantidade(event: Event) {

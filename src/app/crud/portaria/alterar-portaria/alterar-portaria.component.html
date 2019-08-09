@@ -1,3 +1,174 @@
-<p>
-  alterar-portaria works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2 text-center">
+          <i class="fa fa-lg fa-id-badge text-light text-center"> Alterar dados da Portaria</i>
+        </div>
+        <div class="col-lg-2 col-sm-12 mt-2">
+          <button class="btn btn-dark form-control border-light text-light btn-sm" (click)="listar()">Listagem</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="formulario">
+        <div class="row">
+          <div class=" col-sm-12 col-lg-10 text-left">
+            <input class="form-control" type="text" formControlName="nome" name="nome" [value]="portaria.nome"
+              placeholder="Identificador auxiliar da portaria..." (input)="modificarInputs($event)"
+              (focusout)="modificarInputs($event)" required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small">Nome</label>
+          </div>
+        </div>
+        <!-- MATUTINO -->
+        <div class="row">
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="inicioMatutino" name="inicioMatutino"
+              [value]="portaria.inicioMatutino" (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small">Início matutino</label>
+          </div>
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="fimMatutino" name="fimMatutino"
+              [value]="portaria.fimMatutino" (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small">Fim matutino</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaEntradaMatutino"
+              name="toleranciaEntradaMatutino" [value]="portaria.toleranciaEntradaMatutino"
+              (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
+              (focusout)="validar($event)">
+            <label class="text-small">Tolerância entrada matutino</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaSaidaMatutino"
+              name="toleranciaSaidaMatutino" [value]="portaria.toleranciaSaidaMatutino"
+              (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              placeholder="em minutos, para autorizar saida..." required (input)="validar($event)"
+              (focusout)="validar($event)">
+            <label class="text-small">Tolerância saída matutino</label>
+          </div>
+        </div>
+        <!-- VESPERTINO -->
+        <div class="row">
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="inicioVespertino" name="inicioVespertino"
+              [value]="portaria.inicioVespertino" (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small text-muted">Início vespertino</label>
+          </div>
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="fimVespertino" name="fimVespertino"
+              [value]="portaria.fimVespertino" (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small text-muted">Fim vespertino</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaEntradaVespertino"
+              name="toleranciaEntradaVespertino" [value]="portaria.toleranciaEntradaVespertino"
+              (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
+              (focusout)="validar($event)">
+            <label class="text-small text-muted">Tolerância entrada vespertino</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaSaidaVespertino"
+              name="toleranciaSaidaVespertino" [value]="portaria.toleranciaSaidaVespertino"
+              (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              placeholder="em minutos, para autorizar saida..." required (input)="validar($event)"
+              (focusout)="validar($event)">
+            <label class="text-small text-muted">Tolerância saída vespertino</label>
+          </div>
+        </div>
+        <!-- NOTURNO -->
+        <div class="row">
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="inicioNoturno" name="inicioNoturno"
+              [value]="portaria.inicioNoturno" (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small text-muted">Início noturno</label>
+          </div>
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="fimNoturno" name="fimNoturno"
+              [value]="portaria.fimNoturno" required (input)="modificarInputs($event)"
+              (focusout)="modificarInputs($event)" (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small text-muted">Fim noturno</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaEntradaNoturno"
+              name="toleranciaEntradaNoturno" [value]="portaria.toleranciaEntradaNoturno"
+              (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
+              (focusout)="validar($event)">
+            <label class="text-small text-muted">Tolerância entrada noturno</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaSaidaNoturno"
+              name="toleranciaSaidaNoturno" [value]="portaria.toleranciaSaidaNoturno" (input)="modificarInputs($event)"
+              (focusout)="modificarInputs($event)" placeholder="em minutos, para autorizar saida..." required
+              (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small text-muted">Tolerância saída noturno</label>
+          </div>
+        </div>
+        <!-- INTEGRAL -->
+        <div class="row">
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="inicioIntegral" name="inicioIntegral"
+              [value]="portaria.inicioIntegral" (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small text-muted">Início integral</label>
+          </div>
+          <div class=" col-sm-12 col-lg-2 text-left mr-2">
+            <input class="form-control" type="time" formControlName="fimIntegral" name="fimIntegral"
+              [value]="portaria.fimIntegral" (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              required (input)="validar($event)" (focusout)="validar($event)">
+            <label class="text-small text-muted">Fim integral</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaEntradaIntegral"
+              name="toleranciaEntradaIntegral" [value]="portaria.toleranciaEntradaIntegral"
+              (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
+              (focusout)="validar($event)">
+            <label class="text-small text-muted">Tolerância entrada integral</label>
+          </div>
+          <div class=" col-sm-12 col-lg-3 text-left mr-2">
+            <input class="form-control" type="number" formControlName="toleranciaSaidaIntegral"
+              name="toleranciaSaidaIntegral" [value]="portaria.toleranciaSaidaIntegral"
+              (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+              placeholder="em minutos, para autorizar saida..." required (input)="validar($event)"
+              (focusout)="validar($event)">
+            <label class="text-small text-muted">Tolerância saída integral</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class=" col-sm-12 col-lg-9"></div>
+          <div class=" col-sm-12 col-lg-1"></div>
+          <div class=" col-sm-12 col-lg-2">
+            <Button class="btn btn-primary form-control btn-sm" (click)="alterar()">Salvar</Button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Alterar portaria</i>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

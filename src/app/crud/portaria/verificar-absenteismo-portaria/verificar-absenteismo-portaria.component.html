@@ -1,3 +1,142 @@
-<p>
-  verificar-absenteismo-portaria works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="mt-2 col-sm-12 col-lg-12">
+          <div class="row">
+            <div class="mt-2 col-sm-12 col-lg-10 text-center mt-2">
+              <i class="fa fa-lg fa-id-badge text-light text-center"> Absenteismo das portarias</i>
+            </div>
+            <div class="col-lg-2 col-sm-12 mt-2">
+              <button class="btn btn-dark form-control border-light text-light btn-sm float-right ml-3"
+                (click)="gerenciarPortaria()">Gerenciar</button>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="mt-2 col-sm-12 col-lg-2  ">
+              <input type="date" class="form-control" id="data-inicial-estudantes-presentes"
+                (change)="atualizarDataInicial($event)" [value]="dataInicial">
+              <label for="data-inicial-estudantes-presentes" class="text-small text-light float-left">Data
+                inicial</label>
+            </div>
+            <div class="mt-2 col-sm-12 col-lg-2  ">
+              <input type="date" class="form-control" id="data-final-estudantes-presentes"
+                (change)="atualizarDataFinal($event)" [value]="dataFinal">
+              <label for="data-final-estudantes-presentes" class="text-small text-light float-left">Data final</label>
+            </div>
+            <div class="mt-2 col-sm-12 col-lg-1  ">
+              <input type="number" class="form-control" id="limite-quantidade-registros"
+                (change)="atualizarValorLimite($event)" [value]="valorLimiteDeEstudantes">
+              <label for="limite-quantidade-registros" class="text-small text-light float-left">Primeiros</label>
+            </div>
+            <div class="ml-2 mt-2 col-sm-12 col-lg-2">
+              <div class="dropdown mt-2 col-sm-12 col-lg-12">
+                <button class="btn btn-dark text-light border-light dropdown-toggle" type="button"
+                  id="dropdownMenuButtonTurmas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ stringTurmaSelecionada }}
+                </button>
+                <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonTurmas">
+                  <a (click)="selecionarTurma($event)" [id]="0" name="Todas as turmas" class="dropdown-item">Todas as
+                    turmas</a>
+                  <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
+                    name="{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }}"
+                    class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
+                    Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2 col-sm-12 col-lg-2"></div>
+            <div class="ml-2 mt-2 col-sm-12 col-lg-2 float-right">
+              <button class="form-control btn btn-dark form-control border-light text-light"
+                (click)="verificarAbsenteismo()">Verificar
+                absenteismo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div *ngFor="let estudante of estudantesTurmaSelecionada" class="mt-2 col-sm-12 col-lg-3">
+          <div class="card mb-1">
+            <div class="card-body bg-light text-dark rounded">
+              <div class="row">
+                <div class="mt-2 col-sm-12 col-lg-6">
+                  <div class="bg-primary p-1 rounded">
+                    <img class="img-fluid rounded-circle" width="75" height="75"
+                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      alt="foto do estudante">
+                  </div>
+                </div>
+                <div class="mt-2 col-sm-12 col-lg-6 text-small capitalize">
+                  {{estudante.nome}}
+                </div>
+              </div>
+              <div *ngIf="estudante.etapa!='' && estudante.etapa!=undefined" class="row">
+                <div class="mt-2 col-sm-12 col-lg-6 text-center">
+                  {{estudante.etapa}} {{estudante.serie}} {{estudante.turma}} {{estudante.turno}}
+                </div>
+              </div>
+            </div>
+            <div class="card-footer bg-primary">
+              <div class="row">
+                <div class="mt-2 col-sm-12 col-lg-4 text-light">
+                  <b>{{estudante.presencas}} presenças</b>
+                </div>
+                <div class="mt-2 col-sm-12 col-lg-4 text-light">
+                  <b>{{estudante.faltas}} faltas</b>
+                </div>
+                <div class="mt-2 col-sm-12 col-lg-4">
+                  <!-- Botão -->
+                  <div class="float-right">
+                    <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.id">
+                      <div class="btn btn-sm btn-primary text-light" (click)="mostrarEstatisticaFrequencia(estudante)">
+                        <i class="fa fa-2x fa-pie-chart"></i></div>
+                    </a>
+                  </div>
+                  <!-- Modal -->
+                  <div class="modal fade large" id="modelEstudante{{ estudante.id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="modelLabelEstudante" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header bg-warning text-dark">
+                          <div class="mt-2 col-sm-12 col-lg-9">
+                            <h3 class="modal-title text-left" id="modelLabelEstudante">
+                              {{ estudante.nome }}</h3>
+                          </div>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-light">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-justify">
+                          <canvas [id]="'chartEstatisticaFrequencia' + estudante.id" height="300%"></canvas>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

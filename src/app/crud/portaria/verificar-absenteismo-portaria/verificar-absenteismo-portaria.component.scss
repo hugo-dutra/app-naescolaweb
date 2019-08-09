@@ -1,0 +1,60 @@
+.bg-google {
+  background: #4885ed;
+}
+
+.background-danger {
+  background-color: rgba(219, 50, 54, 0.7);
+  border-image-outset: 50px;
+}
+
+.background-sucess {
+  background-color: rgba(50, 219, 54, 0.7);
+  border-image-outset: 50px;
+}
+
+a {
+  cursor: pointer;
+}
+
+#loadingDiv {
+  position: fixed;
+  top: 45%;
+  left: 37%;
+  width: 30%;
+  height: 12%;
+  background-color: #d3d3e27c;
+  border: 2px solid #33333113;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  z-index: 10000000;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.lb-lg {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.div-sincronizar {
+  background-color: #4885ed;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.turmas {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 250px;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}

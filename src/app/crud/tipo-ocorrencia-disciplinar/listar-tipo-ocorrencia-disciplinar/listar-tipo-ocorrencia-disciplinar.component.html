@@ -34,22 +34,20 @@
                 </th>
                 <th class="col-lg-3 col-sm-12 text-left" scope="col"><span (click)="ordenarColuna('valor')">Valor</span>
                 </th>
-                <th *ngIf="exibirComponente('alterar-tipo-ocorrencia-disciplinar')"
-                  class="col-lg-2 col-sm-12 text-center" scope="col">Alterar</th>
-                <th *ngIf="exibirComponente('excluir-tipo-ocorrencia-disciplinar')"
-                  class="col-lg-2 col-sm-12 text-center " scope="col">Excluir</th>
+                <th *ngIf="exibirComponenteAlterar" class="col-lg-2 col-sm-12 text-center" scope="col">Alterar</th>
+                <th *ngIf="exibirComponenteExcluir" class="col-lg-2 col-sm-12 text-center " scope="col">Excluir</th>
               </tr>
             </thead>
             <tbody *ngIf="tiposOcorrenciasDisciplinares !== null">
               <tr class="row" *ngFor="let tipoOcorrencia of tiposOcorrenciasDisciplinares">
                 <td class="col-lg-5 col-sm-12 text-left">{{ tipoOcorrencia.nome }}</td>
                 <td class="col-lg-3 col-sm-12 text-left">{{ tipoOcorrencia.valor }}</td>
-                <td *ngIf="exibirComponente('alterar-tipo-ocorrencia-disciplinar')"
-                  class="col-lg-2 col-sm-12 text-center"><button class="btn btn-warning btn-sm"
-                    value="{{ tipoOcorrencia }}" (click)="alterar(tipoOcorrencia)">Alterar</button></td>
-                <td *ngIf="exibirComponente('excluir-tipo-ocorrencia-disciplinar')"
-                  class="col-lg-2 col-sm-12 text-center"><button class="btn btn-danger btn-sm"
-                    value="{{ tipoOcorrencia }}" (click)="excluir(tipoOcorrencia)">Excluir</button></td>
+                <td *ngIf="exibirComponenteAlterar" class="col-lg-2 col-sm-12 text-center"><button
+                    class="btn btn-warning btn-sm" value="{{ tipoOcorrencia }}"
+                    (click)="alterar(tipoOcorrencia)">Alterar</button></td>
+                <td *ngIf="exibirComponenteExcluir" class="col-lg-2 col-sm-12 text-center"><button
+                    class="btn btn-danger btn-sm" value="{{ tipoOcorrencia }}"
+                    (click)="excluir(tipoOcorrencia)">Excluir</button></td>
               </tr>
             </tbody>
           </table>

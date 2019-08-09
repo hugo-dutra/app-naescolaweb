@@ -5,7 +5,7 @@ import { SaidaAntecipadaRoutingModule } from './saida-antecipada-routing.module'
 import { ExcluirSaidaAntecipadaComponent } from './excluir-saida-antecipada/excluir-saida-antecipada.component';
 import { FiltrarSaidaAntecipadaComponent } from './filtrar-saida-antecipada/filtrar-saida-antecipada.component';
 import { InserirSaidaAntecipadaComponent } from './inserir-saida-antecipada/inserir-saida-antecipada.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     SaidaAntecipadaRoutingModule
   ]

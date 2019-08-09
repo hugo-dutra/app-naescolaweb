@@ -1,3 +1,96 @@
-<p>
-  listar-portaria works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-12 mt-2">
+          <i class="fa fa-lg fa-id-badge text-light text-center"> Portarias</i>
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-portaria')"
+            class="btn btn-dark border-light form-control text-light btn-sm" (click)="adicionar()">Adicionar</button>
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('gerenciar-portaria')"
+            class="btn btn-dark border-light form-control text-light btn-sm" (click)="gerenciar()">Gerenciar</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="portarias col-sm-12 col-lg-12 mt-2">
+          <table class="table table-striped table-hover">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-3 text-center" scope="col">Nome</th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col">Código</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col"><span *ngIf="exibirComponenteBaixarDados">Baixar
+                    dados da portaria</span></th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col"><span
+                    *ngIf="exibirComponenteAlterar">Sincronizar</span></th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span
+                    *ngIf="exibirComponenteAlterar">Alterar</span>
+                </th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col"><span
+                    *ngIf="exibirComponenteExcluir">Excluir</span>
+                </th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col"><span
+                    *ngIf="exibirComponenteInserirCronograma">Cronograma</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let portaria of portarias">
+                <td class="col-sm-12 col-lg-3 text-center">{{ portaria.nome }}</td>
+                <td class="col-sm-12 col-lg-1 text-center">{{ portaria.codigo }}</td>
+                <td class="col-sm-12 col-lg-2 text-center"><button *ngIf="exibirComponenteBaixarDados"
+                    class="btn btn-warning text-dark btn-sm" value="{{ portaria }}"
+                    (click)="baixarDadosPortaria(portaria)"><i class="fa fa-lg fa-cloud-download"></i>
+                    Baixar dados</button></td>
+                <td class="col-sm-12 col-lg-2 text-center"><button *ngIf="exibirComponenteAlterar"
+                    class="btn btn-primary btn-sm" value="{{ portaria }}" (click)="sincronizar(portaria)"><i
+                      class="fa fa-lg fa-cloud-upload"></i>
+                    Sincronizar</button></td>
+                <td class="col-sm-12 col-lg-1 text-center"><button *ngIf="exibirComponenteAlterar"
+                    class="btn btn-warning btn-sm" value="{{ portaria }}" (click)="alterar(portaria)">Alterar</button>
+                </td>
+                <td class="col-sm-12 col-lg-1 text-center"><button *ngIf="exibirComponenteExcluir"
+                    class="btn btn-danger btn-sm" value="{{ portaria }}" (click)="excluir(portaria)">Excluir</button>
+                </td>
+                <td class="col-sm-12 col-lg-2 text-center"><button *ngIf="exibirComponenteInserirCronograma"
+                    class="btn btn-success btn-sm" value="{{ portaria }}"
+                    (click)="inserirCronograma(portaria)">Cronograma</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row ml-2">
+        <div class="div-sincronizar">
+          <div class="form-check form-check-inline lb-lg text-light">
+            <label class="form-check-label">
+              <input class="form-check-input checkbox" type="checkbox" name="" id="" value="checkedValue"
+                (change)="sincronizarEstudantes($event)">
+              Sincronizar fotos e estudantes
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Listagem de portarias</i>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
