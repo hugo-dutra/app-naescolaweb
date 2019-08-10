@@ -1,3 +1,56 @@
-<p>
-  aproveitamento-disciplina-turma-periodo works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-sm-12 col-lg-12 text-center">
+          <i class="fa fa-lg fa-chart-bar text-light text-center"> Aproveitamento de turma por disciplina</i>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <select name="turmas" id="input_turmas" class="form-control col-sm-12 col-lg-2 mt-2"
+          (change)="selecionarTurma($event)">
+          <option disabled value="">Selecione uma turma</option>
+          <option *ngFor="let turma of arrayOfTurmas" [value]="turma.id">{{ turma.serie_abv }} {{ turma.etapa }} -
+            {{ turma.nome }} - {{ turma.turno_abv }}</option>
+        </select>
+        <div class="col-lg-1 col-sm-12"></div>
+        <select name="periodos_letivos" id="input_periodos" class="form-control col-sm-12 col-lg-2 mt-2"
+          (change)="selecionarPeriodoLetivo($event)">
+          <option disabled value="">Selecione o período</option>
+          <option *ngFor="let periodo of arrayOfPeriodosLetivos" [value]="periodo.id">{{ periodo.periodo }} -
+            {{ anoAtual }}</option>
+        </select>
+        <div class="col-sm-12 col-lg-5"></div>
+        <div class="col-sm-12 col-lg-2 mt-2">
+          <button class="btn btn-dark border-light text-light" (click)="gerarGraficoAproveitamento()">
+            Gerar gráfico</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-lg-12" id="chartAprovados" style="position: relative; height:33vh; width:80vw">
+          <canvas id="barChartAproveitamentoTurmaDisciplinaPeriodo" [@chamado]="estado"></canvas>
+        </div>
+        <div class="col-sm-12 col-lg-12" id="chartReprovadosTurma" style="position: relative; height:33vh; width:80vw">
+          <canvas id="barChartSemAproveitamentoTurmaDisciplinaPeriodo" [@chamado]="estado"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

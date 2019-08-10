@@ -1,0 +1,82 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="form-group col-sm-12 col-lg-2 mt-2">
+          <input type="date" name="data_inicio" (change)="gravarDataInicio($event)" id="data_inicio"
+            class="form-control col-sm-12 col-lg-12" [value]="data_inicio_padrao">
+          <small id="helpIdInicial" class="text-light">Data inicial da consulta</small>
+        </div>
+        <div class="form-group col-sm-12 col-lg-2 mt-2">
+          <input type="date" name="data_fim" (change)="gravarDataFim($event)" id="data_fim"
+            class="form-control col-sm-12 col-lg-12" [value]="data_fim_padrao">
+          <small id="helpIdFinal" class="text-light">Data final da consulta</small>
+        </div>
+        <div class="col-sm-12 col-lg-2 mt-2">
+          <select name="tipo_ocorrencia" id="input_turmas" class="form-control"
+            (change)="selecionarTipoDeOcorrencia($event)">
+            <option disabled value="">Tipo de ocorrência</option>
+            <option *ngFor="let tipo of arrayOfTiposOcorrencia" [value]="tipo.id">{{ tipo.nome }}</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-lg-3 mt-2">
+          <div class="form-group">
+            <select class="form-control" id="exampleFormControlSelect2" (change)="selecionarTipoOrdenamento($event)">
+              <option name="ordenamento_d" selected value="d">Ordenar por quantidade</option>
+              <option name="ordenamento_t" value="t">Agrupar por turma</option>
+            </select>
+          </div>
+        </div>
+        <div class="float-right col-sm-12 col-lg-2">
+          <button class="btn btn-dark border-light form-control mt-2"><i class="fa fa-lg fa-search"
+              (click)="listarOcorrenciaPorTipo()">
+              Listar
+              ocorrências</i></button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="estudantes">
+        <table class="table table-striped table-hover">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-sm-12 col-lg-1 text-left" scope="col"></th>
+              <th class="col-sm-12 col-lg-2 text-left" scope="col">Quantidade</th>
+              <th class="col-sm-12 col-lg-4" scope="col">Nome</th>
+              <th class="col-sm-12 col-lg-1" scope="col">Série</th>
+              <th class="col-sm-12 col-lg-1" scope="col">Turma</th>
+              <th class="col-sm-12 col-lg-2" scope="col">Turno</th>
+              <th class="col-sm-12 col-lg-1" scope="col">Etapa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row" *ngFor="let ocorrencia of arrayOfOcorrenias">
+              <td class="col-sm-12 col-lg-1 text-left"></td>
+              <td class="col-sm-12 col-lg-2 text-left">{{ ocorrencia.ocorrencias}}</td>
+              <td class="col-sm-12 col-lg-4">{{ ocorrencia.nome }}</td>
+              <td class="col-sm-12 col-lg-1">{{ ocorrencia.serie }}</td>
+              <td class="col-sm-12 col-lg-1">{{ ocorrencia.turma }}</td>
+              <td class="col-sm-12 col-lg-2">{{ ocorrencia.turno }}</td>
+              <td class="col-sm-12 col-lg-1">{{ ocorrencia.etapa }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

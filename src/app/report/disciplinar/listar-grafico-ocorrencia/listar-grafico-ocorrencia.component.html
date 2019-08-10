@@ -1,0 +1,246 @@
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="quantidade-tab" data-toggle="tab" href="#periodo" role="tab" aria-controls="home"
+      aria-selected="true">Ocorrência por período</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="turma-tab" data-toggle="tab" href="#turma" role="tab" aria-controls="profile"
+      aria-selected="false">Ocorrência
+      por turma</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="estudante-tab" data-toggle="tab" href="#estudante" role="tab" aria-controls="messages"
+      aria-selected="false">Ocorrências por estudante</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="tipo-ocorrencia-tab" data-toggle="tab" href="#tipo-ocorrencia" role="tab"
+      aria-controls="messages" aria-selected="false">Ocorrências por tipo</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content" style="position: relative; height:80vh; width:80vw">
+  <!-- Quantidade de ocorrências por período -->
+  <div class="tab-pane active" id="periodo" role="tabpanel" aria-labelledby="quantidade-tab">
+    <div class="container-fluid">
+      <div class="card text-center" [@chamado]="estado">
+        <div class="card-header bg-dark">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12 text-center">
+                  <i class="fa fa-lg fa-warning text-light text-center"> Quantidade de ocorrências disciplinares por
+                    dia</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="container-fluid">
+            <div>
+              <div class="row">
+                <div class="form-group col-2 mr-3">
+                  <input type="date" name="data_inicio" (input)="gravarDataInicio($event)" id="data_inicio"
+                    class="form-control col-12" placeholder="Data inicial" aria-describedby="helpIdInicial">
+                  <small id="helpIdInicial" class="text-muted">Data inicial da consulta</small>
+                </div>
+                <div class="form-group col-2">
+                  <input type="date" name="data_fim" (input)="gravarDataFim($event)" id="data_fim"
+                    class="form-control col-12" placeholder="Data final" aria-describedby="helpIdFinal">
+                  <small id="helpIdFinal" class="text-muted">Data final da consulta</small>
+                </div>
+                <div class="col-5"></div>
+                <div class="float-right col-2">
+                  <button class="btn btn-primary"><i class="fa fa-lg fa-search"
+                      (click)="pesquisarQuantidadeOcorrenciaPeriodo()"> Pesquisar</i></button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12" id="chartContainerPeriodo" style="position: relative; height:55vh; width:80vw">
+                  <canvas id="lineChartOcorrenciaPeriodo" [@chamado]="estado"></canvas>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="card-footer bg-dark text-white mt-4 text-center">
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Quantidade de ocorrências por turma e por período -->
+  <div class="tab-pane fade" id="turma" role="tabpanel" aria-labelledby="turma-tab">
+    <div class="container-fluid">
+      <div class="card text-center">
+        <div class="card-header bg-dark">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12 text-center">
+                  <i class="fa fa-lg fa-warning text-light text-center"> Quantidade de ocorrências disciplinares por
+                    turma</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-2 mr-3">
+              <input type="date" name="data_inicio_turma" (input)="gravarDataInicioTurma($event)" id="data_inicio_turma"
+                class="form-control col-12" placeholder="Data inicial" aria-describedby="helpIdInicial">
+              <small id="helpIdInicialTurma" class="text-muted">Data inicial da consulta</small>
+            </div>
+            <div class="form-group col-2">
+              <input type="date" name="data_fim_turma" (input)="gravarDataFimTurma($event)" id="data_fim_turma"
+                class="form-control col-12" placeholder="Data final" aria-describedby="helpIdFinal">
+              <small id="helpIdFinalTurma" class="text-muted">Data final da consulta</small>
+            </div>
+            <div class="col-5"></div>
+            <div class="float-right col-2">
+              <button class="btn btn-primary"><i class="fa fa-lg fa-search"
+                  (click)="pesquisarQuantidadeOcorrenciaTurma()"> Pesquisar</i></button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12" id="chartContainerTurma" style="position: relative; height:55vh; width:80vw">
+              <canvas id="lineChartOcorrenciaTurmaPeriodo" [@chamado]="estado"></canvas>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer text-white bg-dark mt-2">
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--Quantidade de ocorrências por estudante e período para uma turma selecionada -->
+  <div class="tab-pane fade" id="estudante" role="tabpanel" aria-labelledby="estudante-tab">
+    <div class="container-fluid">
+      <div class="card text-center" [@chamado]="estado">
+        <div class="card-header bg-dark">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12 text-center">
+                  <i class="fa fa-lg fa-warning text-light text-center"> Quantidade de ocorrências disciplinares por
+                    estudante</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-2 mr-3">
+              <input type="date" name="data_inicio_estudante" (input)="gravarDataInicioEstudante($event)"
+                id="data_inicio_estudante" class="form-control col-12" placeholder="Data inicial"
+                aria-describedby="helpIdInicial">
+              <small id="helpIdInicialEstudante" class="text-muted">Data inicial da consulta</small>
+            </div>
+            <div class="form-group col-2">
+              <input type="date" name="data_fim_estudante" (input)="gravarDataFimEstudante($event)"
+                id="data_fim_estudante" class="form-control col-12" placeholder="Data final"
+                aria-describedby="helpIdFinal">
+              <small id="helpIdFinalEstudante" class="text-muted">Data final da consulta</small>
+            </div>
+            <div class="col-3">
+              <select name="turmas" id="turmas" class="form-control" (change)="gravarTurmaId($event)">
+                <option value="" disabled="disabled">selecione uma turma</option>
+                <option *ngFor="let turma of turmas" [value]="turma.id">{{ turma.serie }} {{ turma.etapa }} {{
+                    turma.nome }} - {{ turma.turno }} </option>
+              </select>
+            </div>
+            <div class="col-2"></div>
+            <div class="float-right col-2">
+              <button class="btn btn-primary"><i class="fa fa-lg fa-search"
+                  (click)="pesquisarQuantidadeOcorrenciaEstudante()"> Pesquisar</i></button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12" id="chartContainerEstudante" style="position: relative; height:55vh; width:80vw">
+              <canvas id="lineChartOcorrenciaEstudantePeriodo" [@chamado]="estado"></canvas>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer text-light bg-dark mt-2">
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!--Quantidade de ocorrências por tipo e período para uma determinada escola -->
+  <div class="tab-pane fade" id="tipo-ocorrencia" role="tabpanel" aria-labelledby="tipo-ocorrencia-tab">
+    <div class="container-fluid">
+      <div class="card text-center" [@chamado]="estado">
+        <div class="card-header bg-dark">
+          <div class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12 text-center">
+                  <i class="fa fa-lg fa-warning text-light text-center"> Quantidade de ocorrências disciplinares por
+                    tipo</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-group col-2 mr-3">
+              <input type="date" name="data_inicio_tipo" (input)="gravarDataInicioTipoOcorrencia($event)"
+                id="data_inicio_tipo" class="form-control col-12" placeholder="Data inicial"
+                aria-describedby="helpIdInicial">
+              <small id="helpIdInicialTipo" class="text-muted">Data inicial da consulta</small>
+            </div>
+            <div class="form-group col-2">
+              <input type="date" name="data_fim_tipo" (input)="gravarDataFimTipoOcorrencia($event)" id="data_fim_tipo"
+                class="form-control col-12" placeholder="Data final" aria-describedby="helpIdFinal">
+              <small id="helpIdFinalTipo" class="text-muted">Data final da consulta</small>
+            </div>
+            <div class="col-5"></div>
+            <div class="float-right col-2">
+              <button class="btn btn-primary"><i class="fa fa-lg fa-search"
+                  (click)="pesquisarQuantidadeTipoOcorrencia()"> Pesquisar</i></button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12" id="chartContainerTipoOcorrencia" style="position: relative; height:55vh; width:80vw">
+              <canvas id="lineChartTipoOcorrenciaPeriodo" [@chamado]="estado"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-light bg-dark mt-2">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

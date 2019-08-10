@@ -55,9 +55,14 @@ const routes: Routes = [{
     { path: 'receber-alerta-ocorrencia', redirectTo: 'gerenciar-alerta-ocorrencia/receber-alerta-ocorrencia', pathMatch: 'full', },
     { path: 'listar-pedido-cartao-entidade', redirectTo: 'gerenciar-pedido-cartao/listar-pedido-cartao-entidade', pathMatch: 'full', },
 
+    /* REDIRECTS REPORTS */
+    { path: 'listar-grafico-ocorrencia', redirectTo: 'gerenciar-relatorio-disciplinar/listar-grafico-ocorrencia', pathMatch: 'full', },
+    { path: 'calcular-avaliacao-social', redirectTo: 'gerenciar-relatorio-disciplinar/calcular-avaliacao-social', pathMatch: 'full', },
+    { path: 'listar-quantidade-tipo-ocorrencia', redirectTo: 'gerenciar-relatorio-disciplinar/listar-quantidade-tipo-ocorrencia', pathMatch: 'full', },
+
     /* REPORTS */
     { path: 'gerenciar-relatorio-rendimento', loadChildren: () => import('../report/rendimento/rendimento.module').then(m => m.RendimentoModule), },
-
+    { path: 'gerenciar-relatorio-disciplinar', loadChildren: () => import('../report/disciplinar/disciplinar.module').then(m => m.DisciplinarModule), },
 
     /* SHARED */
     { path: 'listar-boleto-bancario-mensalidade', loadChildren: () => import('../shared/financeiro/boleto-bancario/boleto-bancario.module').then(m => m.BoletoBancarioModule), },

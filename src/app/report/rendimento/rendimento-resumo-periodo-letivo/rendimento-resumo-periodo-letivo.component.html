@@ -1,3 +1,89 @@
-<p>
-  rendimento-resumo-periodo-letivo works!
-</p>
+<div class="container-fluid" [@chamado]="estado">
+  <div class="row">
+    <div class="col-sm-12 col-lg-2">
+      <div class="list-group estudantes" id="list-tab" role="tablist">
+        <a *ngFor="let resultadoEstudante of resultadosEstudantes"
+          class="list-group-item list-group-item-action text-center text-small" [id]="resultadoEstudante.est_id"
+          data-toggle="list" role="tab" aria-controls="home" (click)="selecionarEstudante(resultadoEstudante)"><img
+            [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+            class="img-fluid rounded-circle ml-1 mt-1" width="135" height="180"
+            alt=""><br>{{resultadoEstudante.estudante}}</a>
+      </div>
+    </div>
+    <div class="col-sm-12 col-lg-10 detalhes">
+      <div class="row">
+        <div class="col-sm-12 col-lg-3 mt-2">
+          <div class="dropdown">
+            <button class="btn btn-dark text-light dropdown-toggle col-sm-12 col-lg-12" type="button"
+              id="dropdownMenuButtonTurmas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ stringTurmaSelecionada }}
+            </button>
+            <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonTurmas">
+              <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
+                name="{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno_abv }}"
+                class="dropdown-item dropdown">{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} -
+                {{ turma.turno_abv }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-3 mt-2">
+          <div class="dropdown">
+            <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonPeriodos"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ stringPeriodoSelecionado }}
+            </button>
+            <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonPeriodos">
+              <a *ngFor="let periodo of periodosLetivos" (click)="selecionarPeriodo($event)" [id]="periodo.id"
+                name="{{ periodo.periodo }} - {{ periodo.inicio | date:'dd-MM-yyyy'}} - {{ periodo.fim | date:'dd-MM-yyyy'}}"
+                class="dropdown-item dropdown">{{ periodo.periodo }} - {{ periodo.inicio | date:'dd-MM-yyyy'}} -
+                {{ periodo.fim | date:'dd-MM-yyyy'}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-12">
+          <b>{{ estudanteSelecionado.estudante | uppercase }}</b>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-12" id="chartContainerPeriodo" style="position: relative; height:68vh; width:80vw">
+          <canvas id="barChartnotaFaltasPeriodo" [@chamado]="estado"></canvas>
+        </div>
+
+        <div class="col-sm-12 col-lg-12 mt-3">
+          <label class="radio-inline">
+            <input type="radio" name="optradio" checked (click)="selecionarTipoGrafico(0)">Aproveitamento &nbsp;
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="optradio" (click)="selecionarTipoGrafico(1)">Faltas &nbsp;
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="optradio" (click)="selecionarTipoGrafico(2)">Aproveitamento e faltas &nbsp;
+          </label>
+        </div>
+
+      </div>
+
+      <!-- <div class="row">
+
+      </div> -->
+
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
