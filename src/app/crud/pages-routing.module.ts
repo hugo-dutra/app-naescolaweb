@@ -63,6 +63,8 @@ const routes: Routes = [{
     /* REPORTS */
     { path: 'gerenciar-relatorio-rendimento', loadChildren: () => import('../report/rendimento/rendimento.module').then(m => m.RendimentoModule), },
     { path: 'gerenciar-relatorio-disciplinar', loadChildren: () => import('../report/disciplinar/disciplinar.module').then(m => m.DisciplinarModule), },
+    { path: 'grafico-frequencia-portaria-periodo', loadChildren: () => import('../report/frequencia/frequencia.module').then(m => m.FrequenciaModule), },
+    { path: 'grafico-conselho-analise-estudante', loadChildren: () => import('../report/conselho-classe/conselho-classe.module').then(m => m.ConselhoClasseModule), },
 
     /* SHARED */
     { path: 'listar-boleto-bancario-mensalidade', loadChildren: () => import('../shared/financeiro/boleto-bancario/boleto-bancario.module').then(m => m.BoletoBancarioModule), },

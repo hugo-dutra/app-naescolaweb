@@ -1,0 +1,66 @@
+a {
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.estudantes {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 53vh;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 10px;
+}
+
+.observacoes {
+  height: 30vh;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 10px;
+}
+
+.detalhes {
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  height: 83vh;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#loadingDiv {
+  position: fixed;
+  top: 45%;
+  left: 37%;
+  width: 30%;
+  height: 12%;
+  background-color: #d3d3e27c;
+  border: 2px solid #33333113;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  z-index: 10000000;
+}
+
+#style-7::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+  border-radius: 5px 5px 0px 0px;
+}
+
+#style-7::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f5f5f5;
+}
+
+#style-7::-webkit-scrollbar-thumb {
+  border-radius: 5px 5px 0px 0px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.86, rgb(41, 43, 44)),
+    color-stop(0.72, rgb(41, 43, 44)),
+    color-stop(0.44, rgb(41, 43, 44))
+  );
+}
