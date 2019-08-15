@@ -52,7 +52,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public arrayOfMensagens = new Array<MessageFirebase>();
   public arrayDeMensagensSimples = new Array<MessageFirebase>()
 
-  public estudantes: Object;
+  public estudantes: Array<Object>;
   public resumoOcorrencias: Object;
   public ocorrencias: Array<Object>;
   public estudantesTurma: Object;
@@ -86,6 +86,8 @@ export class InserirOcorrenciaComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
 
+  public decrescente: boolean = true;
+
   /* private relatorioPDFOcorrenciasEstudante = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
@@ -113,6 +115,35 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   //#region ######################################### OCORRENCIA SIMPLES #################################################
+
+  public ordenarColunaSimples(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.estudantes.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.estudantes = retorno;
+
+    } else {
+      let retorno = this.estudantes.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.estudantes = retorno;
+    }
+    this.decrescente = !this.decrescente;
+  }
+
   public montarMensagemComunicado(event: Event): void {
     let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
     let inep = dados_escola[0]["inep"];
@@ -547,9 +578,9 @@ export class InserirOcorrenciaComponent implements OnInit {
       )
       .toPromise()
       .then((response: Response) => {
-        this.estudantes = response
+        this.estudantes = Object.values(response);
+        console.log(this.estudantes);
         if (this.estudantes != undefined) {
-          //this.totalRegistros = Object.keys(this.estudantes).length;
           this.totalRegistros = parseInt(this.estudantes[0]["total"]);
         }
         this.feedbackUsuario = undefined;

@@ -54,6 +54,7 @@ export class InserirObservacaoEstudanteComponent implements OnInit {
   public statusFiltro: boolean = false;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public decrescente: boolean = true;
 
   ngOnInit() {
     this.estudantes = undefined;
@@ -169,16 +170,31 @@ export class InserirObservacaoEstudanteComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.estudantes.sort(function (a, b) {
-      if (a[campo] > b[campo]) {
-        return 1;
-      }
-      if (a[campo] < b[campo]) {
-        return -1;
-      }
-      return 0;
-    })
-    this.estudantes = retorno;
+    if (!this.decrescente) {
+      let retorno = this.estudantes.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.estudantes = retorno;
+
+    } else {
+      let retorno = this.estudantes.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.estudantes = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
   public filtrar(limit: number = 5, offset: number = 0): void {

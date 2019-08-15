@@ -38,7 +38,7 @@ export class ListarPeriodoLetivoComponent implements OnInit {
     private router: Router
   ) { }
 
-  public periodosLetivos: Object;
+  public periodosLetivos: Array<Object>;
   public feedbackUsuario: string;
   public estado: string = "visivel";
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -46,6 +46,7 @@ export class ListarPeriodoLetivoComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
   ngOnInit() {
     this.exibirComponentesEdicao();
@@ -64,7 +65,7 @@ export class ListarPeriodoLetivoComponent implements OnInit {
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.periodosLetivos = response;
+        this.periodosLetivos = Object.values(response);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
@@ -109,6 +110,34 @@ export class ListarPeriodoLetivoComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.periodosLetivos.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.periodosLetivos = retorno;
+
+    } else {
+      let retorno = this.periodosLetivos.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.periodosLetivos = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
 }

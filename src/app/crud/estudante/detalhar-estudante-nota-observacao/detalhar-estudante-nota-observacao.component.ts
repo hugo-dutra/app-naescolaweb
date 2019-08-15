@@ -57,7 +57,6 @@ export class DetalharEstudanteNotaObservacaoComponent implements OnInit {
     this.estudanteService.listarObservacao(this.estudante.id).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.observacoes = Object.values(response);
-      console.table(this.observacoes);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

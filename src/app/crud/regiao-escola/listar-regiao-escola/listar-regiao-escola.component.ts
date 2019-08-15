@@ -95,7 +95,6 @@ export class ListarRegiaoEscolaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.regioesEscolas = Object.values(response);
-        console.table(this.regioesEscolas);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {

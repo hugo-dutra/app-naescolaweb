@@ -30,7 +30,7 @@ import { Utils } from '../../../shared/utils.shared';
 })
 export class ListarTurnoComponent implements OnInit {
 
-  public turnos: Object;
+  public turnos: Array<Object>;
   public turno = new Turno();
   public estado: string = "visivel";
   public feedbackUsuario: string;
@@ -39,6 +39,7 @@ export class ListarTurnoComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
 
   constructor(
@@ -65,7 +66,8 @@ export class ListarTurnoComponent implements OnInit {
       .listar(esc_id)
       .toPromise()
       .then((response: Response) => {
-        this.turnos = response;
+        this.turnos = Object.values(response);
+        console.table(this.turnos);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
@@ -111,6 +113,34 @@ export class ListarTurnoComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.turnos.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.turnos = retorno;
+
+    } else {
+      let retorno = this.turnos.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.turnos = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
 }

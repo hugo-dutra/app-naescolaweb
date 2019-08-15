@@ -5,7 +5,11 @@
 .turnos {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 55vh;
+  height: 60vh;
+}
+
+th {
+  cursor: pointer;
 }
 
 #loadingDiv {

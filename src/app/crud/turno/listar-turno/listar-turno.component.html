@@ -17,10 +17,11 @@
           <table class="table table-striped table-hover" [@chamado]="estado">
             <thead class="thead-light">
               <tr class="row">
-                <th class="col-lg-4 col-sm-12 text-center" scope="col">Turno</th>
-                <th class="col-lg-2 col-sm-12 text-center" scope="col">Abreviatura</th>
-                <th class="col-lg-2 col-sm-12 text-center" scope="col">Início</th>
-                <th class="col-lg-2 col-sm-12 text-center" scope="col">Fim</th>
+                <th class="col-lg-4 col-sm-12 text-center" scope="col" (click)="ordenarColuna('nome')">Turno</th>
+                <th class="col-lg-2 col-sm-12 text-center" scope="col" (click)="ordenarColuna('abreviatura')">
+                  Abreviatura</th>
+                <th class="col-lg-2 col-sm-12 text-center" scope="col" (click)="ordenarColuna('horaInicio')">Início</th>
+                <th class="col-lg-2 col-sm-12 text-center" scope="col" (click)="ordenarColuna('horaFim')">Fim</th>
                 <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12" scope="col">Alterar</th>
                 <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12" scope="col">Excluir</th>
               </tr>

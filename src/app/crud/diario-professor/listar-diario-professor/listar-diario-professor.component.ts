@@ -36,6 +36,7 @@ export class ListarDiarioProfessorComponent implements OnInit {
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public decrescente: boolean = true;
 
   constructor(
     private diarioProfessorService: DiarioProfessorService,
@@ -78,5 +79,32 @@ export class ListarDiarioProfessorComponent implements OnInit {
     return Utils.exibirComponente(rota);
   }
 
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.diariosProfessor.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.diariosProfessor = retorno;
+
+    } else {
+      let retorno = this.diariosProfessor.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.diariosProfessor = retorno;
+    }
+    this.decrescente = !this.decrescente;
+  }
 
 }

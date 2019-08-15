@@ -66,7 +66,6 @@ export class DetalharEstudanteSaidaAntecipadaComponent implements OnInit {
     this.saidaAntecipadaService.listarEventualEstudante(this.estudante.id).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.saidasAntecipadasEventuais = Object.values(response);
-      console.table(this.saidasAntecipadasEventuais);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

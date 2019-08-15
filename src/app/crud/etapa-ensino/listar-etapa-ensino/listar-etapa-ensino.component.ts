@@ -30,7 +30,7 @@ import { Utils } from '../../../shared/utils.shared';
 })
 export class ListarEtapaEnsinoComponent implements OnInit {
 
-  public etapasEnsino: Object;
+  public etapasEnsino: Array<Object>;
   public etapaEnsino = new EtapaEnsino();
   public estado: string = "visivel";
   public feedbackUsuario: string;
@@ -39,6 +39,7 @@ export class ListarEtapaEnsinoComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
   constructor(
     private etapaEnsinoService: EtapaEnsinoService,
@@ -64,7 +65,7 @@ export class ListarEtapaEnsinoComponent implements OnInit {
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.etapasEnsino = response;
+        this.etapasEnsino = Object.values(response);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
@@ -98,6 +99,33 @@ export class ListarEtapaEnsinoComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.etapasEnsino.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.etapasEnsino = retorno;
+    } else {
+      let retorno = this.etapasEnsino.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.etapasEnsino = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
 }

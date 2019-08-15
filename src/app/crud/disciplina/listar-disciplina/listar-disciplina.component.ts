@@ -30,7 +30,7 @@ import { Utils } from '../../../shared/utils.shared';
 })
 export class ListarDisciplinaComponent implements OnInit {
 
-  public disciplinas: Object;
+  public disciplinas: Array<Object>;
   public disciplina = new Disciplina();
   public estado: string = "visivel";
   public feedbackUsuario: string;
@@ -39,6 +39,7 @@ export class ListarDisciplinaComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
   constructor(
     private disciplinaService: DisciplinaService,
@@ -66,7 +67,7 @@ export class ListarDisciplinaComponent implements OnInit {
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.disciplinas = response;
+        this.disciplinas = Object.values(response);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
@@ -106,5 +107,32 @@ export class ListarDisciplinaComponent implements OnInit {
     return Utils.exibirComponente(rota);
   }
 
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.disciplinas.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.disciplinas = retorno;
+
+    } else {
+      let retorno = this.disciplinas.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.disciplinas = retorno;
+    }
+    this.decrescente = !this.decrescente;
+  }
 
 }

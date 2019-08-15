@@ -41,6 +41,7 @@ export class ListarAlertaComponent implements OnInit {
   public arrayOfRegrasAlertas: Array<Object>;
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
 
   constructor(
@@ -114,6 +115,7 @@ export class ListarAlertaComponent implements OnInit {
     this.alertaService.listarRegraAlerta(this.esc_id).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.arrayOfRegrasAlertas = Object.values(response);
+      console.table(this.arrayOfRegrasAlertas);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -132,4 +134,34 @@ export class ListarAlertaComponent implements OnInit {
   public gerenciarAlerta(): void {
     this.router.navigate(['gerenciar-alerta-ocorrencia'])
   }
+
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.arrayOfRegrasAlertas.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.arrayOfRegrasAlertas = retorno;
+
+    } else {
+      let retorno = this.arrayOfRegrasAlertas.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.arrayOfRegrasAlertas = retorno;
+    }
+    this.decrescente = !this.decrescente;
+  }
+
+
 }

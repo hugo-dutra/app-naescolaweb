@@ -16,9 +16,9 @@
           <thead class="thead-light">
             <tr class="row">
               <th class="col-sm-12 col-lg-1 text-left" scope="col"></th>
-              <th class="col-sm-12 col-lg-5 text-left" scope="col">Período</th>
-              <th class="col-sm-12 col-lg-2 text-center" scope="col">Início</th>
-              <th class="col-sm-12 col-lg-2 text-center" scope="col">Fim</th>
+              <th class="col-sm-12 col-lg-5 text-left" scope="col" (click)="ordenarColuna('periodo')">Período</th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col" (click)="ordenarColuna('inicio')">Início</th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col" (click)="ordenarColuna('fim')">Fim</th>
               <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1" scope="col">Alterar</th>
               <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1" scope="col">Excluir</th>
             </tr>

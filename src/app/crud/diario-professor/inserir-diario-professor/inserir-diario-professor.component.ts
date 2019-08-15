@@ -42,6 +42,7 @@ export class InserirDiarioProfessorComponent implements OnInit {
   public navegacaoFim: boolean = undefined;
   public valorFiltro: string = "";
   public statusFiltro: boolean = false;
+  public decrescente: boolean = true;
 
   public dados_escola = new Array<Object>();
   public esc_id: number;
@@ -256,16 +257,31 @@ export class InserirDiarioProfessorComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.arrayOfProfessoresHabilitados.sort(function (a, b) {
-      if (a[campo] > b[campo]) {
-        return 1;
-      }
-      if (a[campo] < b[campo]) {
-        return -1;
-      }
-      return 0;
-    });
-    this.arrayOfProfessoresHabilitados = retorno;
+    if (!this.decrescente) {
+      let retorno = this.arrayOfProfessoresHabilitados.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.arrayOfProfessoresHabilitados = retorno;
+
+    } else {
+      let retorno = this.arrayOfProfessoresHabilitados.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.arrayOfProfessoresHabilitados = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
   public filtrarProfessoresHabilitados(

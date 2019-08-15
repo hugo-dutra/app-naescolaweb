@@ -14,14 +14,17 @@
     <div class="card-body">
       <div class="row">
         <div class="regras_alerta col-lg-12 col-sm-12">
-          <table class="table table-striped table-hover" [@chamado]="estado">
+          <table class="table table-striped table-hover">
             <thead class="thead-light">
               <tr class="row">
-                <th class="col-lg-3 col-sm-12 text-center" scope="col">Tipo de ocorrência</th>
-                <th class="col-lg-2 col-sm-12 text-center" scope="col">Operador</th>
-                <th class="col-lg-1 col-sm-12 text-center" scope="col">Referência</th>
-                <th class="col-lg-2 col-sm-12 text-center" scope="col">Inicio</th>
-                <th class="col-lg-2 col-sm-12 text-center" scope="col">Fim</th>
+                <th class="col-lg-3 col-sm-12 text-center" scope="col" (click)="ordenarColuna('tipo_ocorrencia')">Tipo
+                  de ocorrência</th>
+                <th class="col-lg-2 col-sm-12 text-center" scope="col" (click)="ordenarColuna('operador')">Operador</th>
+                <th class="col-lg-1 col-sm-12 text-center" scope="col" (click)="ordenarColuna('valor_referencia')">
+                  Referência</th>
+                <th class="col-lg-2 col-sm-12 text-center" scope="col" (click)="ordenarColuna('data_inicio')">Inicio
+                </th>
+                <th class="col-lg-2 col-sm-12 text-center" scope="col" (click)="ordenarColuna('data_fim')">Fim</th>
                 <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12 text-center" scope="col">
                   Alterar</th>
                 <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12 text-center" scope="col">
@@ -29,7 +32,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let regra of arrayOfRegrasAlertas" [@chamado]="estado">
+              <tr class="row" *ngFor="let regra of arrayOfRegrasAlertas">
                 <td class="col-lg-3 col-sm-12 text-center">{{ regra.tipo_ocorrencia }}</td>
                 <td class="col-lg-2 col-sm-12 text-center">{{ regra.operador }}</td>
                 <td class="col-lg-1 col-sm-12 text-center">{{ regra.valor_referencia }}</td>

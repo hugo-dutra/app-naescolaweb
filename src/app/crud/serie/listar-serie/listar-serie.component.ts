@@ -30,7 +30,7 @@ import { Utils } from '../../../shared/utils.shared';
 })
 export class ListarSerieComponent implements OnInit {
 
-  public series: Object;
+  public series: Array<Object>;
   public serie = new Serie();
   public estado: string = "visivel";
   public feedbackUsuario: string;
@@ -39,6 +39,7 @@ export class ListarSerieComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
   constructor(
     private serieService: SerieService,
@@ -63,7 +64,7 @@ export class ListarSerieComponent implements OnInit {
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.series = response;
+        this.series = Object.values(response);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
@@ -100,6 +101,34 @@ export class ListarSerieComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.series.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.series = retorno;
+
+    } else {
+      let retorno = this.series.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.series = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
 }

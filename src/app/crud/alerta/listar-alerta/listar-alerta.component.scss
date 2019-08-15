@@ -1,7 +1,11 @@
 .regras_alerta {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 60vh;
+  height: 65vh;
+}
+
+th {
+  cursor: pointer;
 }
 
 #loadingDiv {

@@ -92,7 +92,6 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
     this.estudanteService.listarDetalhesNotificacoes(this.estudante.id).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.notificacoesDiversas = Object.values(response);
-      console.table(this.notificacoesDiversas);;
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

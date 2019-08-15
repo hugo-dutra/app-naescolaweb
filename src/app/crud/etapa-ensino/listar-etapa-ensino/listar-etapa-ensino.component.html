@@ -17,8 +17,9 @@
           <thead class="thead-light">
             <tr class="row">
               <th class="col-sm-12 col-lg-1 text-center" scope="col"></th>
-              <th class="col-sm-12 col-lg-7 text-center" scope="col">Etapa</th>
-              <th class="col-sm-12 col-lg-2 text-center" scope="col">Abreviatura</th>
+              <th class="col-sm-12 col-lg-7 text-center" scope="col" (click)="ordenarColuna('nome')">Etapa</th>
+              <th class="col-sm-12 col-lg-2 text-center" scope="col" (click)="ordenarColuna('abreviatura')">Abreviatura
+              </th>
               <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">
                 Alterar
               </th>

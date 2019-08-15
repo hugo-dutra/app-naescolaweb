@@ -31,7 +31,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 export class ListarAreaConhecimentoComponent implements OnInit {
 
   public areaConhecimento = new AreaConhecimento();
-  public areasConhecimento: Object;
+  public areasConhecimento: Array<Object>;
   public estado: string = "visivel";
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -39,6 +39,8 @@ export class ListarAreaConhecimentoComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
+
 
   constructor(
     private areaConhecimentoService: AreaConhecimentoService,
@@ -57,7 +59,7 @@ export class ListarAreaConhecimentoComponent implements OnInit {
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.areasConhecimento = response;
+        this.areasConhecimento = Object.values(response);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
@@ -101,6 +103,34 @@ export class ListarAreaConhecimentoComponent implements OnInit {
     this.exibirComponenteAlterar = Utils.exibirComponente('alterar-area-conhecimento');
     this.exibirComponenteExcluir = Utils.exibirComponente('excluir-area-conhecimento');
     this.exibirComponenteInserir = Utils.exibirComponente('inserir-area-conhecimento');
+  }
+
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.areasConhecimento.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.areasConhecimento = retorno;
+
+    } else {
+      let retorno = this.areasConhecimento.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.areasConhecimento = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
 }

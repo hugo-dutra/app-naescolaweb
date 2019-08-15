@@ -18,8 +18,9 @@
             <thead class="thead-light">
               <tr class="row">
                 <th class="col-sm-12 col-lg-1 text-center" scope="col"></th>
-                <th class="col-sm-12 col-lg-7 text-center" scope="col">Turma</th>
-                <th class="col-sm-12 col-lg-4 text-center" scope="col">Data da criação</th>
+                <th class="col-sm-12 col-lg-7 text-center" scope="col" (click)="ordenarColuna('diario')">Turma</th>
+                <th class="col-sm-12 col-lg-4 text-center" scope="col" (click)="ordenarColuna('data')">Data da criação
+                </th>
               </tr>
             </thead>
             <tbody>

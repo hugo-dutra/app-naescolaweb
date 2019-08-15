@@ -9,7 +9,11 @@ span {
 .comunicados {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 45vh;
+  height: 44vh;
+}
+
+th {
+  cursor: pointer;
 }
 
 #loadingDiv {

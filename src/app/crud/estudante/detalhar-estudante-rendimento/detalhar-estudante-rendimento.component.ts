@@ -103,7 +103,6 @@ export class DetalharEstudanteRendimentoComponent implements OnInit {
     this.periodoLetivoService.listarPorAno(anoAtual).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.periodosLetivos = Object.values(response);
-      console.table(this.periodosLetivos);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -120,7 +119,6 @@ export class DetalharEstudanteRendimentoComponent implements OnInit {
     this.rendimentoService.listarRendimentoFaltasEstudantePeriodo(this.estudante.id, this.prl_id_selecionado).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.notasFaltasEstudante = Object.values(response);
-      console.table(this.notasFaltasEstudante);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

@@ -169,7 +169,6 @@ export class VerificarAbsenteismoPortariaComponent implements OnInit {
           this.estudantesTurmaSelecionada.push(alunoFrequenciaPortaria);
         })
         this.feedbackUsuario = undefined;
-        //console.table(alunosSelecionados);
       }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -230,7 +229,6 @@ export class VerificarAbsenteismoPortariaComponent implements OnInit {
   public listarTurmas(): void {
     this.turmaService.listarTodasAno(this.anoAtual, this.esc_id).toPromise().then((response: Response) => {
       this.turmas = Object.values(response);
-      console.table(this.turmas);
       this.sincronizarDadosPortarias();
     }).catch((erro: Response) => {
       //Mostra modal

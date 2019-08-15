@@ -12,6 +12,10 @@ a:active {
   height: 25px;
 }
 
+th {
+  cursor: pointer;
+}
+
 textarea {
   height: 350px;
 }
@@ -19,19 +23,19 @@ textarea {
 .table_ocorrencia_simples {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 48vh;
+  height: 52vh;
 }
 
 .table_ocorrencia_multipla {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 50vh;
+  height: 54vh;
 }
 
 .table_procurar_ocorrencia {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 50vh;
+  height: 56vh;
 }
 
 .detalhes {

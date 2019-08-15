@@ -42,6 +42,7 @@ export class ListarComunicadoDiversoComponent implements OnInit {
   public statusFiltro: boolean = false;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public decrescente: boolean = true;
 
   public data_inicio: string;
   public data_fim: string
@@ -152,16 +153,31 @@ export class ListarComunicadoDiversoComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.arrayOfComunicados.sort(function (a, b) {
-      if (a[campo] > b[campo]) {
-        return 1;
-      }
-      if (a[campo] < b[campo]) {
-        return -1;
-      }
-      return 0;
-    })
-    this.arrayOfComunicados = retorno;
+    if (!this.decrescente) {
+      let retorno = this.arrayOfComunicados.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.arrayOfComunicados = retorno;
+
+    } else {
+      let retorno = this.arrayOfComunicados.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.arrayOfComunicados = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
   public filtrar(limit: number = 10, offset: number = 0): void {
