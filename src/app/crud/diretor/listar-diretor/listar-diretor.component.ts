@@ -53,6 +53,7 @@ export class ListarDiretorComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
   ngOnInit() {
     this.diretores = undefined;
@@ -187,16 +188,31 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.diretores.sort(function (a, b) {
-      if (a[campo] > b[campo]) {
-        return 1;
-      }
-      if (a[campo] < b[campo]) {
-        return -1;
-      }
-      return 0;
-    })
-    this.diretores = retorno;
+    if (!this.decrescente) {
+      let retorno = this.diretores.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.diretores = retorno;
+
+    } else {
+      let retorno = this.diretores.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.diretores = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
   public filtrar(limit: number = 5, offset: number = 0): void {

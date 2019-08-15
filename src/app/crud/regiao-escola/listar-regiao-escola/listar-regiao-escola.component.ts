@@ -39,6 +39,7 @@ export class ListarRegiaoEscolaComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
   constructor(
     private regiaoEscolaService: RegiaoEscolaService,
@@ -51,6 +52,7 @@ export class ListarRegiaoEscolaComponent implements OnInit {
   ngOnInit() {
     this.exibirComponentesEdicao();
     this.listar();
+
   }
   public exibirComponentesEdicao(): void {
     this.exibirComponenteAlterar = Utils.exibirComponente('alterar-regiao-escola');
@@ -59,16 +61,31 @@ export class ListarRegiaoEscolaComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.regioesEscolas.sort(function (a, b) {
-      if (a[campo] > b[campo]) {
-        return 1;
-      }
-      if (a[campo] < b[campo]) {
-        return -1;
-      }
-      return 0;
-    })
-    this.regioesEscolas = retorno;
+    if (!this.decrescente) {
+      let retorno = this.regioesEscolas.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.regioesEscolas = retorno;
+
+    } else {
+      let retorno = this.regioesEscolas.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.regioesEscolas = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
   public listar() {
@@ -78,6 +95,7 @@ export class ListarRegiaoEscolaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.regioesEscolas = Object.values(response);
+        console.table(this.regioesEscolas);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {

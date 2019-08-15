@@ -56,6 +56,7 @@ export class ListarUsuarioComponent implements OnInit {
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
   public exibirComponenteReiniciarSenha: Boolean = false;
+  public decrescente: boolean = true;
 
   ngOnInit() {
     this.exibirComponentesEdicao();
@@ -231,16 +232,31 @@ export class ListarUsuarioComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.usuarios.sort(function (a, b) {
-      if (a[campo] > b[campo]) {
-        return 1;
-      }
-      if (a[campo] < b[campo]) {
-        return -1;
-      }
-      return 0;
-    })
-    this.usuarios = retorno;
+    if (!this.decrescente) {
+      let retorno = this.usuarios.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.usuarios = retorno;
+
+    } else {
+      let retorno = this.usuarios.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.usuarios = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
   public filtrar(limit: number = 5, offset: number = 0): void {

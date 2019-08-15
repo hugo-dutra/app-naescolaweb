@@ -54,6 +54,7 @@ export class ListarEscolaComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public decrescente: boolean = true;
 
   ngOnInit() {
     this.escolas = undefined;
@@ -193,16 +194,31 @@ export class ListarEscolaComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.escolas.sort(function (a, b) {
-      if (a[campo] > b[campo]) {
-        return 1;
-      }
-      if (a[campo] < b[campo]) {
-        return -1;
-      }
-      return 0;
-    })
-    this.escolas = retorno;
+    if (!this.decrescente) {
+      let retorno = this.escolas.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.escolas = retorno;
+
+    } else {
+      let retorno = this.escolas.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.escolas = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
   public filtrar(limit: number = 5, offset: number = 0): void {
