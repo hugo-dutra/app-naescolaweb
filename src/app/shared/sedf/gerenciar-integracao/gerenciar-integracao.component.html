@@ -1,6 +1,7 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-4 col-sm-12 col-xs-12">
+  <div class="row mt-2">
+    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+
       <nb-card *ngIf="exibirComponente('sincronizar-estudantes-ieducar')" (click)="sincronizarEstudantes()">
         <nb-card-header>
           <i class="fa fa-4x fa-graduation-cap text-primary"></i>
@@ -10,6 +11,50 @@
         </nb-card-footer>
       </nb-card>
     </div>
-  </div>
 
+    <div *ngIf="exibirComponente('sincronizar-notas-faltas-ieducar')" class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="sincronizarNotasFaltas()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-bar-chart text-success"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Sincronizar notas e faltas</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <div *ngIf="exibirComponente('sincronizar-turmas-ieducar')" class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="sincronizarTurmas()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-group text-secondary"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Sincronizar Turmas</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <div *ngIf="exibirComponente('sincronizar-professores-ieducar')" class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="sincronizarProfessores()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-graduation-cap text-warning"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Sincronizar Professores</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <div *ngIf="exibirComponente('sincronizar-grade-horaria-ieducar')" class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="sincronizarGradeHoraria()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-table text-dark"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Sincronizar grade horária</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+  </div>
 </div>
