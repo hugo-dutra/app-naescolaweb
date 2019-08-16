@@ -10,6 +10,7 @@ import { SincronizarEstudanteAplicativoComponent } from './sincronizar-estudante
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { QRCodeModule } from 'angular2-qrcode';
+import { NbCardModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [BaixarFotoEstudanteAplicativoComponent, GerarQrcodeAplicativoAdministrativoComponent, GerarQrcodeAplicativoEstudanteComponent, GerenciarAplicativoComponent, SincronizarEstudanteAplicativoComponent],
@@ -19,6 +20,7 @@ import { QRCodeModule } from 'angular2-qrcode';
     ReactiveFormsModule,
     HttpClientModule,
     QRCodeModule,
+    NbCardModule,
     AplicativoRoutingModule
   ]
 })
