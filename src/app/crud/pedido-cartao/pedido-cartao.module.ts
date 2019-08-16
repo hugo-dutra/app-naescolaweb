@@ -14,12 +14,14 @@ import { ListarPedidoCartaoEntidadeComponent } from './listar-pedido-cartao-enti
 import { ListarPendenciaPedidoCartaoComponent } from './listar-pendencia-pedido-cartao/listar-pendencia-pedido-cartao.component';
 import { ListarPendenciaPedidoCartaoEntidadeComponent } from './listar-pendencia-pedido-cartao-entidade/listar-pendencia-pedido-cartao-entidade.component';
 import { RegistrarPendenciaPedidoCartaoComponent } from './registrar-pendencia-pedido-cartao/registrar-pendencia-pedido-cartao.component';
+import { NbCardModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [ConfeccionarCartaoAcessoComponent, DetalharPedidoCartaoComponent, DetalharPedidoCartaoEntidadeComponent, GerenciarPedidoCartaoComponent, InserirPedidoCartaoComponent, ListarPedidoCartaoComponent, ListarPedidoCartaoEntidadeComponent, ListarPendenciaPedidoCartaoComponent, ListarPendenciaPedidoCartaoEntidadeComponent, RegistrarPendenciaPedidoCartaoComponent],
   imports: [
     CommonModule,
     NgxBarcodeModule,
+    NbCardModule,
     PedidoCartaoRoutingModule
   ]
 })
