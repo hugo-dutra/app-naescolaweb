@@ -6,7 +6,7 @@
     <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
       <nb-card *ngIf="exibirComponente('sincronizar-estudante-aplicativo')" (click)="sincronizarAplicativo()">
         <nb-card-header>
-          <i class="fa fa-lg fa-mobile text-primary"></i>
+          <i class="fa fa-4x fa-mobile text-primary"></i>
         </nb-card-header>
         <nb-card-footer>
           <h5 class="text-center"> Sincronizar estudantes no aplicativo</h5>
@@ -14,62 +14,41 @@
       </nb-card>
     </div>
 
+    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')" (click)="gerarQrcodeAplicativoEstudante()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-qrcode text-dark"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center"> Gerar QRCode para aplicativo</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
 
-    <!-- <div *ngIf="exibirComponente('sincronizar-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
-      (click)="sincronizarAplicativo()">
-      <div class="wrimagecard wrimagecard-topimage">
-        <a class="rounded-top rounded-right rounded-bottom rounded-left">
-          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
-            <i class="fa fa-lg fa-mobile text-primary"></i>
-          </div>
-          <div class="wrimagecard-topimage_title text-warning text-center">
-            Sincronizar estudantes no aplicativo
-          </div>
-        </a>
-      </div>
-    </div> -->
+    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" (click)="baixarFotosEstudanteAplicativo()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-cloud-download text-success"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center"> Baixar fotos do aplicativo</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
 
-    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
-      (click)="gerarQrcodeAplicativoEstudante()">
-      <div class="wrimagecard wrimagecard-topimage">
-        <a class="rounded-top rounded-right rounded-bottom rounded-left">
-          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
-            <i class="fa fa-lg fa-qrcode text-dark"></i>
-          </div>
-          <div class="wrimagecard-topimage_title text-warning text-center">
-            Gerar QRCode para aplicativo
-          </div>
-        </a>
-      </div>
+    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')"
+        (click)="gerarQrcodeAplicativoAdministrativo()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-qrcode text-danger"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center"> Gerar QRCode administrativo</h5>
+        </nb-card-footer>
+      </nb-card>
     </div>
-    <div *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
-      (click)="baixarFotosEstudanteAplicativo()">
-      <div class="wrimagecard wrimagecard-topimage">
-        <a class="rounded-top rounded-right rounded-bottom rounded-left">
-          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
-            <i class="fa fa-lg fa-cloud-download text-success"></i>
-          </div>
-          <div class="wrimagecard-topimage_title text-warning text-center">
-            Baixar fotos do obtidas pelo aplicativo
-          </div>
-        </a>
-      </div>
-    </div>
-    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
-      (click)="gerarQrcodeAplicativoAdministrativo()">
-      <div class="wrimagecard wrimagecard-topimage">
-        <a class="rounded-top rounded-right rounded-bottom rounded-left">
-          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
-            <i class="fa fa-lg fa-qrcode text-danger"></i>
-          </div>
-          <div class="wrimagecard-topimage_title text-warning text-center">
-            Gerar QRCode para aplicativo administrativo
-          </div>
-        </a>
-      </div>
-    </div>
+
   </div>
-
 </div>
 
 <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
