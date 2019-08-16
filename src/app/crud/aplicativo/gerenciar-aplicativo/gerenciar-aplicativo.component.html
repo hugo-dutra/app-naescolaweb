@@ -2,7 +2,20 @@
 <div class="container-fluid container-card" [@chamado]="estado">
 
   <div class="row">
-    <div *ngIf="exibirComponente('sincronizar-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4"
+
+    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card *ngIf="exibirComponente('sincronizar-estudante-aplicativo')" (click)="sincronizarAplicativo()">
+        <nb-card-header>
+          <i class="fa fa-lg fa-mobile text-primary"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center"> Sincronizar estudantes no aplicativo</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+
+    <!-- <div *ngIf="exibirComponente('sincronizar-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
       (click)="sincronizarAplicativo()">
       <div class="wrimagecard wrimagecard-topimage">
         <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -14,9 +27,9 @@
           </div>
         </a>
       </div>
-    </div>
+    </div> -->
 
-    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')" class="col-sm-12 col-md-4 col-lg-4"
+    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
       (click)="gerarQrcodeAplicativoEstudante()">
       <div class="wrimagecard wrimagecard-topimage">
         <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -29,7 +42,7 @@
         </a>
       </div>
     </div>
-    <div *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4"
+    <div *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
       (click)="baixarFotosEstudanteAplicativo()">
       <div class="wrimagecard wrimagecard-topimage">
         <a class="rounded-top rounded-right rounded-bottom rounded-left">
@@ -42,7 +55,7 @@
         </a>
       </div>
     </div>
-    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')" class="col-sm-12 col-md-4 col-lg-4"
+    <div *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')" class="col-sm-12 col-md-4 col-lg-4 mt-2"
       (click)="gerarQrcodeAplicativoAdministrativo()">
       <div class="wrimagecard wrimagecard-topimage">
         <a class="rounded-top rounded-right rounded-bottom rounded-left">
