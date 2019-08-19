@@ -14,6 +14,13 @@
 <div class="header-container">
   <nb-actions size="small">
     <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+      <nb-icon *ngIf="dashboardMaximizedStatus==false" (click)="alterarTamanhoDashboard($event)" icon="{{expandedIcon}}"
+        title="Máximizar dashboard"></nb-icon>
+      <nb-icon *ngIf="dashboardMaximizedStatus==true" (click)="alterarTamanhoDashboard($event)" icon="{{collapseIcon}}"
+        title="Minimizar dashboard"></nb-icon>
+    </nb-action>
+
+    <nb-action class="user-action" *nbIsGranted="['view', 'user']">
       <nb-user [name]="nomeUsuario" [picture]="fotoUsuario"></nb-user>
     </nb-action>
     <nb-action class="user-action" *nbIsGranted="['view', 'user']">

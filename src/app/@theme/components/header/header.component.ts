@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
-
+import { DOCUMENT } from '@angular/common';
 import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
@@ -69,7 +69,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public nomeEscola: string;
   public esc_id: string;
   public usr_id: string;
-
+  public dashboardMaximizedStatus: boolean = false;
+  public expandedIcon = "expand-outline";
+  public collapseIcon = "collapse-outline";
+  public element;
 
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
@@ -77,10 +80,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private userService: UserData,
     private layoutService: LayoutService,
     private router: Router,
-    private breakpointService: NbMediaBreakpointsService) {
+    private breakpointService: NbMediaBreakpointsService,
+    @Inject(DOCUMENT) private document: any
+  ) {
   }
 
   ngOnInit() {
+    this.element = document.documentElement;
 
     try {
       const dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
@@ -167,6 +173,37 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.idUsuario = this.dadosUsuarioLogado["id"];
   }
 
+  public alterarTamanhoDashboard(event: Event): void {
+    this.dashboardMaximizedStatus = !this.dashboardMaximizedStatus;
+    (<HTMLInputElement>event.target).requestFullscreen();
+
+    if (this.dashboardMaximizedStatus) {
+      if (this.element.requestFullscreen) {
+        this.element.requestFullscreen();
+      } else if (this.element.mozRequestFullScreen) {
+        /* Firefox */
+        this.element.mozRequestFullScreen();
+      } else if (this.element.msRequestFullscreen) {
+        /* IE/Edge */
+        this.element.msRequestFullscreen();
+      }
+    } else {
+      if (this.document.exitFullscreen) {
+        this.document.exitFullscreen();
+      } else if (this.document.mozCancelFullScreen) {
+        /* Firefox */
+        this.document.mozCancelFullScreen();
+      } else if (this.document.webkitExitFullscreen) {
+        /* Chrome, Safari and Opera */
+        this.document.webkitExitFullscreen();
+      } else if (this.document.msExitFullscreen) {
+        /* IE/Edge */
+        this.document.msExitFullscreen();
+      }
+    }
+  }
+
+  //alert(this.dashboardMaximizedStatus);
   public carregarDadosEscola(): void {
     this.nomeEscola = Utils.pegarDadosEscola()["nome_abreviado"];
   }
