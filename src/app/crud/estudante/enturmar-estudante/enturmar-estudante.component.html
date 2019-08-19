@@ -27,23 +27,30 @@
                 </div>
               </div>
             </div>
-
           </div>
           <div class="mt-2 col-sm-12 col-lg-8">
             <div class="estudantes">
+              <div class="row">
+                <input class="form-control checkbox col-lg-1 col-sm-1" (change)="selecionarTodos($event)"
+                  type="checkbox" id="chk_selecionar_todos" name="chk_selecionar_todos">
+                <label class="text-left col-lg-11 col-sm-11" for="chk_selecionar_todos"><b>Selecionar
+                    todos</b></label>
+              </div>
               <input type="text" class="form-control mb-2" placeholder="filtrar estudante..."
                 (input)="filtrarEstudante($event)" (keydown)="limparFiltro($event)">
               <div class="ml-2">
                 <div *ngFor="let estudante of estudantes" class="form-group inline row" [@chamado]="estado">
-                  <input type="checkbox" class="form-control checkbox mt-2 col-sm-12 col-lg-1 float-left estudante"
+                  <input type="checkbox"
+                    class="form-control checkbox checkbox_estudante mt-2 col-sm-12 col-lg-1 float-left estudante"
                     [name]="estudante.id" [checked]="statusCheck" (click)="gravaStatusEstudantes($event)"
                     [value]="estudante.id" [id]="estudante.id">
                   <label [for]="estudante.id" class="mt-2 col-sm-12 col-lg-11 text-left">
-                    <h4>{{ estudante.nome }}</h4>
+                    <b>{{ estudante.nome }}</b>
                   </label>
                 </div>
               </div>
             </div>
+
             <div class="text-left text-dark">{{ enturmadosTotais }}</div>
           </div>
         </div>
