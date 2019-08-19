@@ -7,6 +7,7 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { AlertaService } from '../../alerta/alerta.service';
 
 @Component({
   selector: 'ngx-enturmar-estudante',
@@ -95,6 +96,30 @@ export class EnturmarEstudanteComponent implements OnInit {
       });
   }
 
+  public selecionarTodos(event: Event): void {
+    const arrayOfCheckbox = (<HTMLCollectionOf<HTMLInputElement>>document.getElementsByClassName('checkbox_estudante'));
+    const statusCheckbox = (<HTMLInputElement>event.target).checked;
+    Array.from(arrayOfCheckbox).forEach((elem: HTMLInputElement) => {
+      elem.checked = statusCheckbox;
+      const name = elem.name;
+      if (elem.checked) {
+        this.arrayOfEstudantes.push(parseInt(name));
+      } else {
+        this.arrayOfEstudantes.splice(
+          this.arrayOfEstudantes.indexOf(parseInt(name), 0),
+          1
+        );
+      }
+    })
+
+    if (this.arrayOfEstudantes.length > 0) {
+      this.enturmadosTotais = this.arrayOfEstudantes.length + " de " + this.estudantes.length
+    } else {
+      this.enturmadosTotais = "";
+    }
+
+  }
+
   public filtrarEstudante(event: Event): void {
     let valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
@@ -169,24 +194,38 @@ export class EnturmarEstudanteComponent implements OnInit {
   }
 
   public enturmar(): void {
-    this.feedbackUsuario = "Salvando dados, aguarde...";
-    this.estudanteService
-      .enturmar(this.arrayOfEstudantes, this.turmaSelecionada)
-      .toPromise()
-      .then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.arrayOfEstudantes = [];
-        this.turmaSelecionada = undefined;
-        this.listarSemTurma();
-      })
-      .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      });
+    if (this.validarEnturmacao()) {
+      this.feedbackUsuario = "Salvando dados, aguarde...";
+      this.estudanteService
+        .enturmar(this.arrayOfEstudantes, this.turmaSelecionada)
+        .toPromise()
+        .then(() => {
+          this.feedbackUsuario = undefined;
+          this.arrayOfEstudantes = [];
+          this.turmaSelecionada = undefined;
+          this.stringTurmaSelecionada = "Selecione uma turma";
+          (<HTMLInputElement>document.getElementById("chk_selecionar_todos")).checked = false;
+          this.listarSemTurma();
+        })
+        .catch((erro: Response) => {
+          //Mostra modal
+          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+          //registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+          //Caso token seja invalido, reenvia rota para login
+          Utils.tratarErro({ router: this.router, response: erro });
+          this.feedbackUsuario = undefined;
+        });
+    }
   }
+
+  public validarEnturmacao(): boolean {
+    if (this.arrayOfEstudantes.length > 0 && this.turmaSelecionada != undefined) {
+      return true;
+    } else {
+      this.alertModalService.showAlertDanger("Selecione uma turma e ao menos um estudante!");
+      return false;
+    }
+  }
+
 }
