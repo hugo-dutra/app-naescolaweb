@@ -13,6 +13,8 @@ export class CONSTANTES {
   public static HOST = "http://localhost:8000";
   //public static HOST = "http://34.73.55.201:8080";
   public static HOST_API = CONSTANTES.HOST + "/api/";
+  public static HOST_TOKEN_INTEGRACAO = 'https://sigep.se.df.gov.br/sigep-authentication/webresources/authentication'
+  public static HOST_INTEGRACAO = 'https://sigep.se.df.gov.br/sigep_ws/api/naescola/'
   //********************FILES**************************/
   public static NO_AVATAR_URL = CONSTANTES.HOST + "/images/avatars/noavatar.jpg"
   public static NO_LOGO_URL = CONSTANTES.HOST + "/images/logos/nologo.jpg"

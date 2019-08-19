@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Utils } from '../../utils.shared';
 import { SedfService } from '../sedf.service';
 import { CONSTANTES } from '../../constantes.shared';
+import { AlertModalService } from '../../../shared-module/alert-modal.service';
+import { FirebaseService } from '../../firebase/firebase.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-gerenciar-integracao',
@@ -12,7 +15,24 @@ import { CONSTANTES } from '../../constantes.shared';
 export class GerenciarIntegracaoComponent implements OnInit {
   public inep: string;
   public dados_escola: Object;
-  constructor(private sedfService: SedfService) { }
+  public dadosIntegracao: Array<Object>;
+  public dadosToken: Array<Object>;
+  public tokenIntegracao: string;
+  public arrayOfEstudantesEscola: Array<Object>;
+  public arrayOfTurmasEscola: Array<Object>;
+
+  public feedbackUsuario: string;
+  public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
+  public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public exibirAlerta: boolean = false;
+
+
+  constructor(
+    private sedfService: SedfService,
+    private alertModalService: AlertModalService,
+    private firebaseService: FirebaseService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.carregarDados();
@@ -26,18 +46,80 @@ export class GerenciarIntegracaoComponent implements OnInit {
       )
     )[0];
     this.inep = this.dados_escola["inep"];
+    this.autenticar();
+  }
+
+  public autenticar(): void {
+    this.feedbackUsuario = "Atualizando informações, aguarde...";
+    this.sedfService.listarDadosIntegracaoIEducar().toPromise().then((response: Response) => {
+      this.dadosIntegracao = Object.values(response);
+      this.feedbackUsuario = "Finalizando...";
+      const matricula = this.dadosIntegracao[0].toString();
+      const password = this.dadosIntegracao[1].toString();
+      const system = this.dadosIntegracao[2].toString();
+      this.sedfService.pegarTokenIntegracao(matricula, password, system).toPromise().then((response: Response) => {
+        this.dadosToken = Object.values(response);
+        localStorage.setItem("token_intg", this.dadosToken[0].toString());
+        this.tokenIntegracao = localStorage.getItem('token_intg');
+        this.feedbackUsuario = undefined;
+      }).catch((erro: Response) => {
+        //Mostra modal
+        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+        //registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        //Caso token seja invalido, reenvia rota para login
+        Utils.tratarErro({ router: this.router, response: erro });
+        this.feedbackUsuario = undefined;
+      })
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    });
   }
 
   public sincronizarEstudantes(): void {
-    alert("Estudantes serão sincronizados por aqui");
+    this.feedbackUsuario = "Listando estudante...";
+    this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
+      this.arrayOfEstudantesEscola = Object.values(response);
+      console.log(this.arrayOfEstudantesEscola);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
   }
+
+
 
   public sincronizarNotasFaltas(): void {
     alert("Notas e faltas serão sincronizadas por aqui");
   }
 
   public sincronizarTurmas(): void {
-    alert("Tumas serão sincronizadas por aqui");
+    this.feedbackUsuario = "Listando turmas...";
+    this.sedfService.listarTurmasImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
+      this.arrayOfTurmasEscola = Object.values(response);
+      console.log(this.arrayOfTurmasEscola);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
   }
 
   public sincronizarProfessores(): void {
