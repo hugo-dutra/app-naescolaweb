@@ -5,12 +5,16 @@ import { CONSTANTES } from '../../constantes.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../firebase/firebase.service';
 import { Router } from '@angular/router';
+import { EtapaEnsinoService } from '../../../crud/etapa-ensino/etapa-ensino.service';
+import { EtapaEnsino } from '../../../crud/etapa-ensino/etapa-ensino.model';
+import { Serie } from '../../../crud/serie/serie.model';
+import { SerieService } from '../../../crud/serie/serie.service';
 
 @Component({
   selector: 'ngx-gerenciar-integracao',
   templateUrl: './gerenciar-integracao.component.html',
   styleUrls: ['./gerenciar-integracao.component.scss'],
-  providers: [SedfService]
+  providers: [SedfService, EtapaEnsinoService, SerieService]
 })
 export class GerenciarIntegracaoComponent implements OnInit {
   public inep: string;
@@ -31,7 +35,9 @@ export class GerenciarIntegracaoComponent implements OnInit {
     private sedfService: SedfService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
+    private etapaEnsinoService: EtapaEnsinoService,
+    private serieService: SerieService,
   ) { }
 
   ngOnInit() {
@@ -86,7 +92,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.feedbackUsuario = "Listando estudante...";
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.arrayOfEstudantesEscola = Object.values(response);
-      console.log(this.arrayOfEstudantesEscola);
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
       //Mostra modal
@@ -99,18 +104,24 @@ export class GerenciarIntegracaoComponent implements OnInit {
     })
   }
 
-
-
   public sincronizarNotasFaltas(): void {
     alert("Notas e faltas serão sincronizadas por aqui");
   }
 
   public sincronizarTurmas(): void {
-    this.feedbackUsuario = "Listando turmas...";
+    this.feedbackUsuario = 'Listando turmas...';
     this.sedfService.listarTurmasImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.arrayOfTurmasEscola = Object.values(response);
       console.log(this.arrayOfTurmasEscola);
-      this.feedbackUsuario = undefined;
+      const etapas: EtapaEnsino[] = <EtapaEnsino[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_curso');
+      const series: Serie[] = <Serie[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_serie');
+      this.feedbackUsuario = 'Atualizando cursos...';
+      this.etapaEnsinoService.integracaoInserir(etapas).toPromise().then((response: Response) => {
+        this.feedbackUsuario = 'Atualizando Séries...';
+        this.serieService.integracaoInserir(series).toPromise().then((response: Response) => {
+          this.feedbackUsuario = undefined;
+        })
+      })
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

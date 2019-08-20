@@ -17,6 +17,23 @@ export class Utils {
     }
   }
 
+  public static eliminaValoresRepetidos(arrayAlvo: Object[], campo: string): Object[] {
+    return Array.from(new Set(arrayAlvo.map(a => a[campo])))
+      .map(id => {
+        return arrayAlvo.find(a => a[campo] === id)
+      })
+  }
+
+  public static abreviarNome(nome: string): string {
+    const arrayDePalavras = nome.split(' ');
+    let stringRetorno = "";
+    arrayDePalavras.forEach((palavra: string) => {
+      const primeiroCaracter = palavra.charAt(0).toUpperCase();
+      stringRetorno += primeiroCaracter;
+    })
+    return stringRetorno;
+  }
+
   public static now(): string {
     let data = new Date();
     return (
