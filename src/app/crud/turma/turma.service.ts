@@ -19,6 +19,16 @@ export class TurmaService {
     );
   }
 
+
+  public integracaoInserir(turmas: Turma[], esc_id: number, ano: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-inserir-turma",
+      JSON.stringify({ turmas: turmas, esc_id: esc_id, ano: ano }),
+      headers
+    );
+  }
+
   public alterar(turma: Turma): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(

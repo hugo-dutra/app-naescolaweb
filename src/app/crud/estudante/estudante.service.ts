@@ -236,10 +236,18 @@ export class EstudanteService {
 
   public inserirViaListagem(estudantes: any[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
     return this.http.post(
       CONSTANTES.HOST_API + "inserir-estudante-via-listagem",
       JSON.stringify({ estudantes: estudantes }),
+      headers
+    );
+  }
+
+  public integracaoInserir(estudantes: any[], esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-inserir-estudante",
+      JSON.stringify({ estudantes: estudantes, esc_id: esc_id }),
       headers
     );
   }
@@ -299,6 +307,15 @@ export class EstudanteService {
 
     return this.http.post(
       CONSTANTES.HOST_API + "enturmar-estudante-via-importacao",
+      JSON.stringify({ estudantes: estudantes }),
+      headers
+    );
+  }
+
+  public integracaoEnturmar(estudantes: Array<any>): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-enturmar",
       JSON.stringify({ estudantes: estudantes }),
       headers
     );

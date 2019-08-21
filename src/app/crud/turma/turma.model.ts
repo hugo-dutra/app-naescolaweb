@@ -5,4 +5,6 @@ export class Turma {
   public trn_id: number;
   public ano: number;
   public esc_id: number;
+  public serie: string;
+  public turno: string;
 }
