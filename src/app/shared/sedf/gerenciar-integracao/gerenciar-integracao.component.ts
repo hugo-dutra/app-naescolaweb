@@ -97,16 +97,75 @@ export class GerenciarIntegracaoComponent implements OnInit {
     });
   }
 
+  public inserirEstudantesEmBlocos(arrayComEstudantes: Object[], esc_id: number): Promise<Object> {
+    const retorno = new Promise((resolve, reject) => {
+      this.feedbackUsuario = "Iniciando carga, aguarde...";
+      const tamanhoBloco = 250;
+      let contaRegistroInserido = 0;
+      for (let i = 0; i < arrayComEstudantes.length; i += tamanhoBloco) {
+        let blocoDeEstudantes = arrayComEstudantes.slice(i, i + tamanhoBloco);
+        this.estudanteService.integracaoInserir(blocoDeEstudantes, this.esc_id).toPromise().then((response: Response) => {
+          contaRegistroInserido += tamanhoBloco;
+          this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de ${arrayComEstudantes.length} registros, aguarde...`;
+          if (contaRegistroInserido >= arrayComEstudantes.length) {
+            resolve({ message: "Alunos inseridos com sucesso" });
+          }
+        }).catch((e: Error) => {
+          debugger;
+          reject({ message: "Erro ao inserir estudantes." });
+        })
+      }
+    })
+    return retorno;
+  }
+
+  public enturmarEstudantesEmBlocos(arrayComEstudantes: Object[]): Promise<Object> {
+    const retorno = new Promise((resolve, reject) => {
+      this.feedbackUsuario = "Iniciando enturmação, aguarde...";
+      const tamanhoBloco = 250;
+      let contaRegistroInserido = 0;
+      for (let i = 0; i < arrayComEstudantes.length; i += tamanhoBloco) {
+        let blocoDeEstudantes = arrayComEstudantes.slice(i, i + tamanhoBloco);
+        this.estudanteService.integracaoEnturmar(blocoDeEstudantes).toPromise().then((response: Response) => {
+          contaRegistroInserido += tamanhoBloco;
+          this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de ${arrayComEstudantes.length} registros, aguarde...`;
+          if (contaRegistroInserido >= arrayComEstudantes.length) {
+            resolve({ message: "Alunos enturmados com sucesso" });
+          }
+        }).catch((e: Error) => {
+          debugger;
+          reject({ message: "Erro ao inserir estudantes." });
+        })
+      }
+    })
+    return retorno;
+  }
+
   public sincronizarEstudantes(): void {
     this.feedbackUsuario = 'Listando Estudante...';
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
+      this.feedbackUsuario = 'Iniciando carga, aguarde...';
       this.arrayOfEstudantesEscola = Object.values(response);
-      this.feedbackUsuario = 'Atualizando Estudantes...';
-      this.estudanteService.integracaoInserir(this.arrayOfEstudantesEscola, this.esc_id).toPromise().then((response: Response) => {
-        this.feedbackUsuario = 'Enturmando Estudantes...';
-        this.estudanteService.integracaoEnturmar(this.arrayOfEstudantesEscola).toPromise().then((response: Response) => {
+      this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then(() => {
+        this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then(() => {
+          this.feedbackUsuario = undefined;
+        }).catch((erro: Response) => {
+          //Mostra modal
+          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+          //registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+          //Caso token seja invalido, reenvia rota para login
+          Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
         })
+      }).catch((erro: Response) => {
+        //Mostra modal
+        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+        //registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        //Caso token seja invalido, reenvia rota para login
+        Utils.tratarErro({ router: this.router, response: erro });
+        this.feedbackUsuario = undefined;
       })
     }).catch((erro: Response) => {
       //Mostra modal
@@ -137,8 +196,32 @@ export class GerenciarIntegracaoComponent implements OnInit {
           this.feedbackUsuario = 'Atualizando Turmas...';
           this.turmaService.integracaoInserir(turmas, this.esc_id, this.ano_atual).toPromise().then((response: Response) => {
             this.feedbackUsuario = undefined;
+          }).catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
           })
+        }).catch((erro: Response) => {
+          //Mostra modal
+          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+          //registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+          //Caso token seja invalido, reenvia rota para login
+          Utils.tratarErro({ router: this.router, response: erro });
+          this.feedbackUsuario = undefined;
         })
+      }).catch((erro: Response) => {
+        //Mostra modal
+        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+        //registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        //Caso token seja invalido, reenvia rota para login
+        Utils.tratarErro({ router: this.router, response: erro });
+        this.feedbackUsuario = undefined;
       })
     }).catch((erro: Response) => {
       //Mostra modal
