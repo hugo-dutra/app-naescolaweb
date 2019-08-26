@@ -14,12 +14,21 @@ import { Turma } from '../../../crud/turma/turma.model';
 import { EstudanteService } from '../../../crud/estudante/estudante.service';
 import { TurnoService } from '../../../crud/turno/turno.service';
 import { Turno } from '../../../crud/turno/turno.model';
+import { Disciplina } from '../../../crud/disciplina/disciplina.model';
+import { DisciplinaService } from '../../../crud/disciplina/disciplina.service';
 
 @Component({
   selector: 'ngx-gerenciar-integracao',
   templateUrl: './gerenciar-integracao.component.html',
   styleUrls: ['./gerenciar-integracao.component.scss'],
-  providers: [SedfService, EtapaEnsinoService, SerieService, TurmaService, EstudanteService, TurnoService]
+  providers: [
+    SedfService,
+    EtapaEnsinoService,
+    SerieService,
+    TurmaService,
+    EstudanteService,
+    TurnoService,
+    DisciplinaService]
 })
 export class GerenciarIntegracaoComponent implements OnInit {
   public inep: string;
@@ -31,6 +40,8 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public arrayOfTurmasEscola: Array<Object>;
   public esc_id: number;
   public ano_atual: number;
+  public notasFaltasEstudantes = new Array<Object>();
+  public disciplinas = new Array<Object>();
 
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -47,6 +58,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
     private turmaService: TurmaService,
     private estudanteService: EstudanteService,
     private turnoService: TurnoService,
+    private disciplinaService: DisciplinaService,
   ) { }
 
   ngOnInit() {
@@ -149,21 +161,52 @@ export class GerenciarIntegracaoComponent implements OnInit {
   }
 
   public gravarNotasFaltasTurmasImportacaoIEducar(turmas: Object[]): Promise<Object> {
+    this.notasFaltasEstudantes = [];
+    this.disciplinas = [];
+    let notasFaltasTurma: Array<Object>;
     const retorno = new Promise((resolve, reject) => {
-      this.feedbackUsuario = "Iniciando enturmação, aguarde...";
+      this.feedbackUsuario = "Iniciando carga de dados bimestrais, aguarde...";
       let contaRegistroInserido = 0;
       for (let i = 0; i < turmas.length; i += 1) {
         const trm_id: number = turmas[i]['id'];
-        const turma: string = turmas[i]['nome'];
-        this.feedbackUsuario = `Carregando notas da turma ${turma}, aguarde...`;
         this.sedfService.listarNotasImportacao(this.tokenIntegracao, trm_id).toPromise().then((response: Response) => {
-          console.log(response);
+          if (response != null && response != undefined) {
+            notasFaltasTurma = <Object[]>Object.values(response);
+            this.notasFaltasEstudantes.push(...notasFaltasTurma);
+          }
           contaRegistroInserido += 1;
           if (contaRegistroInserido >= turmas.length) {
-            resolve({ message: "Notas inseridas com sucesso" });
+            this.disciplinas.push(...Utils.eliminaValoresRepetidos(notasFaltasTurma, 'disciplina'));
+            this.inserirDisciplinas(this.disciplinas).then(() => {
+              resolve({ message: "Notas inseridas com sucesso" });
+              console.log(this.notasFaltasEstudantes);
+            })
           }
         }).catch(() => {
           reject({ message: "Erro ao inserir notas." });
+        })
+      }
+    })
+    return retorno;
+  }
+
+  public inserirDisciplinas(disciplinas: Object[]): Promise<Object> {
+    const retorno = new Promise((resolve, reject) => {
+      let contaRegistroInserido = 0;
+      for (let i = 0; i < disciplinas.length; i++) {
+        let disciplina = new Disciplina();
+        disciplina.id = disciplinas[i]['cod_disciplina'];
+        disciplina.nome = disciplinas[i]['disciplina'];
+        disciplina.abreviatura = Utils.abreviarNomeDisciplina(disciplina.nome);
+        disciplina.arc_id = 1;
+        this.feedbackUsuario = 'Atualizando disciplinas, aguarde...';
+        this.disciplinaService.integracaoInserir(disciplina).toPromise().then(() => {
+          contaRegistroInserido++;
+          if (contaRegistroInserido >= disciplinas.length) {
+            resolve({ message: "Disciplinas inseridas com sucesso." });
+          }
+        }).catch(() => {
+          reject({ message: "Erro ao inserir Disciplinas." });
         })
       }
     })

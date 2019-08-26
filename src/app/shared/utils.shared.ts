@@ -34,6 +34,23 @@ export class Utils {
     return stringRetorno;
   }
 
+  public static abreviarNomeDisciplina(nome: string): string {
+    const arrayDePalavras = nome.split(' ');
+    let stringRetorno = "";
+    if (arrayDePalavras.length == 1) {
+      stringRetorno = arrayDePalavras[0].substr(0, 3);
+    } else {
+      arrayDePalavras.forEach((palavra: string) => {
+        const primeiroCaracter = palavra.charAt(0).toUpperCase();
+        stringRetorno += primeiroCaracter;
+      })
+    }
+
+
+
+    return stringRetorno;
+  }
+
   public static now(): string {
     let data = new Date();
     return (
