@@ -18,6 +18,15 @@ export class TurnoService {
     );
   }
 
+  public integracaoInserir(turnos: Turno[], esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-inserir-turno",
+      JSON.stringify({ turnos: turnos, esc_id: esc_id }),
+      headers
+    );
+  }
+
   public listar(esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(

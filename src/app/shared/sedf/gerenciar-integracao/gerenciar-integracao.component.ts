@@ -12,12 +12,14 @@ import { SerieService } from '../../../crud/serie/serie.service';
 import { TurmaService } from '../../../crud/turma/turma.service';
 import { Turma } from '../../../crud/turma/turma.model';
 import { EstudanteService } from '../../../crud/estudante/estudante.service';
+import { TurnoService } from '../../../crud/turno/turno.service';
+import { Turno } from '../../../crud/turno/turno.model';
 
 @Component({
   selector: 'ngx-gerenciar-integracao',
   templateUrl: './gerenciar-integracao.component.html',
   styleUrls: ['./gerenciar-integracao.component.scss'],
-  providers: [SedfService, EtapaEnsinoService, SerieService, TurmaService, EstudanteService]
+  providers: [SedfService, EtapaEnsinoService, SerieService, TurmaService, EstudanteService, TurnoService]
 })
 export class GerenciarIntegracaoComponent implements OnInit {
   public inep: string;
@@ -35,7 +37,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
 
-
   constructor(
     private sedfService: SedfService,
     private alertModalService: AlertModalService,
@@ -45,6 +46,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
     private serieService: SerieService,
     private turmaService: TurmaService,
     private estudanteService: EstudanteService,
+    private turnoService: TurnoService,
   ) { }
 
   ngOnInit() {
@@ -78,22 +80,10 @@ export class GerenciarIntegracaoComponent implements OnInit {
         this.tokenIntegracao = localStorage.getItem('token_intg');
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.gravarErroMostrarMensagem(erro);
       })
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.gravarErroMostrarMensagem(erro);
     });
   }
 
@@ -110,8 +100,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
           if (contaRegistroInserido >= arrayComEstudantes.length) {
             resolve({ message: "Alunos inseridos com sucesso" });
           }
-        }).catch((e: Error) => {
-          debugger;
+        }).catch(() => {
           reject({ message: "Erro ao inserir estudantes." });
         })
       }
@@ -132,8 +121,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
           if (contaRegistroInserido >= arrayComEstudantes.length) {
             resolve({ message: "Alunos enturmados com sucesso" });
           }
-        }).catch((e: Error) => {
-          debugger;
+        }).catch(() => {
           reject({ message: "Erro ao inserir estudantes." });
         })
       }
@@ -150,50 +138,58 @@ export class GerenciarIntegracaoComponent implements OnInit {
         this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then(() => {
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.gravarErroMostrarMensagem(erro);
         })
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.gravarErroMostrarMensagem(erro);
       })
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.gravarErroMostrarMensagem(erro);
     })
+  }
+
+  public gravarNotasFaltasTurmasImportacaoIEducar(turmas: Object[]): Promise<Object> {
+    const retorno = new Promise((resolve, reject) => {
+      this.feedbackUsuario = "Iniciando enturmação, aguarde...";
+      let contaRegistroInserido = 0;
+      for (let i = 0; i < turmas.length; i += 1) {
+        const trm_id: number = turmas[i]['id'];
+        const turma: string = turmas[i]['nome'];
+        this.feedbackUsuario = `Carregando notas da turma ${turma}, aguarde...`;
+        this.sedfService.listarNotasImportacao(this.tokenIntegracao, trm_id).toPromise().then((response: Response) => {
+          console.log(response);
+          contaRegistroInserido += 1;
+          if (contaRegistroInserido >= turmas.length) {
+            resolve({ message: "Notas inseridas com sucesso" });
+          }
+        }).catch(() => {
+          reject({ message: "Erro ao inserir notas." });
+        })
+      }
+    })
+    return retorno;
   }
 
   public sincronizarNotasFaltas(): void {
     this.feedbackUsuario = 'Listando notas, aguarde...';
-    this.sedfService.listarNotasImportacao(this.tokenIntegracao, 325037).toPromise().then((response: Response) => {
-      const arrayComNotas = Object.values(response);
-      console.log(arrayComNotas);
-      this.feedbackUsuario = undefined;
+    this.turmaService.listarTodasAno(this.ano_atual, this.esc_id).toPromise().then((response: Response) => {
+      const turmas = Object.values(response);
+      this.gravarNotasFaltasTurmasImportacaoIEducar(turmas).then(() => {
+        this.feedbackUsuario = undefined;
+      })
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+      this.gravarErroMostrarMensagem(erro);
+    });
+  }
 
+  public gravarErroMostrarMensagem(erro: Response) {
+    //Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    //registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+    //Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 
   public sincronizarTurmas(): void {
@@ -203,48 +199,30 @@ export class GerenciarIntegracaoComponent implements OnInit {
       const etapas: EtapaEnsino[] = <EtapaEnsino[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_curso');
       const series: Serie[] = <Serie[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_serie');
       const turmas: Turma[] = <Turma[]>this.arrayOfTurmasEscola;
-      this.feedbackUsuario = 'Atualizando Cursos...';
-      this.etapaEnsinoService.integracaoInserir(etapas).toPromise().then((response: Response) => {
-        this.feedbackUsuario = 'Atualizando Séries...';
-        this.serieService.integracaoInserir(series).toPromise().then((response: Response) => {
-          this.feedbackUsuario = 'Atualizando Turmas...';
-          this.turmaService.integracaoInserir(turmas, this.esc_id, this.ano_atual).toPromise().then((response: Response) => {
-            this.feedbackUsuario = undefined;
+      const turnos: Turno[] = <Turno[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_turno');
+      this.feedbackUsuario = 'Atualizando turnos...';
+      this.turnoService.integracaoInserir(turnos, this.esc_id).toPromise().then(() => {
+        this.feedbackUsuario = 'Atualizando Cursos...';
+        this.etapaEnsinoService.integracaoInserir(etapas).toPromise().then((response: Response) => {
+          this.feedbackUsuario = 'Atualizando Séries...';
+          this.serieService.integracaoInserir(series).toPromise().then((response: Response) => {
+            this.feedbackUsuario = 'Atualizando Turmas...';
+            this.turmaService.integracaoInserir(turmas, this.esc_id, this.ano_atual).toPromise().then((response: Response) => {
+              this.feedbackUsuario = undefined;
+            }).catch((erro: Response) => {
+              this.gravarErroMostrarMensagem(erro);
+            })
           }).catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.gravarErroMostrarMensagem(erro);
           })
         }).catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.gravarErroMostrarMensagem(erro);
         })
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.gravarErroMostrarMensagem(erro);
       })
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.gravarErroMostrarMensagem(erro);
     })
   }
 
