@@ -8,11 +8,19 @@ export class SedfService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Pega dados para serem usado na requisição do Token de integração
+   */
   public listarDadosIntegracaoIEducar(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(CONSTANTES.HOST_API + "listar-dados-acesso-integracao", null, headers);
   }
-
+  /**
+   * Solicita o token de acesso para ser usado na integração
+   * @param _matricula Matrícula
+   * @param _password Senha
+   * @param _system Sistema
+   */
   public pegarTokenIntegracao(_matricula: string, _password: string, _system: string): Observable<any> {
     const matricula = _matricula;
     const password = _password;
@@ -23,17 +31,36 @@ export class SedfService {
     }
     return this.http.post(CONSTANTES.HOST_TOKEN_INTEGRACAO, JSON.stringify({ matricula: matricula, password: password, system: system }), headers)
   }
-
+  /**
+   * Lista os estudantes da escola cujo inep é informado
+   * @param token_intg Token de integração
+   * @param inep INEP da escola
+   */
   public listarEstudantesImportacao(token_intg: string, inep: string): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
     const metodo: string = 'aluno/listabyinep/';
     return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + inep, headers);
   }
-
+  /**
+   * Lista as turmas da escola cujo inep é informado
+   * @param token_intg Token de integração
+   * @param inep INEP da escola
+   */
   public listarTurmasImportacao(token_intg: string, inep: string): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
     const metodo: string = 'turma/listabyinep/';
     return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + inep, headers);
+  }
+  /**
+   * Lista as notas da turma cujo código é informado
+   * @param token_intg Token de integração
+   * @param id_turma id do IEducar da turma cujas notas serão recebidas
+   */
+  public listarNotasImportacao(token_intg: string, id_turma: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
+    const metodo: string = 'nota/listabyturma/';
+    console.log(CONSTANTES.HOST_INTEGRACAO + metodo + id_turma);
+    return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + id_turma, headers);
   }
 
 }

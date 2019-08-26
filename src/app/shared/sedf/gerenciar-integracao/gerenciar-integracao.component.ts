@@ -179,7 +179,21 @@ export class GerenciarIntegracaoComponent implements OnInit {
   }
 
   public sincronizarNotasFaltas(): void {
-    alert("Notas e faltas serão sincronizadas por aqui");
+    this.feedbackUsuario = 'Listando notas, aguarde...';
+    this.sedfService.listarNotasImportacao(this.tokenIntegracao, 325037).toPromise().then((response: Response) => {
+      const arrayComNotas = Object.values(response);
+      console.log(arrayComNotas);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
+
   }
 
   public sincronizarTurmas(): void {
