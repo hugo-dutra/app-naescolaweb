@@ -190,6 +190,31 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return retorno;
   }
 
+  public inserirNotasFaltas(notasFaltas: Object[]): Promise<Object> {
+    const retorno = new Promise((resolve, reject) => {
+      this.feedbackUsuario = "Iniciando carga de notas, aguarde...";
+      const tamanhoBloco = 250;
+      let contaRegistroInserido = 0;
+      for (let i = 0; i < notasFaltas.length; i += tamanhoBloco) {
+        let blocoDeNotasFaltasEstudantes = notasFaltas.slice(i, i + tamanhoBloco);
+
+
+        /* this.estudanteService.integracaoInserir(blocoDeNotasFaltasEstudantes, this.esc_id).toPromise().then((response: Response) => {
+          contaRegistroInserido += tamanhoBloco;
+          this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de ${notasFaltas.length} registros, aguarde...`;
+          if (contaRegistroInserido >= notasFaltas.length) {
+            resolve({ message: "Notas inseridas com sucesso." });
+          }
+        }).catch(() => {
+          reject({ message: "Erro ao inserir estudantes." });
+        }) */
+
+
+      }
+    })
+    return retorno;
+  }
+
   public inserirDisciplinas(disciplinas: Object[]): Promise<Object> {
     const retorno = new Promise((resolve, reject) => {
       let contaRegistroInserido = 0;
@@ -213,8 +238,12 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return retorno;
   }
 
+
+
+
+
   public sincronizarNotasFaltas(): void {
-    this.feedbackUsuario = 'Listando notas, aguarde...';
+    this.feedbackUsuario = 'Listando turmas para carga de notas, aguarde...';
     this.turmaService.listarTodasAno(this.ano_atual, this.esc_id).toPromise().then((response: Response) => {
       const turmas = Object.values(response);
       this.gravarNotasFaltasTurmasImportacaoIEducar(turmas).then(() => {

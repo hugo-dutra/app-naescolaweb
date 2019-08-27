@@ -40,7 +40,7 @@ export class EnviarNotaBoletimComponent implements OnInit {
 
   public dados_escola = new Array<Object>();
   public dados_usuario = new Array<Object>();
-  public arrayOfIdsEstudantes = new Array<number>();
+  public arrayOfIdsEstudantes = new Array<Object>();
 
   public modos_tela = { inserir: 'inserir', listar: 'listar' };
   public modo_tela = '';
@@ -119,13 +119,13 @@ export class EnviarNotaBoletimComponent implements OnInit {
     if (this.validarEnvioNotas()) {
       this.desabilitarBotoes();
       this.exibirAlerta = false;
-      this.arrayOfIdsEstudantes.length = 0;
+      this.arrayOfIdsEstudantes = [];
       const trm_id = parseInt(this.diarioSelecionado["trm_id"]);
       this.feedbackUsuario = "Listando estudantes...";
       this.estudanteService.listarTurmaId(trm_id).toPromise().then((response: Response) => {
         const estudantesTurmaSelecionada = Object.values(response);
         estudantesTurmaSelecionada.forEach(elem => {
-          this.arrayOfIdsEstudantes.push(parseInt(elem["id"]))
+          this.arrayOfIdsEstudantes.push({ id: parseInt(elem['id']), matricula: elem['matricula'] })
         });
         this.feedbackUsuario = "Atualizando boletins de estudantes...";
         this.boletimEstudanteService.inserirBoletimEscolar(this.arrayOfIdsEstudantes, (new Date()).getFullYear()).toPromise().then((response: Response) => {
@@ -145,7 +145,7 @@ export class EnviarNotaBoletimComponent implements OnInit {
                 arrayOfResultadoBoletim.push(resultadoBoletim);
               })
               this.feedbackUsuario = "Inserindo notas nos boletins, aguarde...";
-              this.boletimEstudanteService.inserirResultadoBoletim(arrayOfResultadoBoletim).toPromise().then((response: Response) => {
+              this.boletimEstudanteService.inserirResultadoBoletim(arrayOfResultadoBoletim).toPromise().then(() => {
                 this.feedbackUsuario = "Processo concluído com sucesso!";
                 setTimeout(() => {
                   this.diarioSelecionado = null;
@@ -189,6 +189,10 @@ export class EnviarNotaBoletimComponent implements OnInit {
     } else {
       this.exibirAlerta = true;
     }
+
+
+
+
   }
 
   public desabilitarBotoes(): void {

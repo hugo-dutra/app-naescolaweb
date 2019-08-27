@@ -16,7 +16,7 @@ export class BoletimEstudanteService {
    * @returns {Observable<any>}
    * @memberof BoletimEstudanteService
    */
-  public inserirBoletimEscolar(arrayOfEstudantes: number[], ano_letivo: number): Observable<any> {
+  public inserirBoletimEscolar(arrayOfEstudantes: Object[], ano_letivo: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
 
     return this.http.post(
