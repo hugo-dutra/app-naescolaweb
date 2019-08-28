@@ -50,6 +50,16 @@ export class DiarioRegistroService {
     );
   }
 
+  public integracaoGravarNotasImportacao(resultadosEstudante: Object[], anoLetivo: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-gravar-notas",
+      JSON.stringify({ resultadosEstudante: resultadosEstudante, anoLetivo: anoLetivo }),
+      headers
+    );
+  }
+
   public gravarLancamentoPeriodoLetivoManual(notasFaltasEstudante: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
 

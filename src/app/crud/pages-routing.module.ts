@@ -43,6 +43,7 @@ const routes: Routes = [{
     { path: 'filtrar-saida-antecipada', loadChildren: () => import('./saida-antecipada/saida-antecipada.module').then(m => m.SaidaAntecipadaModule), },
     { path: 'listar-serie', loadChildren: () => import('./serie/serie.module').then(m => m.SerieModule), },
     { path: 'inserir-professor-disciplina', loadChildren: () => import('./professor-disciplina/professor-disciplina.module').then(m => m.ProfessorDisciplinaModule), },
+    { path: 'inserir-professor-escola', loadChildren: () => import('./professor-escola/professor-escola.module').then(m => m.ProfessorEscolaModule), },
     { path: 'listar-regiao-escola', loadChildren: () => import('./regiao-escola/regiao-escola.module').then(m => m.RegiaoEscolaModule), },
     { path: 'inserir-professor-turma', loadChildren: () => import('./professor-turma/professor-turma.module').then(m => m.ProfessorTurmaModule), },
     { path: 'listar-permissao-acesso', loadChildren: () => import('./permissao-acesso/permissao-acesso.module').then(m => m.PermissaoAcessoModule), },

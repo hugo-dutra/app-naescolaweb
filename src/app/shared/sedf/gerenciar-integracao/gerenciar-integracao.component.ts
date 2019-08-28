@@ -16,6 +16,8 @@ import { TurnoService } from '../../../crud/turno/turno.service';
 import { Turno } from '../../../crud/turno/turno.model';
 import { Disciplina } from '../../../crud/disciplina/disciplina.model';
 import { DisciplinaService } from '../../../crud/disciplina/disciplina.service';
+import { DiarioRegistroService } from '../../../crud/diario-registro/diario-registro.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'ngx-gerenciar-integracao',
@@ -28,7 +30,23 @@ import { DisciplinaService } from '../../../crud/disciplina/disciplina.service';
     TurmaService,
     EstudanteService,
     TurnoService,
-    DisciplinaService]
+    DisciplinaService,
+    DiarioRegistroService,
+  ],
+  animations: [
+    trigger("chamado", [
+      state(
+        "visivel",
+        style({
+          opacity: 1
+        })
+      ),
+      transition("void => visivel", [
+        style({ opacity: 0 }),
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
+      ])
+    ])
+  ]
 })
 export class GerenciarIntegracaoComponent implements OnInit {
   public inep: string;
@@ -42,11 +60,16 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public ano_atual: number;
   public notasFaltasEstudantes = new Array<Object>();
   public disciplinas = new Array<Object>();
+  public listaTurmas: Boolean = false;
+  public listaDeTurmas = new Array<Object>();
+  public decrescente: boolean = true;
+
 
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
+  public estado: string = "visivel";
 
   constructor(
     private sedfService: SedfService,
@@ -59,6 +82,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
     private estudanteService: EstudanteService,
     private turnoService: TurnoService,
     private disciplinaService: DisciplinaService,
+    private diarioRegistroService: DiarioRegistroService,
   ) { }
 
   ngOnInit() {
@@ -102,7 +126,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public inserirEstudantesEmBlocos(arrayComEstudantes: Object[], esc_id: number): Promise<Object> {
     const retorno = new Promise((resolve, reject) => {
       this.feedbackUsuario = "Iniciando carga, aguarde...";
-      const tamanhoBloco = 250;
+      const tamanhoBloco = 500;
       let contaRegistroInserido = 0;
       for (let i = 0; i < arrayComEstudantes.length; i += tamanhoBloco) {
         let blocoDeEstudantes = arrayComEstudantes.slice(i, i + tamanhoBloco);
@@ -123,7 +147,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public enturmarEstudantesEmBlocos(arrayComEstudantes: Object[]): Promise<Object> {
     const retorno = new Promise((resolve, reject) => {
       this.feedbackUsuario = "Iniciando enturmação, aguarde...";
-      const tamanhoBloco = 250;
+      const tamanhoBloco = 500;
       let contaRegistroInserido = 0;
       for (let i = 0; i < arrayComEstudantes.length; i += tamanhoBloco) {
         let blocoDeEstudantes = arrayComEstudantes.slice(i, i + tamanhoBloco);
@@ -142,7 +166,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
   }
 
   public sincronizarEstudantes(): void {
-    this.feedbackUsuario = 'Listando Estudante...';
+    this.feedbackUsuario = 'Listando Estudantes...';
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
       this.arrayOfEstudantesEscola = Object.values(response);
@@ -151,7 +175,26 @@ export class GerenciarIntegracaoComponent implements OnInit {
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
           this.gravarErroMostrarMensagem(erro);
-        })
+        });
+      }).catch((erro: Response) => {
+        this.gravarErroMostrarMensagem(erro);
+      });
+    }).catch((erro: Response) => {
+      this.gravarErroMostrarMensagem(erro);
+    });
+  }
+
+  public gerenciarIntegracao(): void {
+    this.listaTurmas = false;
+  }
+
+  public baixarNotasFaltasTurmaSelecionada(turma: Object): void {
+    this.feedbackUsuario = `Baixando notas da turma ${turma['nome']}`;
+    this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']).toPromise().then((response: Response) => {
+      const notasFaltas = Object.values(response);
+      this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
+      this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual).toPromise().then(() => {
+        this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
         this.gravarErroMostrarMensagem(erro);
       })
@@ -160,63 +203,43 @@ export class GerenciarIntegracaoComponent implements OnInit {
     })
   }
 
-  public gravarNotasFaltasTurmasImportacaoIEducar(turmas: Object[]): Promise<Object> {
-    this.notasFaltasEstudantes = [];
-    this.disciplinas = [];
-    let notasFaltasTurma: Array<Object>;
-    const retorno = new Promise((resolve, reject) => {
-      this.feedbackUsuario = "Iniciando carga de dados bimestrais, aguarde...";
-      let contaRegistroInserido = 0;
-      for (let i = 0; i < turmas.length; i += 1) {
-        const trm_id: number = turmas[i]['id'];
-        this.sedfService.listarNotasImportacao(this.tokenIntegracao, trm_id).toPromise().then((response: Response) => {
-          if (response != null && response != undefined) {
-            notasFaltasTurma = <Object[]>Object.values(response);
-            this.notasFaltasEstudantes.push(...notasFaltasTurma);
-          }
-          contaRegistroInserido += 1;
-          if (contaRegistroInserido >= turmas.length) {
-            this.disciplinas.push(...Utils.eliminaValoresRepetidos(notasFaltasTurma, 'disciplina'));
-            this.inserirDisciplinas(this.disciplinas).then(() => {
-              resolve({ message: "Notas inseridas com sucesso" });
-              console.log(this.notasFaltasEstudantes);
-            })
-          }
-        }).catch(() => {
-          reject({ message: "Erro ao inserir notas." });
+  public sincronizarNotasFaltas(): void {
+    this.listaDeTurmas = [];
+    this.feedbackUsuario = 'Listando turmas para carga de notas, aguarde...';
+    this.turmaService.listarTodasAno(this.ano_atual, this.esc_id).toPromise().then((response: Response) => {
+      this.listaDeTurmas = Object.values(response);
+      this.feedbackUsuario = undefined;
+      this.listaTurmas = true;
+    }).catch((erro: Response) => {
+      this.gravarErroMostrarMensagem(erro);
+    })
+
+    /* this.feedbackUsuario = 'Listando turmas para carga de notas, aguarde...';
+    this.turmaService.listarTodasAno(this.ano_atual, this.esc_id).toPromise().then((response: Response) => {
+      const turmas = Object.values(response);
+      this.listarNotasFaltasDisciplinasIEducar(turmas).then((disciplinasRelacionadas: Object[]) => {
+        this.disciplinas = Utils.eliminaValoresRepetidos(Object.values(disciplinasRelacionadas), 'cod_disciplina');
+        this.feedbackUsuario = 'Atualizando disciplinas, aguarde...';
+        this.inserirDisciplinas(this.disciplinas).then(() => {
+          this.feedbackUsuario = 'Atualizando notas, aguarde...';
+          this.inserirNotasFaltas(this.notasFaltasEstudantes).then(() => {
+            this.feedbackUsuario = undefined;
+          }).catch((erro: Response) => {
+            this.gravarErroMostrarMensagem(erro);
+          })
+        }).catch((erro: Response) => {
+          this.gravarErroMostrarMensagem(erro);
         })
-      }
-    })
-    return retorno;
-  }
-
-  public inserirNotasFaltas(notasFaltas: Object[]): Promise<Object> {
-    const retorno = new Promise((resolve, reject) => {
-      this.feedbackUsuario = "Iniciando carga de notas, aguarde...";
-      const tamanhoBloco = 250;
-      let contaRegistroInserido = 0;
-      for (let i = 0; i < notasFaltas.length; i += tamanhoBloco) {
-        let blocoDeNotasFaltasEstudantes = notasFaltas.slice(i, i + tamanhoBloco);
-
-
-        /* this.estudanteService.integracaoInserir(blocoDeNotasFaltasEstudantes, this.esc_id).toPromise().then((response: Response) => {
-          contaRegistroInserido += tamanhoBloco;
-          this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de ${notasFaltas.length} registros, aguarde...`;
-          if (contaRegistroInserido >= notasFaltas.length) {
-            resolve({ message: "Notas inseridas com sucesso." });
-          }
-        }).catch(() => {
-          reject({ message: "Erro ao inserir estudantes." });
-        }) */
-
-
-      }
-    })
-    return retorno;
+      }).catch((erro: Response) => {
+        this.gravarErroMostrarMensagem(erro);
+      })
+    }).catch((erro: Response) => {
+      this.gravarErroMostrarMensagem(erro);
+    }); */
   }
 
   public inserirDisciplinas(disciplinas: Object[]): Promise<Object> {
-    const retorno = new Promise((resolve, reject) => {
+    /* const retorno = new Promise((resolve, reject) => {
       let contaRegistroInserido = 0;
       for (let i = 0; i < disciplinas.length; i++) {
         let disciplina = new Disciplina();
@@ -235,23 +258,61 @@ export class GerenciarIntegracaoComponent implements OnInit {
         })
       }
     })
-    return retorno;
+    return retorno; */
+    return null;
   }
 
 
+  public inserirNotasFaltas(notasFaltas: Object[]): Promise<Object> {
+    /* const retorno = new Promise((resolve, reject) => {
+      this.feedbackUsuario = "Iniciando carga de notas, aguarde...";
+      const tamanhoBloco = 100;
+      let contaRegistroInserido = 0;
+      for (let i = 0; i < notasFaltas.length; i += tamanhoBloco) {
+        let blocoDeNotasFaltasEstudantes = notasFaltas.slice(i, i + tamanhoBloco);
+        this.feedbackUsuario = `Enviando ${i} registros de ${notasFaltas.length}, aguarde...`;
+        console.log(this.feedbackUsuario);
+        this.diarioRegistroService.integracaoGravarNotasImportacao(blocoDeNotasFaltasEstudantes, this.ano_atual).toPromise().then(() => {
+          contaRegistroInserido += tamanhoBloco;
+          this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de ${notasFaltas.length} registros, aguarde...`;
+          if (contaRegistroInserido >= notasFaltas.length) {
+            this.feedbackUsuario = undefined;
+            resolve({ message: "Notas inseridas com sucesso." });
+          }
+        }).catch(() => {
+          this.feedbackUsuario = undefined;
+          reject({ message: "Erro ao inserir estudantes." });
+        })
+      }
+    })
+    return retorno; */
+    return null;
+  }
 
-
-
-  public sincronizarNotasFaltas(): void {
-    this.feedbackUsuario = 'Listando turmas para carga de notas, aguarde...';
-    this.turmaService.listarTodasAno(this.ano_atual, this.esc_id).toPromise().then((response: Response) => {
-      const turmas = Object.values(response);
-      this.gravarNotasFaltasTurmasImportacaoIEducar(turmas).then(() => {
-        this.feedbackUsuario = undefined;
-      })
-    }).catch((erro: Response) => {
-      this.gravarErroMostrarMensagem(erro);
-    });
+  public listarNotasFaltasDisciplinasIEducar(turmas: Object[]): Promise<Object> {
+    let notasFaltasTurma: Array<Object>;
+    let disciplinasRelacionadas = new Array<Object>();
+    const retorno = new Promise((resolve, reject) => {
+      this.feedbackUsuario = "Iniciando carga de dados bimestrais, aguarde...";
+      let contaRegistroInserido = 0;
+      for (let i = 0; i < turmas.length; i += 1) {
+        const trm_id: number = turmas[i]['id'];
+        this.sedfService.listarNotasImportacao(this.tokenIntegracao, trm_id).toPromise().then((response: Response) => {
+          if (response != null && response != undefined) {
+            notasFaltasTurma = <Object[]>Object.values(response);
+            this.notasFaltasEstudantes.push(...notasFaltasTurma);
+            disciplinasRelacionadas.push(...Utils.eliminaValoresRepetidos(notasFaltasTurma, 'cod_disciplina'));
+          }
+          contaRegistroInserido += 1;
+          if (contaRegistroInserido >= turmas.length) {
+            resolve(disciplinasRelacionadas);
+          }
+        }).catch(() => {
+          reject({ erro: 'Erro ao listar disciplinas' });
+        })
+      }
+    })
+    return retorno;
   }
 
   public gravarErroMostrarMensagem(erro: Response) {
@@ -308,6 +369,33 @@ export class GerenciarIntegracaoComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public ordenarColuna(campo: string): void {
+    if (!this.decrescente) {
+      let retorno = this.listaDeTurmas.sort(function (a, b) {
+        if (a[campo] < b[campo]) {
+          return 1;
+        }
+        if (a[campo] > b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.listaDeTurmas = retorno;
+    } else {
+      let retorno = this.listaDeTurmas.sort(function (a, b) {
+        if (a[campo] > b[campo]) {
+          return 1;
+        }
+        if (a[campo] < b[campo]) {
+          return -1;
+        }
+        return 0;
+      })
+      this.listaDeTurmas = retorno;
+    }
+    this.decrescente = !this.decrescente;
   }
 
 }

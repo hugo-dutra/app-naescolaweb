@@ -7,6 +7,12 @@
   height: 25px;
 }
 
+.turmas {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 66vh;
+}
+
 nb-card {
   cursor: pointer;
   box-shadow: 12px 15px 20px 0px rgba(46, 46, 73, 0.2);
