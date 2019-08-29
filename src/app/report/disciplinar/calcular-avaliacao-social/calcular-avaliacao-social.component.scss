@@ -12,10 +12,19 @@ span {
   height: 45vh;
 }
 
+.turmas {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 250px;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+}
+
 .estudantes {
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 60vh;
+  height: 57vh;
 }
 
 img {

@@ -12,20 +12,24 @@
     </div>
     <div class="col-sm-12 col-lg-10 detalhes">
       <div class="row">
-        <div class="col-sm-12 col-lg-3 mt-2">
-          <div class="dropdown">
-            <button class="btn btn-dark text-light dropdown-toggle col-sm-12 col-lg-12" type="button"
-              id="dropdownMenuButtonTurmas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ stringTurmaSelecionada }}
-            </button>
-            <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonTurmas">
-              <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
-                name="{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno_abv }}"
-                class="dropdown-item dropdown">{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} -
-                {{ turma.turno_abv }}</a>
+
+        <div class="col-sm-12 col-lg-4 form-group">
+          <div class="row">
+            <div class="dropdown mt-2 col-sm-12 col-lg-12">
+              <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ stringTurmaSelecionada }}
+              </button>
+              <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButton">
+                <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
+                  name="{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }}"
+                  class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
+                  Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
+              </div>
             </div>
           </div>
         </div>
+
         <div class="col-sm-12 col-lg-3 mt-2">
           <div class="dropdown">
             <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonPeriodos"

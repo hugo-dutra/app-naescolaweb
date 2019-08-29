@@ -191,13 +191,18 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public baixarNotasFaltasTurmaSelecionada(turma: Object): void {
     this.feedbackUsuario = `Baixando notas da turma ${turma['nome']}`;
     this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']).toPromise().then((response: Response) => {
-      const notasFaltas = Object.values(response);
-      this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
-      this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual).toPromise().then(() => {
+      if (response != null && response != undefined) {
+        const notasFaltas = Object.values(response);
+        this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
+        this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual).toPromise().then(() => {
+          this.feedbackUsuario = undefined;
+        }).catch((erro: Response) => {
+          this.gravarErroMostrarMensagem(erro);
+        })
+      } else {
+        this.alertModalService.showAlertWarning('Sem dados para turma informada.');
         this.feedbackUsuario = undefined;
-      }).catch((erro: Response) => {
-        this.gravarErroMostrarMensagem(erro);
-      })
+      }
     }).catch((erro: Response) => {
       this.gravarErroMostrarMensagem(erro);
     })
