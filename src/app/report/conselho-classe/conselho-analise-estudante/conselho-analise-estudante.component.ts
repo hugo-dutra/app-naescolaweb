@@ -457,7 +457,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
             borderColor: ["rgba(255, 159, 64, 0.5)"],
             borderWidth: 2,
             pointRadius: 5,
-            pointBackgroundColor: ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]
+            pointBackgroundColor: ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]
           },
           {
             label: "",

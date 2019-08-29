@@ -193,9 +193,13 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']).toPromise().then((response: Response) => {
       if (response != null && response != undefined) {
         const notasFaltas = Object.values(response);
-        this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
-        this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual).toPromise().then(() => {
-          this.feedbackUsuario = undefined;
+        this.atualizarDisciplinas(notasFaltas).then(() => {
+          this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
+          this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual).toPromise().then(() => {
+            this.feedbackUsuario = undefined;
+          }).catch((erro: Response) => {
+            this.gravarErroMostrarMensagem(erro);
+          })
         }).catch((erro: Response) => {
           this.gravarErroMostrarMensagem(erro);
         })
@@ -218,32 +222,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
     }).catch((erro: Response) => {
       this.gravarErroMostrarMensagem(erro);
     })
-  }
-
-  public listarNotasFaltasDisciplinasIEducar(turmas: Object[]): Promise<Object> {
-    let notasFaltasTurma: Array<Object>;
-    let disciplinasRelacionadas = new Array<Object>();
-    const retorno = new Promise((resolve, reject) => {
-      this.feedbackUsuario = "Iniciando carga de dados bimestrais, aguarde...";
-      let contaRegistroInserido = 0;
-      for (let i = 0; i < turmas.length; i += 1) {
-        const trm_id: number = turmas[i]['id'];
-        this.sedfService.listarNotasImportacao(this.tokenIntegracao, trm_id).toPromise().then((response: Response) => {
-          if (response != null && response != undefined) {
-            notasFaltasTurma = <Object[]>Object.values(response);
-            this.notasFaltasEstudantes.push(...notasFaltasTurma);
-            disciplinasRelacionadas.push(...Utils.eliminaValoresRepetidos(notasFaltasTurma, 'cod_disciplina'));
-          }
-          contaRegistroInserido += 1;
-          if (contaRegistroInserido >= turmas.length) {
-            resolve(disciplinasRelacionadas);
-          }
-        }).catch(() => {
-          reject({ erro: 'Erro ao listar disciplinas' });
-        })
-      }
-    })
-    return retorno;
   }
 
   public gravarErroMostrarMensagem(erro: Response) {
@@ -337,8 +315,39 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.decrescente = !this.decrescente;
   }
 
-  public inserirNotasFaltas(notasFaltas: Object[]): Promise<Object> {
-    /* const retorno = new Promise((resolve, reject) => {
+  public inserirDisciplinas(disciplinas: Object[]): Promise<Object> {
+    const retorno = new Promise((resolve, reject) => {
+      this.feedbackUsuario = 'Atualizando disciplinas, aguarde...';
+      this.disciplinaService.integracaoInserir(disciplinas).toPromise().then(() => {
+        resolve({ message: "Disciplinas inseridas com sucesso." });
+      }).catch(() => {
+        reject({ message: "Erro ao inserir Disciplinas." });
+      })
+
+    })
+    return retorno;
+  }
+
+  public atualizarDisciplinas(notasFaltas: Object[]): Promise<Object> {
+    let disciplinasSemRepeticao = new Array<Object>();
+    const retorno = new Promise((resolve, reject) => {
+      if (notasFaltas != null && notasFaltas != undefined) {
+        disciplinasSemRepeticao.push(...Utils.eliminaValoresRepetidos(notasFaltas, 'cod_disciplina'));
+        this.feedbackUsuario = "Atualizando disciplinas, aguarde...";
+        this.inserirDisciplinas(disciplinasSemRepeticao).then(() => {
+          this.feedbackUsuario = undefined;
+          resolve('ok');
+        })
+      }
+
+
+    })
+    return retorno;
+  }
+
+
+  /* public inserirNotasFaltas(notasFaltas: Object[]): Promise<Object> {
+    const retorno = new Promise((resolve, reject) => {
       this.feedbackUsuario = "Iniciando carga de notas, aguarde...";
       const tamanhoBloco = 100;
       let contaRegistroInserido = 0;
@@ -359,32 +368,8 @@ export class GerenciarIntegracaoComponent implements OnInit {
         })
       }
     })
-    return retorno; */
+    return retorno;
     return null;
-  }
-
-  public inserirDisciplinas(disciplinas: Object[]): Promise<Object> {
-    /* const retorno = new Promise((resolve, reject) => {
-      let contaRegistroInserido = 0;
-      for (let i = 0; i < disciplinas.length; i++) {
-        let disciplina = new Disciplina();
-        disciplina.id = disciplinas[i]['cod_disciplina'];
-        disciplina.nome = disciplinas[i]['disciplina'];
-        disciplina.abreviatura = Utils.abreviarNomeDisciplina(disciplina.nome);
-        disciplina.arc_id = 1;
-        this.feedbackUsuario = 'Atualizando disciplinas, aguarde...';
-        this.disciplinaService.integracaoInserir(disciplina).toPromise().then(() => {
-          contaRegistroInserido++;
-          if (contaRegistroInserido >= disciplinas.length) {
-            resolve({ message: "Disciplinas inseridas com sucesso." });
-          }
-        }).catch(() => {
-          reject({ message: "Erro ao inserir Disciplinas." });
-        })
-      }
-    })
-    return retorno; */
-    return null;
-  }
+  } */
 
 }
