@@ -13,19 +13,24 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="dropdown col-sm-12 col-lg-2">
-          <label for="dropdownMenuButtonTurmas">Turma</label>
-          <button class="btn btn-dark text-light dropdown-toggle col-sm-12 col-lg-12" type="button"
-            id="dropdownMenuButtonTurmas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ stringTurmaSelecionada }}
-          </button>
-          <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonTurmas">
-            <a *ngFor="let turma of arrayOfTurmas" (click)="selecionarTurma($event)" [id]="turma.id"
-              name="{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno_abv }}"
-              class="dropdown-item dropdown">{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} -
-              {{ turma.turno_abv }}</a>
+        <div class=" col-sm-12 col-lg-4 form-group">
+          <label class="ml-3">Turma</label>
+          <div class="dropdown col-sm-12 col-lg-12">
+            <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ stringTurmaSelecionada }}
+            </button>
+            <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButton">
+              <a *ngFor="let turma of arrayOfTurmas" (click)="selecionarTurma($event)" [id]="turma.id"
+                name="{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }}"
+                class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
+                Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
+            </div>
           </div>
         </div>
+
+
+
         <div class="col-sm-12 col-lg-2">
           <label for="maximo_avaliacao_social">Valor da avaliação social</label>
           <input type="number" name="maximo_avaliacao_social" value="1" id="maximo_avaliacao_social"
@@ -42,8 +47,6 @@
           <input type="date" name="data_fim" id="data_fim" value="{{data_fim_padrao}}" class="form-control"
             (change)="atualizarData($event)">
         </div>
-
-        <div class="col-sm-12 col-lg-2"></div>
         <div class="col-sm-12 col-lg-2">
           <label for="btn_ponto_social" class="text-light">&nbsp;</label>
           <button name="btn_ponto_social" class="form-control btn btn-dark" (click)="calcularAvaliacaoSocial()">Calcular

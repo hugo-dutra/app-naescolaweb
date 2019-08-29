@@ -6,10 +6,19 @@ a {
 .estudantes {
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 53vh;
+  height: 48vh;
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  padding: 10px;
+}
+
+.turmas {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 250px;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
   padding: 10px;
 }
 
@@ -23,7 +32,7 @@ a {
 
 .detalhes {
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
-  height: 83vh;
+  height: 78vh;
   border-radius: 10px;
   padding: 10px;
 }
