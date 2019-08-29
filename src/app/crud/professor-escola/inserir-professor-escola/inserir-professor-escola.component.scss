@@ -1,0 +1,36 @@
+#loadingDiv {
+  position: fixed;
+  top: 45%;
+  left: 37%;
+  width: 30%;
+  height: 12%;
+  background-color: #d3d3e27c;
+  border: 2px solid #33333113;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 10px;
+  z-index: 10000000;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.escolas {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 58vh;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.professores {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 54vh;
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 20px;
+}
