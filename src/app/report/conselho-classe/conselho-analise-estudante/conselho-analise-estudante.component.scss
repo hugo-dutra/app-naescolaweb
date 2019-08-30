@@ -6,11 +6,15 @@ a {
 .estudantes {
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 48vh;
+  height: 50vh;
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding: 10px;
+}
+
+.img-fluid {
+  cursor: pointer;
 }
 
 .turmas {
@@ -32,9 +36,23 @@ a {
 
 .detalhes {
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
-  height: 78vh;
+  height: 80vh;
   border-radius: 10px;
   padding: 10px;
+}
+
+.bg-blue {
+  background-color: rgba(72, 133, 237, 0.9);
+}
+
+.ocorrencias {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 45vh;
+}
+
+button {
+  cursor: pointer;
 }
 
 #loadingDiv {
