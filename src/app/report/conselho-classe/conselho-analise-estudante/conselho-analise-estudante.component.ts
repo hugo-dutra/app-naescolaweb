@@ -13,6 +13,7 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { OcorrenciaService } from '../../../crud/ocorrencia/ocorrencia.service';
 
 @Component({
   selector: 'ngx-conselho-analise-estudante',
@@ -24,7 +25,8 @@ import { Utils } from '../../../shared/utils.shared';
     PeriodoLetivoService,
     DisciplinarService,
     PortariaService,
-    EstudanteService
+    EstudanteService,
+    OcorrenciaService,
   ],
   animations: [
     trigger("chamado", [
@@ -74,6 +76,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
   public arrayOfOcorrenciasColors = new Array<string>();
   public arrayOfOcorrenciasDisciplinaresEstudantes = new Array<Object>();
   public barChartDisciplinarPeriodo: Chart;
+  public arrayOfOcorrenciasEstudante = new Array<Object>();
 
   //*************************RENDIMENTO*************************/
   public notaDeCorte: number = 5;
@@ -104,7 +107,8 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private router: Router,
-    private estudanteService: EstudanteService
+    private estudanteService: EstudanteService,
+    private ocorrenciaService: OcorrenciaService,
   ) { }
 
   ngOnInit() {
@@ -457,7 +461,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
             borderColor: ["rgba(255, 159, 64, 0.5)"],
             borderWidth: 2,
             pointRadius: 5,
-            pointBackgroundColor: ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]
+            pointBackgroundColor: ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.5)"]
           },
           {
             label: "",
@@ -787,4 +791,20 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     });
   }
 
+  public listarOcorrenciasEstudante(estudante: Object): void {
+    this.arrayOfOcorrenciasEstudante = [];
+    this.feedbackUsuario = "Listando todas as ocorrencias disciplinares do estudantes, aguarde...";
+    this.ocorrenciaService.listarDetalhes(estudante['est_id'], '2000-01-01', Utils.dataAtual()).toPromise().then((response: Response) => {
+      this.feedbackUsuario = undefined;
+      this.arrayOfOcorrenciasEstudante = Object.values(response);
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
+  }
 }

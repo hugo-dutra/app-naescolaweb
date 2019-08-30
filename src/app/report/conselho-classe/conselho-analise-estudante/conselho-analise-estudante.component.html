@@ -2,15 +2,169 @@
   <div class="row">
     <div class="col-sm-12 col-lg-2">
       <div class="list-group estudantes" id="style-7" role="tablist">
-        <a *ngFor="let resultadoEstudante of resultadosEstudantes"
-          class="list-group-item list-group-item-action text-center text-small" [id]="resultadoEstudante.est_id"
-          data-toggle="list" role="tab" aria-controls="home" (click)="selecionarEstudante(resultadoEstudante)"
-          (click)="gravarOcorrenciasEstudanteSelecionado(resultadoEstudante)"
-          (click)="gravarFrequenciaPortariaEstudanteSelecionado()"
-          (click)="gravarMediasAreaConhecimentoEstudanteSelecionado()"><img
-            [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
-            class="img-fluid rounded-circle ml-1 mt-1" width="135" height="150"
-            alt=""><br>{{resultadoEstudante.estudante}}</a>
+        <div class="row mb-1" *ngFor="let resultadoEstudante of resultadosEstudantes" [id]="resultadoEstudante.est_id">
+          <div class="col-lg-12 col-sm-12 text-center">
+            <img (click)="selecionarEstudante(resultadoEstudante)"
+              (click)="gravarOcorrenciasEstudanteSelecionado(resultadoEstudante)"
+              (click)="gravarFrequenciaPortariaEstudanteSelecionado()"
+              (click)="gravarMediasAreaConhecimentoEstudanteSelecionado()"
+              [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+              class="img-fluid rounded-circle ml-1 mt-1" width="135" height="150" alt="">
+          </div>
+          <div class="col-lg-12 col-sm-12 text-center"><small> {{resultadoEstudante.estudante}}</small></div>
+          <div class="col-lg-3 bg-blue pt-2 pb-2">
+            <!-- Botão -->
+            <a data-toggle="modal" class="border-light"
+              [attr.data-target]="'#modelEstudantePontualidade' + resultadoEstudante.est_id">
+              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-clock-o text-light"></i></button>
+            </a>
+            <!-- Modal -->
+            <div class="modal fade large" id="modelEstudantePontualidade{{ resultadoEstudante.est_id }}" tabindex="-1"
+              role="dialog" aria-labelledby="modelLabelEstudante" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-blue text-light">
+                    <div class="col-sm-12 col-lg-9">
+                      <b>{{ resultadoEstudante.estudante }}</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-justify">
+                    <p>Informação sobre a pontualidade do estudante</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 bg-blue pt-2 pb-2">
+            <!-- Botão -->
+            <a data-toggle="modal" class="border-light"
+              [attr.data-target]="'#modelEstudanteNotificacao' + resultadoEstudante.est_id">
+              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-comments-o text-light"></i></button>
+            </a>
+            <!-- Modal -->
+            <div class="modal fade large" id="modelEstudanteNotificacao{{ resultadoEstudante.est_id }}" tabindex="-1"
+              role="dialog" aria-labelledby="modelLabelEstudante" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-blue text-light">
+                    <div class="col-sm-12 col-lg-9">
+                      <b>{{ resultadoEstudante.estudante }}</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-justify">
+                    <p>Informação sobre o engajamento dos pais pelo aplicativo</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 bg-blue pt-2 pb-2">
+            <!-- Botão -->
+            <a data-toggle="modal" class="border-light"
+              [attr.data-target]="'#modelEstudanteOcorrencia' + resultadoEstudante.est_id">
+              <button class="btn bg-blue border-light rounded p-1"
+                (click)="listarOcorrenciasEstudante(resultadoEstudante)"><i
+                  class="fa fa-warning text-light"></i></button>
+            </a>
+            <!-- Modal -->
+            <div class="modal fade large" id="modelEstudanteOcorrencia{{ resultadoEstudante.est_id }}" tabindex="-1"
+              role="dialog" aria-labelledby="modelLabelEstudante" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-blue text-light">
+                    <div class="col-sm-12 col-lg-9">
+                      <b>{{ resultadoEstudante.estudante }}</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-justify">
+                    <div class="row">
+                      <div class="ocorrencias col-lg-12 col-sm-12">
+                        <table class="table table-striped table-hover" [@chamado]="estado">
+                          <thead class="thead-light">
+                            <tr class="row">
+                              <th class="col-sm-12 col-lg-3 text-left" scope="col">Data</th>
+                              <th class="col-sm-12 col-lg-4 text-left" scope="col">Tipo</th>
+                              <th class="col-sm-12 col-lg-5 text-left" scope="col">Detalhe</th>
+                            </tr>
+                          </thead>
+                          <tbody *ngIf="ocorrencias !== null">
+                            <tr class="row" *ngFor="let ocorrencia of arrayOfOcorrenciasEstudante">
+                              <td class="col-sm-12 col-lg-3 text-left">{{ ocorrencia.data_hora | date:'dd/MM/yyyy' }}
+                              </td>
+                              <td class="col-sm-12 col-lg-4 text-left">{{ ocorrencia.tipo }}</td>
+                              <td class="col-sm-12 col-lg-5 text-left">{{ ocorrencia.ocorrencia }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 bg-blue pt-2 pb-2">
+            <!-- Botão -->
+            <a data-toggle="modal" class="border-light"
+              [attr.data-target]="'#modelEstudante' + resultadoEstudante.est_id">
+              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-expand text-light"></i></button>
+            </a>
+            <!-- Modal -->
+            <div class="modal fade large" id="modelEstudante{{ resultadoEstudante.est_id }}" tabindex="-1" role="dialog"
+              aria-labelledby="modelLabelEstudante" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header bg-blue text-light">
+                    <div class="col-sm-12 col-lg-9">
+                      <b>{{ resultadoEstudante.estudante }}</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-justify">
+                    <div
+                      *ngIf="resultadoEstudante.foto != '' && resultadoEstudante.foto != null && resultadoEstudante.foto != undefined; else semfoto"
+                      class="row">
+                      <img
+                        [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+                        class="rounded-circle col-sm-12 col-lg-12" width="200" height="400" alt="">
+                    </div>
+                    <ng-template #semfoto>
+                      <div class="col-sm-12 col-lg-9">
+                        <img
+                          [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+                          class="rounded-circle col-sm-12 col-lg-12" width="200" height="400" alt="">
+                      </div>
+                    </ng-template>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="observacoes">
         <textarea rows="8" cols="10" class="form-control" id="textAreaObservacaoEstudante"
@@ -37,7 +191,6 @@
             </div>
           </div>
         </div>
-
         <div class="dropdown col-sm-12 col-lg-6">
           <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonPeriodos"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,6 +203,7 @@
               {{ periodo.fim | date:'dd-MM-yyyy'}}</a>
           </div>
         </div>
+
       </div>
 
       <div class="row">
@@ -78,16 +232,15 @@
         </div>
 
         <div class="col-sm-12 col-lg-4" id="chartMediaAreaConhecimento"
-          style="position: relative; height:40vh; width:25vw">
+          style="position: relative; height:37vh; width:25vw">
           <canvas id="radarChartMediaAreaConhecimento"></canvas>
           <input *ngIf="arrayLabelsAreaConhecimentoEstudanteSelecionado.length != 0" type="checkbox" class="checkbox"
             id="areaConhecimentoEscalaFixa" name="areaConhecimentoEscalaFixa" (change)="usarMediaEscalaFixa()" checked>
           <label *ngIf="arrayLabelsAreaConhecimentoEstudanteSelecionado.length != 0" for="areaConhecimentoEscalaFixa">
             Escala fixa</label>
         </div>
+
       </div>
-
-
       <div class="row">
         <div *ngIf="arrayOfDadosNotaPeriodo.length != 0 && arrayOfDadosFaltasPeriodo.length != 0 "
           class="col-sm-12 col-lg-12">
