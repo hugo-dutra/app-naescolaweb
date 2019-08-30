@@ -40,10 +40,11 @@ import { Utils } from '../../../shared/utils.shared';
 export class InserirUsuarioEscolaComponent implements OnInit {
 
   public usuarios: Array<Object>;
-  public escolas: Object;
+  public escolas: Array<Object>;
   public perfis: Object;
 
   public matrizReferencia: Array<Object>;
+  public matrizReferenciaEscola: Array<Object>;
   public usuarioEscola = new UsuarioEscola();
   public statusCheck: boolean;
   public feedbackUsuario: string;
@@ -99,6 +100,19 @@ export class InserirUsuarioEscolaComponent implements OnInit {
       this.usuarios = matrizRetorno;
     } else {
       this.usuarios = this.matrizReferencia;
+    }
+  }
+
+  public filtrarEscola(event: Event): void {
+    let valorFiltro = (<HTMLInputElement>event.target).value;
+    let matrizRetorno = new Array<Object>();
+    matrizRetorno = this.escolas.filter((elemento) => {
+      return elemento["nome"].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
+    })
+    if (valorFiltro.length > 0) {
+      this.escolas = matrizRetorno;
+    } else {
+      this.escolas = this.matrizReferenciaEscola;
     }
   }
 
@@ -217,7 +231,8 @@ export class InserirUsuarioEscolaComponent implements OnInit {
       .listar(50000, 0, true)
       .toPromise()
       .then((response: Response) => {
-        this.escolas = response;
+        this.escolas = Object.values(response);
+        this.matrizReferenciaEscola = this.escolas;
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
