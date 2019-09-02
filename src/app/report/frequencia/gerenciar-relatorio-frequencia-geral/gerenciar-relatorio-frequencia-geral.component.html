@@ -1,0 +1,28 @@
+<!--##############################################################################################-->
+<div class="container-fluid container-card">
+  <div class="row">
+    <div class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card *ngIf="exibirComponente('grafico-frequencia-portaria-periodo')" (click)="graficoFrequenciaPortaria()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-bar-chart text-primary"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Frequência da portaria</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card *ngIf="exibirComponente('frequencia-boletim-turma-geral')" (click)="relatorioFrequenciaBoletim()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-line-chart text-success"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Frequência do boletim</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+  </div>
+</div>
+<!--###############################################################################################-->
