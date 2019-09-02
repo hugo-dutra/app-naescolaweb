@@ -4,7 +4,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Chart } from "chart.js";
 import { Utils } from '../../../shared/utils.shared';
 
@@ -46,7 +46,8 @@ export class FrequenciaPortariaPeriodoComponent implements OnInit {
   constructor(private portariaService: PortariaService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   public lineChartnotaFaltasPeriodo: Chart;
@@ -56,6 +57,10 @@ export class FrequenciaPortariaPeriodoComponent implements OnInit {
     this.esc_id = parseInt(this.dados_escola["id"]);
     this.dataInicio = `${(new Date()).getFullYear().toString()}-01-01`;
     this.dataFim = Utils.dataAtual()
+  }
+
+  public gerenciarRelatorioFrequencia(): void {
+    this.router.navigate([this.route.parent.routeConfig.path]);
   }
 
   public atualizarData(event: Event): void {
@@ -142,7 +147,7 @@ export class FrequenciaPortariaPeriodoComponent implements OnInit {
       options: {
         legend: { display: false },
 
-        title: { text: "Frequencia da entrada portaria", fontSize: 20, position: "top", display: true },
+        title: { text: "Frequencia de portaria", fontSize: 20, position: "top", display: true },
         responsive: true,
         scales: {
           yAxes: [

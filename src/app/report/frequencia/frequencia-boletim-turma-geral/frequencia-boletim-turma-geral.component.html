@@ -1,0 +1,68 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="dropdown col-sm-2 col-lg-2">
+          <button class="btn btn-dark text-light border-light dropdown-toggle col-sm-12 col-lg-12" type="button"
+            id="dropdownMenuButtonTurmas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ stringTurmaSelecionada }}
+          </button>
+          <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonTurmas">
+            <a (click)="selecionarTurma($event)" [id]="0" name="Todas" class="dropdown-item dropdown">Todas</a>
+            <a *ngFor="let turma of arrayOfTurmas" (click)="selecionarTurma($event)" [id]="turma.id"
+              name="{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno_abv }}"
+              class="dropdown-item dropdown">{{ turma.serie_abv }} - {{ turma.etapa }} - {{ turma.nome }} -
+              {{ turma.turno_abv }}</a>
+          </div>
+        </div>
+        <div class="col-lg-8 col-sm-8"></div>
+        <button class="float-right btn btn-sm form-control btn-dark border-light text-light col-lg-2 col-sm-2"
+          (click)="gerenciarRelatorioFrequencia()">Gerenciar
+          relatórios
+          de
+          frequência</button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="card col-lg-3 col-md-6 col-sm-12" *ngFor="let estudante of arrayOfFaltasEstudantes">
+          <div class="card-header bg-dark text-light text-center">
+            <small>{{estudante.estudante}}</small>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-4 col-md-4 col-sm-4">
+                <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                  class="img-fluid rounded-circle ml-1 mt-1" width="60" height="75" alt="">
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4">
+                <b class="text-dark">Faltas: </b>
+                <b class="text-danger">{{estudante.faltas}}</b>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4">
+                <b class="text-dark mb-2">Tendência: </b>
+                <i class="fa fa-2x fa-line-chart text-danger" (click)="tendenciaFaltasEstudante(estudante)"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

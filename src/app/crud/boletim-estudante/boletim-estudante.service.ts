@@ -69,4 +69,14 @@ export class BoletimEstudanteService {
     );
   }
 
+  public listarFaltasTurmaGeralBoletim(esc_id: number, trm_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+
+    return this.http.post(
+      CONSTANTES.HOST_API + "listar-faltas-turma-geral-boletim",
+      JSON.stringify({ esc_id: esc_id, trm_id: trm_id }),
+      headers
+    );
+  }
+
 }

@@ -1,27 +1,49 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12 col-lg-4">
-      <input type="date" name="data_inicio" id="data_inicio" value="{{dataInicio}}" class="form-control"
-        (change)="atualizarData($event)">
-      <label for="data_inicio">Data inicial</label>
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-10 col-sm-10"></div>
+        <button class="float-right btn btn-sm form-control btn-dark border-light text-light col-lg-2 col-sm-2"
+          (click)="gerenciarRelatorioFrequencia()">Gerenciar
+          relatórios
+          de
+          frequência</button>
+      </div>
     </div>
-    <div class="col-sm-12 col-lg-4">
-      <input type="date" name="data_fim" id="data_fim" value="{{dataFim}}" class="form-control"
-        (change)="atualizarData($event)">
-      <label for="data_fim">Data final</label>
-    </div>
-    <div class="col-sm-12 col-lg-4">
-      <input type="button" name="button_atualizar" value="Atualizar" class="form-control btn-dark"
-        (click)="atualizarGrafico()">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12 col-lg-4">
+          <input type="date" name="data_inicio" id="data_inicio" value="{{dataInicio}}" class="form-control"
+            (change)="atualizarData($event)">
+          <label for="data_inicio">Data inicial</label>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+          <input type="date" name="data_fim" id="data_fim" value="{{dataFim}}" class="form-control"
+            (change)="atualizarData($event)">
+          <label for="data_fim">Data final</label>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+          <input type="button" name="button_atualizar" value="Atualizar" class="form-control btn-dark"
+            (click)="atualizarGrafico()">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-12" id="chartContainerPeriodo" style="position: relative; height:58vh; width:80vw">
+          <canvas id="lineChartnotaFaltasPeriodo"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-12 col-lg-12" id="chartContainerPeriodo" style="position: relative; height:77vh; width:80vw">
-      <canvas id="lineChartnotaFaltasPeriodo"></canvas>
-    </div>
-  </div>
+
+
+
+
+
 </div>
+
+
+
 
 <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
   <div>
