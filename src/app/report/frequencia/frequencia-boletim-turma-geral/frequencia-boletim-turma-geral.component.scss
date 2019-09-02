@@ -12,6 +12,12 @@
   z-index: 10000000;
 }
 
+.estudantes {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 70vh;
+}
+
 .turmas {
   overflow-y: scroll;
   overflow-x: hidden;
