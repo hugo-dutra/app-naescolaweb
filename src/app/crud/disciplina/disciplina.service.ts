@@ -21,6 +21,15 @@ export class DisciplinaService {
     );
   }
 
+  public integracaoListar(esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-listar",
+      JSON.stringify({ esc_id: esc_id }),
+      headers
+    );
+  }
+
   public excluir(id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(

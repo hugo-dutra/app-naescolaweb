@@ -21,6 +21,14 @@
   padding: 10px;
 }
 
+.dropdown {
+  cursor: pointer;
+}
+
+.bg-blue {
+  background-color: rgba(72, 133, 237, 0.9);
+}
+
 .estudantes {
   overflow-y: scroll;
   overflow-x: hidden;

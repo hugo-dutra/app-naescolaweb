@@ -47,6 +47,8 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   public exibirAlerta: boolean = false;
   public exibeTodos: boolean = true;
   public primeiraExecucao: boolean = true;
+  public dados_escola: Object;
+  public esc_id: number;
 
   public formulario = new FormGroup({
     check_professor: new FormControl(null),
@@ -63,6 +65,13 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.dados_escola = JSON.parse(
+      Utils.decriptAtoB(
+        localStorage.getItem("dados_escola"),
+        CONSTANTES.PASSO_CRIPT
+      )
+    )[0];
+    this.esc_id = parseInt(this.dados_escola["id"]);
     this.listarDados();
   }
 
@@ -193,7 +202,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   public listarDisciplinas(): void {
     this.feedbackUsuario = "Carregando, aguarde...";
     this.disciplinaService
-      .listar()
+      .integracaoListar(this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.disciplinas = response;
