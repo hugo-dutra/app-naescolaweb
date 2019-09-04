@@ -12,12 +12,6 @@
   z-index: 10000000;
 }
 
-.estudantes {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: 70vh;
-}
-
 .turmas {
   overflow-y: scroll;
   overflow-x: hidden;
@@ -25,6 +19,20 @@
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   padding: 10px;
+}
+
+.dropdown {
+  cursor: pointer;
+}
+
+.bg-blue {
+  background-color: rgba(72, 133, 237, 0.9);
+}
+
+.estudantes {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 70vh;
 }
 
 i {
