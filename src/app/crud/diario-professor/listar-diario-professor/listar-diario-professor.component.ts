@@ -46,9 +46,9 @@ export class ListarDiarioProfessorComponent implements OnInit {
     private firebaseService: FirebaseService) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((diarioProfessorDisciplina: Object) => {
+    /* this.route.queryParams.subscribe((diarioProfessorDisciplina: Object) => {
       this.prd_id = JSON.parse(diarioProfessorDisciplina["diarioProfessorDisciplina"])["prd_id"];
-    });
+    }); */
     this.anoAtual = (new Date()).getFullYear();
     this.listarDiariosProfessor();
   }
@@ -71,8 +71,8 @@ export class ListarDiarioProfessorComponent implements OnInit {
       });
   }
 
-  public criarDiarios() {
-    this.router.navigate([`${this.route.parent.routeConfig.path}/inserir-diario-professor`]);
+  public gerenciarDiarios() {
+    this.router.navigate([`${this.route.parent.routeConfig.path}`]);
   }
 
   public exibirComponente(rota: string): boolean {
