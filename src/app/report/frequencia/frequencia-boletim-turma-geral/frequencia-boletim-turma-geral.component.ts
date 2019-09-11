@@ -8,7 +8,10 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TurmaService } from '../../../crud/turma/turma.service';
 import { Chart } from "chart.js";
+<<<<<<< HEAD
 
+=======
+>>>>>>> ajuste_carga_estudantes_aplicativo
 
 @Component({
   selector: 'ngx-frequencia-boletim-turma-geral',
@@ -82,7 +85,10 @@ export class FrequenciaBoletimTurmaGeralComponent implements OnInit {
   public filtroMinimoOcorrencias(objeto: Object): boolean {
     return parseInt(objeto['faltas']) >= parseInt(objeto['minimo_faltas']);
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> ajuste_carga_estudantes_aplicativo
 
   public filtrarMinimoOcorrencias(arrayOfEstudantes: Object[]): Object[] {
     return arrayOfEstudantes.filter(this.filtroMinimoOcorrencias);
@@ -237,5 +243,8 @@ export class FrequenciaBoletimTurmaGeralComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ajuste_carga_estudantes_aplicativo
 }

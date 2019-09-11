@@ -807,5 +807,9 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
       this.feedbackUsuario = undefined;
     })
   }
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> ajuste_carga_estudantes_aplicativo

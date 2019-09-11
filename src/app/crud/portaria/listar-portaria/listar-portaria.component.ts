@@ -307,7 +307,8 @@ export class ListarPortariaComponent implements OnInit {
     let estudantes = null;
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((retorno) => {
       estudantes = Object.values(retorno);
-      this.firebaseService.carregarEstudantesPortariaFirebaseFirestore(estudantes, codigoPortaria).then(retorno => {
+      this.firebaseService.gravarListagemEstudantesPortariaDocumentoUnico(estudantes, codigoPortaria).then(() => {
+        this.alertModalService.showAlertSuccess("Estudantes sincronizados com sucesso !");
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
         //Mostra modal

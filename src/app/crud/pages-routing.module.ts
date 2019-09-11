@@ -72,7 +72,6 @@ const routes: Routes = [{
 
     /* SHARED */
     { path: 'listar-boleto-bancario-mensalidade', loadChildren: () => import('../shared/financeiro/boleto-bancario/boleto-bancario.module').then(m => m.BoletoBancarioModule), },
-    { path: 'gerenciar-integracao-sedf', loadChildren: () => import('../shared/sedf/sedf.module').then(m => m.SedfModule), },
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
     { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },
