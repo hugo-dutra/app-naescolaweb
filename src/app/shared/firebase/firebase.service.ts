@@ -66,6 +66,8 @@ export class FirebaseService {
   //*****************************************************************************/
   //***************************FIRESTORE*****************************************/
 
+
+
   public gravarSugestaoInformacaoBug = async (rota, detalhesInformacao) => {
     const dataInformacao = Utils.dataAtual();
     const horaInformacao = Utils.horaAtual();
@@ -104,7 +106,42 @@ export class FirebaseService {
         })
     })
   }
-
+  /**
+   *  Grava, na portaria, toda a listagem dos estudantes da escola num único documento.
+   * @memberof FirebaseService
+   */
+  public gravarListagemEstudantesPortariaDocumentoUnico = (estudantes: Object[], codigoPortaria: string): Promise<any> => {
+    //**************DADOS ESCOLA**************/
+    return new Promise((resolve, reject) => {
+      this.firestore
+        .collection('portariaWeb')
+        .doc(codigoPortaria)
+        .collection('listagem_carga_estudantes').doc(codigoPortaria).set({ estudantes: estudantes }).then(() => {
+          resolve({ retorno: 'ok' })
+        }).catch((reason: any) => {
+          reject({ retorno: reason })
+        })
+    })
+  }
+  /**
+   * Grava, no aplicativo, toda a listagem dos estudantes da escola num único documento.
+   * @memberof FirebaseService
+   */
+  public gravarListagemEstudantesAplicativoDocumentoUnico = (estudantes: Object[]): Promise<any> => {
+    //**************DADOS ESCOLA**************/
+    const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+    const inep = dadosEscola["inep"];
+    return new Promise((resolve, reject) => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(inep)
+        .collection('listagem_carga_estudantes').doc(inep).set(estudantes).then(() => {
+          resolve({ retorno: 'ok' })
+        }).catch((reason: any) => {
+          reject({ retorno: reason })
+        })
+    })
+  }
 
   public gravarLogErro = async (localErro, detalhesErro) => {
     const dataErro = Utils.dataAtual();
