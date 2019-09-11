@@ -135,7 +135,7 @@ export class FirebaseService {
       this.firestore
         .collection('naescolaApp')
         .doc(inep)
-        .collection('listagem_carga_estudantes').doc(inep).set(estudantes).then(() => {
+        .collection('listagem_carga_estudantes').doc(inep).set({ estudantes: estudantes }).then(() => {
           resolve({ retorno: 'ok' })
         }).catch((reason: any) => {
           reject({ retorno: reason })
