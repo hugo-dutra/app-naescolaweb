@@ -10,11 +10,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CommonModule,
     ConselhoClasseRoutingModule,
-<<<<<<< HEAD
-    NgbPopoverModule
-=======
     NgbPopoverModule,
->>>>>>> ajuste_carga_estudantes_aplicativo
   ]
 })
 export class ConselhoClasseModule { }
