@@ -6,7 +6,6 @@ import { CONSTANTES } from '../../../shared/constantes.shared';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
-import undefined = require('firebase/empty-import');
 
 @Component({
   selector: 'ngx-sincronizar-estudante-aplicativo',
@@ -59,65 +58,9 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
     this.feedbackUsuario = "Carregando dados para aplicativo adminstrativo, aguarde..."
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((response: Response) => {
       this.arrayOfEstudantesAplicativo = Object.values(response);
-<<<<<<< HEAD
-      let idxEstudante = 0;
-      const quantidadeEstudantes = this.arrayOfEstudantesAplicativo.length;
-      this.arrayOfEstudantesAplicativo.forEach(estudante => {
-        const etapa = estudante["etapa"];
-        const foto = estudante["foto"];
-        const inep = estudante["inep"];
-        const matricula = estudante["matricula"];
-        const nome = estudante["nome"];
-        const serie = estudante["serie"];
-        const turma = estudante["turma"];
-        const turno = estudante["turno"];
-=======
-      /* let idxEstudante = 0;
-      const quantidadeEstudantes = this.arrayOfEstudantesAplicativo.length; */
->>>>>>> ajuste_carga_estudantes_aplicativo
-
       this.firebaseService.gravarListagemEstudantesAplicativoDocumentoUnico(this.arrayOfEstudantesAplicativo).then(() => {
         this.feedbackUsuario = undefined;
-
-        /* this.arrayOfEstudantesAplicativo.forEach(estudante => {
-          const etapa = estudante["etapa"];
-          const foto = estudante["foto"];
-          const inep = estudante["inep"];
-          const matricula = estudante["matricula"];
-          const nome = estudante["nome"];
-          const serie = estudante["serie"];
-          const turma = estudante["turma"];
-          const turno = estudante["turno"];
-
-          this.firebaseService.gravarEstudanteFirebaseFirestoreAplicativo(inep, matricula, foto, nome, serie, turma, turno, etapa).then(response => {
-            this.feedbackUsuario = `Inserindo estudante ${idxEstudante} de um total de ${quantidadeEstudantes}, aguarde...`;
-            idxEstudante++;
-            if (idxEstudante >= this.arrayOfEstudantesAplicativo.length - 2) {
-              this.feedbackUsuario = undefined;
-            }
-          }).catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
-<<<<<<< HEAD
-          }
-        }).catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
-        })
-=======
-          })
-        }) */
-
+        this.alertModalService.showAlertSuccess('Estudantes carregados com sucesso.');
       }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -126,7 +69,6 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
->>>>>>> ajuste_carga_estudantes_aplicativo
       })
     }).catch((erro: Response) => {
       //Mostra modal
