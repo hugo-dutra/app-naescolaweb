@@ -165,6 +165,15 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return retorno;
   }
 
+  public sincronizarProfessoresDisciplinasTurmas(): void {
+    this.feedbackUsuario = 'Listando professores, disciplinas e turmas. Aguarde...';
+    this.sedfService.listarProfessoresDisciplinasTurmas(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
+      const teste = Object.values(response);
+      console.log(teste);;
+      this.feedbackUsuario = undefined;
+    })
+  }
+
   public sincronizarEstudantes(): void {
     this.feedbackUsuario = 'Listando Estudantes...';
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
@@ -277,9 +286,9 @@ export class GerenciarIntegracaoComponent implements OnInit {
     })
   }
 
-  public sincronizarProfessores(): void {
+  /* public sincronizarProfessores(): void {
     alert("Professores serão sincronizados por aqui");
-  }
+  } */
 
   public sincronizarGradeHoraria(): void {
     alert("Grade horária será sincronizada por aqui");

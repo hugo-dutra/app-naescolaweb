@@ -41,6 +41,20 @@ export class SedfService {
     const metodo: string = 'aluno/listabyinep/';
     return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + inep, headers);
   }
+
+  /**
+   *Lista professores, disciplinas e turmas associadas ao professor informado.
+   * @param {string} token_intg
+   * @param {string} inep
+   * @returns {Observable<any>}
+   * @memberof SedfService
+   */
+  public listarProfessoresDisciplinasTurmas(token_intg: string, inep: string): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
+    const metodo: string = 'professordisctturma/listabyinep/';
+    return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + inep, headers);
+  }
+
   /**
    * Lista as turmas da escola cujo inep é informado
    * @param token_intg Token de integração
