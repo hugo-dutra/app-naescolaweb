@@ -4,6 +4,8 @@ import { PagesComponent } from './pages.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { LoginComponent } from '../access/login/login.component';
 import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-atalho.component';
+import { GerenciarIntegracaoComponent } from '../shared/sedf/gerenciar-integracao/gerenciar-integracao.component';
+import { AuthGuardService } from '../guards/auth.guard.service';
 
 const routes: Routes = [{
   path: '',
@@ -67,11 +69,13 @@ const routes: Routes = [{
     { path: 'grafico-conselho-analise-estudante', loadChildren: () => import('../report/conselho-classe/conselho-classe.module').then(m => m.ConselhoClasseModule), },
     { path: 'gerenciar-relatorio-frequencia-geral', loadChildren: () => import('../report/frequencia/frequencia.module').then(m => m.FrequenciaModule), },
 
+
     /* { path: 'grafico-frequencia-portaria-periodo', loadChildren: () => import('../report/frequencia/frequencia.module').then(m => m.FrequenciaModule), },
     { path: 'frequencia-boletim-turma-geral', loadChildren: () => import('../report/frequencia/frequencia.module').then(m => m.FrequenciaModule), }, */
 
     /* SHARED */
     { path: 'listar-boleto-bancario-mensalidade', loadChildren: () => import('../shared/financeiro/boleto-bancario/boleto-bancario.module').then(m => m.BoletoBancarioModule), },
+    { path: 'gerenciar-integracao-sedf', loadChildren: () => import('../shared/sedf/sedf.module').then(m => m.SedfModule), },
 
     { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
     { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },

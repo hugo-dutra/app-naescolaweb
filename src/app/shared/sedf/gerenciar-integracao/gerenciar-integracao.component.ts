@@ -144,6 +144,15 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return retorno;
   }
 
+  public sincronizarProfessoresDisciplinasTurmas(): void {
+    this.feedbackUsuario = 'Listando professores, disciplinas e turmas. Aguarde...';
+    this.sedfService.listarProfessoresDisciplinasTurmas(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
+      this.feedbackUsuario = undefined;
+      const professoresDisciplinasTurmas = Object.values(response);
+      console.log(professoresDisciplinasTurmas);
+    })
+  }
+
   public enturmarEstudantesEmBlocos(arrayComEstudantes: Object[]): Promise<Object> {
     const retorno = new Promise((resolve, reject) => {
       this.feedbackUsuario = "Iniciando enturmação, aguarde...";
@@ -165,22 +174,12 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return retorno;
   }
 
-  public sincronizarProfessoresDisciplinasTurmas(): void {
-    this.feedbackUsuario = 'Listando professores, disciplinas e turmas. Aguarde...';
-    this.sedfService.listarProfessoresDisciplinasTurmas(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
-      const teste = Object.values(response);
-      console.log(teste);;
-      this.feedbackUsuario = undefined;
-    })
-  }
-
   public sincronizarEstudantes(): void {
     this.feedbackUsuario = 'Listando Estudantes...';
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
       this.arrayOfEstudantesEscola = Object.values(response);
       this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then(() => {
-        this.feedbackUsuario = undefined;
         this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then(() => {
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
@@ -248,7 +247,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return objeto['nm_curso'] != 'Educação de Jovens e Adultos';
   }
 
-  public eliminarEtapaEnsinoEJA(turmas: Object[]): Object[] {
+  public eliminarTapaEnsinoEJA(turmas: Object[]): Object[] {
     return turmas.filter(this.filtrarEtapaEnsinoEJA);
   }
 
@@ -258,7 +257,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
       this.arrayOfTurmasEscola = Object.values(response);
       const etapas: EtapaEnsino[] = <EtapaEnsino[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_curso');
       const series: Serie[] = <Serie[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_serie');
-      const turmas: Turma[] = <Turma[]>this.eliminarEtapaEnsinoEJA(this.arrayOfTurmasEscola);
+      const turmas: Turma[] = <Turma[]>this.eliminarTapaEnsinoEJA(this.arrayOfTurmasEscola);
       const turnos: Turno[] = <Turno[]>Utils.eliminaValoresRepetidos(this.arrayOfTurmasEscola, 'nm_turno');
       this.feedbackUsuario = 'Atualizando turnos...';
       this.turnoService.integracaoInserir(turnos, this.esc_id).toPromise().then(() => {
@@ -286,9 +285,9 @@ export class GerenciarIntegracaoComponent implements OnInit {
     })
   }
 
-  /* public sincronizarProfessores(): void {
+  public sincronizarProfessores(): void {
     alert("Professores serão sincronizados por aqui");
-  } */
+  }
 
   public sincronizarGradeHoraria(): void {
     alert("Grade horária será sincronizada por aqui");
