@@ -94,6 +94,15 @@ export class ProfessorService {
     );
   }
 
+  public integracaoInserir(professores: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-inserir-professor",
+      JSON.stringify({ professores: professores }),
+      headers
+    );
+  }
+
   public alterar(professor: Professor): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(

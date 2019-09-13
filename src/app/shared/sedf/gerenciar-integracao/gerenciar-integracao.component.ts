@@ -18,6 +18,11 @@ import { Disciplina } from '../../../crud/disciplina/disciplina.model';
 import { DisciplinaService } from '../../../crud/disciplina/disciplina.service';
 import { DiarioRegistroService } from '../../../crud/diario-registro/diario-registro.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { ProfessorDisciplina } from '../../../crud/professor-disciplina/professor-disciplina.model';
+import { ProfessorService } from '../../../crud/professor/professor.service';
+import { ProfessorEscolaService } from '../../../crud/professor-escola/professor-escola.service';
+import { ProfessorDisciplinaService } from '../../../crud/professor-disciplina/professor-disciplina.service';
+
 
 @Component({
   selector: 'ngx-gerenciar-integracao',
@@ -32,6 +37,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     TurnoService,
     DisciplinaService,
     DiarioRegistroService,
+    ProfessorService,
+    ProfessorEscolaService,
+    ProfessorDisciplinaService,
   ],
   animations: [
     trigger("chamado", [
@@ -83,6 +91,9 @@ export class GerenciarIntegracaoComponent implements OnInit {
     private turnoService: TurnoService,
     private disciplinaService: DisciplinaService,
     private diarioRegistroService: DiarioRegistroService,
+    private professorService: ProfessorService,
+    private professorEscolaService: ProfessorEscolaService,
+    private professorDisciplinaService: ProfessorDisciplinaService
   ) { }
 
   ngOnInit() {
@@ -147,9 +158,19 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public sincronizarProfessoresDisciplinasTurmas(): void {
     this.feedbackUsuario = 'Listando professores, disciplinas e turmas. Aguarde...';
     this.sedfService.listarProfessoresDisciplinasTurmas(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
-      this.feedbackUsuario = undefined;
-      const professoresDisciplinasTurmas = Object.values(response);
-      console.log(professoresDisciplinasTurmas);
+      const professoresDisciplinasTurmas: Object[] = Object.values(response);
+      console.table(professoresDisciplinasTurmas);
+      const arrayDeProfessores: Object[] = Utils.eliminaValoresRepetidos(professoresDisciplinasTurmas, 'emp_cd_matricula');
+      this.feedbackUsuario = 'Gravando professores, aguarde...';
+      this.professorService.integracaoInserir(arrayDeProfessores).toPromise().then(() => {
+        this.feedbackUsuario = 'Vinculando professores a escola, aguarde...';
+        this.professorEscolaService.integracaoInserir(arrayDeProfessores, this.esc_id).toPromise().then(() => {
+          this.feedbackUsuario = 'Vinculando professores a disciplinas, aguarde...'
+          this.professorDisciplinaService.integracaoInserir(professoresDisciplinasTurmas).toPromise().then(() => {
+            this.feedbackUsuario = undefined;
+          })
+        })
+      })
     })
   }
 
