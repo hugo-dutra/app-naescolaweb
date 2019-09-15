@@ -8,12 +8,14 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Professor } from '../professor.model';
 import { FormGroup, FormControl } from '@angular/forms';
+import { ProfessorEscolaService } from '../../professor-escola/professor-escola.service';
+import { ProfessorEscola } from '../../professor-escola/professor-escola.model';
 
 @Component({
   selector: 'ngx-inserir-professor',
   templateUrl: './inserir-professor.component.html',
   styleUrls: ['./inserir-professor.component.scss'],
-  providers: [ProfessorService],
+  providers: [ProfessorService, ProfessorEscolaService],
   animations: [
     trigger("chamado", [
       state(
@@ -33,6 +35,7 @@ export class InserirProfessorComponent implements OnInit {
 
   constructor(
     private professorService: ProfessorService,
+    private professorEscolaService: ProfessorEscolaService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private router: Router
@@ -44,6 +47,9 @@ export class InserirProfessorComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
+  public esc_id: number;
+  public prf_id: number;
+  public dados_escola: Object;
 
   public formulario: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -54,7 +60,14 @@ export class InserirProfessorComponent implements OnInit {
     telefone: new FormControl(null)
   });
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.carregarDados();
+  }
+
+  public carregarDados(): void {
+    this.dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+    this.esc_id = parseInt(this.dados_escola['id'], 10);
+  }
 
   public modificar(): void { }
 
@@ -67,15 +80,23 @@ export class InserirProfessorComponent implements OnInit {
     this.professor.telefone = this.formulario.value.telefone;
 
     //Pegar esse valor, passar para um serviço fazer um post http para o servidor laravel gravar no banco e retorna o ultimo objeto inserido
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.professorService
       .inserir(this.professor)
       .toPromise()
       .then((resposta: Response) => {
-        this.feedbackUsuario = "Dados Salvos";
-        this.formulario.reset();
-        this.feedbackUsuario = undefined;
-        this.exibirAlerta = false;
+        const prf_id = <number>Object.values(resposta)[0]['prf_id'];
+        const professoresEscolas = new Array<ProfessorEscola>();
+        const professorEscola = new ProfessorEscola();
+        professorEscola.esc_id = this.esc_id;
+        professorEscola.prf_id = prf_id;
+        professoresEscolas.push(professorEscola);
+        this.feedbackUsuario = 'Associando professor a escola atual, aguarde...';
+        this.professorEscolaService.inserir(professoresEscolas).toPromise().then(() => {
+          this.formulario.reset();
+          this.feedbackUsuario = undefined;
+          this.exibirAlerta = false;
+        })
       })
       .catch((erro: Response) => {
         //Mostra modal

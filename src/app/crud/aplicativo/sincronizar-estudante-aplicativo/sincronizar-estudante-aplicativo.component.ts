@@ -6,7 +6,6 @@ import { CONSTANTES } from '../../../shared/constantes.shared';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
-import undefined = require('firebase/empty-import');
 
 @Component({
   selector: 'ngx-sincronizar-estudante-aplicativo',
