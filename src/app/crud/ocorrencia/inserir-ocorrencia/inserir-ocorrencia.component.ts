@@ -726,6 +726,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public gravarTipoOcorrenciaMultiplo(event: Event): void {
     this.ocorrencia.tod_id = parseInt((<HTMLInputElement>event.target).value.toString().split('|')[0]);
     this.tipoOcorrenciaMultiplo = ((<HTMLInputElement>event.target).value.toString().split('|')[1]);
+    this.validarSalvarOcorrenciaMultipla();
   }
 
   public selecionarEstudantePorTurma(event: Event): void {
@@ -768,6 +769,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         }
       }
     }
+    this.validarSalvarOcorrenciaMultipla();
   }
 
   public selecionarTodos(event: Event) {
@@ -801,10 +803,6 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public montarMensagensNovasOcorrenciasMultiplas(): void {
-
-    debugger;
-    this.validarSalvarOcorrenciaMultipla();
-
     let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
     let inep = dados_escola[0]["inep"];
     let telefone = dados_escola[0]["telefone"];
