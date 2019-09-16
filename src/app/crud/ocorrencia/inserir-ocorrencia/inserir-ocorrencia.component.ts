@@ -70,6 +70,8 @@ export class InserirOcorrenciaComponent implements OnInit {
   public ocorrencia = new Ocorrencia();
   public comunicadoDiverso = new ComunicadoDiverso();
   public caracteresDisponiveis: string;
+  public statusBotaoSalvarOcorrenciaSimples: boolean = true;
+  public statusBotaoSalvarOcorrenciaMultipla: boolean = true;
 
   public feedbackUsuario: string;
   public estado: string = "visivel";
@@ -495,6 +497,18 @@ export class InserirOcorrenciaComponent implements OnInit {
     for (let i = 0; i < this.arrayDeMensagensSimples.length; i++) {
       this.arrayDeMensagensSimples[i].msg = `Assunto: Ocorrência disciplinar Ocorrência: ${this.tipoOcorrenciaSimples} Para detalhes, procure a direção ou assistência na unidade escolar Telefone: ${telefone}`;
     }
+    this.validarSalvarOcorrenciaSimples();
+  }
+
+  public validarSalvarOcorrenciaSimples(): void {
+    if (this.arrayOfEstudantes.length > 0 &&
+      this.arrayOfMatriculasEstudantes.length > 0 &&
+      this.arrayOfNomesEstudantes.length > 0 &&
+      this.ocorrencia.tod_id != undefined) {
+      this.statusBotaoSalvarOcorrenciaSimples = false;
+    } else {
+      this.statusBotaoSalvarOcorrenciaSimples = true;
+    }
   }
 
   public inserir(): void {
@@ -555,6 +569,8 @@ export class InserirOcorrenciaComponent implements OnInit {
         1
       );
     }
+
+    this.validarSalvarOcorrenciaSimples();
   }
 
 
@@ -565,6 +581,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public filtrar(limit: number = 10, offset: number = 0): void {
+    this.statusBotaoSalvarOcorrenciaSimples = true;
     this.saltarQuantidade = limit;
     this.feedbackUsuario = undefined;
     this.feedbackUsuario = "Carregando dados, aguarde...";
@@ -579,9 +596,10 @@ export class InserirOcorrenciaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.estudantes = Object.values(response);
-        console.log(this.estudantes);
         if (this.estudantes != undefined) {
-          this.totalRegistros = parseInt(this.estudantes[0]["total"]);
+          if (this.estudantes.length > 0) {
+            this.totalRegistros = parseInt(this.estudantes[0]["total"]);
+          }
         }
         this.feedbackUsuario = undefined;
       })
@@ -732,6 +750,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public gravaStatusEstudantesMultiplo(event: Event): void {
+
     let dados_estudante_selecionado: string = (<HTMLInputElement>event.target).value;
     let status: boolean = (<HTMLInputElement>event.target).checked;
 
@@ -773,10 +792,23 @@ export class InserirOcorrenciaComponent implements OnInit {
     }
   }
 
+  public validarSalvarOcorrenciaMultipla(): void {
+    if (this.arrayOfEstudantesMultiplo.length > 0 && this.tipoOcorrenciaMultiplo != undefined) {
+      this.statusBotaoSalvarOcorrenciaMultipla = false;
+    } else {
+      this.statusBotaoSalvarOcorrenciaMultipla = true;
+    }
+  }
+
   public montarMensagensNovasOcorrenciasMultiplas(): void {
+
+    debugger;
+    this.validarSalvarOcorrenciaMultipla();
+
     let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
     let inep = dados_escola[0]["inep"];
     let telefone = dados_escola[0]["telefone"];
+    debugger;
     let message = `${this.tipoOcorrenciaMultiplo}.`;
     for (let i = 0; i < this.arrayOfEstudantesMultiplo.length; i++) {
       this.arrayOfEstudantesMultiplo[i].cod_inep = inep;
@@ -794,6 +826,9 @@ export class InserirOcorrenciaComponent implements OnInit {
       this.arrayOfEstudantesMultiplo[i].to = `${inep}_${this.arrayOfEstudantesMultiplo[i].matricula}`;
     }
     this.gravarOcorrenciaDisciplinarMultiplaFirebase(this.arrayOfEstudantesMultiplo);
+
+
+
   }
 
   public gravarOcorrenciaDisciplinarMultiplaFirebase(messagesFirebase: Array<MessageFirebase>): void {
