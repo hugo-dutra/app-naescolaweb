@@ -22,6 +22,7 @@ import { ProfessorDisciplina } from '../../../crud/professor-disciplina/professo
 import { ProfessorService } from '../../../crud/professor/professor.service';
 import { ProfessorEscolaService } from '../../../crud/professor-escola/professor-escola.service';
 import { ProfessorDisciplinaService } from '../../../crud/professor-disciplina/professor-disciplina.service';
+import { ProfessorTurmaService } from '../../../crud/professor-turma/professor-turma.service';
 
 
 @Component({
@@ -40,6 +41,7 @@ import { ProfessorDisciplinaService } from '../../../crud/professor-disciplina/p
     ProfessorService,
     ProfessorEscolaService,
     ProfessorDisciplinaService,
+    ProfessorTurmaService,
   ],
   animations: [
     trigger("chamado", [
@@ -93,7 +95,8 @@ export class GerenciarIntegracaoComponent implements OnInit {
     private diarioRegistroService: DiarioRegistroService,
     private professorService: ProfessorService,
     private professorEscolaService: ProfessorEscolaService,
-    private professorDisciplinaService: ProfessorDisciplinaService
+    private professorDisciplinaService: ProfessorDisciplinaService,
+    private professorTurmaService: ProfessorTurmaService,
   ) { }
 
   ngOnInit() {
@@ -159,7 +162,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.feedbackUsuario = 'Listando professores, disciplinas e turmas. Aguarde...';
     this.sedfService.listarProfessoresDisciplinasTurmas(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       const professoresDisciplinasTurmas: Object[] = Object.values(response);
-      console.table(professoresDisciplinasTurmas);
       const arrayDeProfessores: Object[] = Utils.eliminaValoresRepetidos(professoresDisciplinasTurmas, 'emp_cd_matricula');
       this.feedbackUsuario = 'Gravando professores, aguarde...';
       this.professorService.integracaoInserir(arrayDeProfessores).toPromise().then(() => {
@@ -167,10 +169,32 @@ export class GerenciarIntegracaoComponent implements OnInit {
         this.professorEscolaService.integracaoInserir(arrayDeProfessores, this.esc_id).toPromise().then(() => {
           this.feedbackUsuario = 'Vinculando professores a disciplinas, aguarde...'
           this.professorDisciplinaService.integracaoInserir(professoresDisciplinasTurmas).toPromise().then(() => {
-            this.feedbackUsuario = undefined;
+            this.feedbackUsuario = "Vinculando professores e turmas, finalizando...";
+            let professoresTurmas = new Array<Object>();
+            professoresDisciplinasTurmas.forEach(professorDisciplinaturma => {
+              professoresTurmas.push({
+                dsp_id: professorDisciplinaturma['cod_disciplina'],
+                matricula: professorDisciplinaturma['emp_cd_matricula'],
+                trm_id: professorDisciplinaturma['cod_turma'],
+                esc_id: this.esc_id,
+              });
+            });
+            this.professorTurmaService.integracaoInserir(professoresTurmas).toPromise().then(() => {
+              this.feedbackUsuario = undefined;
+            }).catch((erro: Response) => {
+              this.gravarErroMostrarMensagem(erro);
+            })
+          }).catch((erro: Response) => {
+            this.gravarErroMostrarMensagem(erro);
           })
+        }).catch((erro: Response) => {
+          this.gravarErroMostrarMensagem(erro);
         })
+      }).catch((erro: Response) => {
+        this.gravarErroMostrarMensagem(erro);
       })
+    }).catch((erro: Response) => {
+      this.gravarErroMostrarMensagem(erro);
     })
   }
 
@@ -255,6 +279,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
   }
 
   public gravarErroMostrarMensagem(erro: Response) {
+    debugger;
     //Mostra modal
     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
     //registra log de erro no firebase usando serviço singlenton

@@ -18,6 +18,15 @@ export class ProfessorTurmaService {
     );
   }
 
+  public integracaoInserir(professoresTurmas: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "integracao-inserir-professor-turma",
+      JSON.stringify({ professoresTurmas: professoresTurmas }),
+      headers
+    );
+  }
+
   public listarProfessorTurmaDisciplinaId(
     prd_id: number,
     esc_id: number
