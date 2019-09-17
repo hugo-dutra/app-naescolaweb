@@ -156,7 +156,8 @@
           <div class="row">
             <div class="col-lg-10 col-sm-12 mt-2"></div>
             <div class="col-lg-2 col-sm-12 mt-2 text-center">
-              <button class="btn btn-primary text-light btn-sm form-control"
+              <button [disabled]="statusBotaoSalvarOcorrenciaSimples"
+                class="btn btn-primary text-light btn-sm form-control"
                 (click)="montarMensagensNovasOcorrencias()">Salvar</button>
             </div>
           </div>
@@ -253,6 +254,7 @@
           <div class="col-lg-10 col-sm-12 mt-2"></div>
           <div class="col-lg-10 col-sm-12">
             <button class="btn btn-primary text-light btn-sm form-control"
+              [disabled]="statusBotaoSalvarOcorrenciaMultipla"
               (click)="montarMensagensNovasOcorrenciasMultiplas()">Salvar</button>
           </div>
         </div>
