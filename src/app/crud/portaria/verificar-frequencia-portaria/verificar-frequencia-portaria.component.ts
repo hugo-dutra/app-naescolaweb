@@ -302,6 +302,7 @@ export class VerificarFrequenciaPortariaComponent implements OnInit {
     const codigo_portaria = portaria["codigo"];
     this.feedbackUsuario = "Carregando entradas da portaria...";
     this.firebaseService.lerDadosFrequenciaEntradaPortaria(codigo_portaria, ultimoRegistro).then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+
       querySnapshot.forEach(documento => {
         const data = documento.data()["data"];
         const hora = documento.data()["hora"];
