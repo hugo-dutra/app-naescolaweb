@@ -149,7 +149,6 @@ export class InserirPedidoCartaoComponent implements OnInit {
             this.feedbackUsuario = undefined;
           })
           .catch((erro: Response) => {
-            debugger;
             this.feedbackUsuario = undefined;
             //Mostra modal
             this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

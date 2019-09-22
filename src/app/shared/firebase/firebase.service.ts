@@ -127,7 +127,7 @@ export class FirebaseService {
    * Grava, no aplicativo, toda a listagem dos estudantes da escola num único documento.
    * @memberof FirebaseService
    */
-  public gravarListagemEstudantesAplicativoDocumentoUnico = (estudantes: Object[]): Promise<any> => {
+  public gravarListagemEstudantesAplicativoDocumentoUnico = (estudantes: Object[], parteArray: number): Promise<any> => {
     //**************DADOS ESCOLA**************/
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
     const inep = dadosEscola["inep"];
@@ -135,13 +135,30 @@ export class FirebaseService {
       this.firestore
         .collection('naescolaApp')
         .doc(inep)
-        .collection('listagem_carga_estudantes').doc(inep).set({ estudantes: estudantes }).then(() => {
+        .collection('listagens').doc('modoAdmin').collection('estudantes').doc(parteArray.toString()).set({ estudantes }).then(() => {
           resolve({ retorno: 'ok' })
         }).catch((reason: any) => {
           reject({ retorno: reason })
         })
     })
   }
+
+
+  public gravarListagemEstudanteAplicativoAdministrativo = (estudante: Object): Promise<any> => {
+    const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+    const inep = dadosEscola["inep"];
+    return new Promise((resolve) => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(inep)
+        .collection('matriculados')
+        .doc(estudante['matricula'])
+        .set({ estudante }).then(() => {
+          resolve('ok')
+        })
+    })
+  }
+
 
   public gravarLogErro = async (localErro, detalhesErro) => {
     const dataErro = Utils.dataAtual();
@@ -182,7 +199,6 @@ export class FirebaseService {
     })
   }
 
-
   /**
    *Gravar ocorrência disciplinar
    *
@@ -190,13 +206,12 @@ export class FirebaseService {
    */
   public gravarOcorrenciaDisciplinarFirebaseFirestore = async (messageFirebase: MessageFirebase) => {
     return new Promise(resolve => {
-      /* firebase.firestore() */
       this.firestore
         .collection('naescolaApp')
         .doc(messageFirebase.cod_inep)
         .collection('matriculados')
         .doc(messageFirebase.matricula)
-        .collection('advertencias') // Era advertencia ****************
+        .collection('advertencias')
         .add({ data: messageFirebase.data, hora: messageFirebase.hora, categoria: messageFirebase.tipo_msg, leitura: 0 }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
@@ -216,19 +231,16 @@ export class FirebaseService {
         .doc(messageFirebase.cod_inep)
         .collection('matriculados')
         .doc(messageFirebase.matricula)
-        .collection('comunicados') //Era direcao ****************
+        .collection('comunicados')
         .add({
           data: messageFirebase.data,
           hora: messageFirebase.hora,
-          assunto: messageFirebase.tipo_msg,
+          assunto: messageFirebase.titulo,
           msg: messageFirebase.msg,
-          leitura: 0, anexo: [
+          leitura: 0,
+          anexo: [
             { nome: 'anexo1', tamanho: '20kb', anexo: "http://linkparaoarquivo", tipo: "pdf" },
             { nome: 'anexo2', tamanho: '40kb', anexo: "http://linkparaoarquivo", tipo: "pdf" },
-            { nome: 'anexo3', tamanho: '200kb', anexo: "http://linkparaoarquivo", tipo: "doc" },
-            { nome: 'anexo1', tamanho: '20kb', anexo: "http://linkparaoarquivo", tipo: "xlsx" },
-            { nome: 'anexo2', tamanho: '40kb', anexo: "http://linkparaoarquivo", tipo: "avi" },
-            { nome: 'anexo3', tamanho: '200kb', anexo: "http://linkparaoarquivo", tipo: "ppt" }
           ]
         }).then((retorno) => {
           resolve(retorno);
@@ -253,7 +265,7 @@ export class FirebaseService {
       .collection('naescolaApp')
       .doc(inep)
       .collection('matriculados')
-      .where('foto', '>', '')
+      .where('foto.url', '>', '')
       .get()
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         resolve(querySnapshot)
@@ -535,6 +547,13 @@ export class FirebaseService {
   public carregarEstudantesPortariaFirebaseFirestore = async (estudantes: Object[], codigoPortaria: string) => new Promise((resolve) => {
     const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesPortaria');
     carregarEstudantesPortaria({ estudantes: estudantes, codigoPortaria: codigoPortaria }).then(retorno => {
+      resolve(retorno)
+    })
+  })
+
+  public carregarEstudantesAplicativoFirebaseFirestore = async (estudantes: Object[], inep: string) => new Promise((resolve) => {
+    const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesAplicativo');
+    carregarEstudantesPortaria({ estudantes: estudantes, inep: inep }).then(retorno => {
       resolve(retorno)
     })
   })

@@ -69,25 +69,16 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
 
   public listarSincronizarFotosEstudantesFirebase(sobrescrever: number): void {
     this.feedbackUsuario = "Listando fotos obtidas no aplicativo administrativo, aguarde..."
-    let contaFoto: number = 0;
     this.firebaseService.lerFotosEstudanteAplicativoAdministrativo(this.inep)
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
-        let maximo = querySnapshot.docs.length;
+        const arrayOfEstudantes = new Array<Object>();
         querySnapshot.forEach(documento => {
-          this.estudanteService
-            .alterarFoto(documento.id, documento.data()['foto'], sobrescrever)
-            .toPromise()
-            .then((response: Response) => {
-              contaFoto++;
-              if (contaFoto == maximo) {
-                this.feedbackUsuario = undefined;
-              } else {
-                this.feedbackUsuario = `Alterando foto ${contaFoto} de ${maximo}...\n${documento.data()['nome']}`;
-              }
-            }).catch((erro: Response) => {
-              //registra log de erro no firebase usando serviço singlenton
-              this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-            })
+          const dadosEstudantes = documento.data();
+          arrayOfEstudantes.push(dadosEstudantes);
+        })
+        this.feedbackUsuario = 'Atualizando fotos na base, aguarde...'
+        this.estudanteService.alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes).toPromise().then(() => {
+          this.feedbackUsuario = undefined;
         })
       }).catch((erro: Response) => {
         //Mostra modal

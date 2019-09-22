@@ -55,21 +55,47 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
   }
 
   public sincronizarDadosNoAplicativoAdministrativo(): void {
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
+    const inep = dados_escola["inep"];
+    const telefone = dados_escola["telefone"];
+
     this.feedbackUsuario = "Carregando dados para aplicativo adminstrativo, aguarde..."
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((response: Response) => {
       this.arrayOfEstudantesAplicativo = Object.values(response);
-      this.firebaseService.gravarListagemEstudantesAplicativoDocumentoUnico(this.arrayOfEstudantesAplicativo).then(() => {
-        this.feedbackUsuario = undefined;
-        this.alertModalService.showAlertSuccess('Estudantes carregados com sucesso.');
-      }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+      const arrayDeEstudantesAplicativoEstruturado = new Array<Object>();
+      const arrayDeEstudantesAplicativo = new Array<Object>();
+      this.arrayOfEstudantesAplicativo.forEach(estudante => {
+        let dataFoto = 0
+        if (estudante['dataFoto'] != null) {
+          dataFoto = parseInt(estudante['dataFoto']) * 1000;
+        }
+        const escola = estudante['escola'];
+        const etapa = estudante['etapa'];
+        const foto = { datePicture: new Date(dataFoto), url: estudante['foto'], userId: estudante['usr_id_foto'], userName: estudante['usuario'] }
+        const inep = estudante['inep'];
+        const matricula = estudante['matricula'];
+        const nome = estudante['nome'];
+        const serie = estudante['serie'];
+        const telefoneEscola = telefone;
+        const turma = estudante['turma'];
+        const turno = estudante['turno'];
+        arrayDeEstudantesAplicativoEstruturado.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
+        arrayDeEstudantesAplicativo.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
+      })
+      this.feedbackUsuario = 'Gravando documentos, aguarde...';
+      let parteArray = 0;
+      const tamanhoDocumento = 500;
+      while (arrayDeEstudantesAplicativoEstruturado.length) {
+        const pedaco = arrayDeEstudantesAplicativoEstruturado.splice(0, tamanhoDocumento);
+        this.firebaseService.gravarListagemEstudantesAplicativoDocumentoUnico(pedaco, parteArray).then(() => { });
+        parteArray++;
+      }
+
+      this.feedbackUsuario = 'Gravando estudantes, pode demorar um pouco, aguarde...'
+      this.firebaseService.carregarEstudantesAplicativoFirebaseFirestore(arrayDeEstudantesAplicativo, inep).then(() => {
         this.feedbackUsuario = undefined;
       })
+
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

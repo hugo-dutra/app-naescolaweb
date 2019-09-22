@@ -174,7 +174,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
         messageFirebase.id = "";
         messageFirebase.matricula = matricula;
-        messageFirebase.msg = `${message} Para detalhes, procure a direção ou assistência na unidade escolar Telefone: ${telefone}`;
+        messageFirebase.msg = `${message}`;
         messageFirebase.msg_tag = "0";
         messageFirebase.nome_estudante = nome;
         messageFirebase.tipo_msg = "Comunicado"//CONSTANTES.FIREBASE_MSG_COMUNICADO;
@@ -234,7 +234,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
       messageFirebase.id = this.arrayOfEstudantes[i].toString();
       messageFirebase.matricula = matricula;
-      messageFirebase.msg = `Assunto: Ocorrência disciplinar Ocorrência: ${message} Para detalhes, procure a direção ou assistência na unidade escolar Telefone: ${telefone}`;
+      messageFirebase.msg = `Assunto: Ocorrência disciplinar Ocorrência: ${message}`;
       messageFirebase.msg_tag = "0";
       messageFirebase.nome_estudante = nome;
       messageFirebase.tipo_msg = message;
@@ -295,7 +295,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
         messageFirebase.id = est_id.toString();
         messageFirebase.matricula = matricula;
-        messageFirebase.msg = `Assunto: Comunicado importante Informe: ${message} Para detalhes, procure a direção ou assistência na unidade escolar Telefone: ${telefone}`;
+        messageFirebase.msg = `${message}`;
         messageFirebase.msg_tag = "0";
         messageFirebase.nome_estudante = nome;
         messageFirebase.tipo_msg = "Comunicado importante";
@@ -495,7 +495,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.ocorrencia.tod_id = parseInt((<HTMLInputElement>event.target).value.toString().split('|')[0]);
     this.tipoOcorrenciaSimples = (<HTMLInputElement>event.target).value.toString().split('|')[1]
     for (let i = 0; i < this.arrayDeMensagensSimples.length; i++) {
-      this.arrayDeMensagensSimples[i].msg = `Assunto: Ocorrência disciplinar Ocorrência: ${this.tipoOcorrenciaSimples} Para detalhes, procure a direção ou assistência na unidade escolar Telefone: ${telefone}`;
+      this.arrayDeMensagensSimples[i].msg = `${this.tipoOcorrenciaSimples}`;
     }
     this.validarSalvarOcorrenciaSimples();
   }
@@ -806,7 +806,6 @@ export class InserirOcorrenciaComponent implements OnInit {
     let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
     let inep = dados_escola[0]["inep"];
     let telefone = dados_escola[0]["telefone"];
-    debugger;
     let message = `${this.tipoOcorrenciaMultiplo}.`;
     for (let i = 0; i < this.arrayOfEstudantesMultiplo.length; i++) {
       this.arrayOfEstudantesMultiplo[i].cod_inep = inep;
@@ -816,7 +815,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       this.arrayOfEstudantesMultiplo[i].hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
       this.arrayOfEstudantesMultiplo[i].id = this.arrayOfEstudantesMultiplo[i].id;
       this.arrayOfEstudantesMultiplo[i].matricula = this.arrayOfEstudantesMultiplo[i].matricula;
-      this.arrayOfEstudantesMultiplo[i].msg = `Assunto: Ocorrência disciplinar Ocorrência: ${message} Para detalhes, procure a direção ou assistência na unidade escolar Telefone: ${telefone}`;
+      this.arrayOfEstudantesMultiplo[i].msg = `${message}`;
       this.arrayOfEstudantesMultiplo[i].msg_tag = "0";
       this.arrayOfEstudantesMultiplo[i].nome_estudante = this.arrayOfEstudantesMultiplo[i].nome_estudante;
       this.arrayOfEstudantesMultiplo[i].tipo_msg = message;//CONSTANTES.FIREBASE_MSG_OCORRENCIA;
@@ -824,9 +823,6 @@ export class InserirOcorrenciaComponent implements OnInit {
       this.arrayOfEstudantesMultiplo[i].to = `${inep}_${this.arrayOfEstudantesMultiplo[i].matricula}`;
     }
     this.gravarOcorrenciaDisciplinarMultiplaFirebase(this.arrayOfEstudantesMultiplo);
-
-
-
   }
 
   public gravarOcorrenciaDisciplinarMultiplaFirebase(messagesFirebase: Array<MessageFirebase>): void {

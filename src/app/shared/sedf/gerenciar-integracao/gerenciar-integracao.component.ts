@@ -224,6 +224,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
       this.arrayOfEstudantesEscola = Object.values(response);
+      console.log(this.arrayOfEstudantesEscola);
       this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then(() => {
         this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then(() => {
           this.feedbackUsuario = undefined;
@@ -279,7 +280,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
   }
 
   public gravarErroMostrarMensagem(erro: Response) {
-    debugger;
     //Mostra modal
     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
     //registra log de erro no firebase usando serviço singlenton

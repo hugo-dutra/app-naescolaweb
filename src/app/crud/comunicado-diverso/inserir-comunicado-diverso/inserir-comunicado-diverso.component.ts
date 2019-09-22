@@ -309,11 +309,11 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
           messageFirebase.id = this.arrayOfEstudantes[i].id.toString();
           messageFirebase.matricula = matricula;
-          messageFirebase.msg = `Assunto: ${this.assunto} Mensagem: ${this.mensagem} Para detalhes, procure a direção ou assistência na unidade escolar Telefone: ${telefone}`;
+          messageFirebase.msg = `${this.mensagem}`;
           messageFirebase.msg_tag = "0";
           messageFirebase.nome_estudante = nome;
-          messageFirebase.tipo_msg = "Comunicado escolar";//CONSTANTES.FIREBASE_MSG_OCORRENCIA;
-          messageFirebase.titulo = "Comunicado escolar";
+          messageFirebase.tipo_msg = "Comunicado escolar";
+          messageFirebase.titulo = this.assunto;
           messageFirebase.to = `${inep}_${matricula}`;
           this.arrayDeMensagens.push(messageFirebase);
         }
