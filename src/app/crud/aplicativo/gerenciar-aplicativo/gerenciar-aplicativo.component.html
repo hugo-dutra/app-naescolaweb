@@ -3,13 +3,24 @@
 
   <div class="row">
 
-    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+    <!-- <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
       <nb-card *ngIf="exibirComponente('sincronizar-estudante-aplicativo')" (click)="sincronizarAplicativo()">
         <nb-card-header>
           <i class="fa fa-4x fa-mobile text-primary"></i>
         </nb-card-header>
         <nb-card-footer>
           <h5 class="text-center"> Sincronizar estudantes no aplicativo</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div> -->
+
+    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" (click)="baixarFotosEstudanteAplicativo()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-refresh text-primary"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center"> Sincronizar aplicativo administrativo</h5>
         </nb-card-footer>
       </nb-card>
     </div>
@@ -21,17 +32,6 @@
         </nb-card-header>
         <nb-card-footer>
           <h5 class="text-center"> Gerar QRCode para aplicativo</h5>
-        </nb-card-footer>
-      </nb-card>
-    </div>
-
-    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
-      <nb-card *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" (click)="baixarFotosEstudanteAplicativo()">
-        <nb-card-header>
-          <i class="fa fa-4x fa-cloud-download text-success"></i>
-        </nb-card-header>
-        <nb-card-footer>
-          <h5 class="text-center"> Baixar fotos do aplicativo</h5>
         </nb-card-footer>
       </nb-card>
     </div>

@@ -57,8 +57,6 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
   public sincronizarDadosNoAplicativoAdministrativo(): void {
     const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
     const telefone = dados_escola["telefone"];
-    //const inep = dados_escola["inep"];
-
     this.feedbackUsuario = "Carregando dados para aplicativo adminstrativo, aguarde..."
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((response: Response) => {
       this.arrayOfEstudantesAplicativo = Object.values(response);

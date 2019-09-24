@@ -77,17 +77,14 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
           arrayOfEstudantes.push(dadosEstudantes);
         })
         this.feedbackUsuario = 'Atualizando fotos na base, aguarde...'
-        this.estudanteService.alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes).toPromise().then(() => {
-          this.feedbackUsuario = undefined;
-        })
+        this.estudanteService
+          .alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes)
+          .toPromise()
+          .then(() => {
+            this.sincronizarDadosNoAplicativoAdministrativo();
+          })
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.mostrarAlertaErro(erro);
       })
   }
 
@@ -98,6 +95,64 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
 
   public sincronizarFotos(): void {
     this.listarSincronizarFotosEstudantesFirebase(this.sobrescreveFoto);
+  }
+
+  public sincronizarDadosNoAplicativoAdministrativo(): void {
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
+    const telefone = dados_escola["telefone"];
+    this.feedbackUsuario = "Atualizando dados para aplicativo adminstrativo, aguarde..."
+    this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((response: Response) => {
+      this.arrayOfEstudantesAplicativo = Object.values(response);
+      const arrayDeEstudantesAplicativoEstruturado = new Array<Object>();
+      const arrayDeEstudantesAplicativo = new Array<Object>();
+      this.arrayOfEstudantesAplicativo.forEach(estudante => {
+        let dataFoto = 0
+        if (estudante['dataFoto'] != null) {
+          dataFoto = parseInt(estudante['dataFoto']) * 1000;
+        }
+        const escola = estudante['escola'];
+        const etapa = estudante['etapa'];
+        const foto = { datePicture: new Date(dataFoto), url: estudante['foto'], userId: estudante['usr_id_foto'], userName: estudante['usuario'] }
+        const inep = estudante['inep'];
+        const matricula = estudante['matricula'];
+        const nome = estudante['nome'];
+        const serie = estudante['serie'];
+        const telefoneEscola = telefone;
+        const turma = estudante['turma'];
+        const turno = estudante['turno'];
+        arrayDeEstudantesAplicativoEstruturado.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
+        arrayDeEstudantesAplicativo.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
+      })
+      this.feedbackUsuario = 'Gravando documento para carga única, aguarde...';
+      let parteArray = 0;
+      const tamanhoDocumento = 500;
+      while (arrayDeEstudantesAplicativoEstruturado.length) {
+        const pedaco = arrayDeEstudantesAplicativoEstruturado.splice(0, tamanhoDocumento);
+        this.firebaseService.gravarListagemEstudantesAplicativoDocumentoUnico(pedaco, parteArray).then(() => { })
+          .catch((erro: Response) => {
+            this.mostrarAlertaErro(erro);
+          });
+        parteArray++;
+        this.feedbackUsuario = 'Gravando coleção de estudantes, pode demorar um pouco, aguarde...'
+        this.firebaseService.gravarListagemEstudantesAplicativoAdministrativoBatch(pedaco).then(() => {
+          this.feedbackUsuario = undefined;
+        }).catch((erro: Response) => {
+          this.mostrarAlertaErro(erro);
+        })
+      }
+    }).catch((erro: Response) => {
+      this.mostrarAlertaErro(erro);
+    })
+  }
+
+  public mostrarAlertaErro(erro: Response): void {
+    //Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    //registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+    //Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 
 }
