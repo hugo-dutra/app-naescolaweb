@@ -307,17 +307,23 @@ export class ListarPortariaComponent implements OnInit {
     let estudantes = null;
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((retorno) => {
       estudantes = Object.values(retorno);
-      this.firebaseService.gravarListagemEstudantesPortariaDocumentoUnico(estudantes, codigoPortaria).then(() => {
-        this.alertModalService.showAlertSuccess("Estudantes sincronizados com sucesso !");
-        this.feedbackUsuario = undefined;
-      }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-      })
+      let parteArray = 0;
+      const tamanhoDocumento = 500;
+      while (estudantes.length) {
+        const pedaco = estudantes.splice(0, tamanhoDocumento);
+        this.firebaseService.gravarListagemEstudantesPortariaDocumentoUnico(pedaco, codigoPortaria, parteArray).then(() => {
+          this.feedbackUsuario = undefined;
+        })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+          });
+        parteArray++;
+      }
     })
   }
 

@@ -56,8 +56,8 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
 
   public sincronizarDadosNoAplicativoAdministrativo(): void {
     const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
-    const inep = dados_escola["inep"];
     const telefone = dados_escola["telefone"];
+    //const inep = dados_escola["inep"];
 
     this.feedbackUsuario = "Carregando dados para aplicativo adminstrativo, aguarde..."
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((response: Response) => {
@@ -82,28 +82,25 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
         arrayDeEstudantesAplicativoEstruturado.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
         arrayDeEstudantesAplicativo.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
       })
-      this.feedbackUsuario = 'Gravando documentos, aguarde...';
+      this.feedbackUsuario = 'Gravando documento, aguarde...';
       let parteArray = 0;
       const tamanhoDocumento = 500;
       while (arrayDeEstudantesAplicativoEstruturado.length) {
         const pedaco = arrayDeEstudantesAplicativoEstruturado.splice(0, tamanhoDocumento);
-        this.firebaseService.gravarListagemEstudantesAplicativoDocumentoUnico(pedaco, parteArray).then(() => { });
+        this.firebaseService.gravarListagemEstudantesAplicativoDocumentoUnico(pedaco, parteArray).then(() => { })
+          .catch((erro: Response) => {
+            this.mostrarAlertaErro(erro);
+          });
         parteArray++;
+        this.feedbackUsuario = 'Gravando estudantes, pode demorar um pouco, aguarde...'
+        this.firebaseService.gravarListagemEstudantesAplicativoAdministrativoBatch(pedaco).then(() => {
+          this.feedbackUsuario = undefined;
+        }).catch((erro: Response) => {
+          this.mostrarAlertaErro(erro);
+        })
       }
-
-      this.feedbackUsuario = 'Gravando estudantes, pode demorar um pouco, aguarde...'
-      this.firebaseService.carregarEstudantesAplicativoFirebaseFirestore(arrayDeEstudantesAplicativo, inep).then(() => {
-        this.feedbackUsuario = undefined;
-      })
-
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.mostrarAlertaErro(erro);
     })
   }
 
@@ -115,5 +112,17 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
     return Utils.exibirComponente(rota);
   }
 
-
+  public mostrarAlertaErro(erro: Response): void {
+    //Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    //registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+    //Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
+  }
 }
+
+
+
+

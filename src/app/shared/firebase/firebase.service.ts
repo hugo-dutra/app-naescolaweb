@@ -110,19 +110,22 @@ export class FirebaseService {
    *  Grava, na portaria, toda a listagem dos estudantes da escola num único documento.
    * @memberof FirebaseService
    */
-  public gravarListagemEstudantesPortariaDocumentoUnico = (estudantes: Object[], codigoPortaria: string): Promise<any> => {
+  public gravarListagemEstudantesPortariaDocumentoUnico = (estudantes: Object[], codigoPortaria: string, parteArray: number): Promise<any> => {
     //**************DADOS ESCOLA**************/
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('portariaWeb')
         .doc(codigoPortaria)
-        .collection('listagem_carga_estudantes').doc(codigoPortaria).set({ estudantes: estudantes }).then(() => {
+        .collection('listagem_carga_estudantes')
+        .doc(parteArray.toString())
+        .set({ estudantes: estudantes }).then(() => {
           resolve({ retorno: 'ok' })
         }).catch((reason: any) => {
           reject({ retorno: reason })
         })
     })
   }
+
   /**
    * Grava, no aplicativo, toda a listagem dos estudantes da escola num único documento.
    * @memberof FirebaseService
@@ -135,7 +138,10 @@ export class FirebaseService {
       this.firestore
         .collection('naescolaApp')
         .doc(inep)
-        .collection('listagens').doc('modoAdmin').collection('estudantes').doc(parteArray.toString()).set({ estudantes }).then(() => {
+        .collection('listagens')
+        .doc('modoAdmin')
+        .collection('estudantes')
+        .doc(parteArray.toString()).set({ estudantes }).then(() => {
           resolve({ retorno: 'ok' })
         }).catch((reason: any) => {
           reject({ retorno: reason })
@@ -143,6 +149,30 @@ export class FirebaseService {
     })
   }
 
+  public gravarListagemEstudantesAplicativoAdministrativoBatch(estudantes: Object[]): Promise<any> {
+    const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+    const inepEscola = dadosEscola["inep"];
+    return new Promise((resolve) => {
+      let batch = this.firestore.batch();
+      estudantes.forEach((estudante: Object) => {
+        const escola = estudante['escola'];
+        const etapa = estudante['etapa'];
+        const foto = estudante['foto'];
+        const inep = estudante['inep'];
+        const matricula = estudante['matricula'];
+        const nome = estudante['nome'];
+        const serie = estudante['serie'];
+        const telefoneEscola = estudante['telefoneEscola'];
+        const turma = estudante['turma'];
+        const turno = estudante['turno'];
+        let referenciaEstudante = this.firestore.collection('naescolaApp').doc(inepEscola).collection('matriculados').doc(estudante['matricula'])
+        batch.set(referenciaEstudante, { escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
+      })
+      batch.commit().then(() => {
+        resolve('ok');
+      })
+    })
+  }
 
   public gravarListagemEstudanteAplicativoAdministrativo = (estudante: Object): Promise<any> => {
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
@@ -259,7 +289,6 @@ export class FirebaseService {
     retorno();
   }
 
-
   public lerFotosEstudanteAplicativoAdministrativo = async (inep: string) => new Promise((resolve) => {
     return this.firestore
       .collection('naescolaApp')
@@ -271,7 +300,6 @@ export class FirebaseService {
         resolve(querySnapshot)
       })
   })
-
 
   public lerDadosFrequenciaEntradaPortaria = async (codigoPortaria: string, ultimoRegistro: string) => new Promise((resolve) => {
     return this.firestore
