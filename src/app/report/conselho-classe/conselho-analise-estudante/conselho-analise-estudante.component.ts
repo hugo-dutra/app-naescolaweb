@@ -214,6 +214,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.arrayOfFrequenciasPortariasEstudantes = Object.values(response);
+        debugger;
         this.carregarResultadosAreaConhecimento();
       }).catch((erro: Response) => {
         //Mostra modal
