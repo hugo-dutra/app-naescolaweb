@@ -10,8 +10,8 @@ export class CONSTANTES {
   public static PRODUCAO = true; //no deploy essa linha deverá ser trocada
   public static DEF_MSG_ERRO = "ERROR 404 NOT FOUND";
   //********************URLS****************************/
-  public static HOST = "http://localhost:8000";
-  //public static HOST = "http://34.73.55.201:8080";
+  //public static HOST = "http://localhost:8000";
+  public static HOST = "http://34.73.55.201:8080";
   public static HOST_API = CONSTANTES.HOST + "/api/";
   public static HOST_TOKEN_INTEGRACAO = 'https://sigep.se.df.gov.br/sigep-authentication/webresources/authentication'
   public static HOST_INTEGRACAO = 'https://sigep.se.df.gov.br/sigep_ws/api/naescola/'
