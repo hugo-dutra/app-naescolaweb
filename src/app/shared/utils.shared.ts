@@ -107,6 +107,13 @@ export class Utils {
     );
   }
 
+  public static gravarErroAnalytics(erro: string) {
+    (<any>window).ga('send', 'exception', {
+      'exDescription': erro,
+      'exFatal': false
+    });
+  }
+
   public static tratarErro(rota: { router: Router; response: Response }): void {
     try {
       if (
