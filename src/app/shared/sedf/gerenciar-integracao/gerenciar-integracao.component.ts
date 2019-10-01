@@ -23,6 +23,7 @@ import { ProfessorService } from '../../../crud/professor/professor.service';
 import { ProfessorEscolaService } from '../../../crud/professor-escola/professor-escola.service';
 import { ProfessorDisciplinaService } from '../../../crud/professor-disciplina/professor-disciplina.service';
 import { ProfessorTurmaService } from '../../../crud/professor-turma/professor-turma.service';
+import { utf8Encode } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -139,7 +140,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
 
   public inserirEstudantesEmBlocos(arrayComEstudantes: Object[], esc_id: number): Promise<Object> {
     const retorno = new Promise((resolve, reject) => {
-      this.feedbackUsuario = "Iniciando carga, aguarde...";
+      this.feedbackUsuario = `Inserindo carga de ${arrayComEstudantes.length} estudantes, aguarde...`;
       const tamanhoBloco = 500;
       let contaRegistroInserido = 0;
       for (let i = 0; i < arrayComEstudantes.length; i += tamanhoBloco) {
@@ -148,10 +149,10 @@ export class GerenciarIntegracaoComponent implements OnInit {
           contaRegistroInserido += tamanhoBloco;
           this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de ${arrayComEstudantes.length} registros, aguarde...`;
           if (contaRegistroInserido >= arrayComEstudantes.length) {
-            resolve({ message: "Alunos inseridos com sucesso" });
+            resolve({ message: response });
           }
-        }).catch(() => {
-          reject({ message: "Erro ao inserir estudantes." });
+        }).catch((response: Response) => {
+          reject({ message: response });
         })
       }
     })
@@ -211,8 +212,8 @@ export class GerenciarIntegracaoComponent implements OnInit {
           if (contaRegistroInserido >= arrayComEstudantes.length) {
             resolve({ message: "Alunos enturmados com sucesso" });
           }
-        }).catch(() => {
-          reject({ message: "Erro ao inserir estudantes." });
+        }).catch((erro: Response) => {
+          reject({ message: erro });
         })
       }
     })
@@ -223,10 +224,10 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.feedbackUsuario = 'Listando Estudantes...';
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
-      this.arrayOfEstudantesEscola = Object.values(response);
-      console.log(this.arrayOfEstudantesEscola);
-      this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then(() => {
-        this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then(() => {
+      this.arrayOfEstudantesEscola = Utils.removerCaracteresEspeciaisArray(Object.values(response));
+      this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then((response: Response) => {
+        this.feedbackUsuario = undefined;
+        this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then((response: Response) => {
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
           this.gravarErroMostrarMensagem(erro);
@@ -281,12 +282,13 @@ export class GerenciarIntegracaoComponent implements OnInit {
 
   public gravarErroMostrarMensagem(erro: Response) {
     //Mostra modal
+    this.feedbackUsuario = undefined;
     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
     //registra log de erro no firebase usando serviço singlenton
-    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
     //Caso token seja invalido, reenvia rota para login
     Utils.tratarErro({ router: this.router, response: erro });
-    this.feedbackUsuario = undefined;
+
   }
 
   public filtrarEtapaEnsinoEJA(objeto: Object) {

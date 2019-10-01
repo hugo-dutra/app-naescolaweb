@@ -9,6 +9,23 @@ import { CONSTANTES } from "./constantes.shared";
  */
 export class Utils {
 
+  public static removerCaracteresEspeciaisArray(array: Object[]): Object[] {
+    const arrayInicial = array;
+    const arrayFinal = new Array<Object>();
+    arrayInicial.forEach((elemento: Object) => {
+      elemento['nome'] = elemento['nome'] != null ? elemento['nome'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['nome_mae'] = elemento['nome_mae'] != null ? elemento['nome_mae'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['nome_pai'] = elemento['nome_pai'] != null ? elemento['nome_pai'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['nome_resp'] = elemento['nome_resp'] != null ? elemento['nome_resp'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['complemento'] = elemento['complemento'] != null ? elemento['complemento'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['loc_no'] = elemento['loc_no'] != null ? elemento['loc_no'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['log_no'] = elemento['log_no'] != null ? elemento['log_no'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['bai_no'] = elemento['bai_no'] != null ? elemento['bai_no'].replace(/[^\u0020-\u007a]/g, '') : null;
+      arrayFinal.push(elemento);
+    })
+    return arrayFinal;
+  }
+
   public static validarCampos(model: { event: Event }): void {
     if (!(<HTMLInputElement>event.target).validity.valid) {
       (<HTMLInputElement>event.target).classList.add("is-invalid");
@@ -93,8 +110,8 @@ export class Utils {
   public static tratarErro(rota: { router: Router; response: Response }): void {
     try {
       if (
-        rota.response.json()["error"] == "token_expired" ||
-        rota.response.json()["error"] == "token_not_provided"
+        rota.response.json["error"] == "token_expired" ||
+        rota.response.json["error"] == "token_not_provided"
       ) {
         rota.router.navigate([""]);
         localStorage.setItem("ne_token", "null");

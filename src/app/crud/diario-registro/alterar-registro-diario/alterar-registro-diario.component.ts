@@ -85,7 +85,7 @@ export class AlterarRegistroDiarioComponent implements OnInit {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -110,7 +110,7 @@ export class AlterarRegistroDiarioComponent implements OnInit {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -140,7 +140,7 @@ export class AlterarRegistroDiarioComponent implements OnInit {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -277,7 +277,7 @@ export class AlterarRegistroDiarioComponent implements OnInit {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -312,7 +312,7 @@ export class AlterarRegistroDiarioComponent implements OnInit {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, erro["message"]);
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
