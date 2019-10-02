@@ -2,9 +2,8 @@
 <div class="container-fluid container-card">
 
   <div class="row">
-
-    <div class="col-lg-4 col-sm-12 col-xs-12">
-      <nb-card *ngIf="exibirComponente('listar-pedido-cartao')" (click)="listarPedidoCartao()">
+    <div *ngIf="exibirComponente('listar-pedido-cartao')" class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card (click)="listarPedidoCartao()">
         <nb-card-header>
           <i class="fa fa-4x fa-list text-primary"></i>
         </nb-card-header>
@@ -14,8 +13,8 @@
       </nb-card>
     </div>
 
-    <div class="col-lg-4 col-sm-12 col-xs-12">
-      <nb-card *ngIf="exibirComponente('confeccionar-cartao-acesso')" (click)="confeccionarCartaoAcesso()">
+    <div *ngIf="exibirComponente('confeccionar-cartao-acesso')" class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card (click)="confeccionarCartaoAcesso()">
         <nb-card-header>
           <i class="fa fa-4x fa-print text-success"></i>
         </nb-card-header>

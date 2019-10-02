@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'ngx-footer',
   styleUrls: ['./footer.component.scss'],
-  template: `<span class="created-by">Criado com ♥ por Hugo Alves Dutra e Hailton Martins Júnior  -   2017-2019</span>`,
+  template: `<span class="created-by">"A educação é para a alma o que é a escultura para o bloco de mármore."
+  - Joseph Addison</span>`,
 })
 export class FooterComponent {
 }

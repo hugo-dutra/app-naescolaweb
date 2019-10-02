@@ -108,10 +108,13 @@ export class Utils {
   }
 
   public static gravarErroAnalytics(erro: string) {
-    (<any>window).ga('send', 'exception', {
-      'exDescription': erro,
-      'exFatal': false
-    });
+    //Depois que descobrir como logar exceções, alterar aqui.
+    /* (<any>window).ga('send', {
+      hitType: 'erro',
+      eventCategory: 'FEO',
+      eventAction: 'error',
+      eventLabel: 'Mensagem de erro aqui'
+    }); */
   }
 
   public static tratarErro(rota: { router: Router; response: Response }): void {
