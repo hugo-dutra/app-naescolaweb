@@ -13,9 +13,6 @@ import { RequestOptions } from 'http';
 import { Portaria } from '../../crud/portaria/portaria.model';
 import { CronogramaPortaria } from '../../crud/portaria/cronograma-portaria.model';
 
-
-
-
 @Injectable()
 export class FirebaseService {
   private firestore = firebase.firestore();
@@ -123,6 +120,31 @@ export class FirebaseService {
         }).catch((reason: any) => {
           reject({ retorno: reason })
         })
+    })
+  }
+
+  /**
+   * Procedure Grava us usuários autorizados a tirar fotografias.
+   * @param usuarios
+   */
+  public gravarUsuariosAutorizadosTirarFotos(usuarios: Object[], inep: string): Promise<Object> {
+    return new Promise((resolve) => {
+      let contaUsuariosCadastrados: number = 0;
+      const totalUsuariosCadastrados: number = usuarios.length;
+      usuarios.forEach(usuario => {
+        const usr_id: number = usuario['usr_id'];
+        this.firestore
+          .collection('naescolaApp')
+          .doc(inep)
+          .collection('permissoes')
+          .doc(usr_id.toString()).set({ fotos: true }).then(() => {
+          })
+        contaUsuariosCadastrados++;
+        if (contaUsuariosCadastrados == totalUsuariosCadastrados) {
+          resolve('usuarios cadastrados');
+        }
+      })
+
     })
   }
 

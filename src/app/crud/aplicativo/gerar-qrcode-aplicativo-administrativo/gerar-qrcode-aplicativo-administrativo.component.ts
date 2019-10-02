@@ -75,15 +75,19 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
   public listarUsuarios(): void {
     this.feedbackUsuario = 'Listando usuários da escola, aguarde...';
     this.usuarioService.listarPorEscola(this.esc_id, true).toPromise().then((response: Response) => {
-      this.feedbackUsuario = undefined;
       this.arrayOfUsuarios = Object.values(response);
+      this.feedbackUsuario = 'Atualizando permissões para tirar fotos dos estudantes, aguarde...';
+      this.firebaseService.gravarUsuariosAutorizadosTirarFotos(this.arrayOfUsuarios, this.inep).then(() => {
+        this.feedbackUsuario = undefined;
+      })
+      console.log(this.arrayOfUsuarios);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
