@@ -72,15 +72,43 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
     this.nomeEscola = this.dados_escola["nome"];
   }
 
-  public listarUsuarios(): void {
-    this.feedbackUsuario = 'Listando usuários da escola, aguarde...';
-    this.usuarioService.listarPorEscola(this.esc_id, true).toPromise().then((response: Response) => {
-      this.arrayOfUsuarios = Object.values(response);
-      this.feedbackUsuario = 'Atualizando permissões para tirar fotos dos estudantes, aguarde...';
+  public concederPermissoes(): void {
+    this.feedbackUsuario = 'Concedendo permissões para tirar fotos, aguarde...';
+    setTimeout(() => {
       this.firebaseService.gravarUsuariosAutorizadosTirarFotos(this.arrayOfUsuarios, this.inep).then(() => {
         this.feedbackUsuario = undefined;
       })
-      console.log(this.arrayOfUsuarios);
+    }, 1000);
+  }
+
+  public revogarPermissoes(): void {
+    this.feedbackUsuario = 'Revogando permissões para tirar fotos, aguarde...';
+    setTimeout(() => {
+      this.firebaseService.revogarUsuariosTirarFotos(this.arrayOfUsuarios, this.inep).then(() => {
+        this.feedbackUsuario = undefined;
+      })
+    }, 1000);
+  }
+
+  public concederPermissaoIndividual(usr_id: string): void {
+    this.feedbackUsuario = 'Revogando permissões para tirar fotos, aguarde...';
+    this.firebaseService.concederUsuarioIndividual(this.inep, usr_id).then(() => {
+      this.feedbackUsuario = undefined;
+    })
+  }
+
+  public revogarPermissaoIndividual(usr_id: string): void {
+    this.feedbackUsuario = 'Revogando permissões para tirar fotos, aguarde...';
+    this.firebaseService.revogarUsuarioIndividual(this.inep, usr_id).then(() => {
+      this.feedbackUsuario = undefined;
+    })
+  }
+
+  public listarUsuarios(): void {
+    this.feedbackUsuario = 'Listando usuários da escola, aguarde...';
+    this.usuarioService.listarPorEscola(this.esc_id, true).toPromise().then((response: Response) => {
+      this.feedbackUsuario = undefined;
+      this.arrayOfUsuarios = Object.values(response);
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

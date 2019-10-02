@@ -14,7 +14,15 @@
     </div>
     <div class="card-body">
       <div class="row mb-2">
-        <div class="col-sm-12 col-lg-10"></div>
+        <div class="col-sm-12 col-lg-6"></div>
+        <div class="col-sm-12 col-lg-2">
+          <button class="btn btn-success text-light form-control" (click)="concederPermissoes()">Conceder
+            permissões</button>
+        </div>
+        <div class="col-sm-12 col-lg-2">
+          <button class="btn btn-danger text-light form-control" (click)="revogarPermissoes()">Revogar
+            permissões</button>
+        </div>
         <div class="col-sm-12 col-lg-2">
           <button class="btn btn-dark text-light form-control" (click)="gerarQRCodeDocumentoPDF()">Gerar
             documento</button>
@@ -37,7 +45,17 @@
             <div class="row">
               <div class="col-sm-12 col-lg-12">
                 <ul class="list-group">
-                  <li class="list-group-item active">Dados do usuário</li>
+                  <li class="list-group-item active">
+                    <div class="row">
+                      <div class="col-8"> Dados do usuário</div>
+                      <div class="col-2"><button class="btn btn-sm btn-success text-light"
+                          (click)="concederPermissaoIndividual(usuario.usr_id)">Conceder</button>
+                      </div>
+                      <div class="col-2"><button class="btn btn-sm btn-danger text-light"
+                          (click)="revogarPermissaoIndividual(usuario.usr_id)">Revogar</button>
+                      </div>
+                    </div>
+                  </li>
                   <li class="list-group-item">Nome: {{usuario.usuario}}</li>
                   <li class="list-group-item">E-mail: {{usuario.email}}</li>
                 </ul>

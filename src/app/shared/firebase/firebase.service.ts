@@ -128,7 +128,7 @@ export class FirebaseService {
    * @param usuarios
    */
   public gravarUsuariosAutorizadosTirarFotos(usuarios: Object[], inep: string): Promise<Object> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       let contaUsuariosCadastrados: number = 0;
       const totalUsuariosCadastrados: number = usuarios.length;
       usuarios.forEach(usuario => {
@@ -138,13 +138,63 @@ export class FirebaseService {
           .doc(inep)
           .collection('permissoes')
           .doc(usr_id.toString()).set({ fotos: true }).then(() => {
+          }).catch(() => {
+            reject('Erro ao gravar autorizações');
           })
         contaUsuariosCadastrados++;
         if (contaUsuariosCadastrados == totalUsuariosCadastrados) {
           resolve('usuarios cadastrados');
         }
       })
+    })
+  }
+  public revogarUsuariosTirarFotos(usuarios: Object[], inep: string): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      let contaUsuariosCadastrados: number = 0;
+      const totalUsuariosCadastrados: number = usuarios.length;
+      usuarios.forEach(usuario => {
+        const usr_id: number = usuario['usr_id'];
+        this.firestore
+          .collection('naescolaApp')
+          .doc(inep)
+          .collection('permissoes')
+          .doc(usr_id.toString()).set({ fotos: false }).then(() => {
+          }).catch(() => {
+            reject('Erro ao gravar autorizações');
+          })
+        contaUsuariosCadastrados++;
+        if (contaUsuariosCadastrados == totalUsuariosCadastrados) {
+          resolve('usuarios cadastrados');
+        }
+      })
+    })
+  }
 
+  public revogarUsuarioIndividual(inep: string, usr_id: string): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(inep)
+        .collection('permissoes')
+        .doc(usr_id.toString()).set({ fotos: false }).then(() => {
+          resolve('usuarios cadastrados');
+        }).catch(() => {
+          reject('Erro ao gravar autorizações');
+        })
+    })
+  }
+
+  public concederUsuarioIndividual(inep: string, usr_id: string): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(inep)
+        .collection('permissoes')
+        .doc(usr_id.toString()).set({ fotos: true }).then(() => {
+          resolve('usuarios cadastrados');
+        }).catch(() => {
+          reject('Erro ao gravar autorizações');
+        })
     })
   }
 
