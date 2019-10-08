@@ -44,11 +44,8 @@
     </div>
     <div class="card-footer text-muted bg-dark mt-2">
       <i class="fa fa-lg fa-info-circle text-light"> Listagem de Turnos</i>
-      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Os registros marcados em vermelho devem ser
-        preenchidos</div>
     </div>
   </div>
-
   <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
     <div>
       <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">

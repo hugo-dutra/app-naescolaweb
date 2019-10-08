@@ -81,7 +81,7 @@
                   (click)="ordenarColuna('usuario')">Usuário</span></th>
             </tr>
           </thead>
-          <tbody *ngIf="diretores !== null">
+          <tbody>
             <tr class="row" *ngFor="let comunicado of arrayOfComunicados">
               <td class="col-sm-12 col-lg-3 text-center">{{ comunicado.nome }}</td>
               <td class="col-sm-12 col-lg-2 text-center">{{ comunicado.serie }} {{ comunicado.etapa }} -

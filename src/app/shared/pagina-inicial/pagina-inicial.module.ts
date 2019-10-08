@@ -4,6 +4,7 @@ import { MenuAtalhoComponent } from './menu-atalho/menu-atalho.component';
 
 @NgModule({
   declarations: [MenuAtalhoComponent],
+  exports: [MenuAtalhoComponent],
   imports: [
     CommonModule
   ]

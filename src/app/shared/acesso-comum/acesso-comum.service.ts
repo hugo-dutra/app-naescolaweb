@@ -30,15 +30,15 @@ export class AcessoComumService {
   }
 
   public listarFavoritos(): Acesso {
-    this.usr_id = Utils.verificarDados()[0]["id"];
-    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
-    this.acesso.usr_id = this.usr_id;
-
+    if (Utils.verificarDados() != null && localStorage.getItem("esc_id") != null) {
+      this.usr_id = Utils.verificarDados()[0]["id"];
+      this.acesso.usr_id = this.usr_id;
+      this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+    }
     if (JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`)) != null) {
       this.acesso = JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`)
       );
     }
-
     return this.acesso;
   }
 

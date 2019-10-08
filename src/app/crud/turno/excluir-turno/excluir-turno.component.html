@@ -18,25 +18,22 @@
           <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-5">
             <label for="nome" style="display:block" class="text-left">Turno</label>
             <input type="text" style="display:block" placeholder="Nome..." class="form-control" required name="nome"
-              value="{{ turno.nome }}" maxlength="45" id="nome" (input)="validar($event)" (focusout)="validar($event)">
+              value="{{ turno.nome }}" maxlength="45" id="nome">
           </div>
           <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-2">
             <label for="abreviatura" style="display:block" class="text-left">Turno</label>
             <input type="text" style="display:block" placeholder="abreviatura..." class="form-control" required
-              name="abreviatura" value="{{ turno.abreviatura }}" maxlength="5" id="abreviatura"
-              (input)="validar($event)" (focusout)="validar($event)">
+              name="abreviatura" value="{{ turno.abreviatura }}" maxlength="5" id="abreviatura">
           </div>
           <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-2">
             <label for="horaInicio" style="display:block" class="text-left">Início do turno</label>
             <input type="time" style="display:block" placeholder="Inicio..." class="form-control" required
-              nome="horaInicio" value="{{ turno.horaInicio }}" id="horaInicio" maxlength="10" (input)="validar($event)"
-              (focusout)="validar($event)">
+              nome="horaInicio" value="{{ turno.horaInicio }}" id="horaInicio" maxlength="10">
           </div>
           <div style="float:left; margin-right: 20px;" class="col-sm-12 mt-2 col-lg-2">
             <label for="horaFim" style="display:block" class="text-left">Fim do turno</label>
             <input type="time" style="display:block" placeholder="Fim..." class="form-control" required name="horaFim"
-              value="{{ turno.horaFim }}" id="horaFim" maxlength="10" (input)="validar($event)"
-              (focusout)="validar($event)">
+              value="{{ turno.horaFim }}" id="horaFim" maxlength="10">
           </div>
         </div>
         <div class="row m-3 form-group">

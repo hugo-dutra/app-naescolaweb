@@ -6,7 +6,17 @@ import { CONSTANTES } from '../constantes.shared';
 @Injectable()
 export class SedfService {
 
-  constructor(private http: HttpClient) { }
+  private HOST_TOKEN_INTEGRACAO;
+  private HOST_INTEGRACAO
+
+  constructor(private http: HttpClient) {
+    this.pegarUrlHostTokenIntegracao().toPromise().then((response: Response) => {
+      this.HOST_TOKEN_INTEGRACAO = response;
+    });
+    this.pegarUrlHostIntegracao().toPromise().then((response: Response) => {
+      this.HOST_INTEGRACAO = response;
+    })
+  }
 
   /**
    * Pega dados para serem usado na requisição do Token de integração
@@ -29,8 +39,9 @@ export class SedfService {
       headers: new HttpHeaders()
         .append("Content-type", "application/json")
     }
-    return this.http.post(CONSTANTES.HOST_TOKEN_INTEGRACAO, JSON.stringify({ matricula: matricula, password: password, system: system }), headers)
+    return this.http.post(this.HOST_TOKEN_INTEGRACAO, JSON.stringify({ matricula: matricula, password: password, system: system }), headers)
   }
+
   /**
    * Lista os estudantes da escola cujo inep é informado
    * @param token_intg Token de integração
@@ -39,8 +50,9 @@ export class SedfService {
   public listarEstudantesImportacao(token_intg: string, inep: string): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
     const metodo: string = 'aluno/listabyinep/';
-    return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + inep, headers);
+    return this.http.get(this.HOST_INTEGRACAO + metodo + inep, headers);
   }
+
   /**
    * Lista as turmas da escola cujo inep é informado
    * @param token_intg Token de integração
@@ -49,7 +61,7 @@ export class SedfService {
   public listarTurmasImportacao(token_intg: string, inep: string): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
     const metodo: string = 'turma/listabyinep/';
-    return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + inep, headers);
+    return this.http.get(this.HOST_INTEGRACAO + metodo + inep, headers);
   }
 
   /**
@@ -60,11 +72,8 @@ export class SedfService {
   public listarProfessoresDisciplinasTurmas(token_intg: string, inep: string): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
     const metodo: string = 'professordisctturma/listabyinep/';
-    return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + inep, headers);
+    return this.http.get(this.HOST_INTEGRACAO + metodo + inep, headers);
   }
-
-
-
 
   /**
    * Lista as notas da turma cujo código é informado
@@ -74,8 +83,26 @@ export class SedfService {
   public listarNotasImportacao(token_intg: string, id_turma: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Authorization", token_intg) }
     const metodo: string = 'nota/listabyturma/';
-    console.log(CONSTANTES.HOST_INTEGRACAO + metodo + id_turma);
-    return this.http.get(CONSTANTES.HOST_INTEGRACAO + metodo + id_turma, headers);
+    return this.http.get(this.HOST_INTEGRACAO + metodo + id_turma, headers);
   }
+
+  public pegarUrlHostTokenIntegracao(): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "pegar-host-token-integracao",
+      null,
+      headers
+    );
+  }
+
+  public pegarUrlHostIntegracao(): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "pegar-host-integracao",
+      null,
+      headers
+    );
+  }
+
 
 }

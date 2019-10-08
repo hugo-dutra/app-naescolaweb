@@ -72,25 +72,25 @@
       <div class="row m-3 border-top" [@chamado]="estado">
         <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
           <div class="row text-muted">Série</div>
-          <div class="row text-dark">{{dadosTurma.serie}}</div>
+          <div class="row text-dark">{{dadosTurma['serie']}}</div>
         </div>
         <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
           <div class="row text-muted">Turma</div>
-          <div class="row text-dark">{{dadosTurma.turma}}</div>
+          <div class="row text-dark">{{dadosTurma['turma']}}</div>
         </div>
         <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
           <div class="row text-muted">Turno</div>
-          <div class="row text-dark">{{dadosTurma.turno}}</div>
+          <div class="row text-dark">{{dadosTurma['turno']}}</div>
         </div>
         <div class="mt-2 col-sm-12 col-md-4 col-lg-3">
           <div class="row text-muted">Etapa</div>
-          <div class="row text-dark">{{dadosTurma.etapa}}</div>
+          <div class="row text-dark">{{dadosTurma['etapa']}}</div>
         </div>
       </div>
       <div class="row m-3 border-top">
         <div *ngFor="let telefone of telefonesEstudante" class="mt-2 col-sm-12 col-md-4 col-lg-2">
           <div class="row text-muted">Telefone</div>
-          <div class="row text-dark">{{telefone.telefone}}</div>
+          <div class="row text-dark">{{telefone['telefone']}}</div>
         </div>
       </div>
     </div>

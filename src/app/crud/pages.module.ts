@@ -8,7 +8,8 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { AlertaModule } from './alerta/alerta.module';
 import { AccessModule } from '../access/access.module';
-import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-atalho.component';
+import { PaginaInicialModule } from '../shared/pagina-inicial/pagina-inicial.module';
+//import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-atalho.component';
 
 @NgModule({
   imports: [
@@ -19,10 +20,11 @@ import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-a
     MiscellaneousModule,
     AlertaModule,
     AccessModule,
+    PaginaInicialModule,
   ],
   declarations: [
     PagesComponent,
-    MenuAtalhoComponent,
+    //MenuAtalhoComponent,
   ],
 })
 export class PagesModule {
