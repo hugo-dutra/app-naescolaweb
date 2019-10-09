@@ -3,15 +3,26 @@ import { Acesso } from './acesso.model';
 import { LinkAcessado } from './link-acessado.model';
 import { Utils } from '../utils.shared';
 import { CONSTANTES } from '../constantes.shared';
+import { Observable } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AcessoComumService {
 
+  public constructor(private http: HttpClient = null) {
+
+  }
+
   private usr_id: number;
   private esc_id: number;
   private acesso = new Acesso();
+
+  public pegarConfiguracaoFirebase(): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(CONSTANTES.HOST_API + "pegar-configuracao-firebase", null, headers);
+  }
 
   public adicionarLinkAcessado(linkAcessado: LinkAcessado): void {
     this.usr_id = Utils.verificarDados()[0]["id"];

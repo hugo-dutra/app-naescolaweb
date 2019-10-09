@@ -1,6 +1,5 @@
 import { NbMenuItem } from '@nebular/theme';
 import { Utils } from '../shared/utils.shared';
-import { Title } from '@angular/platform-browser';
 import { LinkAcessado } from '../shared/acesso-comum/link-acessado.model';
 import { AcessoComumService } from '../shared/acesso-comum/acesso-comum.service';
 

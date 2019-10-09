@@ -7,14 +7,16 @@ import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from './@core/utils/analytics.service';
 import * as firebase from 'firebase';
 import { Router, NavigationEnd } from '@angular/router';
+import { AcessoComumService } from './shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-app',
   template: '<router-outlet></router-outlet>',
+  providers: [AcessoComumService],
 })
 export class AppComponent implements OnInit {
 
-  constructor(private analytics: AnalyticsService, private router: Router) {
+  constructor(private analytics: AnalyticsService, private router: Router, private acessoComumService: AcessoComumService) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         (<any>window).ga('set', 'page', event.urlAfterRedirects);
@@ -25,15 +27,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.analytics.trackPageViews();
-
-    const config = {
-      apiKey: 'AIzaSyAfgiA5ogBvZXkZISWNWGOlPD8iID2KGzo',
-      authDomain: 'naescolaweb-af337.firebaseapp.com',
-      databaseURL: 'https://naescolaweb-af337.firebaseio.com',
-      projectId: 'naescolaweb-af337',
-      storageBucket: 'naescolaweb-af337.appspot.com',
-      messagingSenderId: '134371598864',
-    };
-    firebase.initializeApp(config);
+    this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: Response) => {
+      const config = JSON.parse(JSON.stringify(response));
+      firebase.initializeApp(config);
+    })
   }
 }
