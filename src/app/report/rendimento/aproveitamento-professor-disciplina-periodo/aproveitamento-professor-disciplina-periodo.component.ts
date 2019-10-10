@@ -44,6 +44,7 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
   public prl_id: number;
   public prd_id: number;
   public anoAtual: number;
+  public valorMaximoGraficos: number = 0;
 
   public arrayOfLabelDisciplinasAprovados = new Array<string>();
   public arrayOfQuantidadeAprovados = new Array<number>();
@@ -70,6 +71,21 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
     this.listarPeriodosLetivos();
   }
 
+  public verificarValorMaximoGraficos(): void {
+    this.valorMaximoGraficos = 0;
+    this.arrayOfDadosAprovados.forEach(valor => {
+      if (parseInt(valor["quantidade"]) > this.valorMaximoGraficos) {
+        this.valorMaximoGraficos = parseInt(valor["quantidade"]);
+      }
+    })
+    this.arrayOfDadosReprovados.forEach(valor => {
+      if (parseInt(valor["quantidade"]) > this.valorMaximoGraficos) {
+        this.valorMaximoGraficos = parseInt(valor["quantidade"]);
+      }
+    })
+    this.carregarArraysDadosGraficos();
+  }
+
   public listarPeriodosLetivos() {
     this.feedbackUsuario = 'Listando periodos letivos';
     this.periodoLetivoService.listarPorAno(this.anoAtual).toPromise().then((response: Response) => {
@@ -81,8 +97,8 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
     })
@@ -99,8 +115,8 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
     })
@@ -123,14 +139,15 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
         this.arrayOfDadosReprovados = Object.values(response);
         this.feedbackUsuario = undefined;
         this.carregarArraysDadosGraficos();
+        this.verificarValorMaximoGraficos();
       }).catch((erro: Response) => {
         this.feedbackUsuario = undefined;
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       }).catch((erro: Response) => {
@@ -139,8 +156,8 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       })
@@ -202,6 +219,7 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
             {
               ticks: {
                 min: 0,
+                max: this.valorMaximoGraficos,
               }
             }
           ]
@@ -256,6 +274,7 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
               ticks: {
                 min: 0,
                 reverse: true,
+                max: this.valorMaximoGraficos,
               }
             }
           ]

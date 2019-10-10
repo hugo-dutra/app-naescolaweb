@@ -9,6 +9,7 @@ export class CONSTANTES {
   public static PASSO_CRIPT = 5;
   public static PRODUCAO = true; //no deploy essa linha deverá ser trocada
   public static DEF_MSG_ERRO = "ERROR 404 NOT FOUND";
+  public static TEMPO_CONSULTA_ALERTAS = 1800000;
   //********************URLS****************************/
   public static HOST = "http://localhost:8000";
   //public static HOST = "http://34.73.55.201:8080";

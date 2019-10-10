@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-header',
@@ -72,7 +73,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public dashboardMaximizedStatus: boolean = false;
   public expandedIcon = "expand-outline";
   public collapseIcon = "collapse-outline";
+  public alertIcon = "alert-triangle"
   public element;
+  public exibirBotaoAlertaOcorrencia: boolean = false;
+  public alertasTratados: number = 0;
 
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
@@ -81,11 +85,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private router: Router,
     private breakpointService: NbMediaBreakpointsService,
+    private acessoComumService: AcessoComumService,
+
+
     @Inject(DOCUMENT) private document: any
   ) {
   }
 
   ngOnInit() {
+    this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.subscribe((alertas: Object[]) => {
+      this.alertasTratados = alertas.length;
+      if (this.alertasTratados > 0) {
+        this.exibirBotaoAlertaOcorrencia = true;
+      } else {
+        this.exibirBotaoAlertaOcorrencia = false;
+      }
+    })
+
     this.element = document.documentElement;
 
     try {
@@ -127,6 +143,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.carregarDadosUsuario();
     this.carregarDadosEscola();
+  }
+
+  public visualizarAlertasOcorrencia(): void {
+    this.router.navigate(['gerenciar-alerta-ocorrencia/receber-alerta-ocorrencia']);
+  }
+
+  public exibirComponente(rota: string): boolean {
+    return Utils.exibirComponente(rota);
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Acesso } from './acesso.model';
 import { LinkAcessado } from './link-acessado.model';
 import { Utils } from '../utils.shared';
@@ -10,6 +10,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AcessoComumService {
+  emitirAlertaOcorrenciaDisciplinar = new EventEmitter<Object[]>();
 
   public constructor(private http: HttpClient = null) {
 
