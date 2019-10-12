@@ -26,6 +26,10 @@ export class GerenciarRelatorioRendimentoComponent implements OnInit {
     this.router.navigate([`${this.route.parent.routeConfig.path}/grafico-aproveitamento-disciplina-turma-periodo-letivo`]);
   }
 
+  public listagemEstudanteDestaque(): void {
+    this.router.navigate([`${this.route.parent.routeConfig.path}/listar-estudante-destaque`]);
+  }
+
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
   }

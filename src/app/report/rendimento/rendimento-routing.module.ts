@@ -5,12 +5,14 @@ import { AproveitamentoDisciplinaTurmaPeriodoComponent } from './aproveitamento-
 import { AproveitamentoProfessorDisciplinaPeriodoComponent } from './aproveitamento-professor-disciplina-periodo/aproveitamento-professor-disciplina-periodo.component';
 import { AuthGuardService } from '../../guards/auth.guard.service';
 import { GerenciarRelatorioRendimentoComponent } from './gerenciar-relatorio-rendimento/gerenciar-relatorio-rendimento.component';
+import { ListarEstudanteDestaqueComponent } from './listar-estudante-destaque/listar-estudante-destaque.component';
 
 const routes: Routes = [
   { path: "", component: GerenciarRelatorioRendimentoComponent },
   { path: "grafico-resumo-periodo-letivo", component: RendimentoResumoPeriodoLetivoComponent, canActivate: [AuthGuardService] },
   { path: "grafico-aproveitamento-disciplina-turma-periodo-letivo", component: AproveitamentoDisciplinaTurmaPeriodoComponent, canActivate: [AuthGuardService] },
   { path: "grafico-aproveitamento-professor-disciplina-periodo-letivo", component: AproveitamentoProfessorDisciplinaPeriodoComponent, canActivate: [AuthGuardService] },
+  { path: "listar-estudante-destaque", component: ListarEstudanteDestaqueComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

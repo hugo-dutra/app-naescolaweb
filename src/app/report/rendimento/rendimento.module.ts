@@ -6,15 +6,17 @@ import { AproveitamentoDisciplinaTurmaPeriodoComponent } from './aproveitamento-
 import { AproveitamentoProfessorDisciplinaPeriodoComponent } from './aproveitamento-professor-disciplina-periodo/aproveitamento-professor-disciplina-periodo.component';
 import { RendimentoResumoPeriodoLetivoComponent } from './rendimento-resumo-periodo-letivo/rendimento-resumo-periodo-letivo.component';
 import { GerenciarRelatorioRendimentoComponent } from './gerenciar-relatorio-rendimento/gerenciar-relatorio-rendimento.component';
-import { ThemeModule } from '../../@theme/theme.module';
 import { NbCardModule } from '@nebular/theme';
+import { ListarEstudanteDestaqueComponent } from './listar-estudante-destaque/listar-estudante-destaque.component';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [AproveitamentoDisciplinaTurmaPeriodoComponent, AproveitamentoProfessorDisciplinaPeriodoComponent, RendimentoResumoPeriodoLetivoComponent, GerenciarRelatorioRendimentoComponent],
+  declarations: [AproveitamentoDisciplinaTurmaPeriodoComponent, AproveitamentoProfessorDisciplinaPeriodoComponent, RendimentoResumoPeriodoLetivoComponent, GerenciarRelatorioRendimentoComponent, ListarEstudanteDestaqueComponent],
   imports: [
     CommonModule,
     NbCardModule,
-    RendimentoRoutingModule
+    RendimentoRoutingModule,
+    NgbPopoverModule,
   ]
 })
 export class RendimentoModule { }

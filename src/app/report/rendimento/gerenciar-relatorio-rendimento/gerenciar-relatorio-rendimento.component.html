@@ -28,10 +28,21 @@
       <nb-card *ngIf="exibirComponente('grafico-aproveitamento-disciplina-turma-periodo-letivo')"
         (click)="RelatorioTurma()">
         <nb-card-header>
-          <i class="fa fa-4x fa-pie-chart text-warning"></i>
+          <i class="fa fa-4x fa-pie-chart text-info"></i>
         </nb-card-header>
         <nb-card-footer>
           <h5 class="text-center">Rendimento por turma</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <div class="col-lg-4 col-sm-12 col-xs-12">
+      <nb-card *ngIf="exibirComponente('listar-estudante-destaque')" (click)="listagemEstudanteDestaque()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-diamond text-warning"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center">Estudantes destaque</h5>
         </nb-card-footer>
       </nb-card>
     </div>

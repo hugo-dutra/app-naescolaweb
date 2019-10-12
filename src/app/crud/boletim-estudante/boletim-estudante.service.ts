@@ -30,6 +30,31 @@ export class BoletimEstudanteService {
   }
 
   /**
+   * Método lista o estudantes destaque em ordem alfabética.
+   *
+   * @param prl_id Período letivo
+   * @param nota_corte Nota a partir da qual o estudante será destaque
+   * @param esc_id Escola
+   * @param quantidade_dsp Quantidade de disciplinas que o estudante deve possuir nota superior a nota de corte
+   * @param ree_id Região onde de encontra a escola. Para filtros de alunos destaque por regional
+   */
+  public listarEstudantesDestaque(prl_id: number, nota_corte: number, esc_id: number, quantidade_dsp: number, ree_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+
+    return this.http.post(
+      CONSTANTES.HOST_API + "listar-estudantes-destaque",
+      JSON.stringify({
+        prl_id: prl_id,
+        nota_corte: nota_corte,
+        esc_id: esc_id,
+        quantidade_dsp: quantidade_dsp,
+        ree_id: ree_id
+      }),
+      headers
+    );
+  }
+
+  /**
    *Método consolida as notas do diário informada, para um certo período letivo, como média ou somatório
    * @param {number} media_somatorio: 0: Calcula a média ponderada. 1: Calcula a soma das avaliações
    * @param {number} prl_id: Id do período letivo desejada para a consolidação das notas

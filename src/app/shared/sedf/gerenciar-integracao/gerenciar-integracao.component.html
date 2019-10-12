@@ -94,7 +94,7 @@
                 <td class="col-lg-3 col-sm-12 text-left">{{ turma.nome }}</td>
                 <td class="col-lg-3 col-sm-12 text-left">{{ turma.etapa }}</td>
                 <td class="col-lg-3 col-sm-12 text-left">{{ turma.turno }}</td>
-                <td class="col-lg-3 col-sm-12 text-center"><button
+                <td class="col-lg-3 col-sm-12 text-center"><button [id]="turma.id"
                     class="btn btn-sm form-control btn-warning text-white"
                     (click)="baixarNotasFaltasTurmaSelecionada(turma)"><i
                       class="fa fa-lg fa-cloud-download"></i></button>

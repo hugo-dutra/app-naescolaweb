@@ -244,6 +244,12 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.listaTurmas = false;
   }
 
+  public marcarTurmaNotasBaixadas(turma: Object): void {
+    document.getElementById(turma['id']).removeAttribute('class');
+    document.getElementById(turma['id']).setAttribute('disabled', 'true');
+    document.getElementById(turma['id']).setAttribute('class', 'btn btn-sm form-control btn-secondary text-white');
+  }
+
   public baixarNotasFaltasTurmaSelecionada(turma: Object): void {
     this.feedbackUsuario = `Baixando notas da turma ${turma['nome']}`;
     this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']).toPromise().then((response: Response) => {
@@ -252,6 +258,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
         this.atualizarDisciplinas(notasFaltas).then(() => {
           this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
           this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual).toPromise().then(() => {
+            this.marcarTurmaNotasBaixadas(turma)
             this.feedbackUsuario = undefined;
           }).catch((erro: Response) => {
             this.gravarErroMostrarMensagem(erro);

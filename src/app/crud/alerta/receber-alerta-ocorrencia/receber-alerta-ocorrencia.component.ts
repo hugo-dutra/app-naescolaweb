@@ -7,6 +7,7 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-receber-alerta-ocorrencia',
@@ -49,6 +50,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     private ocorrenciaService: OcorrenciaService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
+    private acessoComumService: AcessoComumService,
     private router: Router) { }
 
   ngOnInit() {
@@ -74,8 +76,8 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
@@ -106,6 +108,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
         data_fim)
         .toPromise()
         .then((response: Response) => {
+          this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(response));
           contaRequisicoes++;
           this.arrayOfOcorrenciasPeriodoConsiderado.push(...Object.values(response));
           if (contaRequisicoes == this.arrayOfRegrasAlertasUsuario.length) {
@@ -116,8 +119,8 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
@@ -214,8 +217,8 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
