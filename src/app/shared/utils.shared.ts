@@ -1,5 +1,6 @@
 import { Router } from "@angular/router";
 import { CONSTANTES } from "./constantes.shared";
+import * as CryptoJS from 'crypto-js';
 
 /**
  *Classe com métodos que serão usados em muitas classes
@@ -39,6 +40,14 @@ export class Utils {
       .map(id => {
         return arrayAlvo.find(a => a[campo] === id)
       })
+  }
+
+  public static cypher(entrada: string): CryptoJS.WordArray {
+    return CryptoJS.AES.encrypt(entrada, CONSTANTES.CK);
+  }
+
+  public static decypher(entrada: string): string {
+    return CryptoJS.AES.decrypt(entrada, CONSTANTES.CK).toString(CryptoJS.enc.Utf8);
   }
 
   public static abreviarNome(nome: string): string {

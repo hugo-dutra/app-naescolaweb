@@ -22,7 +22,7 @@ export class AcessoComumService {
 
   public pegarConfiguracaoFirebase(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "pegar-configuracao-firebase", null, headers);
+    return this.http.post(CONSTANTES.HOST_API + "pcf", null, headers);
   }
 
   public adicionarLinkAcessado(linkAcessado: LinkAcessado): void {

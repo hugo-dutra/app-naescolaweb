@@ -14,6 +14,7 @@ import { AlertaService } from './crud/alerta/alerta.service';
 import { OcorrenciaService } from './crud/ocorrencia/ocorrencia.service';
 import { AlertModalService } from './shared-module/alert-modal.service';
 import { FirebaseService } from './shared/firebase/firebase.service';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'ngx-app',
@@ -53,9 +54,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.analytics.trackPageViews();
-    this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: Response) => {
-      const config = JSON.parse(JSON.stringify(response));
-      firebase.initializeApp(config);
+    this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: string) => {
+      const ct = (response);
+      const cfg = Utils.decypher(ct);
+      firebase.initializeApp(JSON.parse(cfg));
     })
     this.verificarAlertasOcorrenciasDisciplinares();
   }

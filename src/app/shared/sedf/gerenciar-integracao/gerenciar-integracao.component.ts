@@ -119,12 +119,14 @@ export class GerenciarIntegracaoComponent implements OnInit {
 
   public autenticar(): void {
     this.feedbackUsuario = "Atualizando informações, aguarde...";
-    this.sedfService.listarDadosIntegracaoIEducar().toPromise().then((response: Response) => {
-      this.dadosIntegracao = Object.values(response);
+    this.sedfService.listarDadosIntegracaoIEducar().toPromise().then((response: string) => {
+      const ct = response;
+      const cfg = Utils.decypher(ct);
+      this.dadosIntegracao = (JSON.parse(cfg));
       this.feedbackUsuario = "Finalizando...";
-      const matricula = this.dadosIntegracao[0].toString();
-      const password = this.dadosIntegracao[1].toString();
-      const system = this.dadosIntegracao[2].toString();
+      const matricula = this.dadosIntegracao['matricula'];
+      const password = this.dadosIntegracao['password'];
+      const system = this.dadosIntegracao['system'];
       this.sedfService.pegarTokenIntegracao(matricula, password, system).toPromise().then((response: Response) => {
         this.dadosToken = Object.values(response);
         localStorage.setItem("token_intg", this.dadosToken[0].toString());

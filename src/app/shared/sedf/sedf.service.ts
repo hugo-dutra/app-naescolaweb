@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { CONSTANTES } from '../constantes.shared';
+import { Utils } from '../utils.shared';
 
 @Injectable()
 export class SedfService {
@@ -10,11 +11,16 @@ export class SedfService {
   private HOST_INTEGRACAO
 
   constructor(private http: HttpClient) {
-    this.pegarUrlHostTokenIntegracao().toPromise().then((response: Response) => {
-      this.HOST_TOKEN_INTEGRACAO = response;
+    this.pegarUrlHostTokenIntegracao().toPromise().then((response: string) => {
+      const ct = response;
+      const cfg = Utils.decypher(ct);
+      this.HOST_TOKEN_INTEGRACAO = cfg;
     });
-    this.pegarUrlHostIntegracao().toPromise().then((response: Response) => {
-      this.HOST_INTEGRACAO = response;
+
+    this.pegarUrlHostIntegracao().toPromise().then((response: string) => {
+      const ct = response;
+      const cfg = Utils.decypher(ct);
+      this.HOST_INTEGRACAO = cfg;
     })
   }
 
@@ -23,7 +29,7 @@ export class SedfService {
    */
   public listarDadosIntegracaoIEducar(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "listar-dados-acesso-integracao", null, headers);
+    return this.http.post(CONSTANTES.HOST_API + "ldai", null, headers);
   }
   /**
    * Solicita o token de acesso para ser usado na integração
@@ -89,7 +95,7 @@ export class SedfService {
   public pegarUrlHostTokenIntegracao(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
-      CONSTANTES.HOST_API + "pegar-host-token-integracao",
+      CONSTANTES.HOST_API + "phti",
       null,
       headers
     );
@@ -98,7 +104,7 @@ export class SedfService {
   public pegarUrlHostIntegracao(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
-      CONSTANTES.HOST_API + "pegar-host-integracao",
+      CONSTANTES.HOST_API + "phi",
       null,
       headers
     );
