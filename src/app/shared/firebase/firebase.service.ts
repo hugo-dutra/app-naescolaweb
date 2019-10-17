@@ -63,8 +63,6 @@ export class FirebaseService {
   //*****************************************************************************/
   //***************************FIRESTORE*****************************************/
 
-
-
   public gravarSugestaoInformacaoBug = async (rota, detalhesInformacao) => {
     const dataInformacao = Utils.dataAtual();
     const horaInformacao = Utils.horaAtual();
@@ -103,6 +101,31 @@ export class FirebaseService {
         })
     })
   }
+
+  /**
+   * Lista os documentos para determinada coleção
+   * @param colecao Coleção de documentos
+   * @param matricula Matrícula do estudante
+   * @param inep Código ine da escola
+   */
+  public listarStatusEntregaMensagensColecao(colecao: string, matricula: string, inep: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(inep)
+        .collection('matriculados')
+        .doc(matricula)
+        .collection(colecao)
+        .where("leitura", ">=", 1)
+        .get()
+        .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+          resolve(querySnapshot)
+        }).catch((reason: any) => {
+          reject(reason)
+        })
+    })
+  }
+
   /**
    *  Grava, na portaria, toda a listagem dos estudantes da escola num único documento.
    * @memberof FirebaseService
@@ -148,6 +171,7 @@ export class FirebaseService {
       })
     })
   }
+
   public revogarUsuariosTirarFotos(usuarios: Object[], inep: string): Promise<Object> {
     return new Promise((resolve, reject) => {
       let contaUsuariosCadastrados: number = 0;
@@ -664,7 +688,6 @@ export class FirebaseService {
       resolve(retorno)
     })
   })
-
 
   /**
    * Grava saídas antecipadas eventuais de uma vez só.

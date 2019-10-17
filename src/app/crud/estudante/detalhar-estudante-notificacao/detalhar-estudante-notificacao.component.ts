@@ -37,6 +37,13 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public notificacoesDiversas = new Array<Object>();
   public decrescente: boolean = true;
+  public dados_escola: Object;
+  public inep: string;
+
+  public arrayDeComunicadosVerificados = new Array<Object>();
+  public arrayDeAdvertenciasVerificadas = new Array<Object>();
+  public arrayDeEntradasVerificadas = new Array<Object>();
+  public arrayDeSaidasVerificadas = new Array<Object>();
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +53,13 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
     private firebaseService: FirebaseService) { }
 
   ngOnInit() {
+    this.dados_escola = JSON.parse(
+      Utils.decriptAtoB(
+        localStorage.getItem("dados_escola"),
+        CONSTANTES.PASSO_CRIPT
+      )
+    )[0];
+    this.inep = this.dados_escola["inep"];
     this.route.queryParams.subscribe((estudante: Estudante) => {
       this.estudante = JSON.parse(estudante["estudante"]);
     });
@@ -97,13 +111,79 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
     })
   }
 
-
+  public atualizarEntregaNotificacao(): void {
+    this.arrayDeComunicadosVerificados = [];
+    this.arrayDeAdvertenciasVerificadas = [];
+    this.arrayDeEntradasVerificadas = [];
+    this.arrayDeSaidasVerificadas = [];
+    this.feedbackUsuario = "Carregando status de comunicados, aguarde...";
+    this.firebaseService
+      .listarStatusEntregaMensagensColecao(
+        'comunicados',
+        this.estudante['matricula'],
+        this.inep)
+      .then((response: firebase.firestore.QuerySnapshot) => {
+        response.docs.forEach((documento) => {
+          const fbdbkey = documento.id;
+          const status_leitura = documento.data()['leitura'];
+          this.arrayDeComunicadosVerificados.push({ fbdbkey: fbdbkey, status_leitura: status_leitura });
+        });
+      }).then(() => {
+        this.feedbackUsuario = 'Carregando status de advertências, aguarde...';
+        this.firebaseService
+          .listarStatusEntregaMensagensColecao(
+            'advertencias',
+            this.estudante['matricula'],
+            this.inep)
+          .then((response: firebase.firestore.QuerySnapshot) => {
+            response.docs.forEach((documento) => {
+              const fbdbkey = documento.id;
+              const status_leitura = documento.data()['leitura'];
+              this.arrayDeAdvertenciasVerificadas.push({ fbdbkey: fbdbkey, status_leitura: status_leitura });
+            })
+          })
+      }).then(() => {
+        this.feedbackUsuario = 'Carregando status de entradas, aguarde...';
+        this.firebaseService
+          .listarStatusEntregaMensagensColecao(
+            'entradas',
+            this.estudante['matricula'],
+            this.inep)
+          .then((response: firebase.firestore.QuerySnapshot) => {
+            response.docs.forEach((documento) => {
+              const fbdbkey = documento.id;
+              const status_leitura = documento.data()['leitura'];
+              this.arrayDeEntradasVerificadas.push({ fbdbkey: fbdbkey, status_leitura: status_leitura });
+            })
+          }).then(() => {
+            this.feedbackUsuario = 'Carregando status de saídas, aguarde...';
+            this.firebaseService
+              .listarStatusEntregaMensagensColecao(
+                'saidas',
+                this.estudante['matricula'],
+                this.inep)
+              .then((response: firebase.firestore.QuerySnapshot) => {
+                response.docs.forEach((documento) => {
+                  const fbdbkey = documento.id;
+                  const status_leitura = documento.data()['leitura'];
+                  this.arrayDeSaidasVerificadas.push({ fbdbkey: fbdbkey, status_leitura: status_leitura });
+                })
+              }).then(() => {
+                this.feedbackUsuario = undefined;
+                console.log(this.arrayDeAdvertenciasVerificadas);
+                console.log(this.arrayDeComunicadosVerificados);
+                console.log(this.arrayDeEntradasVerificadas);
+                console.log(this.arrayDeSaidasVerificadas);
+              })
+          })
+      })
+  }
 }
