@@ -31,6 +31,7 @@ export class SedfService {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(CONSTANTES.HOST_API + "ldai", null, headers);
   }
+
   /**
    * Solicita o token de acesso para ser usado na integração
    * @param _matricula Matrícula

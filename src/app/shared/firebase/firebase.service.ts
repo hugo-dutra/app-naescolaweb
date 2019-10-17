@@ -651,6 +651,13 @@ export class FirebaseService {
     })
   })
 
+  public pegarTokenIntegracaoIeducar = async () => new Promise((resolve) => {
+    const tokenIntegracao = firebase.functions().httpsCallable('pegarTokenIntegracaoIeducarV5');
+    tokenIntegracao().then(retorno => {
+      resolve(retorno)
+    })
+  })
+
   public carregarEstudantesAplicativoFirebaseFirestore = async (estudantes: Object[], inep: string) => new Promise((resolve) => {
     const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesAplicativo');
     carregarEstudantesPortaria({ estudantes: estudantes, inep: inep }).then(retorno => {

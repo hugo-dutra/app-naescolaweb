@@ -118,15 +118,24 @@ export class GerenciarIntegracaoComponent implements OnInit {
   }
 
   public autenticar(): void {
-    this.feedbackUsuario = "Atualizando informações, aguarde...";
+    this.feedbackUsuario = 'Atualizando dados, aguarde...';
     this.sedfService.listarDadosIntegracaoIEducar().toPromise().then((response: string) => {
-      const token_intg = response;
-      localStorage.setItem("token_intg", token_intg);
-      this.tokenIntegracao = localStorage.getItem('token_intg');
-      this.feedbackUsuario = undefined;
+      const cypher = response;
+      const dcypher = Utils.decypher(cypher);
+      const auth = JSON.parse(dcypher);
+      const matricula = auth['matricula'];
+      const password = auth['password'];
+      const system = auth['system'];
+      this.sedfService.pegarTokenIntegracao(matricula, password, system).toPromise().then((response: Response) => {
+        const token_intg = response['token'];
+        localStorage.setItem("token_intg", token_intg);
+        this.tokenIntegracao = localStorage.getItem('token_intg');
+        this.feedbackUsuario = undefined;
+      })
     }).catch((erro: Response) => {
       this.gravarErroMostrarMensagem(erro);
     });
+
   }
 
   public inserirEstudantesEmBlocos(arrayComEstudantes: Object[], esc_id: number): Promise<Object> {

@@ -84,7 +84,7 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
 
   ngOnInit() {
     this.listarTurma();
-    //this.inicializarDatas();
+    this.inicializarDatas();
   }
 
   public inicializarDatas(): void {
@@ -96,23 +96,15 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
       "-" +
       ("0" + new Date().getDate()).slice(-2).toString();
 
-    document.getElementById("data_inicio").setAttribute("value", this.data_inicio_padrao);
-    document.getElementById("data_fim").setAttribute("value", this.data_fim_padrao);
     this.dataInicioQuantidadeOcorrencias = this.data_inicio_padrao;
     this.dataFimQuantidadeOcorrencias = this.data_fim_padrao;
 
-    document.getElementById("data_inicio_turma").setAttribute("value", this.data_inicio_padrao);
-    document.getElementById("data_fim_turma").setAttribute("value", this.data_fim_padrao);
     this.dataInicioQuantidadeOcorrenciasTurma = this.data_inicio_padrao;
     this.dataFimQuantidadeOcorrenciasTurma = this.data_fim_padrao;
 
-    document.getElementById("data_inicio_estudante").setAttribute("value", this.data_inicio_padrao);
-    document.getElementById("data_fim_estudante").setAttribute("value", this.data_fim_padrao);
     this.dataInicioQuantidadeOcorrenciasEstudante = this.data_inicio_padrao;
     this.dataFimQuantidadeOcorrenciasEstudante = this.data_fim_padrao;
 
-    document.getElementById("data_inicio_tipo").setAttribute("value", this.data_inicio_padrao);
-    document.getElementById("data_fim_tipo").setAttribute("value", this.data_fim_padrao);
     this.dataInicioQuantidadeTipoOcorrencias = this.data_inicio_padrao;
     this.dataFimQuantidadeTipoOcorrencias = this.data_fim_padrao;
   }
@@ -224,8 +216,8 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });
@@ -349,8 +341,8 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });
@@ -380,8 +372,8 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });
@@ -500,8 +492,8 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });
@@ -623,8 +615,8 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });

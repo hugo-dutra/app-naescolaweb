@@ -42,13 +42,15 @@
             <div>
               <div class="row">
                 <div class="form-group col-2 mr-3">
-                  <input type="date" name="data_inicio" (input)="gravarDataInicio($event)" id="data_inicio"
-                    class="form-control col-12" placeholder="Data inicial" aria-describedby="helpIdInicial">
+                  <input type="date" [value]="dataInicioQuantidadeOcorrencias" name="data_inicio"
+                    (input)="gravarDataInicio($event)" id="data_inicio" class="form-control col-12"
+                    placeholder="Data inicial" aria-describedby="helpIdInicial">
                   <small id="helpIdInicial" class="text-muted">Data inicial da consulta</small>
                 </div>
                 <div class="form-group col-2">
-                  <input type="date" name="data_fim" (input)="gravarDataFim($event)" id="data_fim"
-                    class="form-control col-12" placeholder="Data final" aria-describedby="helpIdFinal">
+                  <input type="date" [value]="dataFimQuantidadeOcorrencias" name="data_fim"
+                    (input)="gravarDataFim($event)" id="data_fim" class="form-control col-12" placeholder="Data final"
+                    aria-describedby="helpIdFinal">
                   <small id="helpIdFinal" class="text-muted">Data final da consulta</small>
                 </div>
                 <div class="col-5"></div>
@@ -91,13 +93,15 @@
         <div class="card-body">
           <div class="row">
             <div class="form-group col-2 mr-3">
-              <input type="date" name="data_inicio_turma" (input)="gravarDataInicioTurma($event)" id="data_inicio_turma"
-                class="form-control col-12" placeholder="Data inicial" aria-describedby="helpIdInicial">
+              <input type="date" [value]="dataInicioQuantidadeOcorrenciasTurma" name="data_inicio_turma"
+                (input)="gravarDataInicioTurma($event)" id="data_inicio_turma" class="form-control col-12"
+                placeholder="Data inicial" aria-describedby="helpIdInicial">
               <small id="helpIdInicialTurma" class="text-muted">Data inicial da consulta</small>
             </div>
             <div class="form-group col-2">
-              <input type="date" name="data_fim_turma" (input)="gravarDataFimTurma($event)" id="data_fim_turma"
-                class="form-control col-12" placeholder="Data final" aria-describedby="helpIdFinal">
+              <input type="date" [value]="dataFimQuantidadeOcorrenciasTurma" name="data_fim_turma"
+                (input)="gravarDataFimTurma($event)" id="data_fim_turma" class="form-control col-12"
+                placeholder="Data final" aria-describedby="helpIdFinal">
               <small id="helpIdFinalTurma" class="text-muted">Data final da consulta</small>
             </div>
             <div class="col-5"></div>
@@ -111,11 +115,8 @@
               <canvas id="lineChartOcorrenciaTurmaPeriodo" [@chamado]="estado"></canvas>
             </div>
           </div>
-
         </div>
-
       </div>
-
     </div>
   </div>
 
@@ -138,15 +139,15 @@
         <div class="card-body">
           <div class="row">
             <div class="form-group col-2 mr-3">
-              <input type="date" name="data_inicio_estudante" (input)="gravarDataInicioEstudante($event)"
-                id="data_inicio_estudante" class="form-control col-12" placeholder="Data inicial"
-                aria-describedby="helpIdInicial">
+              <input type="date" [value]="dataInicioQuantidadeOcorrenciasEstudante" name="data_inicio_estudante"
+                (input)="gravarDataInicioEstudante($event)" id="data_inicio_estudante" class="form-control col-12"
+                placeholder="Data inicial" aria-describedby="helpIdInicial">
               <small id="helpIdInicialEstudante" class="text-muted">Data inicial da consulta</small>
             </div>
             <div class="form-group col-2">
-              <input type="date" name="data_fim_estudante" (input)="gravarDataFimEstudante($event)"
-                id="data_fim_estudante" class="form-control col-12" placeholder="Data final"
-                aria-describedby="helpIdFinal">
+              <input type="date" [value]="dataFimQuantidadeOcorrenciasEstudante" name="data_fim_estudante"
+                (input)="gravarDataFimEstudante($event)" id="data_fim_estudante" class="form-control col-12"
+                placeholder="Data final" aria-describedby="helpIdFinal">
               <small id="helpIdFinalEstudante" class="text-muted">Data final da consulta</small>
             </div>
             <div class="col-3">
@@ -194,14 +195,15 @@
         <div class="card-body">
           <div class="row">
             <div class="form-group col-2 mr-3">
-              <input type="date" name="data_inicio_tipo" (input)="gravarDataInicioTipoOcorrencia($event)"
-                id="data_inicio_tipo" class="form-control col-12" placeholder="Data inicial"
-                aria-describedby="helpIdInicial">
+              <input type="date" [value]="dataInicioQuantidadeTipoOcorrencias" name="data_inicio_tipo"
+                (input)="gravarDataInicioTipoOcorrencia($event)" id="data_inicio_tipo" class="form-control col-12"
+                placeholder="Data inicial" aria-describedby="helpIdInicial">
               <small id="helpIdInicialTipo" class="text-muted">Data inicial da consulta</small>
             </div>
             <div class="form-group col-2">
-              <input type="date" name="data_fim_tipo" (input)="gravarDataFimTipoOcorrencia($event)" id="data_fim_tipo"
-                class="form-control col-12" placeholder="Data final" aria-describedby="helpIdFinal">
+              <input type="date" [value]="dataFimQuantidadeTipoOcorrencias" name="data_fim_tipo"
+                (input)="gravarDataFimTipoOcorrencia($event)" id="data_fim_tipo" class="form-control col-12"
+                placeholder="Data final" aria-describedby="helpIdFinal">
               <small id="helpIdFinalTipo" class="text-muted">Data final da consulta</small>
             </div>
             <div class="col-5"></div>
@@ -216,11 +218,9 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
-
 </div>
 
 <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
