@@ -28,6 +28,16 @@ export class PortariaService {
     );
   }
 
+
+  public alterarStatusEntregaMensagem(arrayPassagensPortaria: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-entrada-saida",
+      JSON.stringify({ arrayPassagensPortaria: arrayPassagensPortaria }),
+      headers
+    );
+  }
+
   /**
    *
    * @param trm_id Id da turma on de se deseja saber a presença dos estudantes

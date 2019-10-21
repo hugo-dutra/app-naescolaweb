@@ -7,12 +7,16 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Utils } from '../../../shared/utils.shared';
+import { OcorrenciaService } from '../../ocorrencia/ocorrencia.service';
+import { ComunicadoDiverso } from '../../comunicado-diverso/comunicado-diverso.model';
+import { ComunicadoDiversoService } from '../../comunicado-diverso/comunicado-diverso.service';
+import { PortariaService } from '../../portaria/portaria.service';
 
 @Component({
   selector: 'ngx-detalhar-estudante-notificacao',
   templateUrl: './detalhar-estudante-notificacao.component.html',
   styleUrls: ['./detalhar-estudante-notificacao.component.scss'],
-  providers: [EstudanteService],
+  providers: [EstudanteService, OcorrenciaService, ComunicadoDiversoService, PortariaService],
   animations: [
     trigger("chamado", [
       state(
@@ -41,7 +45,7 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
   public inep: string;
 
   public arrayDeComunicadosVerificados = new Array<Object>();
-  public arrayDeAdvertenciasVerificadas = new Array<Object>();
+  public arrayDeOcorrenciasVerificadas = new Array<Object>();
   public arrayDeEntradasVerificadas = new Array<Object>();
   public arrayDeSaidasVerificadas = new Array<Object>();
 
@@ -49,6 +53,9 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private estudanteService: EstudanteService,
+    private ocorrenciaService: OcorrenciaService,
+    private portariaService: PortariaService,
+    private comunicadoDiversoService: ComunicadoDiversoService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService) { }
 
@@ -107,21 +114,13 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
       this.feedbackUsuario = undefined;
       this.notificacoesDiversas = Object.values(response);
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.mostrarAlertaErro(erro);
     })
   }
 
   public atualizarEntregaNotificacao(): void {
     this.arrayDeComunicadosVerificados = [];
-    this.arrayDeAdvertenciasVerificadas = [];
+    this.arrayDeOcorrenciasVerificadas = [];
     this.arrayDeEntradasVerificadas = [];
     this.arrayDeSaidasVerificadas = [];
     this.feedbackUsuario = "Carregando status de comunicados, aguarde...";
@@ -147,7 +146,7 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
             response.docs.forEach((documento) => {
               const fbdbkey = documento.id;
               const status_leitura = documento.data()['leitura'];
-              this.arrayDeAdvertenciasVerificadas.push({ fbdbkey: fbdbkey, status_leitura: status_leitura });
+              this.arrayDeOcorrenciasVerificadas.push({ fbdbkey: fbdbkey, status_leitura: status_leitura });
             })
           })
       }).then(() => {
@@ -177,13 +176,44 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
                   this.arrayDeSaidasVerificadas.push({ fbdbkey: fbdbkey, status_leitura: status_leitura });
                 })
               }).then(() => {
-                this.feedbackUsuario = undefined;
-                console.log(this.arrayDeAdvertenciasVerificadas);
-                console.log(this.arrayDeComunicadosVerificados);
-                console.log(this.arrayDeEntradasVerificadas);
-                console.log(this.arrayDeSaidasVerificadas);
+                this.feedbackUsuario = "Atualizando ocorrencias disciplinares, aguarde..."
+                this.ocorrenciaService.alterarStatusEntregaMensagem(this.arrayDeOcorrenciasVerificadas).toPromise().then(() => {
+                  this.feedbackUsuario = "Atualizando comunicados, aguarde...";
+                  this.comunicadoDiversoService.alterarStatusMensagemEntrega(this.arrayDeComunicadosVerificados).toPromise().then(() => {
+                    this.feedbackUsuario = "Atualizando passagem na portaria, aguarde...";
+                    const arrayDePassagensPortaria = [...this.arrayDeEntradasVerificadas, ...this.arrayDeSaidasVerificadas];
+
+                    //A chave que estã sendo usada ~e a do registrona portaria. Tem que corrigir o aplicativo
+
+
+                    this.portariaService.alterarStatusEntregaMensagem(arrayDePassagensPortaria).toPromise().then(() => {
+                      this.feedbackUsuario = 'Finalizando, aguarde...';
+                      this.listarNotificacoes();
+                    }).catch((erro: Response) => {
+                      this.mostrarAlertaErro(erro);
+                    })
+                  }).catch((erro: Response) => {
+                    this.mostrarAlertaErro(erro);
+                  })
+                }).catch((erro: Response) => {
+                  this.mostrarAlertaErro(erro);
+                })
               })
           })
       })
+  }
+
+
+
+  public mostrarAlertaErro(erro: Response) {
+    //Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    //registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+    //Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    //Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 }

@@ -74,12 +74,11 @@
               <td *ngIf="notificacao.tipo == 'frequencia de portaria'" class="col-sm-12 col-md-4 col-lg-2 text-center">
                 <strong>{{ notificacao.detalhe }}</strong>
               </td>
-              <td *ngIf="notificacao.status_entrega=='Enviada'" class="col-sm-12 col-md-4 col-lg-2 text-center bg-dark">
+              <td *ngIf="notificacao.status_entrega=='Enviada'" class="col-sm-12 col-md-4 col-lg-2 text-center ">
                 <img src="../../../../assets/images/notificacao_enviada.png" alt="" title="Mensagem enviada"></td>
-              <td *ngIf="notificacao.status_entrega=='Recebida'"
-                class="col-sm-12 col-md-4 col-lg-2 text-center bg-dark"><img
+              <td *ngIf="notificacao.status_entrega=='Recebida'" class="col-sm-12 col-md-4 col-lg-2 text-center"><img
                   src="../../../../assets/images/notificacao_recebida.png" alt="" title="Mensagem recebida"></td>
-              <td *ngIf="notificacao.status_entrega=='Lida'" class="col-sm-12 col-md-4 col-lg-2 text-center bg-dark">
+              <td *ngIf="notificacao.status_entrega=='Lida'" class="col-sm-12 col-md-4 col-lg-2 text-center ">
                 <img src="../../../../assets/images/notificacao_lida_2.png" alt="" title="Mensagem Lida"></td>
             </tr>
           </tbody>

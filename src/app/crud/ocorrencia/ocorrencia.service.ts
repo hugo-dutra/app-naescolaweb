@@ -40,6 +40,15 @@ export class OcorrenciaService {
     );
   }
 
+  public alterarStatusEntregaMensagem(arrayDeOcorrenciasVerificadas: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-ocorrencia-disciplinar",
+      JSON.stringify({ arrayDeOcorrenciasVerificadas: arrayDeOcorrenciasVerificadas }),
+      headers
+    );
+  }
+
   public listarQuantidadeAlertaNaoVerificado(
     esc_id: number,
     usr_id: number,

@@ -28,6 +28,15 @@ export class ComunicadoDiversoService {
     );
   }
 
+  public alterarStatusMensagemEntrega(arrayDeComunicadosVerificados: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-comunicado-diverso",
+      JSON.stringify({ arrayDeComunicadosVerificados: arrayDeComunicadosVerificados }),
+      headers
+    );
+  }
+
 
   public filtrar(status: number, data_inicio: string, data_fim: string, limit: number, offset: number, esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
