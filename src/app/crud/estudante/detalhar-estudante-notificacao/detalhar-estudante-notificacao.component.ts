@@ -182,10 +182,6 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
                   this.comunicadoDiversoService.alterarStatusMensagemEntrega(this.arrayDeComunicadosVerificados).toPromise().then(() => {
                     this.feedbackUsuario = "Atualizando passagem na portaria, aguarde...";
                     const arrayDePassagensPortaria = [...this.arrayDeEntradasVerificadas, ...this.arrayDeSaidasVerificadas];
-
-                    //A chave que estã sendo usada ~e a do registrona portaria. Tem que corrigir o aplicativo
-
-
                     this.portariaService.alterarStatusEntregaMensagem(arrayDePassagensPortaria).toPromise().then(() => {
                       this.feedbackUsuario = 'Finalizando, aguarde...';
                       this.listarNotificacoes();
