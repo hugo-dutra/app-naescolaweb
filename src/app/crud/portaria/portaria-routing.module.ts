@@ -9,6 +9,7 @@ import { GerenciarPortariaComponent } from './gerenciar-portaria/gerenciar-porta
 import { VerificarFrequenciaPortariaComponent } from './verificar-frequencia-portaria/verificar-frequencia-portaria.component';
 import { VerificarAbsenteismoPortariaComponent } from './verificar-absenteismo-portaria/verificar-absenteismo-portaria.component';
 import { AuthGuardService } from '../../guards/auth.guard.service';
+import { ControlarPortariaComponent } from './controlar-portaria/controlar-portaria.component';
 
 const routes: Routes = [
   { path: "", component: GerenciarPortariaComponent, canActivate: [AuthGuardService] },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: "inserir-cronograma-portaria", component: InserirCronogramaPortariaComponent, canActivate: [AuthGuardService] },
   { path: "verificar-frequencia-portaria", component: VerificarFrequenciaPortariaComponent, canActivate: [AuthGuardService] },
   { path: "verificar-absenteismo-portaria", component: VerificarAbsenteismoPortariaComponent, canActivate: [AuthGuardService] },
+  { path: "controlar-portaria", component: ControlarPortariaComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

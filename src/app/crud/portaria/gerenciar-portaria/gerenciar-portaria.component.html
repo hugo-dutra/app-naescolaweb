@@ -42,6 +42,20 @@
         </a>
       </div>
     </div>
+
+    <div *ngIf="exibirComponente('controlar-portaria')" class="col-sm-12 col-md-6 col-lg-4"
+      (click)="controlarPortaria()">
+      <div class="wrimagecard wrimagecard-topimage">
+        <a class="rounded-top rounded-right rounded-bottom rounded-left">
+          <div class="wrimagecard-topimage_header rounded-top" style="background-color:#f9f9f9 ">
+            <i class="fa fa-lg fa-refresh text-danger"></i>
+          </div>
+          <div class="wrimagecard-topimage_title text-warning text-center">
+            Controle remoto
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 <!--###############################################################################################-->

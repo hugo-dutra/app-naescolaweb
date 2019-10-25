@@ -1,0 +1,63 @@
+<div class="container-fluid">
+  <div *ngFor="let portariaControlada of arrayDePortariasControladas" class="card col-sm-12 col-md-6 col-lg-6">
+    <div class="card-header bg-dark text-light text-center">
+      {{portariaControlada.dados.nome}}
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-3 col-sm-6 col-md-6">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Correção da hora</label>
+            <input type="number" step="1" (keypress)="controlarAjusteHora($event,portariaControlada.id)"
+              (change)="controlarAjusteHora($event,portariaControlada.id)" class="form-control" id="exampleInputEmail1"
+              aria-describedby="emailHelp" [value]="portariaControlada.dados.ajuste_hora">
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-md-6">
+          <div class="form-check">
+            <input type="checkbox" class="form-control checkbox"
+              (change)="controlarStatusOcorrenciaAtraso($event,portariaControlada.id)"
+              [checked]="portariaControlada.dados.atraso" [id]="portariaControlada.dados.nome+'_checkAtraso'">
+            <label class="form-check-label" [for]="portariaControlada.dados.nome+'_checkAtraso'">Registrar
+              atraso</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-md-6">
+          <div class="form-check">
+            <input type="checkbox" class="form-control checkbox"
+              (change)="controlarStatusOcorrenciaSemUniforme($event,portariaControlada.id)"
+              [checked]="portariaControlada.dados.sem_uniforme"
+              [id]="portariaControlada.dados.nome+'_checkSemUniforme'">
+            <label class="form-check-label" [for]="portariaControlada.dados.nome+'_checkSemUniforme'">Registrar sem
+              uniforme</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-md-6">
+          <div class="form-check">
+            <input type="checkbox" class="form-control checkbox"
+              (change)="controlarStatusControleSaida($event,portariaControlada.id)"
+              [checked]="portariaControlada.dados.controle_saida"
+              [id]="portariaControlada.dados.nome+'_checkControleSaida'">
+            <label class="form-check-label" [for]="portariaControlada.dados.nome+'_checkControleSaida'">Controlar
+              saídas</label>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6 col-md-6">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button"
+              [id]="portariaControlada.dados.nome+'_modoDePortaria'" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              {{stringModoPortariaSelecionado}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="portariaControlada.dados.nome+'_modoDePortaria'">
+              <a class="dropdown-item" (click)="selecionarModoPortaria($event,portariaControlada.id)"
+                name="entrada">Entrada</a>
+              <a class="dropdown-item" (click)="selecionarModoPortaria($event,portariaControlada.id)"
+                name="saida">Saída</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

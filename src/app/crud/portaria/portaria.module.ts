@@ -12,6 +12,7 @@ import { VerificarAbsenteismoPortariaComponent } from './verificar-absenteismo-p
 import { VerificarFrequenciaPortariaComponent } from './verificar-frequencia-portaria/verificar-frequencia-portaria.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ControlarPortariaComponent } from './controlar-portaria/controlar-portaria.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HttpClientModule } from '@angular/common/http';
     InserirPortariaComponent,
     ListarPortariaComponent,
     VerificarAbsenteismoPortariaComponent,
-    VerificarFrequenciaPortariaComponent
+    VerificarFrequenciaPortariaComponent,
+    ControlarPortariaComponent
   ],
   imports: [
     CommonModule,

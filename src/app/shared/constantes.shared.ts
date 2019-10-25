@@ -9,8 +9,8 @@ export class CONSTANTES {
   public static DEF_MSG_ERRO = "ERROR 404 NOT FOUND";
   public static TEMPO_CONSULTA_ALERTAS = 1800000;
   //********************URLS****************************/
-  public static HOST = "http://localhost:8000";
-  //public static HOST = "http://34.73.55.201:8080";
+  //public static HOST = "http://localhost:8000";
+  public static HOST = "http://34.73.55.201:8080";
   public static HOST_API = CONSTANTES.HOST + "/api/";
   public static CK = "OEqpJdFaYtaY0eI087eNA6KKSMsi22vh";
   //********************FILES**************************/

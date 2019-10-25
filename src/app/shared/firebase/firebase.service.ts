@@ -63,6 +63,42 @@ export class FirebaseService {
   //*****************************************************************************/
   //***************************FIRESTORE*****************************************/
 
+  public listarPortariaControleRemoto(inep: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(inep)
+        .collection('portarias')
+        .get()
+        .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+          resolve(querySnapshot)
+        }).catch((reason: any) => {
+          reject(reason)
+        })
+    })
+  }
+
+  public gravarModoPortaria(inep: string, codigoPortaria: string, valor: string): void {
+    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ modo: valor });
+  }
+
+  public gravarModoRegistroOcorrenciaAtrasoPortaria(inep: string, codigoPortaria: string, valor: boolean): void {
+    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ atraso: valor });
+  }
+
+  public gravarModoRegistroOcorrenciaSemUniformePortaria(inep: string, codigoPortaria: string, valor: boolean): void {
+    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ sem_uniforme: valor });
+  }
+
+  public gravarModoControlarSaidaPortaria(inep: string, codigoPortaria: string, valor: boolean): void {
+    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ controle_saida: valor });
+  }
+
+  public gravarAjusteHoraPortaria(inep: string, codigoPortaria: string, valor: number): void {
+    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ ajuste_hora: valor });
+  }
+
+
   public gravarSugestaoInformacaoBug = async (rota, detalhesInformacao) => {
     const dataInformacao = Utils.dataAtual();
     const horaInformacao = Utils.horaAtual();
@@ -118,10 +154,10 @@ export class FirebaseService {
         .collection(colecao)
         .where("leitura", ">=", 1)
         .get()
-        .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
-          resolve(querySnapshot)
+        .then((response: firebase.firestore.QuerySnapshot) => {
+          resolve(response);
         }).catch((reason: any) => {
-          reject(reason)
+          reject(reason);
         })
     })
   }

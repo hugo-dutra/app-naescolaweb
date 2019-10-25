@@ -42,6 +42,10 @@ export class GerenciarPortariaComponent implements OnInit {
     this.router.navigate([`${this.route.parent.routeConfig.path}/listar-portaria`]);
   }
 
+  public controlarPortaria(): void {
+    this.router.navigate([`${this.route.parent.routeConfig.path}/controlar-portaria`]);
+  }
+
   public absenteismoPortaria(): void {
     this.router.navigate([`${this.route.parent.routeConfig.path}/verificar-absenteismo-portaria`]);
   }
