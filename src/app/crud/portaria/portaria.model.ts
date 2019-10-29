@@ -19,4 +19,5 @@ export class Portaria {
   public esc_id: number;
   public codigo: string;
   public nome: string;
+  public turnos: Object[];
 }

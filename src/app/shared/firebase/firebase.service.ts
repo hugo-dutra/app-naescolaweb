@@ -12,6 +12,7 @@ import { CONSTANTES } from "../constantes.shared";
 import { RequestOptions } from 'http';
 import { Portaria } from '../../crud/portaria/portaria.model';
 import { CronogramaPortaria } from '../../crud/portaria/cronograma-portaria.model';
+import { PortariaFirebase } from '../../crud/portaria/portaria.firebase.model';
 
 @Injectable()
 export class FirebaseService {
@@ -569,10 +570,15 @@ export class FirebaseService {
    *
    * @memberof FirebaseService
    */
-  public alterarConfiguracaoFirebaseFirestorePortaria = async (portaria: Portaria) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(portaria.codigo).collection('parametros').doc('configuracao').set(portaria).then(() => {
-      resolve('sucesso');
-    });
+  public alterarConfiguracaoFirebaseFirestorePortaria = async (portaria: PortariaFirebase) => new Promise((resolve) => {
+    this.firestore
+      .collection('portariaWeb')
+      .doc(portaria.codigo)
+      .collection('parametros')
+      .doc('configuracao')
+      .set({ codigo: portaria['codigo'], esc_id: portaria['esc_id'], nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'] }).then(() => {
+        resolve('sucesso');
+      });
   })
 
   /**
