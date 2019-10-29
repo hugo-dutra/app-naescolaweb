@@ -66,6 +66,9 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     this.usr_id = parseInt(this.dados_usuario['id'], 10);
   }
 
+  /**
+   *
+   */
   public listarRegrasAlertasUsuario(): void {
     this.feedbackUsuario = "Carregando regras de alertas, aguarde...";
     this.alertaService.listarRegraAlertaUsuario(this.usr_id, this.esc_id).toPromise().then((response: Response) => {
@@ -84,12 +87,14 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     })
   }
 
+  /**
+   *
+   */
   public listarAlertasOcorrencia(): void {
     this.feedbackUsuario = "Procurando por ocorrências dentro das regras, aguarde..."
     this.arrayOfOcorrenciasPeriodoConsiderado = [];
     this.arrayOfOcorrenciasSelecionadas = [];
     let contaRequisicoes = 0;
-
     if (this.arrayOfRegrasAlertasUsuario.length == 0) {
       this.feedbackUsuario = undefined;
     }
@@ -109,11 +114,15 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
         .toPromise()
         .then((response: Response) => {
           this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(response));
+          const ocorrenciasRecebias = Object.values(response);
           contaRequisicoes++;
-          this.arrayOfOcorrenciasPeriodoConsiderado.push(...Object.values(response));
+          if (!this.verificarOcorrenciaEstudanteArrayOcorrencias(ocorrenciasRecebias)) {
+            this.arrayOfOcorrenciasPeriodoConsiderado.push(...ocorrenciasRecebias);
+          }
           if (contaRequisicoes == this.arrayOfRegrasAlertasUsuario.length) {
             this.avaliarOcorrenciasDentroRegrasAlertas();
           }
+
         }).catch((erro: Response) => {
           //Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -128,6 +137,25 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     })
   }
 
+  /**
+   *
+   * @param ocorrenciasRecebida
+   */
+  public verificarOcorrenciaEstudanteArrayOcorrencias(ocorrenciasRecebida: Object[]): boolean {
+    let retorno = false;
+    this.arrayOfOcorrenciasPeriodoConsiderado.forEach(ocorrenciaExistente => {
+      ocorrenciasRecebida.forEach(ocorrencia => {
+        if (ocorrenciaExistente['ocd_id'] == ocorrencia['ocd_id']) {
+          retorno = true;
+        }
+      })
+    })
+    return retorno;
+  }
+
+  /**
+   *
+   */
   public avaliarOcorrenciasDentroRegrasAlertas(): void {
     this.feedbackUsuario = undefined;
     this.arrayOfRegrasAlertasUsuario.forEach(regraAlerta => {
@@ -180,10 +208,18 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     })
   }
 
+  /**
+   *
+   * @param event
+   */
   public atualizarObservacao(event: Event): void {
     this.observacaoAlertaVerificado = (<HTMLInputElement>event.target).value;
   }
 
+  /**
+   *
+   * @param alertaOcorrencia
+   */
   public tratarAlertaOcorrencia(alertaOcorrencia: Object): void {
     const est_id = parseInt(alertaOcorrencia["est_id"]);
     const tod_id = parseInt(alertaOcorrencia["tod_id"]);
@@ -225,6 +261,4 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
         })
     })
   }
-
-
 }
