@@ -508,8 +508,8 @@ export class FirebaseService {
       .collection('portariaWeb')
       .doc(portaria.codigo)
       .collection('parametros')
-      .doc('configuracao') // Aqui vai mudar para horário depois, no aplicativo
-      .set(portaria)
+      .doc('configuracao')
+      .update(portaria)
       .then(() => { resolve('sucesso') })
       .catch(() => { alert('erro'); });
   });
@@ -571,6 +571,17 @@ export class FirebaseService {
    * @memberof FirebaseService
    */
   public alterarConfiguracaoFirebaseFirestorePortaria = async (portaria: PortariaFirebase) => new Promise((resolve) => {
+    this.firestore
+      .collection('portariaWeb')
+      .doc(portaria.codigo)
+      .collection('parametros')
+      .doc('configuracao')
+      .set({ codigo: portaria['codigo'], esc_id: portaria['esc_id'], nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'] }).then(() => {
+        resolve('sucesso');
+      });
+  })
+
+  public inserirConfiguracaoFirebaseFirestorePortaria = async (portaria: PortariaFirebase) => new Promise((resolve) => {
     this.firestore
       .collection('portariaWeb')
       .doc(portaria.codigo)

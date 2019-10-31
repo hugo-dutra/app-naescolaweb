@@ -23,106 +23,35 @@
             <label class="text-small">Nome</label>
           </div>
         </div>
-        <!-- MATUTINO -->
-        <div class="row">
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="inicioMatutino" required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small">Início matutino</label>
-          </div>
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="fimMatutino" required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small">Fim matutino</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaEntradaMatutino"
-              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small">Tolerância entrada matutino</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaSaidaMatutino"
-              placeholder="em minutos, para autorizar saida..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small">Tolerância saída matutino</label>
-          </div>
+        <div class="turnos">
+          <table class="table table-striped table-hover">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-4 text-center" scope="col">Nome</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Início</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Fim</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Tolerância início</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Tolerância fim</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let turno of arrayDeTurnos">
+                <td class="col-sm-12 col-lg-4 text-center">{{turno.nome}}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{turno.horaInicio}}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{turno.horaFim}}</td>
+                <td class="col-sm-12 col-lg-2 text-center"><input class="form-control"
+                    (change)="alterarParametrosPortaria(turno,'inicio',$event)" type="number" name="" value="0">
+                </td>
+                <td class="col-sm-12 col-lg-2 text-center"><input class="form-control"
+                    (change)="alterarParametrosPortaria(turno,'fim',$event)" type="number" name="" value="0">
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <!-- VESPERTINO -->
-        <div class="row">
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="inicioVespertino" required
-              (input)="validar($event)" (focusout)="validar($event)">
-            <label class="text-small text-muted">Início vespertino</label>
-          </div>
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="fimVespertino" required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Fim vespertino</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaEntradaVespertino"
-              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Tolerância entrada vespertino</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaSaidaVespertino"
-              placeholder="em minutos, para autorizar saida..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Tolerância saída vespertino</label>
-          </div>
-        </div>
-        <!-- NOTURNO -->
-        <div class="row">
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="inicioNoturno" required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Início noturno</label>
-          </div>
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="fimNoturno" required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Fim noturno</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaEntradaNoturno"
-              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Tolerância entrada noturno</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaSaidaNoturno"
-              placeholder="em minutos, para autorizar saida..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Tolerância saída noturno</label>
-          </div>
-        </div>
-        <!-- INTEGRAL -->
-        <div class="row">
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="inicioIntegral" required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Início integral</label>
-          </div>
-          <div class="col-sm-12 col-lg-2 text-left  ">
-            <input class="form-control" type="time" formControlName="fimIntegral" required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Fim integral</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaEntradaIntegral"
-              placeholder="em minutos, sem advertência..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Tolerância entrada integral</label>
-          </div>
-          <div class="col-sm-12 col-lg-3 text-left  ">
-            <input class="form-control" type="number" formControlName="toleranciaSaidaIntegral"
-              placeholder="em minutos, para autorizar saida..." required (input)="validar($event)"
-              (focusout)="validar($event)">
-            <label class="text-small text-muted">Tolerância saída integral</label>
-          </div>
-        </div>
+
+
+
       </form>
     </div>
     <div class="card-footer text-muted bg-dark mt-2">

@@ -97,7 +97,7 @@
           </div>
           <div class="card-footer bg-white">
             <ngx-barcode class="col-sm-12 col-lg-8" [id]="'ngx_Barcode_'+estudante.id"
-              [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75">
+              [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75" [bc-width]="3">
             </ngx-barcode>
           </div>
 
@@ -176,7 +176,7 @@
             </div>
             <div class="card-footer bg-white">
               <ngx-barcode class="col-sm-12 col-lg-8" [id]="'ngx_Barcode_'+estudante.id"
-                [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75">
+                [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75" [bc-width]="3">
               </ngx-barcode>
             </div>
           </div>
@@ -195,7 +195,8 @@
                 </div>
                 <div class="col-sm-12 col-lg-12 text-center">
                   <ngx-barcode [id]="'ngx_Barcode_'+estudante.id" [bc-height]="40"
-                    [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75">
+                    [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75"
+                    [bc-width]="3">
                   </ngx-barcode>
                 </div>
                 <div class="col-sm-12 col-lg-12 text-small text-center text-dark">

@@ -8,12 +8,16 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Portaria } from '../portaria.model';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Utils } from '../../../shared/utils.shared';
+import { TurnoService } from '../../turno/turno.service';
+import { TurnoPortaria } from '../../turno-portaria/turno-portaria.model';
+import { TurnoPortariaService } from '../../turno-portaria/turno-portaria.service';
+import { PortariaFirebase } from '../portaria.firebase.model';
 
 @Component({
   selector: 'ngx-inserir-portaria',
   templateUrl: './inserir-portaria.component.html',
   styleUrls: ['./inserir-portaria.component.scss'],
-  providers: [PortariaService],
+  providers: [PortariaService, TurnoService, TurnoPortariaService],
   animations: [
     trigger("chamado", [
       state(
@@ -37,7 +41,9 @@ export class InserirPortariaComponent implements OnInit {
     private route: ActivatedRoute,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private portariaService: PortariaService) { }
+    private portariaService: PortariaService,
+    private turnoService: TurnoService,
+    private turnoPortariaService: TurnoPortariaService) { }
 
   public portaria: Portaria = new Portaria();
   public feedbackUsuario: string;
@@ -46,6 +52,11 @@ export class InserirPortariaComponent implements OnInit {
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
   public esc_id: number;
+  public codigo_inep: string;
+  public portariaFirebase = new PortariaFirebase();
+
+  public arrayDeTurnos: Object[];
+  public turnosPortaria = new Array<Object>();
 
   public formulario: FormGroup = new FormGroup({
     inicioMatutino: new FormControl(null),
@@ -67,53 +78,159 @@ export class InserirPortariaComponent implements OnInit {
     toleranciaSaidaIntegral: new FormControl(null),
   })
 
+  /**
+   *
+   */
   ngOnInit() {
     this.esc_id = Utils.pegarDadosEscola()["id"];
+    this.codigo_inep = Utils.pegarDadosEscola()["inep"];
+
     this.feedbackUsuario = undefined;
+    this.listarTurnos();
   }
+
+  /**
+   *
+   */
   public listar(): void {
     this.router.navigate([`${this.route.parent.routeConfig.path}/listar-portaria`]);
   }
 
+  /**
+   *
+   */
+  public listarTurnos(): void {
+    this.feedbackUsuario = "Carregando turnos, aguarde..."
+    this.turnoService.listar(this.esc_id).toPromise().then((response: Response) => {
+      this.arrayDeTurnos = Object.values(response);
+      this.carregarTurnosPortaria(this.arrayDeTurnos);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
+  }
+
+  /**
+  *
+  * @param turnos
+  */
+  public carregarTurnosPortaria(turnos: Object[]) {
+    this.turnosPortaria = [];
+    this.arrayDeTurnos.forEach(turno => {
+      this.turnosPortaria.push({
+        fim: turno['horaFim'], inicio: turno['horaInicio'], nome: turno['nome'],
+        tolerancia_fim: 0, tolerancia_inicio: 0, trn_id: turno['id']
+      });
+    })
+  }
+
+  /**
+   *
+   * @param turno
+   * @param valor
+   * @param event
+   */
+  public alterarParametrosPortaria(turno: Object, valor: string, event: Event): void {
+    const trn_id: number = parseInt(turno['id']);
+    if (valor == 'inicio') {
+      let contaTurno = 0;
+      const tolerancia_inicio = parseInt((<HTMLInputElement>event.target).value);
+      this.turnosPortaria.forEach(turno => {
+        if (turno['trn_id'] == trn_id) {
+          this.turnosPortaria[contaTurno] = { fim: turno['fim'], inicio: turno['inicio'], nome: turno['nome'], tolerancia_fim: turno['tolerancia_fim'], tolerancia_inicio: tolerancia_inicio, trn_id: turno['trn_id'] }
+        }
+        contaTurno++;
+      })
+    }
+    if (valor == 'fim') {
+      let contaTurno = 0;
+      const tolerancia_fim = parseInt((<HTMLInputElement>event.target).value);
+      this.turnosPortaria.forEach(turno => {
+        if (turno['trn_id'] == trn_id) {
+          this.turnosPortaria[contaTurno] = { fim: turno['fim'], inicio: turno['inicio'], nome: turno['nome'], tolerancia_fim: tolerancia_fim, tolerancia_inicio: turno['tolerancia_inicio'], trn_id: turno['trn_id'] }
+        }
+        contaTurno++;
+      })
+    }
+  }
+
+  /**
+   *
+   */
   public inserir(): void {
     this.portaria.esc_id = this.esc_id;
-    this.portaria.inicioMatutino = this.formulario.value.inicioMatutino;
-    this.portaria.fimMatutino = this.formulario.value.fimMatutino;
-    this.portaria.toleranciaEntradaMatutino = this.formulario.value.toleranciaEntradaMatutino;
-    this.portaria.toleranciaSaidaMatutino = this.formulario.value.toleranciaSaidaMatutino;
-    this.portaria.inicioVespertino = this.formulario.value.inicioVespertino;
-    this.portaria.fimVespertino = this.formulario.value.fimVespertino;
-    this.portaria.toleranciaEntradaVespertino = this.formulario.value.toleranciaEntradaVespertino;
-    this.portaria.toleranciaSaidaVespertino = this.formulario.value.toleranciaSaidaVespertino;
-    this.portaria.inicioNoturno = this.formulario.value.inicioNoturno;
-    this.portaria.fimNoturno = this.formulario.value.fimNoturno;
-    this.portaria.toleranciaEntradaNoturno = this.formulario.value.toleranciaEntradaNoturno;
-    this.portaria.toleranciaSaidaNoturno = this.formulario.value.toleranciaSaidaNoturno;
     this.portaria.nome = this.formulario.value.nome;
-    this.portaria.inicioIntegral = this.formulario.value.inicioIntegral;
-    this.portaria.fimIntegral = this.formulario.value.fimIntegral;
-    this.portaria.toleranciaEntradaIntegral = this.formulario.value.toleranciaEntradaIntegral;
-    this.portaria.toleranciaSaidaIntegral = this.formulario.value.toleranciaSaidaIntegral;
-
     this.feedbackUsuario = "Salvando dados, aguarde...";
     this.portariaService.inserir(this.portaria).toPromise()
       .then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.formulario.reset();
-        this.exibirAlerta = false;
+        const por_id: number = parseInt(response[0]['por_id']);
+        this.inserirTurnosPortaria(por_id);
       }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       })
   }
 
+  public inserirTurnosPortaria(portaria_id: number): void {
+    this.feedbackUsuario = "Inserindo turnos, aguarde...";
+    let turnos_portaria = new Array<TurnoPortaria>()
+    this.turnosPortaria.forEach(turnoPortaria => {
+      const trnPort = new TurnoPortaria();
+      trnPort.por_id = portaria_id;
+      trnPort.tolerancia_fim = turnoPortaria['tolerancia_fim'];
+      trnPort.tolerancia_inicio = turnoPortaria['tolerancia_inicio'];
+      trnPort.trn_id = turnoPortaria['trn_id'];
+      turnos_portaria.push(trnPort);
+    })
+    this.turnoPortariaService.inserir(turnos_portaria).toPromise().then(() => {
+      this.inserirTurnosFirebase(portaria_id);
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
+  }
+
+  /**
+   *
+   * @param portaria_id
+   */
+  public inserirTurnosFirebase(portaria_id: number): void {
+    this.portariaFirebase.codigo = `${this.codigo_inep}_${portaria_id}`;
+    this.portariaFirebase.esc_id = this.esc_id
+    this.portariaFirebase.nome = this.portaria.nome;
+    this.portariaFirebase.por_id = portaria_id;
+    this.portariaFirebase.turnos = [...this.turnosPortaria];
+    this.firebaseService.inserirConfiguracaoFirebaseFirestorePortaria(this.portariaFirebase);
+    this.feedbackUsuario = undefined;
+    this.listar();
+  }
+
+  /**
+   *
+   * @param event
+   */
   public validar(event: Event) {
     Utils.validarCampos({ event: event });
     this.exibirAlerta = false;

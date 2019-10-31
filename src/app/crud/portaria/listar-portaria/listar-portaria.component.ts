@@ -84,7 +84,6 @@ export class ListarPortariaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.portarias = Object.values(response);
-        console.log(this.portarias);
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
         //Mostra modal
@@ -96,7 +95,6 @@ export class ListarPortariaComponent implements OnInit {
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
-
       })
   }
 
@@ -171,7 +169,7 @@ export class ListarPortariaComponent implements OnInit {
             arrayDeSemUniforme.push({ data: data, hora: hora, matricula: matricula, firebaseDbKey: firebaseDbKey });
           })
         }).then(() => {
-          this.inserirDadosDaPortariaBancoDeDados(arrayDeEntradas, arrayDeSaidas, arrayDeAtrasos, arrayDeSemUniforme, por_id);
+          this.inserirDadosDaPortariaBancoDeDados(arrayDeEntradas, arrayDeSaidas, arrayDeAtrasos, arrayDeSemUniforme, por_id, portaria);
         }).catch((erro: Response) => {
           //Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -204,7 +202,7 @@ export class ListarPortariaComponent implements OnInit {
     })
   }
 
-  public inserirDadosDaPortariaBancoDeDados(entradas: Object[], saidas: Object[], atrasos: Object[], semUniforme: Object[], por_id: number) {
+  public inserirDadosDaPortariaBancoDeDados(entradas: Object[], saidas: Object[], atrasos: Object[], semUniforme: Object[], por_id: number, portaria: Portaria) {
     this.feedbackUsuario = "Gravando entradas no banco de dados...";
     this.portariaService.inserirEntradas(por_id, entradas).toPromise()
       .then(() => {
@@ -218,6 +216,7 @@ export class ListarPortariaComponent implements OnInit {
                 this.portariaService.inserirSemUniforme(this.usr_id, this.esc_id, semUniforme).toPromise()
                   .then(() => {
                     this.feedbackUsuario = undefined;
+                    this.sincronizar(portaria);
                   }).catch((erro: Response) => {
                     //Mostra modal
                     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

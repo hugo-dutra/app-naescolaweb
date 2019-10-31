@@ -32,15 +32,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="row" *ngFor="let turno of arrayDeTurnos">
-                <td class="col-sm-12 col-lg-4 text-center">{{turno.nome}}</td>
-                <td class="col-sm-12 col-lg-2 text-center">{{turno.horaInicio}}</td>
-                <td class="col-sm-12 col-lg-2 text-center">{{turno.horaFim}}</td>
+              <tr class="row" *ngFor="let turnoPortaria of turnosPortaria">
+                <td class="col-sm-12 col-lg-4 text-center">{{turnoPortaria.turno}}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{turnoPortaria.inicio}}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{turnoPortaria.fim}}</td>
                 <td class="col-sm-12 col-lg-2 text-center"><input class="form-control"
-                    (change)="alterarParametrosPortaria(turno,'inicio',$event)" type="number" name="" value="0">
+                    (change)="alterarParametrosPortaria(turnoPortaria,'inicio',$event)" type="number" name=""
+                    [value]="turnoPortaria.tolerancia_inicio">
                 </td>
                 <td class="col-sm-12 col-lg-2 text-center"><input class="form-control"
-                    (change)="alterarParametrosPortaria(turno,'fim',$event)" type="number" name="" value="0">
+                    (change)="alterarParametrosPortaria(turnoPortaria,'fim',$event)" type="number" name=""
+                    [value]="turnoPortaria.tolerancia_fim">
                 </td>
               </tr>
             </tbody>
