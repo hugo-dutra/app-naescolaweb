@@ -42,6 +42,7 @@ export class ListarPortariaComponent implements OnInit {
   public sincronizaEstudantes: Boolean = false;
   public usr_id: number;
   public dataInferiorSincronizarDadosPortaria: string;
+  public checkedValue: boolean = true;
 
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
@@ -59,12 +60,12 @@ export class ListarPortariaComponent implements OnInit {
     private estudanteService: EstudanteService) { }
 
   ngOnInit() {
-
     this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
     this.usr_id = parseInt(JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id);
     this.dataInferiorSincronizarDadosPortaria = "2000-01-01";
     this.listar();
     this.exibirComponentesEdicao();
+    this.sincronizaEstudantes = this.checkedValue;
   }
 
   public exibirComponentesEdicao(): void {
@@ -320,8 +321,8 @@ export class ListarPortariaComponent implements OnInit {
   }
 
   public sincronizarEstudantes(event: Event): void {
-    const statusCheck = (<HTMLInputElement>event.target).checked;
-    this.sincronizaEstudantes = statusCheck;
+    this.checkedValue = (<HTMLInputElement>event.target).checked;
+    this.sincronizaEstudantes = this.checkedValue;
   }
 
   public gravarEstudantes(codigoPortaria: string): void {

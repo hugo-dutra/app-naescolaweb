@@ -49,6 +49,7 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
   public stringInformacoes: string = "";
   public arrayOfEstudantesNotas = new Array<Object>();
   public arrayOfEstudantesNotasFaltas = new Array<Object>();
+  public esc_id: number;
 
 
   constructor(
@@ -74,6 +75,7 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
     this.listarEstudantesTurmaSelecionada();
     this.anoAtual = (new Date()).getFullYear();
     this.stringInformacoes = `${this.stringSerie} ${this.stringTurma} ${this.stringTurno}. - ${this.stringEtapa}`;
+    this.esc_id = Utils.pegarDadosEscola()['id'];
   }
 
   public listarEstudantesTurmaSelecionada(): void {
@@ -86,8 +88,8 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined
@@ -104,8 +106,8 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined
@@ -135,7 +137,8 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
             dsp_id: this.dsp_id,
             nota: nota,
             faltas: faltas,
-            anoAtual: this.anoAtual
+            anoAtual: this.anoAtual,
+            esc_id: this.esc_id
           });
           est_id = undefined;
           nota = undefined;
@@ -147,13 +150,14 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
         this.feedbackUsuario = "Gravando notas bimestrais, aguarde...";
         this.diarioRegistroService.gravarLancamentoPeriodoLetivoManual(this.arrayOfEstudantesNotasFaltas).toPromise().then((response: Response) => {
           this.feedbackUsuario = undefined;
+          this.alertModalService.showAlertSuccess('Registros inseridos com sucesso!');
         }).catch((erro: Response) => {
           //Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined

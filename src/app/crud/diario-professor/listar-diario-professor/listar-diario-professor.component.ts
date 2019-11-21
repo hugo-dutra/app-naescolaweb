@@ -46,15 +46,15 @@ export class ListarDiarioProfessorComponent implements OnInit {
     private firebaseService: FirebaseService) { }
 
   ngOnInit() {
-    /* this.route.queryParams.subscribe((diarioProfessorDisciplina: Object) => {
+    this.route.queryParams.subscribe((diarioProfessorDisciplina: Object) => {
       this.prd_id = JSON.parse(diarioProfessorDisciplina["diarioProfessorDisciplina"])["prd_id"];
-    }); */
+    });
     this.anoAtual = (new Date()).getFullYear();
     this.listarDiariosProfessor();
   }
 
   public listarDiariosProfessor(): void {
-    this.feedbackUsuario = "Listando turmas associadas ao professor na disciplina informda..."
+    this.feedbackUsuario = "Listando turmas associadas ao professor na disciplina informada..."
     this.diarioProfessorService.listarDiarioProfessorDisciplinaIdAno(this.prd_id, this.anoAtual)
       .toPromise()
       .then((response: Response) => {
@@ -65,8 +65,8 @@ export class ListarDiarioProfessorComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;

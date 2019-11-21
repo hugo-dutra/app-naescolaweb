@@ -20,6 +20,7 @@ export class PedidoCartaoService {
   }
 
   public inserir(pedidoCartao: PedidoCartao): Observable<any> {
+    debugger;
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
 
     return this.http.post(
