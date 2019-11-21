@@ -79,6 +79,33 @@ export class FirebaseService {
     })
   }
 
+  public criarConfiguracaoNovaPortariaApp(inep: string, codigoPortaria: string, nomePortaria: string): void {
+    this.firestore
+      .collection('naescolaApp')
+      .doc(inep)
+      .collection('portarias')
+      .doc(codigoPortaria)
+      .set({
+        ajuste_hora: 0,
+        atraso: true,
+        atualizar_estudante: true,
+        atualizar_foto: true,
+        controle_saida: true,
+        modo: 'entrada',
+        nome: nomePortaria,
+        sem_uniforme: false
+      });
+  }
+
+  public excluirConfiguracaoPortariaApp(inep: string, codigoPortaria: string): void {
+    this.firestore
+      .collection('naescolaApp')
+      .doc(inep)
+      .collection('portarias')
+      .doc(codigoPortaria)
+      .delete();
+  }
+
   public gravarModoPortaria(inep: string, codigoPortaria: string, valor: string): void {
     this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ modo: valor });
   }

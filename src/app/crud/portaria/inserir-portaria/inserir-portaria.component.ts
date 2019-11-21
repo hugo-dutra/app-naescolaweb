@@ -173,6 +173,7 @@ export class InserirPortariaComponent implements OnInit {
       .then((response: Response) => {
         const por_id: number = parseInt(response[0]['por_id']);
         this.inserirTurnosPortaria(por_id);
+        this.firebaseService.criarConfiguracaoNovaPortariaApp(this.codigo_inep, `${this.codigo_inep.toString()}_${por_id.toString()}`, this.portaria.nome)
       }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
