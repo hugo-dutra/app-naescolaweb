@@ -12,6 +12,7 @@ import { Turma } from '../../turma/turma.model';
 import { SaidaAntecipadaEventual } from '../saida-antecipada-eventual.model';
 import { SaidaAntecipadaRecorrente } from '../saida-antecipada-recorrente.model';
 import { Utils } from '../../../shared/utils.shared';
+import * as moment from "moment";
 
 @Component({
   selector: 'ngx-inserir-saida-antecipada',
@@ -86,6 +87,8 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
     this.listarTurmas();
     this.dadosUsuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT));
     this.usr_id = parseInt(this.dadosUsuario[0]['id']);
+    this.dataSaidaAntecipada = moment().format('YYYY-MM-DD');
+    this.horaSaidaAntecipada = moment().format('HH:mm');
   }
 
   public marcarSaidaRecorrente(event: Event): void {
@@ -228,8 +231,8 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
               this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
               //registra log de erro no firebase usando serviço singlenton
               this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+              //Gravar erros no analytics
+              Utils.gravarErroAnalytics(JSON.stringify(erro));
               //Caso token seja invalido, reenvia rota para login
               Utils.tratarErro({ router: this.router, response: erro });
               this.feedbackUsuario = undefined;
@@ -269,8 +272,8 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
               this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
               //registra log de erro no firebase usando serviço singlenton
               this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+              //Gravar erros no analytics
+              Utils.gravarErroAnalytics(JSON.stringify(erro));
               //Caso token seja invalido, reenvia rota para login
               Utils.tratarErro({ router: this.router, response: erro });
               this.feedbackUsuario = undefined;
@@ -308,8 +311,8 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
@@ -330,8 +333,8 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
@@ -351,8 +354,8 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;

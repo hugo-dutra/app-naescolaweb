@@ -15,6 +15,7 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 import { Utils } from '../../../shared/utils.shared';
+import * as moment from "moment";
 
 @Component({
   selector: 'ngx-inserir-ocorrencia',
@@ -90,6 +91,11 @@ export class InserirOcorrenciaComponent implements OnInit {
 
   public decrescente: boolean = true;
 
+  public dataOcorrencia: string = "";
+  public horaOcorrencia: string = "";
+  public dataOcorrenciaMultipla: string = "";
+  public horaOcorrenciaMultipla: string = "";
+
   private relatorioPDFOcorrenciasEstudante: jsPDF;
 
   constructor(
@@ -107,6 +113,11 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
     this.listarTipoOcorrenciaDisciplinar();
     this.listarTurmas();
+    this.dataOcorrencia = moment().format('YYYY-MM-DD');
+    this.horaOcorrencia = moment().format('HH:mm');
+
+    this.dataOcorrenciaMultipla = moment().format('YYYY-MM-DD');
+    this.horaOcorrenciaMultipla = moment().format('HH:mm');
   }
 
   //#region ######################################### OCORRENCIA SIMPLES #################################################
@@ -161,10 +172,10 @@ export class InserirOcorrenciaComponent implements OnInit {
         this.arrayDeMensagensSimples = [];
         let messageFirebase = new MessageFirebase();
         messageFirebase.cod_inep = inep;
-        messageFirebase.data = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+        messageFirebase.data = this.dataOcorrencia; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
         messageFirebase.data_versao = Utils.now();
         messageFirebase.firebase_dbkey = "";
-        messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+        messageFirebase.hora = this.horaOcorrencia;  //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
         messageFirebase.id = "";
         messageFirebase.matricula = matricula;
         messageFirebase.msg = `${message}`;
@@ -225,10 +236,10 @@ export class InserirOcorrenciaComponent implements OnInit {
       let message = `${this.tipoOcorrenciaSimples}.`;
       let messageFirebase = new MessageFirebase();
       messageFirebase.cod_inep = inep;
-      messageFirebase.data = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+      messageFirebase.data = this.dataOcorrencia; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
       messageFirebase.data_versao = Utils.now();
       messageFirebase.firebase_dbkey = "";
-      messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+      messageFirebase.hora = this.horaOcorrencia //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
       messageFirebase.id = this.arrayOfEstudantes[i].toString();
       messageFirebase.matricula = matricula;
       messageFirebase.msg = `Assunto: Ocorrência disciplinar Ocorrência: ${message}`;
@@ -288,10 +299,10 @@ export class InserirOcorrenciaComponent implements OnInit {
         this.arrayDeMensagensSimples = [];
         let messageFirebase = new MessageFirebase();
         messageFirebase.cod_inep = inep;
-        messageFirebase.data = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+        messageFirebase.data = this.dataOcorrencia; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
         messageFirebase.data_versao = Utils.now();
         messageFirebase.firebase_dbkey = "";
-        messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+        messageFirebase.hora = this.horaOcorrencia;// ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
         messageFirebase.id = est_id.toString();
         messageFirebase.matricula = matricula;
         messageFirebase.msg = `${message}`;
@@ -421,7 +432,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public gravarComunicadoDiverso(messageFirebase: MessageFirebase): void {
     this.feedbackUsuario = "Finalizando comunicado, aguarde...";
     this.comunicadoDiverso.assunto = messageFirebase.titulo;
-    this.comunicadoDiverso.data_comunicado = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();//Ajuste no formato da data.
+    this.comunicadoDiverso.data_comunicado = messageFirebase.data;//new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();//Ajuste no formato da data.
     this.comunicadoDiverso.fbdbkey = messageFirebase.firebase_dbkey;
     this.comunicadoDiverso.hora = messageFirebase.hora;
     this.comunicadoDiverso.mensagem = messageFirebase.msg;
@@ -524,7 +535,7 @@ export class InserirOcorrenciaComponent implements OnInit {
 
   public inserir(): void {
     this.feedbackUsuario = "Salvando dados, aguarde...";
-    this.ocorrencia.data_hora = Utils.now();
+    this.ocorrencia.data_hora = `${this.dataOcorrencia} ${this.horaOcorrencia}`;//Utils.now();
     this.ocorrencia.usr_id = JSON.parse(
       Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT)
     )[0].id;
@@ -829,10 +840,10 @@ export class InserirOcorrenciaComponent implements OnInit {
     let message = `${this.tipoOcorrenciaMultiplo}.`;
     for (let i = 0; i < this.arrayOfEstudantesMultiplo.length; i++) {
       this.arrayOfEstudantesMultiplo[i].cod_inep = inep;
-      this.arrayOfEstudantesMultiplo[i].data = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+      this.arrayOfEstudantesMultiplo[i].data = this.dataOcorrenciaMultipla; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
       this.arrayOfEstudantesMultiplo[i].data_versao = Utils.now();
       this.arrayOfEstudantesMultiplo[i].firebase_dbkey = "";
-      this.arrayOfEstudantesMultiplo[i].hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+      this.arrayOfEstudantesMultiplo[i].hora = this.horaOcorrenciaMultipla;//("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
       this.arrayOfEstudantesMultiplo[i].id = this.arrayOfEstudantesMultiplo[i].id;
       this.arrayOfEstudantesMultiplo[i].matricula = this.arrayOfEstudantesMultiplo[i].matricula;
       this.arrayOfEstudantesMultiplo[i].msg = `${message}`;
