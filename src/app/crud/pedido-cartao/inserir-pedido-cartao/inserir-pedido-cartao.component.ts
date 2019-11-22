@@ -116,7 +116,7 @@ export class InserirPedidoCartaoComponent implements OnInit {
     cobranca.payerEmail = this.dados_escola["email"];
     cobranca.payerName = this.dados_escola["nome"];
     cobranca.token = CONSTANTES.BOLETO_FACIL_TOKEN;
-    cobranca.discountAmount = (this.descontoAssiduidade / 100) * valor;
+    cobranca.discountAmount = this.descontoAssiduidade * valor;
     cobranca.discountDays = 0;
     this.feedbackUsuario = "Gerando boleto bancário, aguarde...";
     this.boletoBancarioService

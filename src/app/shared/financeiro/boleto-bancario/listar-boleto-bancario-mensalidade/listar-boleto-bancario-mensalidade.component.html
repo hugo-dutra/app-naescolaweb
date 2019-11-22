@@ -26,11 +26,14 @@
                     [href]="mes.boleto.link" target="_blank"><button class="btn btn-success btn-sm"><i
                         class="fa fa-download"></i> Baixar</button>
                   </a></td>
+
                 <td *ngIf="mes.temBoleto == false && mes.ativo == true" class="col-sm-12 col-lg-2"><button
                     class="btn btn-primary btn-sm" (click)="gerarBoleto(mes)"> Gerar boleto</button></td>
+
                 <td *ngIf="mes.ativo == false" class="col-sm-12 col-lg-2"><button class="btn btn-secondary btn-sm"
                     disabled="disabled">
                     Gerar boleto</button></td>
+
                 <td class="col-sm-12 col-lg-2"><a
                     *ngIf="mes.boleto.checkoutUrl != null && mes.boleto.checkoutUrl != undefined && mes.boleto.checkoutUrl != ''"
                     [href]="mes.boleto.checkoutUrl" target="_blank"><button class="btn btn-warning btn-sm"><i

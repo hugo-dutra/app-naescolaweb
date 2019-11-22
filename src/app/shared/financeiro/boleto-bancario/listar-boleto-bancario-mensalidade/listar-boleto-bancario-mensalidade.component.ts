@@ -9,6 +9,8 @@ import { FirebaseService } from '../../../firebase/firebase.service';
 import { Utils } from '../../../utils.shared';
 import { BoletoBancario } from '../boleto-bancario.model';
 import { Cobranca } from '../cobranca.model';
+import * as moment from "moment";
+
 
 @Component({
   selector: 'ngx-listar-boleto-bancario-mensalidade',
@@ -56,7 +58,6 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
   ngOnInit() {
     this.dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
     this.esc_id = this.dados_escola["id"];
-    this.listarBoletosExistententes();
     this.listarDadosBoletoPagamentoEscola();
   }
 
@@ -66,13 +67,14 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
       this.valorMensalidade = Object.values(response)[0]["valor_mensalidade"];
       this.descontoAssiduidade = Object.values(response)[0]["desconto_assiduidade"];
       this.valorJurosDiario = Object.values(response)[0]["valor_juros_diario"];
+      this.listarBoletosExistententes();
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
     })
@@ -111,8 +113,8 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });
@@ -120,20 +122,35 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
 
   public atualizarLista(): void {
     this.meses.forEach(mes => {
+      if (parseInt(mes["numero"]) < parseInt((new Date().getMonth() + 1).toString())) {
+        mes["ativo"] = false;
+      }
+
       this.mesesComBoleto.forEach(mesComBoleto => {
         if (mes["numero"] == mesComBoleto["mes"]) {
           mes["temBoleto"] = true;
           mes["boleto"] = mesComBoleto
         }
-        if (parseInt(mes["numero"]) < parseInt((new Date().getMonth() + 1).toString())) {
+        if (mesComBoleto['dueDate'] < moment().format('YYYY-MM-DD')) {
           mes["ativo"] = false;
+        } else {
+          mes["ativo"] = true;
         }
       })
     })
+
     this.meses.forEach(mes => {
+
       if (parseInt(mes["numero"]) < parseInt((new Date().getMonth() + 1).toString())) {
         mes["ativo"] = false;
       }
+
+      if (parseInt(mes["numero"]) == parseInt((new Date().getMonth() + 1).toString())) {
+        if (this.diaPadraoVencimento < moment().date()) {
+          mes["ativo"] = false;
+        }
+      }
+
     })
   }
 
@@ -154,7 +171,7 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
     cobranca.payerEmail = this.dados_escola["email"];
     cobranca.payerName = this.dados_escola["nome"];
     cobranca.token = CONSTANTES.BOLETO_FACIL_TOKEN;
-    cobranca.discountAmount = (this.descontoAssiduidade / 100) * valor;
+    cobranca.discountAmount = this.descontoAssiduidade * valor;
     cobranca.discountDays = 0;
     this.feedbackUsuario = "Gerando boleto bancário, aguarde...";
     this.boletoBancarioService
@@ -164,15 +181,11 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
         let boleto_bancario = new BoletoBancario();
         let boleto = response;
         let dados_boleto = boleto["data"]["charges"][0];
-        boleto_bancario.bankAccount =
-          dados_boleto["billetDetails"]["bankAccount"];
-        boleto_bancario.barcodeNumber =
-          dados_boleto["billetDetails"]["barcodeNumber"];
+        boleto_bancario.bankAccount = dados_boleto["billetDetails"]["bankAccount"];
+        boleto_bancario.barcodeNumber = dados_boleto["billetDetails"]["barcodeNumber"];
         boleto_bancario.checkoutUrl = dados_boleto["checkoutUrl"];
         boleto_bancario.code = dados_boleto["code"];
-        boleto_bancario.dueDate = Utils.formatarDataPadraoAmericano(
-          dados_boleto["dueDate"]
-        );
+        boleto_bancario.dueDate = Utils.formatarDataPadraoAmericano(dados_boleto["dueDate"]);
         boleto_bancario.installmentLink = dados_boleto["installmentLink"];
         boleto_bancario.link = dados_boleto["link"];
         boleto_bancario.ourNumber = dados_boleto["billetDetails"]["ourNumber"];
@@ -194,8 +207,8 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
             this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
             //registra log de erro no firebase usando serviço singlenton
             this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
             //Caso token seja invalido, reenvia rota para login
             Utils.tratarErro({ router: this.router, response: erro });
           });
@@ -206,8 +219,8 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });
