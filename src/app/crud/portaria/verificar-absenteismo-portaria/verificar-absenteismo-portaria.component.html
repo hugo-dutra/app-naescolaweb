@@ -61,24 +61,24 @@
           <div class="card mb-1">
             <div class="card-body bg-light text-dark rounded">
               <div class="row">
-                <div class="mt-2 col-sm-12 col-lg-6">
-                  <div class="bg-primary p-1 rounded">
+                <div class="mt-2 col-sm-12 col-lg-4">
+                  <div class="p-1 rounded">
                     <img class="img-fluid rounded-circle" width="75" height="75"
                       [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                       alt="foto do estudante">
                   </div>
                 </div>
-                <div class="mt-2 col-sm-12 col-lg-6 text-small capitalize">
+                <div class="mt-2 col-sm-12 col-lg-8 text-small capitalize">
                   {{estudante.nome}}
                 </div>
               </div>
               <div *ngIf="estudante.etapa!='' && estudante.etapa!=undefined" class="row">
-                <div class="mt-2 col-sm-12 col-lg-6 text-center">
+                <div class="mt-2 col-sm-12 col-lg-8 text-center">
                   {{estudante.etapa}} {{estudante.serie}} {{estudante.turma}} {{estudante.turno}}
                 </div>
               </div>
             </div>
-            <div class="card-footer bg-primary">
+            <div class="card-footer bg-dark">
               <div class="row">
                 <div class="mt-2 col-sm-12 col-lg-4 text-light">
                   <b>{{estudante.presencas}} presenças</b>
@@ -90,7 +90,8 @@
                   <!-- Botão -->
                   <div class="float-right">
                     <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.id">
-                      <div class="btn btn-sm btn-primary text-light" (click)="mostrarEstatisticaFrequencia(estudante)">
+                      <div class="btn btn-sm btn-outline-dark border-light text-light"
+                        (click)="mostrarEstatisticaFrequencia(estudante)">
                         <i class="fa fa-2x fa-pie-chart"></i></div>
                     </a>
                   </div>

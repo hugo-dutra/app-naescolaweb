@@ -113,7 +113,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
         data_fim)
         .toPromise()
         .then((response: Response) => {
-          this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(response));
+          //this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(response));
           const ocorrenciasRecebias = Object.values(response);
           contaRequisicoes++;
           if (!this.verificarOcorrenciaEstudanteArrayOcorrencias(ocorrenciasRecebias)) {
@@ -168,36 +168,42 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
           case "menor": {
             if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia["tod_id"] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
           case "menor ou igual": {
             if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia["tod_id"] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
           case "igual": {
             if (quantidadeOcorrenciasDeTipo == valor_referencia && ocorrencia["tod_id"] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
           case "maior ou igual": {
             if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia["tod_id"] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
           case "maior": {
             if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia["tod_id"] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
           case "diferente": {
             if (quantidadeOcorrenciasDeTipo != valor_referencia && ocorrencia["tod_id"] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
