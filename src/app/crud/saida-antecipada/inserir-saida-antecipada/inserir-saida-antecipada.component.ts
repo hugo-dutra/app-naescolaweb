@@ -226,6 +226,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
               this.saidaAntecipadaRecorrente.sabado,
             ).then(retorno => {
               this.feedbackUsuario = undefined;
+              this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
             }).catch((erro: Response) => {
               //Mostra modal
               this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -237,8 +238,6 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
               Utils.tratarErro({ router: this.router, response: erro });
               this.feedbackUsuario = undefined;
             })
-
-
           }).catch(() => {
             this.feedbackUsuario = undefined;
           });
@@ -267,6 +266,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
               horaSaida
             ).then((retorno: Response) => {
               this.feedbackUsuario = undefined;
+              this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
             }).catch((erro: Response) => {
               //Mostra modal
               this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

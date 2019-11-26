@@ -158,6 +158,7 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
+        this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
         this.limparMatrizesComponentes();
       }).catch((erro: Response) => {
         //Mostra modal
@@ -184,6 +185,7 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
+        this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
         this.limparMatrizesComponentes();
       }).catch((erro: Response) => {
         //Mostra modal

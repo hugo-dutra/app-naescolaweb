@@ -91,7 +91,7 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
   }
 
   public concederPermissaoIndividual(usr_id: string): void {
-    this.feedbackUsuario = 'Revogando permissões para tirar fotos, aguarde...';
+    this.feedbackUsuario = 'Concedendo permissões para tirar fotos, aguarde...';
     this.firebaseService.concederUsuarioIndividual(this.inep, usr_id).then(() => {
       this.feedbackUsuario = undefined;
     })

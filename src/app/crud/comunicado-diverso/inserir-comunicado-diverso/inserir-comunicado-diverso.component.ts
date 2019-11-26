@@ -423,6 +423,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
 
     this.comunicadoDiversoService.inserirMuitos(comunicadosDiversos).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
+      this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

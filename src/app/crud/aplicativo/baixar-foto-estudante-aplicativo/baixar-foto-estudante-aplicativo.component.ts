@@ -135,6 +135,9 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
         parteArray++;
         this.feedbackUsuario = 'Gravando coleção de estudantes, pode demorar um pouco, aguarde...'
         this.firebaseService.gravarListagemEstudantesAplicativoAdministrativoBatch(pedaco).then(() => {
+          if (this.feedbackUsuario != undefined) {
+            this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
+          }
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
           this.mostrarAlertaErro(erro);

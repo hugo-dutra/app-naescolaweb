@@ -335,18 +335,20 @@ export class ListarPortariaComponent implements OnInit {
       while (estudantes.length) {
         const pedaco = estudantes.splice(0, tamanhoDocumento);
         this.firebaseService.gravarListagemEstudantesPortariaDocumentoUnico(pedaco, codigoPortaria, parteArray).then(() => {
-          this.feedbackUsuario = undefined;
-        })
-          .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-          });
+          if (this.feedbackUsuario != undefined) {
+            this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
+            this.feedbackUsuario = undefined;
+          }
+        }).catch((erro: Response) => {
+          //Mostra modal
+          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+          //registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Caso token seja invalido, reenvia rota para login
+          Utils.tratarErro({ router: this.router, response: erro });
+        });
         parteArray++;
       }
     })
