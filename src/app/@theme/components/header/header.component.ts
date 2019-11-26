@@ -175,8 +175,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public limparDadosLocalStorage(): void {
-    this.router.navigate(['/logar']);
-    window.location.reload();
     localStorage.removeItem("perm");
     localStorage.removeItem("dados");
     localStorage.removeItem("escola");
@@ -185,11 +183,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     localStorage.removeItem("dados_escola");
     localStorage.removeItem("esc_id");
     localStorage.removeItem("token");
-    /*
-    setTimeout(() => {
-      this.router.navigate(['/']);
-      window.location.reload();
-    }, 1000); */
+    this.router.navigate(['']);
+    window.location.reload();
   }
 
   public carregarDadosUsuario(): void {

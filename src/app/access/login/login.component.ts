@@ -54,14 +54,13 @@ export class LoginComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.limparSenha();
-      })
-      .catch((erro: Response) => {
+      }).catch((erro: Response) => {
         this.limparSenha();
-        if (!CONSTANTES.PRODUCAO) {
+        /* if (!CONSTANTES.PRODUCAO) {
           console.log(CONSTANTES.DEF_MSG_ERRO);
         } else {
           console.log(erro);
-        }
+        } */
       });
   }
 
@@ -72,6 +71,12 @@ export class LoginComponent implements OnInit {
     }
     if ((<HTMLInputElement>event.target).name == "senha") {
       this.senha = (<HTMLInputElement>event.target).value;
+    }
+  }
+
+  public chamarLogin(event: KeyboardEvent): void {
+    if (event.keyCode == 13) {
+      this.logar();
     }
   }
 
@@ -86,6 +91,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("escola", Utils.encriptBtoA(nomeEscola, CONSTANTES.PASSO_CRIPT));
       }
     }
+    document.getElementById('senha').focus();
   }
 
   public limparDadosLogin(): void {
@@ -122,8 +128,7 @@ export class LoginComponent implements OnInit {
           this.mensagemAlerta = "";
         }
         this.feedbackUsuario = undefined;
-      })
-      .catch((erro: Response) => {
+      }).catch((erro: Response) => {
         //Utils.tratarErro({ router: this.router, response: erro });
         this.mensagemAlerta = "";
         if (!CONSTANTES.PRODUCAO) {

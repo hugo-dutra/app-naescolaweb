@@ -33,7 +33,6 @@ const verificarPermissaoAcesso = (link: any): boolean => {
 try {
   localStorageGrupos = Object.values(Utils.verificarGrupos());
   localStorageMenus = Object.values(Utils.verificarMenus());
-
   for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
     if (verificarPermissaoAcesso(localStorageMenus[idxMenu])) {
       adicionarLinkAcessado(localStorageMenus[idxMenu]);
@@ -42,7 +41,6 @@ try {
 
 
   for (let idxGrupo = 0; idxGrupo < localStorageGrupos.length; idxGrupo++) {
-
     if (localStorageGrupos[idxGrupo]['modulo'] == 'cadastro') {
       let menuItem = new NbMenuItem();
       menuItem.title = localStorageGrupos[idxGrupo]['texto'];

@@ -143,16 +143,20 @@ export class Utils {
 
   public static encriptBtoA(string: string, profundidade: number): string {
     let retorno = string;
-    for (let i = 0; i < profundidade; i++) {
-      retorno = btoa(unescape(encodeURIComponent(retorno)));
+    if (string != null && string != undefined && string != '') {
+      for (let i = 0; i < profundidade; i++) {
+        retorno = btoa(unescape(encodeURIComponent(retorno)));
+      }
     }
     return retorno;
   }
 
   public static decriptAtoB(string: string, profundidade: number): string {
     let retorno = string;
-    for (let i = 0; i < profundidade; i++) {
-      retorno = decodeURIComponent(escape(window.atob(retorno)));
+    if (string != null && string != undefined && string != '') {
+      for (let i = 0; i < profundidade; i++) {
+        retorno = decodeURIComponent(escape(window.atob(retorno)));
+      }
     }
     return retorno;
   }

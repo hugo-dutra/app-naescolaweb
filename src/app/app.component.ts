@@ -73,26 +73,32 @@ export class AppComponent implements OnInit {
 
   public carregarDados(): void {
     this.anoAtual = (new Date()).getFullYear();
-    this.dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
-    this.dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
-    this.esc_id = parseInt(this.dados_escola['id'], 10);
-    this.usr_id = parseInt(this.dados_usuario['id'], 10);
+    const tempDadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
+    const tempDadosUsuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT));
+
+    if (tempDadosEscola != null && tempDadosEscola != undefined && tempDadosUsuario != null && tempDadosUsuario != undefined) {
+      this.dados_escola = tempDadosEscola[0];
+      this.dados_usuario = tempDadosUsuario[0];
+      this.esc_id = parseInt(this.dados_escola['id'], 10);
+      this.usr_id = parseInt(this.dados_usuario['id'], 10);
+    }
   }
 
   public listarRegrasAlertasUsuario(): void {
-    this.alertaService.listarRegraAlertaUsuario(this.usr_id, this.esc_id).toPromise().then((response: Response) => {
-      this.arrayOfRegrasAlertasUsuario = Object.values(response)
-      this.listarAlertasOcorrencia();
-    }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-    })
+    if (this.usr_id != null && this.usr_id != undefined && this.esc_id != null && this.esc_id != undefined) {
+      this.alertaService.listarRegraAlertaUsuario(this.usr_id, this.esc_id).toPromise().then((response: Response) => {
+        this.arrayOfRegrasAlertasUsuario = Object.values(response)
+        this.listarAlertasOcorrencia();
+      }).catch((erro: Response) => {
+        //Mostra modal
+        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+        //registra log de erro no firebase usando serviço singlenton
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Caso token seja invalido, reenvia rota para login
+        Utils.tratarErro({ router: this.router, response: erro });
+      })
+    }
   }
 
   public listarAlertasOcorrencia(): void {

@@ -15,18 +15,19 @@
       </div>
       <br>
       <div class="input-group">
+        <select name="dropDownEscolas" id="dropDownEscolas" class="form-control" (change)="selecionarEscola($event)">
+          <option value="">selecione uma escola</option>
+          <option *ngFor="let escola of escolas" [value]="escola.id"> {{ escola.nome }}</option>
+        </select>
+      </div>
+      <br>
+      <div class="input-group">
         <div class="input-group-prepend">
           <div class="input-group-text" id="btnGroupAddon"><i class="fa fa-sm fa-key"></i></div>
         </div>
         <input type="password" class="form-control" id="senha" placeholder="senha" aria-label="Input group example"
-          aria-describedby="btnGroupAddon" (input)="carregarValor($event)" name="senha">
-      </div>
-      <br>
-      <div class="input-group">
-        <select [name]="escolas" class="form-control" (change)="selecionarEscola($event)">
-          <option value="">selecione uma escola</option>
-          <option *ngFor="let escola of escolas" [value]="escola.id"> {{ escola.nome }}</option>
-        </select>
+          aria-describedby="btnGroupAddon" (keypress)="chamarLogin($event)" (input)="carregarValor($event)"
+          name="senha">
       </div>
       <br>
       <input type="button" class="form-control btn btn-primary" value="Login" (click)="logar()">
