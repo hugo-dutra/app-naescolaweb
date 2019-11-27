@@ -4,7 +4,7 @@
     <a class="nav-link active" id="quantidade-tab" data-toggle="tab" href="#periodo" role="tab" aria-controls="home"
       aria-selected="true">Ocorrência por período</a>
   </li>
-  <li class="nav-item">
+  <li class="nav-item" (click)="mostrarOcorrenciasPorTurma()">
     <a class="nav-link" id="turma-tab" data-toggle="tab" href="#turma" role="tab" aria-controls="profile"
       aria-selected="false">Ocorrência
       por turma</a>
@@ -13,7 +13,7 @@
     <a class="nav-link" id="estudante-tab" data-toggle="tab" href="#estudante" role="tab" aria-controls="messages"
       aria-selected="false">Ocorrências por estudante</a>
   </li>
-  <li class="nav-item">
+  <li class="nav-item" (click)="mostrarOcorrenciasPorTipo()">
     <a class="nav-link" id="tipo-ocorrencia-tab" data-toggle="tab" href="#tipo-ocorrencia" role="tab"
       aria-controls="messages" aria-selected="false">Ocorrências por tipo</a>
   </li>
@@ -150,14 +150,14 @@
                 placeholder="Data final" aria-describedby="helpIdFinal">
               <small id="helpIdFinalEstudante" class="text-muted">Data final da consulta</small>
             </div>
-            <div class="col-3">
+            <div class="col-4">
               <select name="turmas" id="turmas" class="form-control" (change)="gravarTurmaId($event)">
                 <option value="" disabled="disabled">selecione uma turma</option>
                 <option *ngFor="let turma of turmas" [value]="turma.id">{{ turma.serie }} {{ turma.etapa }} {{
                     turma.nome }} - {{ turma.turno }} </option>
               </select>
             </div>
-            <div class="col-2"></div>
+            <div class="col-1"></div>
             <div class="float-right col-2">
               <button class="btn btn-primary"><i class="fa fa-lg fa-search"
                   (click)="pesquisarQuantidadeOcorrenciaEstudante()"> Pesquisar</i></button>

@@ -107,6 +107,12 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
 
     this.dataInicioQuantidadeTipoOcorrencias = this.data_inicio_padrao;
     this.dataFimQuantidadeTipoOcorrencias = this.data_fim_padrao;
+
+    this.pesquisarQuantidadeOcorrenciaPeriodo();
+  }
+
+  public mostrarOcorrenciasPorTurma(): void {
+    this.pesquisarQuantidadeOcorrenciaTurma();
   }
 
   //***********************************QUANTIDADE DE OCORRÊNCIAS POR PERÍODO************************************/
@@ -243,6 +249,9 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
           ]
         },
         options: {
+          onClick: (e, items) => {
+            this.selecionarTurmaComboBox(items[0]._chart.config.data.labels[items[0]._index]);
+          },
           responsive: true,
           scales: {
             yAxes: [
@@ -273,11 +282,34 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
                 return "rgb(255,255, 255)";
               }
             }
-          }
+          },
+
         }
       }
     );
   }
+
+  public selecionarTurmaComboBox(turmaClicada: string): void {
+    var select = <HTMLSelectElement>document.getElementById('turmas');
+    for (var i = 0; i < select.options.length; i++) {
+      const textoSelect = select.options[i].text;
+      if (textoSelect.includes(turmaClicada)) {
+        select.selectedIndex = i;
+        this.trm_id = parseInt(select.options[i].value);
+        break;
+      }
+    }
+    this.pesquisarQuantidadeOcorrenciaEstudante();
+  }
+
+  public ativarTabOcorrenciasPorEstudante(): void {
+    document.getElementById('turma').classList.remove('active');
+    document.getElementById('turma-tab').classList.remove('active');
+    document.getElementById('estudante').classList.add('active');
+    document.getElementById('estudante-tab').classList.add('active');
+    document.getElementById('estudante').classList.add('show');
+  }
+
 
   public gravarDataInicioTurma(event: Event): void {
     this.dataInicioQuantidadeOcorrenciasTurma = (<HTMLInputElement>(
@@ -484,6 +516,7 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
             this.quantidadeOcorrenciasEstudantePeriodo[i]["quantidade"]
           );
         }
+        this.ativarTabOcorrenciasPorEstudante();
         this.chartHistoricoQuantidadeOcorrenciasEstudante();
       })
       .catch((erro: Response) => {
@@ -500,6 +533,11 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
   }
 
   //*******************************QUANTIDADE DE OCORRÊNCIAS POR TIPO E PERIODO***************************************//
+
+  public mostrarOcorrenciasPorTipo(): void {
+    this.pesquisarQuantidadeTipoOcorrencia();
+  }
+
   public chartQuantidadeOcorrenciasTipo(): void {
     this.lineChartTipoOcorrenciaPeriodo = new Chart(
       "lineChartTipoOcorrenciaPeriodo",
