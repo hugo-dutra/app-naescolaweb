@@ -108,14 +108,15 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
     modeloPlanilhaImportareEstudantes.worksheets[0].getCell(1, 1).alignment = { vertical: 'middle', horizontal: 'center' };
 
     //Monta a estrutura para adicionar estudantes as turmas da escola para o ano atual
-    const dadosDoPedido = ['Validade', 'Escola', 'Municipio', 'UF', 'Etapa', 'Série', 'Turno', 'Matrícula', 'Nome', 'Nascimento', 'Turma', 'Modelo', 'Foto', 'Pendência']
+    const dadosDoPedido = ['Validade', 'Escola', 'Municipio', 'UF', 'Etapa', 'Série', 'Turno', 'Código', 'Nome', 'Nascimento', 'Turma', 'Modelo', 'Foto', 'Pendência']
     modeloPlanilhaImportareEstudantes.worksheets[0].addRows([dadosDoPedido]);
 
     pedidos.forEach(pedido => {
+      debugger;
       const dadosPreenchimento = [
         pedido['validade'], pedido['escola'], pedido['municipio'],
         pedido['UF'], pedido['etapa'], pedido['serie'],
-        pedido['turno'], pedido['matricula'], pedido['nome'],
+        pedido['turno'], pedido['est_id'], pedido['nome'],
         pedido['nascimento'], pedido['turma'], pedido['modelo'],
         pedido['foto'], pedido['pendencia']
       ]

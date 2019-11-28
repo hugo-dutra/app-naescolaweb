@@ -82,8 +82,10 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
           .toPromise()
           .then(() => {
             this.sincronizarDadosNoAplicativoAdministrativo();
+
           })
       }).catch((erro: Response) => {
+        debugger;
         this.mostrarAlertaErro(erro);
       })
   }
@@ -114,14 +116,14 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
         const etapa = estudante['etapa'];
         const foto = { datePicture: new Date(dataFoto), url: estudante['foto'], userId: estudante['usr_id_foto'], userName: estudante['usuario'] }
         const inep = estudante['inep'];
-        const matricula = estudante['matricula'];
+        const est_id = estudante['est_id'];
         const nome = estudante['nome'];
         const serie = estudante['serie'];
         const telefoneEscola = telefone;
         const turma = estudante['turma'];
         const turno = estudante['turno'];
-        arrayDeEstudantesAplicativoEstruturado.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
-        arrayDeEstudantesAplicativo.push({ escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
+        arrayDeEstudantesAplicativoEstruturado.push({ escola, etapa, foto, inep, est_id, nome, serie, telefoneEscola, turma, turno });
+        arrayDeEstudantesAplicativo.push({ escola, etapa, foto, inep, est_id, nome, serie, telefoneEscola, turma, turno });
       })
       this.feedbackUsuario = 'Gravando documento para carga única, aguarde...';
       let parteArray = 0;
@@ -159,5 +161,4 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
     Utils.tratarErro({ router: this.router, response: erro });
     this.feedbackUsuario = undefined;
   }
-
 }

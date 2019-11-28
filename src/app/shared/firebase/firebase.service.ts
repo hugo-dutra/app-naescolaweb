@@ -13,6 +13,7 @@ import { RequestOptions } from 'http';
 import { Portaria } from '../../crud/portaria/portaria.model';
 import { CronogramaPortaria } from '../../crud/portaria/cronograma-portaria.model';
 import { PortariaFirebase } from '../../crud/portaria/portaria.firebase.model';
+import { reject } from 'q';
 
 @Injectable()
 export class FirebaseService {
@@ -169,16 +170,16 @@ export class FirebaseService {
   /**
    * Lista os documentos para determinada coleção
    * @param colecao Coleção de documentos
-   * @param matricula Matrícula do estudante
+   * @param est_id Matrícula do estudante
    * @param inep Código ine da escola
    */
-  public listarStatusEntregaMensagensColecao(colecao: string, matricula: string, inep: string): Promise<any> {
+  public listarStatusEntregaMensagensColecao(colecao: string, est_id: string, inep: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')
         .doc(inep)
         .collection('matriculados')
-        .doc(matricula)
+        .doc(est_id)
         .collection(colecao)
         .where("leitura", ">=", 1)
         .get()
@@ -312,24 +313,26 @@ export class FirebaseService {
   public gravarListagemEstudantesAplicativoAdministrativoBatch(estudantes: Object[]): Promise<any> {
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
     const inepEscola = dadosEscola["inep"];
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       let batch = this.firestore.batch();
       estudantes.forEach((estudante: Object) => {
         const escola = estudante['escola'];
         const etapa = estudante['etapa'];
         const foto = estudante['foto'];
         const inep = estudante['inep'];
-        const matricula = estudante['matricula'];
+        const est_id: string = estudante['est_id'].toString();
         const nome = estudante['nome'];
         const serie = estudante['serie'];
         const telefoneEscola = estudante['telefoneEscola'];
         const turma = estudante['turma'];
         const turno = estudante['turno'];
-        let referenciaEstudante = this.firestore.collection('naescolaApp').doc(inepEscola).collection('matriculados').doc(estudante['matricula'])
-        batch.set(referenciaEstudante, { escola, etapa, foto, inep, matricula, nome, serie, telefoneEscola, turma, turno });
+        let referenciaEstudante = this.firestore.collection('naescolaApp').doc(inepEscola).collection('matriculados').doc(est_id)
+        batch.set(referenciaEstudante, { escola, etapa, foto, inep, est_id, nome, serie, telefoneEscola, turma, turno });
       })
       batch.commit().then(() => {
         resolve('ok');
+      }).catch((reason: any) => {
+        reject(reason)
       })
     })
   }
@@ -342,7 +345,7 @@ export class FirebaseService {
         .collection('naescolaApp')
         .doc(inep)
         .collection('matriculados')
-        .doc(estudante['matricula'])
+        .doc(estudante['est_id'])
         .set({ estudante }).then(() => {
           resolve('ok')
         })
@@ -400,7 +403,7 @@ export class FirebaseService {
         .collection('naescolaApp')
         .doc(messageFirebase.cod_inep)
         .collection('matriculados')
-        .doc(messageFirebase.matricula)
+        .doc(messageFirebase.est_id.toString())
         .collection('advertencias')
         .add({ data: messageFirebase.data, hora: messageFirebase.hora, categoria: messageFirebase.tipo_msg, leitura: 0 }).then((retorno) => {
           resolve(retorno);
@@ -420,7 +423,7 @@ export class FirebaseService {
         .collection('naescolaApp')
         .doc(messageFirebase.cod_inep)
         .collection('matriculados')
-        .doc(messageFirebase.matricula)
+        .doc(messageFirebase.est_id)
         .collection('comunicados')
         .add({
           data: messageFirebase.data,
@@ -441,7 +444,7 @@ export class FirebaseService {
   }
 
   public gravarMensagemFirebaseFirestore(messageFirebase: MessageFirebase): void {
-    this.firestore.collection(messageFirebase.cod_inep).doc(messageFirebase.matricula).collection("mensagens").add(messageFirebase).then((retorno) => {
+    this.firestore.collection(messageFirebase.cod_inep).doc(messageFirebase.est_id).collection("mensagens").add(messageFirebase).then((retorno) => {
       console.log({ retorno });
     })
     let retorno = firebase.firestore().collection(messageFirebase.cod_inep).onSnapshot(() => {
@@ -510,19 +513,19 @@ export class FirebaseService {
   /**
    * Grava estudantes para serem carregados pelo aplicativo dos pais
    * @param inep
-   * @param matricula
+   * @param est_id
    * @param foto
    * @param nome
    * @param serie
    * @param turma
    * @param turno
    */
-  public gravarEstudanteFirebaseFirestoreAplicativo(inep: string, matricula: string, foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
+  public gravarEstudanteFirebaseFirestoreAplicativo(inep: string, est_id: string, foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
     return this.firestore
       .collection('naescolaApp')
       .doc(inep)
       .collection('matriculados')
-      .doc(matricula)
+      .doc(est_id)
       .set({ foto, nome, serie, turma, turno, etapa })
   }
 
@@ -572,11 +575,11 @@ export class FirebaseService {
   /**
    *Exclui matriculado INDIVIDUAL de acordo com a matricula
    * @param codigo_portaria
-   * @param matricula
+   * @param est_id
    * @memberof FirebaseService
    */
-  public apagarMatriculadoFirebaseFirestorePortaria = async (codigo_portaria: string, matricula: string) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('matriculados').doc(matricula).delete().then(() => {
+  public apagarMatriculadoFirebaseFirestorePortaria = async (codigo_portaria: string, est_id: string) => new Promise((resolve) => {
+    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('matriculados').doc(est_id).delete().then(() => {
       resolve('sucesso');
     });
   });
@@ -624,8 +627,8 @@ export class FirebaseService {
    *
    * @memberof FirebaseService
    */
-  public apagarSaidaAntecipadaEventual = async (codigo_portaria: string, matricula: string) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('saida_antecipada_eventual').doc(matricula).delete().then(() => {
+  public apagarSaidaAntecipadaEventual = async (codigo_portaria: string, est_id: string) => new Promise((resolve) => {
+    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('saida_antecipada_eventual').doc(est_id).delete().then(() => {
       resolve('sucesso');
     });
   });
@@ -642,8 +645,8 @@ export class FirebaseService {
       let contaExcluiMatriculados = 0;
       if (matriculados.length > 0) {
         matriculados.forEach((matriculado) => {
-          const matricula = matriculado.id;
-          this.apagarMatriculadoFirebaseFirestorePortaria(codigo_portaria, matricula).then(() => {
+          const est_id = matriculado.id;
+          this.apagarMatriculadoFirebaseFirestorePortaria(codigo_portaria, est_id).then(() => {
             contaExcluiMatriculados += 1
             if (contaExcluiMatriculados == matriculados.length) {
               resolve('ok');
@@ -704,7 +707,7 @@ export class FirebaseService {
   /**
    *  Grava lista de estudantes para serem usados no aplicativo
    * @param codigoPortaria
-   * @param matricula
+   * @param est_id
    * @param foto
    * @param nome
    * @param serie
@@ -712,13 +715,13 @@ export class FirebaseService {
    * @param turno
    * @param etapa
    */
-  public gravarEstudanteFirebaseFirestorePortaria(codigoPortaria: string, matricula: string, foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
+  public gravarEstudanteFirebaseFirestorePortaria(codigoPortaria: string, est_id: string, foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
     return new Promise((resolve) => {
       this.firestore
         .collection('portariaWeb')
         .doc(codigoPortaria)
         .collection('matriculados')
-        .doc(matricula)
+        .doc(est_id)
         .set({ foto, nome, serie, turma, turno, etapa })
         .then(() => {
           resolve('ok');
@@ -733,13 +736,13 @@ export class FirebaseService {
    * @param data
    * @param hora
    */
-  public gravarSaidaAntecipadaEventual(codigoPortaria: string, matricula: string, data: string, hora: string): Promise<any> {
+  public gravarSaidaAntecipadaEventual(codigoPortaria: string, est_id: string, data: string, hora: string): Promise<any> {
     return new Promise((resolve) => {
       this.firestore
         .collection('portariaWeb')
         .doc(codigoPortaria)
         .collection('saida_antecipada_eventual')
-        .doc(matricula)
+        .doc(est_id)
         .set({ data, hora }).then(() => {
           resolve('ok');
         })
@@ -774,9 +777,9 @@ export class FirebaseService {
    *
    * @memberof FirebaseService
    */
-  public gravarSaidaAntecipadaEventualFirebaseFirestore = async (portarias: string[], matriculas: string[], dataSaida: string, horaSaida: string) => new Promise((resolve) => {
+  public gravarSaidaAntecipadaEventualFirebaseFirestore = async (portarias: string[], est_ids: string[], dataSaida: string, horaSaida: string) => new Promise((resolve) => {
     const gravarSaidaAntecipadaEventual = firebase.functions().httpsCallable('gravarSaidaAntecipadaEventual');
-    gravarSaidaAntecipadaEventual({ portarias: portarias, matriculas: matriculas, dataSaida: dataSaida, horaSaida: horaSaida }).then(retorno => {
+    gravarSaidaAntecipadaEventual({ portarias: portarias, est_ids: est_ids, dataSaida: dataSaida, horaSaida: horaSaida }).then(retorno => {
       resolve(retorno)
     })
   })
@@ -788,7 +791,7 @@ export class FirebaseService {
    */
   public gravarSaidaAntecipadaRecorrenteFirebaseFirestore = async (
     portarias: string[],
-    matriculas: string[],
+    est_ids: string[],
     dataSaida: string,
     horaSaida: string,
     segunda: number,
@@ -801,7 +804,7 @@ export class FirebaseService {
     const gravarSaidaAntecipadaRecorrente = firebase.functions().httpsCallable('gravarSaidaAntecipadaRecorrente');
     gravarSaidaAntecipadaRecorrente({
       portarias: portarias,
-      matriculas: matriculas,
+      est_ids: est_ids,
       dataSaida: dataSaida,
       horaSaida: horaSaida,
       segunda: segunda,

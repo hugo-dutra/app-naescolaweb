@@ -100,8 +100,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
 
@@ -138,13 +138,12 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         let cartaoAcessoImpressao = new CartaoAcessoImpressao();
         cartaoAcessoImpressao.etapa = etapa;
         cartaoAcessoImpressao.foto = elem["foto"];
-        cartaoAcessoImpressao.id = elem["id"];
+        cartaoAcessoImpressao.est_id = elem["id"];
         cartaoAcessoImpressao.logoEscola = "";
         cartaoAcessoImpressao.logoRedeEnsino = "";
-        cartaoAcessoImpressao.matricula = elem["matricula"];
         cartaoAcessoImpressao.nome = elem["nome"];
         cartaoAcessoImpressao.serie = serie;
-        cartaoAcessoImpressao.stringCodigoBarras = Utils.gerarDigitosCodigoDeBarras(cartaoAcessoImpressao.matricula, this.anoAtual);
+        cartaoAcessoImpressao.stringCodigoBarras = Utils.gerarDigitosCodigoDeBarras(cartaoAcessoImpressao.est_id.toString(), this.anoAtual);
         cartaoAcessoImpressao.turma = turma;
         cartaoAcessoImpressao.turno = turno;
         this.arrayOfEstudantesCartaoConfeccionado.push(cartaoAcessoImpressao);
@@ -154,8 +153,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         this.feedbackUsuario = "Ajustando layouts, aguarde...";
         setTimeout(() => {
           this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
-            document.getElementById(`ngx_Barcode_${elem["id"]}`).parentElement.appendChild(document.getElementById(`ngx_Barcode_${elem["id"]}`).children[0].children[0]);
-            document.getElementById(`ngx_Barcode_${elem["id"]}`).remove()
+            document.getElementById(`ngx_Barcode_${elem["est_id"]}`).parentElement.appendChild(document.getElementById(`ngx_Barcode_${elem["est_id"]}`).children[0].children[0]);
+            document.getElementById(`ngx_Barcode_${elem["est_id"]}`).remove()
           })
           this.feedbackUsuario = undefined;
         }, 2000);
@@ -166,8 +165,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
 
@@ -203,7 +202,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         let quantidadeCartoesPorPagina = 4;
 
         this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
-          html2canvas(document.querySelector(`#frente_verso${elem["id"]}`), { useCORS: true }).then(canvas => {
+          html2canvas(document.querySelector(`#frente_verso${elem["est_id"]}`), { useCORS: true }).then(canvas => {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem["nome"]}`;
 
 
@@ -224,7 +223,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             }
 
             var imgData = canvas.toDataURL('image/jpeg');
-            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["id"]);
+            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["est_id"]);
 
             contaCartao += 1
             if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
@@ -264,7 +263,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         let quantidadeCartoesPorPagina = 24;
 
         this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
-          html2canvas(document.querySelector(`#etiqueta_${elem["id"]}`), { useCORS: true }).then(canvas => {
+          html2canvas(document.querySelector(`#etiqueta_${elem["est_id"]}`), { useCORS: true }).then(canvas => {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem["nome"]}`;
 
             if (contaCartao % quantidadeColunas == 0 && contaCartao > 0) {
@@ -284,7 +283,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             }
 
             var imgData = canvas.toDataURL('image/jpeg');
-            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["id"]);
+            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["est_id"]);
 
             contaCartao += 1
             if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
@@ -322,7 +321,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         let contaCartao = 0;
 
         this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
-          html2canvas(document.querySelector(`#cartao_${elem["id"]}`), { useCORS: true }).then(canvas => {
+          html2canvas(document.querySelector(`#cartao_${elem["est_id"]}`), { useCORS: true }).then(canvas => {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem["nome"]}`;
 
             if (contaCartao % 2 == 0 && contaCartao > 0) {
@@ -340,7 +339,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             }
 
             var imgData = canvas.toDataURL('image/jpeg');
-            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["id"]);
+            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["est_id"]);
 
             contaCartao += 1
             if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {

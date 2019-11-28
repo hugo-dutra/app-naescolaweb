@@ -1,6 +1,5 @@
 export class CartaoAcessoImpressao {
-  public id: number;
-  public matricula: string;
+  public est_id: number;
   public nome: string;
   public stringCodigoBarras: string;
   public etapa: string;

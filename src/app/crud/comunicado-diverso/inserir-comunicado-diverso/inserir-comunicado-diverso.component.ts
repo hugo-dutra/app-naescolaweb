@@ -315,7 +315,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           messageFirebase.data_versao = Utils.now();
           messageFirebase.firebase_dbkey = "";
           messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
-          messageFirebase.id = this.arrayOfEstudantes[i].id.toString();
+          messageFirebase.est_id = this.arrayOfEstudantes[i].id.toString();
           messageFirebase.matricula = matricula;
           messageFirebase.msg = `${this.mensagem}`;
           messageFirebase.msg_tag = "0";
@@ -388,7 +388,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     this.comunicadoDiverso.hora = messageFirebase.hora;
     this.comunicadoDiverso.mensagem = messageFirebase.msg;
     this.comunicadoDiverso.status_comunicado = 0;
-    this.comunicadoDiverso.est_id = parseInt(messageFirebase.id);
+    this.comunicadoDiverso.est_id = parseInt(messageFirebase.est_id);
     this.comunicadoDiverso.usr_id = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id;
     this.comunicadoDiversoService.inserir(this.comunicadoDiverso).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
@@ -412,7 +412,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
       let comunicadoDiverso = new ComunicadoDiverso();
       comunicadoDiverso.assunto = this.arrayDeMensagens[i].titulo;
       comunicadoDiverso.data_comunicado = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
-      comunicadoDiverso.est_id = parseInt(this.arrayDeMensagens[i].id);
+      comunicadoDiverso.est_id = parseInt(this.arrayDeMensagens[i].est_id);
       comunicadoDiverso.fbdbkey = this.arrayDeMensagens[i].firebase_dbkey;
       comunicadoDiverso.hora = this.arrayDeMensagens[i].hora;
       comunicadoDiverso.mensagem = this.arrayDeMensagens[i].msg;

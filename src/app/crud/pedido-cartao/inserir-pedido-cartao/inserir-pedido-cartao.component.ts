@@ -373,6 +373,9 @@ export class InserirPedidoCartaoComponent implements OnInit {
     pedidoCartoes.itensPedido = this.arrayOfItensPedido;
     pedidoCartoes.total = this.totalPedido;
     pedidoCartoes.quantidade = this.arrayOfItensPedido.length;
+
+    console.log(pedidoCartoes);
+
     if (this.arrayOfItensPedido.length > 0) {
       this.pedidoCartaoService
         .inserir(pedidoCartoes)

@@ -176,7 +176,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.data_versao = Utils.now();
         messageFirebase.firebase_dbkey = "";
         messageFirebase.hora = this.horaOcorrencia;  //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
-        messageFirebase.id = "";
+        messageFirebase.est_id = est_id.toString();
         messageFirebase.matricula = matricula;
         messageFirebase.msg = `${message}`;
         messageFirebase.msg_tag = "0";
@@ -208,7 +208,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.firebase_dbkey = response["id"];
       }).then(() => {
         this.feedbackUsuario = undefined;
-        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.matricula}`;
+        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
         const tituloPush = "Comunicado";
         this.EnviarPushComunicadoSimples(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i, messageFirebase);
       }).catch((erro: Response) => {
@@ -228,9 +228,9 @@ export class InserirOcorrenciaComponent implements OnInit {
   public montarMensagensNovasOcorrencias(): void {
     let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
     let inep = dados_escola[0]["inep"];
-    let telefone = dados_escola[0]["telefone"];
     this.arrayDeMensagensSimples = [];
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
+      debugger;
       let matricula = this.arrayOfMatriculasEstudantes[i];
       let nome = this.arrayOfNomesEstudantes[i];
       let message = `${this.tipoOcorrenciaSimples}.`;
@@ -240,7 +240,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       messageFirebase.data_versao = Utils.now();
       messageFirebase.firebase_dbkey = "";
       messageFirebase.hora = this.horaOcorrencia //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
-      messageFirebase.id = this.arrayOfEstudantes[i].toString();
+      messageFirebase.est_id = this.arrayOfEstudantes[i].toString();
       messageFirebase.matricula = matricula;
       messageFirebase.msg = `Assunto: Ocorrência disciplinar Ocorrência: ${message}`;
       messageFirebase.msg_tag = "0";
@@ -256,12 +256,13 @@ export class InserirOcorrenciaComponent implements OnInit {
   public gravarOcorrenciaDisciplinarSimples(messagesFirebase: Array<MessageFirebase>): void {
     this.feedbackUsuario = "Gravando ocorrências, aguarde...";
     for (let i = 0; i < messagesFirebase.length; i++) {
+      debugger;
       let messageFirebase = messagesFirebase[i];
       this.firebaseService.gravarOcorrenciaDisciplinarFirebaseFirestore(messageFirebase).then((response: Response) => {
         messageFirebase.firebase_dbkey = response["id"];
       }).then(() => {
         this.feedbackUsuario = undefined;
-        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.matricula}`;
+        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id.toString()}`;
         const tituloPush = "Ocorrência disciplinar";
         this.EnviarPushOcorrenciaSimples(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i);
       }).catch((erro: Response) => {
@@ -303,7 +304,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.data_versao = Utils.now();
         messageFirebase.firebase_dbkey = "";
         messageFirebase.hora = this.horaOcorrencia;// ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
-        messageFirebase.id = est_id.toString();
+        messageFirebase.est_id = est_id.toString();
         messageFirebase.matricula = matricula;
         messageFirebase.msg = `${message}`;
         messageFirebase.msg_tag = "0";
@@ -336,7 +337,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.firebase_dbkey = response["id"];
       }).then(() => {
         this.feedbackUsuario = undefined;
-        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.matricula}`;
+        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
         const tituloPush = "Comunicado importante";
         this.EnviarPushOcorrenciaSuspender(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i, messagesFirebase);
 
@@ -787,7 +788,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     let status: boolean = (<HTMLInputElement>event.target).checked;
 
     let firebaseMessage = new MessageFirebase();
-    firebaseMessage.id = dados_estudante_selecionado.split("|")[0];
+    firebaseMessage.est_id = dados_estudante_selecionado.split("|")[0];
     firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
     firebaseMessage.nome_estudante = dados_estudante_selecionado.split("|")[2];
 
@@ -795,7 +796,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       this.arrayOfEstudantesMultiplo.push(firebaseMessage);
     } else {
       for (let i = 0; i < this.arrayOfEstudantesMultiplo.length; i++) {
-        if (firebaseMessage.id == this.arrayOfEstudantesMultiplo[i].id) {
+        if (firebaseMessage.est_id == this.arrayOfEstudantesMultiplo[i].est_id) {
           this.arrayOfEstudantesMultiplo.splice(i, 1);
         }
       }
@@ -810,7 +811,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         if (!isNaN(parseInt((<HTMLInputElement>checkBoxes[i]).name))) {
           let dados_estudante_selecionado: string = (<HTMLInputElement>checkBoxes[i]).value;
           let firebaseMessage = new MessageFirebase();
-          firebaseMessage.id = dados_estudante_selecionado.split("|")[0];
+          firebaseMessage.est_id = dados_estudante_selecionado.split("|")[0];
           firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
           firebaseMessage.nome_estudante = dados_estudante_selecionado.split("|")[2];
           this.arrayOfEstudantesMultiplo.push(firebaseMessage);
@@ -844,7 +845,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       this.arrayOfEstudantesMultiplo[i].data_versao = Utils.now();
       this.arrayOfEstudantesMultiplo[i].firebase_dbkey = "";
       this.arrayOfEstudantesMultiplo[i].hora = this.horaOcorrenciaMultipla;//("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
-      this.arrayOfEstudantesMultiplo[i].id = this.arrayOfEstudantesMultiplo[i].id;
+      this.arrayOfEstudantesMultiplo[i].est_id = this.arrayOfEstudantesMultiplo[i].est_id;
       this.arrayOfEstudantesMultiplo[i].matricula = this.arrayOfEstudantesMultiplo[i].matricula;
       this.arrayOfEstudantesMultiplo[i].msg = `${message}`;
       this.arrayOfEstudantesMultiplo[i].msg_tag = "0";
@@ -864,7 +865,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messagesFirebase[i].firebase_dbkey = response["id"];
         this.arrayOfEstudantesMultiplo[i] = messagesFirebase[i];
       }).then(() => {
-        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.matricula}`;
+        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
         const tituloPush = "Ocorrência disciplinar";
         this.EnviarPushOcorrenciaMultipla(topicoPush, tituloPush, messagesFirebase[i].firebase_dbkey, messagesFirebase.length, i)
       }).catch((erro: Response) => {

@@ -1,6 +1,6 @@
 export class MessageFirebase {
   public to: string;
-  public id: string;
+  public est_id: string;
   public titulo: string;
   public msg: string;
   public matricula: string;
