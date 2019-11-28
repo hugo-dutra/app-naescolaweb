@@ -290,6 +290,7 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
   }
 
   public selecionarTurmaComboBox(turmaClicada: string): void {
+    debugger;
     var select = <HTMLSelectElement>document.getElementById('turmas');
     for (var i = 0; i < select.options.length; i++) {
       const textoSelect = select.options[i].text;
