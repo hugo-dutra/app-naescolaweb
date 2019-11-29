@@ -60,8 +60,8 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
   public estudantes = new Array<Object>();
   public estudantesSaidaAutorizada = new Array<Object>();
   public arrayOfTurmas = new Array<number>();
-  public arrayOfEstudantesSelecionados = new Array<number>();
-  public arrayOfMatriculas = new Array<string>();
+  public arrayOfEstudantesSelecionados = new Array<string>();
+  public arrayOfIds = new Array<string>();
   public saidaAntecipadaEventual = new SaidaAntecipadaEventual();
   public saidaAntecipadaRecorrente = new SaidaAntecipadaRecorrente();
   public saidaRecorrente: Boolean = false;
@@ -207,7 +207,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
           .toPromise()
           .then(() => {
             let portarias = [];
-            const matriculas = this.arrayOfMatriculas;
+            const est_ids = this.arrayOfIds;
             const dataSaida = this.saidaAntecipadaRecorrente.data;
             const horaSaida = this.saidaAntecipadaRecorrente.hora;
             this.arrayOfPortarias.forEach(portaria => {
@@ -215,7 +215,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
             })
             this.firebaseService.gravarSaidaAntecipadaRecorrenteFirebaseFirestore(
               portarias,
-              matriculas,
+              est_ids,
               dataSaida,
               horaSaida,
               this.saidaAntecipadaRecorrente.segunda,
@@ -253,7 +253,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
           .toPromise()
           .then(() => {
             let portarias = [];
-            const matriculas = this.arrayOfMatriculas;
+            const ids = this.arrayOfIds;
             const dataSaida = this.saidaAntecipadaEventual.data;
             const horaSaida = this.saidaAntecipadaEventual.hora;
             this.arrayOfPortarias.forEach(portaria => {
@@ -261,7 +261,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
             })
             this.firebaseService.gravarSaidaAntecipadaEventualFirebaseFirestore(
               portarias,
-              matriculas,
+              ids,
               dataSaida,
               horaSaida
             ).then((retorno: Response) => {
@@ -365,7 +365,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
   public excluirEstudantesTurmaId(trm_id: number): void {
     let arrayOfIndices = new Array<number>();
     let arrayOfMatriculasParaExcluir = new Array<string>();
-    let arrayOfIdsParaExcluir = new Array<number>();
+    let arrayOfIdsParaExcluir = new Array<string>();
     this.estudantesSaidaAutorizada.forEach(elem => {
       if (trm_id === parseInt(elem['trm_id'])) {
         arrayOfIndices.push(this.estudantesSaidaAutorizada.indexOf(elem));
@@ -383,10 +383,10 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
     })
 
     // Exclui Matrículas da matriz que grava no firebase
-    arrayOfMatriculasParaExcluir.forEach(matriculaParaExcluir => {
-      const idx = this.arrayOfMatriculas.indexOf(matriculaParaExcluir);
+    arrayOfMatriculasParaExcluir.forEach(idParaExcluir => {
+      const idx = this.arrayOfIds.indexOf(idParaExcluir);
       if (idx >= 0) {
-        this.arrayOfMatriculas.splice(idx, 1);
+        this.arrayOfIds.splice(idx, 1);
       }
     })
     this.estudantesSaidaAutorizada.splice(arrayOfIndices[0], arrayOfIndices.length);
@@ -437,7 +437,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
       this.arrayOfTurmas = [];
       this.arrayOfEstudantesSelecionados = [];
       this.estudantesSaidaAutorizada = [];
-      this.arrayOfMatriculas = [];
+      this.arrayOfIds = [];
       //(<HTMLInputElement>document.getElementById('relacao_estudantes')).checked = false;
     } else {
       this.adicionarEstudantesEscId(this.esc_id);
@@ -446,19 +446,19 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
   }
 
   public selecionarEstudanteIndividual(event: Event): void {
-    let est_id: number = parseInt((<HTMLInputElement>event.target).name);
+    let est_id: string = ((<HTMLInputElement>event.target).name);
     let matricula: string = (<HTMLInputElement>event.target).value;
     let status: boolean = (<HTMLInputElement>event.target).checked;
     if (status) {
       this.arrayOfEstudantesSelecionados.push(est_id);
-      this.arrayOfMatriculas.push(matricula);
+      this.arrayOfIds.push(est_id);
     } else {
       this.arrayOfEstudantesSelecionados.splice(
         this.arrayOfEstudantesSelecionados.indexOf(est_id, 0),
         1
       );
-      this.arrayOfMatriculas.splice(
-        this.arrayOfMatriculas.indexOf(matricula, 0),
+      this.arrayOfIds.splice(
+        this.arrayOfIds.indexOf(matricula, 0),
         1
       );
     }
@@ -467,12 +467,12 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
   public selecionarTodosEstudantes(event: Event): void {
     let checkBoxes = Array.from(document.getElementsByClassName('checkestudantes'));
     this.arrayOfEstudantesSelecionados = [];
-    this.arrayOfMatriculas = [];
+    this.arrayOfIds = [];
     for (let i = 0; i < checkBoxes.length; i++) {
       if ((<HTMLInputElement>event.target).checked) {
         if (!isNaN(parseInt((<HTMLInputElement>checkBoxes[i]).name))) {
-          this.arrayOfEstudantesSelecionados.push(parseInt((<HTMLInputElement>checkBoxes[i]).name));
-          this.arrayOfMatriculas.push((<HTMLInputElement>checkBoxes[i]).value);
+          this.arrayOfEstudantesSelecionados.push(((<HTMLInputElement>checkBoxes[i]).name));
+          this.arrayOfIds.push((<HTMLInputElement>checkBoxes[i]).name);
           (<HTMLInputElement>checkBoxes[i]).checked = (<HTMLInputElement>(event.target)).checked;
         }
       } else {

@@ -10,7 +10,7 @@ export class SaidaAntecipadaRecorrente {
   public motivo: string;
   public usr_id: number;
   public usuario: string;
-  public arrayOfEstId: number[];
+  public arrayOfEstId: string[];
   public arrayOfMatriculas: string[];
   public segunda: number;
   public terca: number;

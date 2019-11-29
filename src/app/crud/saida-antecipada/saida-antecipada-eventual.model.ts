@@ -10,6 +10,6 @@ export class SaidaAntecipadaEventual {
   public motivo: string;
   public usr_id: number;
   public usuario: string;
-  public arrayOfEstId: number[];
+  public arrayOfEstId: string[];
   public arrayOfMatriculas: string[];
 }
