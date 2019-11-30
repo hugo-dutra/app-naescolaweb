@@ -216,8 +216,9 @@ export class ListarPortariaComponent implements OnInit {
                 this.feedbackUsuario = "Gravando sem uniforme no banco de dados...";
                 this.portariaService.inserirSemUniforme(this.usr_id, this.esc_id, semUniforme).toPromise()
                   .then(() => {
-                    this.feedbackUsuario = undefined;
-                    this.sincronizar(portaria);
+                    this.feedbackUsuario = "Atualizando cronograma...";
+                    this.gravarCronogramaPortaria(portaria)
+                    //this.sincronizar(portaria);
                   }).catch((erro: Response) => {
                     //Mostra modal
                     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -268,7 +269,6 @@ export class ListarPortariaComponent implements OnInit {
     this.portariaService.listarCronogramaPortaria(portaria.por_id).toPromise().then((response: Response) => {
       this.cronogramasPortaria = Object.values(response);
       if (this.cronogramasPortaria.length > 0) {
-        this.feedbackUsuario = "Sincronizando cronogramas...";
         let contaSincronizados = 0;
         const gravacao = new Promise((resolve) => {
           this.cronogramasPortaria.forEach((cronogramaPortaria) => {
@@ -283,8 +283,10 @@ export class ListarPortariaComponent implements OnInit {
                 contaSincronizados += 1;
                 if (contaSincronizados == this.cronogramasPortaria.length) {
                   resolve('ok');
+                  this.feedbackUsuario = undefined;
+                } else {
+                  this.feedbackUsuario = `Sincronizando cronograma ${contaSincronizados} de ${this.cronogramasPortaria.length}`;
                 }
-                this.feedbackUsuario = `Sincronizando cronograma ${contaSincronizados} de ${this.cronogramasPortaria.length}`;
               }).catch((erro: Response) => {
                 //registra log de erro no firebase usando serviço singlenton
                 this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));

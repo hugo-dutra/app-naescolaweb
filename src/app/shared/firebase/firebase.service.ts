@@ -533,15 +533,15 @@ export class FirebaseService {
    *  Grava configurações da portaria no servidor do FireBase
    * @param portaria
    */
-  public gravarConfiguracaoFirebaseFirestorePortaria = async (portaria: Portaria) => new Promise((resolve, reject) => {
+  public gravarConfiguracaoFirebaseFirestorePortaria = async (portaria: PortariaFirebase) => new Promise((resolve, reject) => {
     this.firestore
       .collection('portariaWeb')
       .doc(portaria.codigo)
       .collection('parametros')
       .doc('configuracao')
-      .update(portaria)
-      .then(() => { resolve('sucesso') })
-      .catch((reason: any) => { reject(reason) });
+      .set({ codigo: portaria['codigo'], esc_id: portaria['esc_id'], nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'] }).then(() => {
+        resolve('sucesso');
+      });
   });
 
   /**
