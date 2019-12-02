@@ -147,7 +147,6 @@ export class AlterarPortariaComponent implements OnInit {
    * @param event
    */
   public alterarParametrosPortaria(turnoPortaria: Object, valor: string, event: Event): void {
-
     const tup_id: number = parseInt(turnoPortaria['tup_id']);
     if (valor == 'inicio') {
       let contaTurno = 0;
@@ -208,6 +207,7 @@ export class AlterarPortariaComponent implements OnInit {
         })
         this.portariaFirebase.turnos = [...arrayTemporarioTurno];
         this.firebaseService.alterarConfiguracaoFirebaseFirestorePortaria(this.portariaFirebase);
+        this.firebaseService.alterarConfiguracaoPortariaFirestoreApp(this.portaria.codigo.split('_')[0], this.portaria.codigo, this.portaria.nome);
         this.listar();
       }).catch((erro: Response) => {
         //Mostra modal

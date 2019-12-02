@@ -13,7 +13,7 @@ export class ControlarPortariaComponent implements OnInit {
   public esc_id: number;
   public inep: string;
   public anoAtual: number;
-  public stringModoPortariaSelecionado = "Selecione o modo de portaria";
+  //public stringModoPortariaSelecionado = "Selecione o modo de portaria";
   constructor(private firebaseService: FirebaseService) { }
   public arrayDePortariasControladas = new Array<Object>()
 
@@ -26,14 +26,39 @@ export class ControlarPortariaComponent implements OnInit {
     this.listarPortariasControleRemoto();
   }
 
+
+  /**
+   *
+   */
   public listarPortariasControleRemoto(): void {
     this.firebaseService.listarPortariaControleRemoto(this.inep).then((response: firebase.firestore.QuerySnapshot) => {
       response.docs.forEach((documento) => {
         this.arrayDePortariasControladas.push({ id: documento.id, dados: documento.data() });
       });
-    }).then(() => {
-      console.log(this.arrayDePortariasControladas);
+      this.ajustarCoresBotoesControleFuncaoPortaria(this.arrayDePortariasControladas);
     })
+  }
+
+  /**
+   *
+   * @param portarias
+   */
+  public ajustarCoresBotoesControleFuncaoPortaria(portarias: Object[]): void {
+    const myInterval = setInterval(() => {
+      portarias.forEach(portaria => {
+        const nomep = portaria['dados']['nome'] + '_modoDePortaria';
+        if (document.getElementById(nomep) != undefined) {
+          if (portaria['dados']['modo'] == 'entrada') {
+            document.getElementById(nomep).classList.remove('btn-danger');
+            document.getElementById(nomep).classList.add('btn-primary');
+          } else {
+            document.getElementById(nomep).classList.remove('btn-primary');
+            document.getElementById(nomep).classList.add('btn-danger');
+          }
+        }
+      })
+      clearInterval(myInterval);
+    }, 100)
   }
 
   /**
@@ -84,7 +109,19 @@ export class ControlarPortariaComponent implements OnInit {
   public selecionarModoPortaria(event: Event, id: number): void {
     const texto = (<HTMLInputElement>event.target).textContent;
     const valor = (<HTMLInputElement>event.target).name;
-    this.stringModoPortariaSelecionado = texto;
+    const combo_id = (<HTMLInputElement>event.target).parentElement.parentElement.children[0].id;
+    if (valor == 'saida') {
+      document.getElementById(combo_id).classList.remove('btn-primary');
+      document.getElementById(combo_id).classList.add('btn-danger');
+    } else {
+      document.getElementById(combo_id).classList.remove('btn-danger');
+      document.getElementById(combo_id).classList.add('btn-primary');
+    }
+    this.arrayDePortariasControladas.map((portaria, idx, arr) => {
+      if (portaria['id'] == id.toString()) {
+        arr[idx]['dados']['modo'] = texto.toLowerCase();
+      }
+    })
     this.firebaseService.gravarModoPortaria(this.inep, id.toString(), valor);
   }
 

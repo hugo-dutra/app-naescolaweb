@@ -1,5 +1,5 @@
-<div class="container-fluid">
-  <div *ngFor="let portariaControlada of arrayDePortariasControladas" class="card col-sm-12 col-md-6 col-lg-6">
+<div class="container-fluid" *ngIf="arrayDePortariasControladas!=undefined">
+  <div *ngFor="let portariaControlada of arrayDePortariasControladas" class="card col-sm-12 col-md-12 col-lg-12">
     <div class="card-header bg-dark text-light text-center">
       {{portariaControlada.dados.nome}}
     </div>
@@ -44,12 +44,13 @@
         </div>
         <div class="col-lg-3 col-sm-6 col-md-6">
           <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button"
+            <button class="btn btn-primary dropdown-toggle" type="button"
               [id]="portariaControlada.dados.nome+'_modoDePortaria'" data-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">
-              {{stringModoPortariaSelecionado}}
+              {{portariaControlada.dados.modo}}
             </button>
-            <div class="dropdown-menu" aria-labelledby="portariaControlada.dados.nome+'_modoDePortaria'">
+            <div class="dropdown-menu" [id]="'comboPortaria_'+portariaControlada.id"
+              aria-labelledby="portariaControlada.dados.nome+'_modoDePortaria'">
               <a class="dropdown-item" (click)="selecionarModoPortaria($event,portariaControlada.id)"
                 name="entrada">Entrada</a>
               <a class="dropdown-item" (click)="selecionarModoPortaria($event,portariaControlada.id)"
