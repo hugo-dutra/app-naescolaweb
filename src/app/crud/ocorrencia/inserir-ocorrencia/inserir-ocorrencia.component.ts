@@ -230,7 +230,6 @@ export class InserirOcorrenciaComponent implements OnInit {
     let inep = dados_escola[0]["inep"];
     this.arrayDeMensagensSimples = [];
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
-      debugger;
       let matricula = this.arrayOfMatriculasEstudantes[i];
       let nome = this.arrayOfNomesEstudantes[i];
       let message = `${this.tipoOcorrenciaSimples}.`;
@@ -256,7 +255,6 @@ export class InserirOcorrenciaComponent implements OnInit {
   public gravarOcorrenciaDisciplinarSimples(messagesFirebase: Array<MessageFirebase>): void {
     this.feedbackUsuario = "Gravando ocorrências, aguarde...";
     for (let i = 0; i < messagesFirebase.length; i++) {
-      debugger;
       let messageFirebase = messagesFirebase[i];
       this.firebaseService.gravarOcorrenciaDisciplinarFirebaseFirestore(messageFirebase).then((response: Response) => {
         messageFirebase.firebase_dbkey = response["id"];

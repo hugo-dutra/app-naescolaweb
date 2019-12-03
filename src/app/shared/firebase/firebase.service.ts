@@ -422,7 +422,7 @@ export class FirebaseService {
         .doc(messageFirebase.cod_inep)
         .collection('matriculados')
         .doc(messageFirebase.est_id.toString())
-        .collection('advertencias')
+        .collection('ocorrencias')
         .add({ data: messageFirebase.data, hora: messageFirebase.hora, categoria: messageFirebase.tipo_msg, leitura: 0 }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
@@ -510,9 +510,7 @@ export class FirebaseService {
     return this.firestore
       .collection("portariaWeb")
       .doc(codigoPortaria)
-      .collection("ocorrencias")
-      .doc("atrasos")
-      .collection("registros").get().then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+      .collection("ocorrencias").doc('atraso').collection('registros').get().then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         resolve(querySnapshot);
       })
   })
@@ -522,8 +520,8 @@ export class FirebaseService {
       .collection("portariaWeb")
       .doc(codigoPortaria)
       .collection("ocorrencias")
-      .doc("sem uniforme")
-      .collection("registros").get().then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+      .doc('sem uniforme')
+      .collection('registros').get().then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         resolve(querySnapshot);
       })
   })

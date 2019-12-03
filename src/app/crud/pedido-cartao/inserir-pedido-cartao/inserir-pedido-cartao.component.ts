@@ -110,7 +110,7 @@ export class InserirPedidoCartaoComponent implements OnInit {
     cobranca.description =
       "Pagamento referente a solicitação de cartões de acesso do sistema de gestão 'NaEscola'";
     cobranca.dueDate = dataVencimento;
-    cobranca.maxOverdueDays = CONSTANTES.BOLETO_FACIL_LIMITE_DIAS_PAGAMENTO;
+    cobranca.maxOverdueDays = CONSTANTES.BOLETO_FACIL_LIMITE_DIAS_PAGAMENTO_PEDIDO_CARTAO;
     cobranca.notifyPayer = true;
     cobranca.payerCpfCnpj = this.dados_escola["cnpj"];
     cobranca.payerEmail = this.dados_escola["email"];
@@ -373,15 +373,12 @@ export class InserirPedidoCartaoComponent implements OnInit {
     pedidoCartoes.itensPedido = this.arrayOfItensPedido;
     pedidoCartoes.total = this.totalPedido;
     pedidoCartoes.quantidade = this.arrayOfItensPedido.length;
-
-    console.log(pedidoCartoes);
-
     if (this.arrayOfItensPedido.length > 0) {
       this.pedidoCartaoService
         .inserir(pedidoCartoes)
         .toPromise()
         .then((response: Response) => {
-          let day = (new Date().getDate() + CONSTANTES.BOLETO_FACIL_DIAS_ADICIONADOS_BOLETO_PEDIDO_CARTAO).toString();
+          let day = (new Date().getDate()).toString();
           let month = (new Date().getMonth() + 1).toString();
           let year = (new Date().getFullYear()).toString();
           let last_insert_id = response[0]["last_insert_id"];

@@ -85,7 +85,6 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
 
           })
       }).catch((erro: Response) => {
-        debugger;
         this.mostrarAlertaErro(erro);
       })
   }

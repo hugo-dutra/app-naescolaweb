@@ -134,9 +134,9 @@ export class ListarPortariaComponent implements OnInit {
       querySnapshot.forEach(documento => {
         const data = documento.data()["data"];
         const hora = documento.data()["hora"];
-        const matricula = documento.data()["matricula"];
+        const est_id = documento.data()["est_id"];
         const firebaseDbKey = documento.id;
-        arrayDeEntradas.push({ data: data, hora: hora, matricula: matricula, firebaseDbKey: firebaseDbKey });
+        arrayDeEntradas.push({ data: data, hora: hora, est_id: est_id, firebaseDbKey: firebaseDbKey });
       })
     }).then(() => {
       this.feedbackUsuario = "Carregando saídas...";
@@ -144,9 +144,9 @@ export class ListarPortariaComponent implements OnInit {
         querySnapshot.forEach(documento => {
           const data = documento.data()["data"];
           const hora = documento.data()["hora"];
-          const matricula = documento.data()["matricula"];
+          const est_id = documento.data()["est_id"];
           const firebaseDbKey = documento.id;
-          arrayDeSaidas.push({ data: data, hora: hora, matricula: matricula, firebaseDbKey: firebaseDbKey });
+          arrayDeSaidas.push({ data: data, hora: hora, est_id: est_id, firebaseDbKey: firebaseDbKey });
         })
       }).then(() => {
         this.feedbackUsuario = "Carregando atrasos...";
@@ -154,9 +154,9 @@ export class ListarPortariaComponent implements OnInit {
           querySnapshot.forEach(documento => {
             const data = documento.data()["data"];
             const hora = documento.data()["hora"];
-            const matricula = documento.data()["matricula"];
+            const est_id = documento.data()["est_id"];
             const firebaseDbKey = documento.id;
-            arrayDeAtrasos.push({ data: data, hora: hora, matricula: matricula, firebaseDbKey: firebaseDbKey });
+            arrayDeAtrasos.push({ data: data, hora: hora, est_id: est_id, firebaseDbKey: firebaseDbKey });
           })
         })
       }).then(() => {
@@ -165,9 +165,9 @@ export class ListarPortariaComponent implements OnInit {
           querySnapshot.forEach(documento => {
             const data = documento.data()["data"];
             const hora = documento.data()["hora"];
-            const matricula = documento.data()["matricula"];
+            const est_id = documento.data()["est_id"];
             const firebaseDbKey = documento.id;
-            arrayDeSemUniforme.push({ data: data, hora: hora, matricula: matricula, firebaseDbKey: firebaseDbKey });
+            arrayDeSemUniforme.push({ data: data, hora: hora, est_id: est_id, firebaseDbKey: firebaseDbKey });
           })
         }).then(() => {
           this.inserirDadosDaPortariaBancoDeDados(arrayDeEntradas, arrayDeSaidas, arrayDeAtrasos, arrayDeSemUniforme, por_id, portaria);

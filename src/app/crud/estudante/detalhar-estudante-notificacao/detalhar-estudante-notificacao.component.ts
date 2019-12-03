@@ -139,7 +139,7 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
         this.feedbackUsuario = 'Carregando status de advertências, aguarde...';
         this.firebaseService
           .listarStatusEntregaMensagensColecao(
-            'advertencias',
+            'ocorrencias',
             this.estudante['matricula'],
             this.inep)
           .then((response: firebase.firestore.QuerySnapshot) => {

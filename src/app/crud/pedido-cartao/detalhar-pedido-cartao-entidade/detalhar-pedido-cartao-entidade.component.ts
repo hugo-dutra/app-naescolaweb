@@ -112,7 +112,6 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
     modeloPlanilhaImportareEstudantes.worksheets[0].addRows([dadosDoPedido]);
 
     pedidos.forEach(pedido => {
-      debugger;
       const dadosPreenchimento = [
         pedido['validade'], pedido['escola'], pedido['municipio'],
         pedido['UF'], pedido['etapa'], pedido['serie'],
