@@ -177,7 +177,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.firebase_dbkey = "";
         messageFirebase.hora = this.horaOcorrencia;  //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
         messageFirebase.est_id = est_id.toString();
-        messageFirebase.matricula = matricula;
+        //messageFirebase.est_id = est_id.toString();
         messageFirebase.msg = `${message}`;
         messageFirebase.msg_tag = "0";
         messageFirebase.nome_estudante = nome;
@@ -230,7 +230,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     let inep = dados_escola[0]["inep"];
     this.arrayDeMensagensSimples = [];
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
-      let matricula = this.arrayOfMatriculasEstudantes[i];
+      //let matricula = this.arrayOfMatriculasEstudantes[i];
       let nome = this.arrayOfNomesEstudantes[i];
       let message = `${this.tipoOcorrenciaSimples}.`;
       let messageFirebase = new MessageFirebase();
@@ -240,13 +240,13 @@ export class InserirOcorrenciaComponent implements OnInit {
       messageFirebase.firebase_dbkey = "";
       messageFirebase.hora = this.horaOcorrencia //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
       messageFirebase.est_id = this.arrayOfEstudantes[i].toString();
-      messageFirebase.matricula = matricula;
+      //messageFirebase.matricula = matricula;
       messageFirebase.msg = `Assunto: Ocorrência disciplinar Ocorrência: ${message}`;
       messageFirebase.msg_tag = "0";
       messageFirebase.nome_estudante = nome;
       messageFirebase.tipo_msg = message;
       messageFirebase.titulo = "Ocorrência disciplinar";
-      messageFirebase.to = `${inep}_${matricula}`;
+      messageFirebase.to = `${inep}_${messageFirebase.est_id}`;
       this.arrayDeMensagensSimples.push(messageFirebase);
     }
     this.gravarOcorrenciaDisciplinarSimples(this.arrayDeMensagensSimples);
@@ -293,7 +293,7 @@ export class InserirOcorrenciaComponent implements OnInit {
           i => resumo_ocorrencias
         ).length;
         let nome: string = resumo_ocorrencias[0]["nome"];
-        let matricula = resumo_ocorrencias[0]["matricula"];
+        //let matricula = resumo_ocorrencias[0]["matricula"];
         let message = `O(a) Estudante ${nome.toUpperCase()} já possui ${quantidade_resumo_ocorrencias} ocorrências disciplinares e está sendo SUSPENSO(a). Solicitamos que o(a) Sr.(a) responsável entre em contato com a escola para tratarmos desse assunto.`;
         this.arrayDeMensagensSimples = [];
         let messageFirebase = new MessageFirebase();
@@ -303,13 +303,13 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.firebase_dbkey = "";
         messageFirebase.hora = this.horaOcorrencia;// ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
         messageFirebase.est_id = est_id.toString();
-        messageFirebase.matricula = matricula;
+        //messageFirebase.matricula = matricula;
         messageFirebase.msg = `${message}`;
         messageFirebase.msg_tag = "0";
         messageFirebase.nome_estudante = nome;
         messageFirebase.tipo_msg = "Comunicado importante";
         messageFirebase.titulo = "Comunicado importante";
-        messageFirebase.to = `${inep}_${matricula}`;
+        messageFirebase.to = `${inep}_${messageFirebase.est_id}`;
         this.arrayDeMensagensSimples.push(messageFirebase)
         this.gravarComunicadoSuspender(this.arrayDeMensagensSimples);
       })
@@ -787,7 +787,7 @@ export class InserirOcorrenciaComponent implements OnInit {
 
     let firebaseMessage = new MessageFirebase();
     firebaseMessage.est_id = dados_estudante_selecionado.split("|")[0];
-    firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
+    //firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
     firebaseMessage.nome_estudante = dados_estudante_selecionado.split("|")[2];
 
     if (status) {
@@ -810,7 +810,7 @@ export class InserirOcorrenciaComponent implements OnInit {
           let dados_estudante_selecionado: string = (<HTMLInputElement>checkBoxes[i]).value;
           let firebaseMessage = new MessageFirebase();
           firebaseMessage.est_id = dados_estudante_selecionado.split("|")[0];
-          firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
+          //firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
           firebaseMessage.nome_estudante = dados_estudante_selecionado.split("|")[2];
           this.arrayOfEstudantesMultiplo.push(firebaseMessage);
           (<HTMLInputElement>checkBoxes[i]).checked = (<HTMLInputElement>(event.target)).checked;
@@ -844,13 +844,13 @@ export class InserirOcorrenciaComponent implements OnInit {
       this.arrayOfEstudantesMultiplo[i].firebase_dbkey = "";
       this.arrayOfEstudantesMultiplo[i].hora = this.horaOcorrenciaMultipla;//("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
       this.arrayOfEstudantesMultiplo[i].est_id = this.arrayOfEstudantesMultiplo[i].est_id;
-      this.arrayOfEstudantesMultiplo[i].matricula = this.arrayOfEstudantesMultiplo[i].matricula;
+      //this.arrayOfEstudantesMultiplo[i].matricula = this.arrayOfEstudantesMultiplo[i].matricula;
       this.arrayOfEstudantesMultiplo[i].msg = `${message}`;
       this.arrayOfEstudantesMultiplo[i].msg_tag = "0";
       this.arrayOfEstudantesMultiplo[i].nome_estudante = this.arrayOfEstudantesMultiplo[i].nome_estudante;
       this.arrayOfEstudantesMultiplo[i].tipo_msg = message;//CONSTANTES.FIREBASE_MSG_OCORRENCIA;
       this.arrayOfEstudantesMultiplo[i].titulo = "Ocorrência disciplinar";
-      this.arrayOfEstudantesMultiplo[i].to = `${inep}_${this.arrayOfEstudantesMultiplo[i].matricula}`;
+      this.arrayOfEstudantesMultiplo[i].to = `${inep}_${this.arrayOfEstudantesMultiplo[i].est_id}`;
     }
     this.gravarOcorrenciaDisciplinarMultiplaFirebase(this.arrayOfEstudantesMultiplo);
   }

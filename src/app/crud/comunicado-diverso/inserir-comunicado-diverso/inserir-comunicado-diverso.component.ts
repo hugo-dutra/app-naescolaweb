@@ -316,7 +316,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           messageFirebase.firebase_dbkey = "";
           messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
           messageFirebase.est_id = this.arrayOfEstudantes[i].id.toString();
-          messageFirebase.matricula = matricula;
+          messageFirebase.est_id = this.arrayOfEstudantes[i].id.toString();
           messageFirebase.msg = `${this.mensagem}`;
           messageFirebase.msg_tag = "0";
           messageFirebase.nome_estudante = nome;
@@ -338,7 +338,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
         messageFirebase.firebase_dbkey = response["id"];
       }).then(() => {
         this.feedbackUsuario = undefined;
-        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.matricula}`;
+        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
         const tituloPush = "Comunicado da direção";
         this.EnviarPushComunicadoSimples(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i, messageFirebase);
       }).catch((erro: Response) => {

@@ -26,6 +26,7 @@ export class FirebaseService {
   //****************************************************************************/
   //******************************PUSH******************************************/
   public enviarPushFirebase(topico: string, titulo: string): Observable<any> {
+    alert(topico)
     try {
       const headers = {
         headers: new HttpHeaders()
