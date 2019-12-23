@@ -236,7 +236,6 @@ export class Utils {
     return err;
   }
 
-
   public static gerarDigitosCodigoDeBarras(matricula: string, anoAtual: number) {
     const digitos = matricula.length;
     const ano = anoAtual.toString();
@@ -257,6 +256,6 @@ export class Utils {
         invertida = invertida.substr(0, enderecoParaInserir) + digitoInserido + invertida.substr(enderecoParaInserir);
       }
     }
-    return invertida;
+    return invertida + '*';
   }
 }

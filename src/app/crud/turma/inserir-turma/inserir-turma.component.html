@@ -1,3 +1,103 @@
-<p>
-  inserir-turma works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center" [@chamado]="estado">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-12 text-center">
+              <i class="fa fa-lg fa-group text-light text-center"> Turma</i>
+              <button class="btn btn-outline-primary text-light btn-sm float-right" (click)="listar()">Listagem</button>
+            </div>
+          </div>
+          <div class="row"></div>
+          <div class="row"></div>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="formulario" (ngSubmit)="inserir()">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7 card">
+            <div class="card-body">
+              <!--LISTAGEM DE TURNOS-->
+              <div class="row">
+                <div class="col-5">
+                  <label for="turnos" class="float-left">Turno</label>
+                  <select name="turnos" required class="form-control" formControlName="trn_id">
+                    <option value="" disabled>Selecione uma turno</option>
+                    <option *ngFor="let turno of turnos" value="{{ turno.id }}">{{ turno.nome }}</option>
+                  </select>
+                </div>
+                <!--LISTAGEM DE SÉRIES-->
+                <div class="col-7">
+                  <label for="series" class="float-left">Série</label>
+                  <select name="series" required class="form-control" formControlName="sre_id">
+                    <option value="" disabled>Selecione uma série</option>
+                    <option *ngFor="let serie of series" value="{{ serie.id }}">{{ serie.nome }} -
+                      {{ serie.ete_abreviatura }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <br>
+              <div class="form-group">
+                <!--LISTAGEM DAS ESCOLAS JÁ SELECIONADAS-->
+                <div class="row ml-5">
+                  <input class="btn btn-warning m-2 btn-sm col-2" *ngFor="let turma of arrayTurmasSelecionadas"
+                    type="button" [value]="turma.nome" [name]="turma.nome" data-toggle="tooltip" data-placement="top">
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-muted bg-light mt-2">
+              <input type="button" class="form-control btn btn-primary" value="Salvar" (click)="inserir()">
+            </div>
+          </div>
+          <div class="col-1"></div>
+          <ul class="list-group col-4">
+            <!--CAMPO PARA ADICIONAR TURMA PERSONALIZADA-->
+            <!--li class="list-group-item bg-light">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control toUpper" formControlName="turma_personalizada" maxlength="5" placeholder="Turma personalizada..."
+                    aria-label="Turma personalizada" aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                    <span class="input-group-text btn btn-info" id="basic-addon2" (click)="adicionarTurmaPersonalizada($event)">Adicionar</span>
+                  </div>
+                </div>
+              </li-->
+
+            <!--LISTAGEM DE TURMAS DISPONÍVEIS-->
+            <li class="list-group-item" *ngFor="let turma of turmasPadrao">
+              <div class="form-group inline" [@chamado]="estado">
+                <input type="checkbox" class="form-control checkbox float-left" [name]="turma.nome"
+                  [checked]="statusCheck" formControlName="check_turma" (click)="gravaTurmasAdicionadas($event,turma)">
+                <label class=" ml-1 text-left float-left">
+                  <h5>{{ turma.nome }}</h5>
+                </label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </form>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Nova turma</i>
+      <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">
+        <h5>* Os campos Escola, turno e turma devem ser preenchidos</h5>
+      </div>
+    </div>
+  </div>
+  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div>
+      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="col-2">
+          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+        </div>
+        <div class="col-10">
+          <h4>
+            <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
