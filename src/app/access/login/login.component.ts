@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
   public esc_id: number;
   public mensagemAlerta: string = "";
   public status_ativo_usuario: number = 0;
+  public mostraSenha: boolean = false;
 
   constructor(
     private accessService: AccessService,
@@ -62,6 +63,16 @@ export class LoginComponent implements OnInit {
           console.log(erro);
         } */
       });
+  }
+
+  public mostrarSenha(): void {
+    if (this.mostraSenha == false) {
+      document.getElementById('senha').setAttribute('type', 'text');
+      this.mostraSenha = true;
+    } else {
+      this.mostraSenha = false;
+      document.getElementById('senha').setAttribute('type', 'password');
+    }
   }
 
   public carregarValor(event: Event) {
