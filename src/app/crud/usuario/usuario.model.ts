@@ -4,4 +4,5 @@ export class Usuario {
   public senha: string;
   public email: string;
   public foto: string;
+  public esc_id: number;
 }

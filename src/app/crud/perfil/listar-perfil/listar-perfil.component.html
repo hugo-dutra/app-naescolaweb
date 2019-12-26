@@ -21,14 +21,16 @@
           <table class="table table-striped table-hover" [@chamado]="estado">
             <thead class="thead-light">
               <tr class="row">
-                <th class="col-lg-10 col-sm-12 text-left" scope="col">Perfil</th>
+                <th class="col-lg-6 col-sm-12 text-left" scope="col">Perfil</th>
+                <th class="col-lg-4 col-sm-12 text-left" scope="col">Escopo</th>
                 <th *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12" scope="col">Alterar</th>
                 <th *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12" scope="col">Excluir</th>
               </tr>
             </thead>
             <tbody *ngIf="perfis !== null">
               <tr class="row" *ngFor="let perfil of perfis">
-                <td class="col-lg-10 col-sm-12 text-left">{{ perfil.nome }}</td>
+                <td class="col-lg-6 col-sm-12 text-left">{{ perfil.nome }}</td>
+                <td class="col-lg-4 col-sm-12 text-left">{{ perfil.escopo }}</td>
                 <td *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12"><button class="btn btn-warning btn-sm"
                     value="{{ perfil }}" (click)="alterar(perfil)">Alterar</button></td>
                 <td *ngIf="exibirComponenteExcluir" class="col-lg-1 col-sm-12"><button class="btn btn-danger btn-sm"

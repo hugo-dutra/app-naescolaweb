@@ -34,10 +34,13 @@ export class AlterarPerfilComponent implements OnInit {
 
   public perfil = new Perfil();
   public feedbackUsuario: string;
+  public escoposPerfil = new Array<Object>();
   public estado: string = "visivel";
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
+  public escopoSelecionado: Object;
+  public stringEscopoSelecionado: string = "Selecione o escopo";
 
   public formulario = new FormGroup({
     id: new FormControl(null),
@@ -56,32 +59,62 @@ export class AlterarPerfilComponent implements OnInit {
     this.route.queryParams.subscribe((perfil: Perfil) => {
       this.perfil = JSON.parse(perfil["perfil"]);
     });
+    this.listarEscopoPerfil();
+
   }
+
+  public listarEscopoPerfil(): void {
+    this.feedbackUsuario = "Carregando escopos de acesso, acesso...";
+    this.perfilService.listarEscopoPerfil().toPromise().then((response: Response) => {
+      this.escoposPerfil = Object.values(response);
+      this.feedbackUsuario = undefined;
+      this.stringEscopoSelecionado = this.perfil.escopo;
+    })
+  }
+
+  public selecionarEscopo(escopo: Object): void {
+    this.escopoSelecionado = escopo;
+    this.stringEscopoSelecionado = this.escopoSelecionado['nome'];
+    this.perfil.epu_id = parseInt(this.escopoSelecionado['epu_id']);
+  }
+
 
   public alterar(): void {
     this.feedbackUsuario = "Salvando dados, aguarde...";
-    this.perfilService
-      .alterar(this.perfil)
-      .toPromise()
-      .then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.listar();
-      })
-      .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      });
+    if (this.validarEntrada()) {
+      this.perfilService
+        .alterar(this.perfil)
+        .toPromise()
+        .then((response: Response) => {
+          this.feedbackUsuario = undefined;
+          this.listar();
+        })
+        .catch((erro: Response) => {
+          //Mostra modal
+          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+          //registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Caso token seja invalido, reenvia rota para login
+          Utils.tratarErro({ router: this.router, response: erro });
+          this.feedbackUsuario = undefined;
+        });
+    }
   }
 
   public listar(): void {
     this.router.navigateByUrl("listar-perfil");
+  }
+
+  public validarEntrada(): boolean {
+    if (this.perfil != null && this.perfil.nome != null) {
+      if (this.perfil.nome.trim() != "" && this.perfil.epu_id > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 
   public modificarInputs(event: Event) {

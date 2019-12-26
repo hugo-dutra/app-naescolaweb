@@ -14,8 +14,22 @@
       <div class="card-body">
         <div class="row m-3 form-group">
           <input type="hidden" class="form-control">
-          <input autofocus type="text" placeholder="Nome..." class="form-control col-12" name="nome" maxlength="45"
-            required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)" value="{{ perfil.nome }}">
+          <input autofocus type="text" placeholder="Nome..." class="form-control col-lg-7 col-md-12 col-sm-12"
+            name="nome" maxlength="45" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
+            value="{{ perfil.nome }}">
+          <div class="col-1"></div>
+
+          <div class="dropdown col-lg-4 col-sm-12 col-md-12">
+            <button class="btn btn-secondary dropdown-toggle form-control" type="button" id="dropdownMenuButtonEscopo"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{stringEscopoSelecionado}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonEscopo">
+              <a *ngFor="let escopo of escoposPerfil" class="dropdown-item"
+                (click)="selecionarEscopo(escopo)">{{escopo.nome}}</a>
+            </div>
+          </div>
+
         </div>
         <div class="row m-3 form-group">
           <div class="col-lg-10 col-sm-12"></div>

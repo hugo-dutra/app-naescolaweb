@@ -39,6 +39,8 @@ export class InserirPerfilComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
+  public escopoSelecionado: Object;
+  public stringEscopoSelecionado: string = "Selecione o escopo";
 
   public formulario = new FormGroup({
     id: new FormControl(null),
@@ -59,32 +61,53 @@ export class InserirPerfilComponent implements OnInit {
     this.perfilService.listarEscopoPerfil().toPromise().then((response: Response) => {
       this.escoposPerfil = Object.values(response);
       this.feedbackUsuario = undefined;
-      console.log(this.escoposPerfil);
     })
+  }
+
+  public selecionarEscopo(escopo: Object): void {
+    this.escopoSelecionado = escopo;
+    this.stringEscopoSelecionado = this.escopoSelecionado['nome'];
+    this.perfil.epu_id = parseInt(this.escopoSelecionado['epu_id']);
   }
 
   public inserir(): void {
     this.perfil.nome = this.formulario.value.nome;
-    this.feedbackUsuario = "Gravando dados, aguarde...";
-    this.perfilService
-      .inserir(this.perfil)
-      .toPromise()
-      .then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.formulario.reset();
-      })
-      .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.exibirAlerta = true;
-        this.feedbackUsuario = undefined;
-      });
+    if (this.validarEntrada()) {
+      this.feedbackUsuario = "Gravando dados, aguarde...";
+      this.perfilService
+        .inserir(this.perfil)
+        .toPromise()
+        .then((response: Response) => {
+          this.feedbackUsuario = undefined;
+          this.formulario.reset();
+          this.stringEscopoSelecionado = 'Selecione o escopo';
+          this.alertModalService.showAlertSuccess('Registro inserido com sucesso!');
+        })
+        .catch((erro: Response) => {
+          //Mostra modal
+          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+          //registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Caso token seja invalido, reenvia rota para login
+          Utils.tratarErro({ router: this.router, response: erro });
+          this.exibirAlerta = true;
+          this.feedbackUsuario = undefined;
+        });
+    } else {
+      this.alertModalService.showAlertWarning("Preencha todos os campos.");
+    }
+  }
+
+  public validarEntrada(): boolean {
+    if (this.perfil != null && this.perfil.nome != null) {
+      if (this.perfil.nome.trim() != "" && this.perfil.epu_id > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 
   public listar(): void {
