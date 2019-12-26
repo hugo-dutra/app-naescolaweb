@@ -18,6 +18,15 @@ export class PerfilService {
     );
   }
 
+  public listarEscopoPerfil(): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "listar-escopo-perfil",
+      null,
+      headers
+    );
+  }
+
   public inserir(perfil: Perfil): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(

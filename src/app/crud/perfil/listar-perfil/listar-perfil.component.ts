@@ -32,6 +32,7 @@ import { Utils } from '../../../shared/utils.shared';
 export class ListarPerfilComponent implements OnInit {
 
   public perfis = new Array<Object>();
+  public escoposPerfil = new Array<Object>();
   public perfil = new Perfil();
   public feedbackUsuario: string;
   public estado: string = "visivel";
@@ -56,6 +57,8 @@ export class ListarPerfilComponent implements OnInit {
     this.listar();
   }
 
+
+
   public listar(): void {
     this.feedbackUsuario = "Carregando dados, aguarde...";
     this.perfilService
@@ -70,8 +73,8 @@ export class ListarPerfilComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;

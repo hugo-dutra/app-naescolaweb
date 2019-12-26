@@ -33,6 +33,7 @@ export class InserirPerfilComponent implements OnInit {
 
 
   public perfil = new Perfil();
+  public escoposPerfil = new Array<Object>();
   public feedbackUsuario: string;
   public estado: string = "visivel";
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -49,7 +50,18 @@ export class InserirPerfilComponent implements OnInit {
     private firebaseService: FirebaseService,
     private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.listarEscopoPerfil();
+  }
+
+  public listarEscopoPerfil(): void {
+    this.feedbackUsuario = "Carregando escopos de acesso, acesso...";
+    this.perfilService.listarEscopoPerfil().toPromise().then((response: Response) => {
+      this.escoposPerfil = Object.values(response);
+      this.feedbackUsuario = undefined;
+      console.log(this.escoposPerfil);
+    })
+  }
 
   public inserir(): void {
     this.perfil.nome = this.formulario.value.nome;
@@ -66,8 +78,8 @@ export class InserirPerfilComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.exibirAlerta = true;
