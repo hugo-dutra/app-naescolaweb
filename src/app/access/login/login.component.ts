@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
   public grupos: Object;
   public menus: Object;
   public dados_escola: Object;
+  public escopo_perfil = new Object();
   public escolas = new Array<Object>();
   public esc_id: number;
   public mensagemAlerta: string = "";
@@ -122,6 +123,7 @@ export class LoginComponent implements OnInit {
     localStorage.removeItem("grupos");
     localStorage.removeItem("menus");
     localStorage.removeItem("dados_escola");
+    localStorage.removeItem("escopo_perfil");
     localStorage.removeItem("esc_id");
     localStorage.removeItem("token");
   }
@@ -171,6 +173,9 @@ export class LoginComponent implements OnInit {
             this.grupos = response["grupos"];
             this.menus = response["menus"];
             this.dados_escola = response["dados_escola"];
+            this.escopo_perfil = response['escopo_perfil'];
+            console.log(this.escopo_perfil);
+
             this.status_ativo_usuario = (response["status_ativo_usuario"])[0]["status_ativo_usuario"];
 
             if (this.status_ativo_usuario === 1) {
@@ -179,12 +184,14 @@ export class LoginComponent implements OnInit {
               let str_grupos = JSON.stringify(this.grupos);
               let str_menus = JSON.stringify(this.menus);
               let str_dados_escola = JSON.stringify(this.dados_escola);
+              let str_escopo_perfil = JSON.stringify(this.escopo_perfil);
 
               localStorage.setItem("perm", Utils.encriptBtoA(str_permissoes, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("dados", Utils.encriptBtoA(str_dados, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("grupos", Utils.encriptBtoA(str_grupos, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("menus", Utils.encriptBtoA(str_menus, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("dados_escola", Utils.encriptBtoA(str_dados_escola, CONSTANTES.PASSO_CRIPT));
+              localStorage.setItem("escopo_perfil", Utils.encriptBtoA(str_escopo_perfil, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("esc_id", Utils.encriptBtoA(this.esc_id.toString(), CONSTANTES.PASSO_CRIPT));
               this.router.navigate(["dashboard"]); setTimeout(() => { window.location.reload(true); }, 1000);
             } else {

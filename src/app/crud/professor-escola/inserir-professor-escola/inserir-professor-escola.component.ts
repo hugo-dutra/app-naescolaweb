@@ -48,6 +48,8 @@ export class InserirProfessorEscolaComponent implements OnInit {
 
   public professores = new Array<Object>();
   public escolas = new Array<Object>();
+  public esc_id: number;
+  public usr_id: number;
 
   constructor(
     private professorEscolaService: ProfessorEscolaService,
@@ -65,6 +67,8 @@ export class InserirProfessorEscolaComponent implements OnInit {
 
   ngOnInit() {
     this.carregarDadosEscolaProfessor();
+    this.esc_id = Utils.pegarDadosEscola()['id'];
+    this.usr_id = Utils.verificarDados()[0]['id'];
   }
 
   public carregarDadosEscolaProfessor(): void {
@@ -90,8 +94,8 @@ export class InserirProfessorEscolaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -108,7 +112,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
     if (todos == true) {
       this.feedbackUsuario = "Carregando professores...";
       this.professorService
-        .listar(50000, 0, true)
+        .listar(50000, 0, true, this.usr_id, this.esc_id)
         .toPromise()
         .then((response: Response) => {
           this.professores = Object.values(response);
@@ -118,14 +122,13 @@ export class InserirProfessorEscolaComponent implements OnInit {
             this.primeiraCarga = false;
             this.carregarEscolas();
           }
-        })
-        .catch((erro: Response) => {
+        }).catch((erro: Response) => {
           //Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
@@ -145,8 +148,8 @@ export class InserirProfessorEscolaComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
@@ -212,8 +215,8 @@ export class InserirProfessorEscolaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       });

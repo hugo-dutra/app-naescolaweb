@@ -49,6 +49,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   public primeiraExecucao: boolean = true;
   public dados_escola: Object;
   public esc_id: number;
+  public usr_id: number;
 
   public formulario = new FormGroup({
     check_professor: new FormControl(null),
@@ -72,6 +73,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       )
     )[0];
     this.esc_id = parseInt(this.dados_escola["id"]);
+    this.usr_id = Utils.verificarDados()[0]['id'];
     this.listarDados();
   }
 
@@ -148,7 +150,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   public listarTodosProfessores(): void {
     this.feedbackUsuario = "Carregando, aguarde...";
     this.professorService
-      .listar(50000, 0, true)
+      .listar(50000, 0, true, this.usr_id, this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.professores = Object.values(response);

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Professor } from './professor.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CONSTANTES } from '../../shared/constantes.shared';
 
@@ -14,11 +13,11 @@ export class ProfessorService {
     private http: HttpClient
   ) { }
 
-  public listar(limit: number, offset: number, asc: boolean): Observable<any> {
+  public listar(limit: number, offset: number, asc: boolean, usr_id: number, esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "professores",
-      JSON.stringify({ limit: limit, offset: offset, asc: asc }),
+      JSON.stringify({ limit: limit, offset: offset, asc: asc, usr_id: usr_id, esc_id: esc_id }),
       headers
     );
   }
@@ -75,12 +74,20 @@ export class ProfessorService {
   public filtrar(
     valor: string,
     limit: number,
-    offset: number
+    offset: number,
+    esc_id: number,
+    usr_id: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "filtrar-professor",
-      JSON.stringify({ valor: valor, limit: limit, offset: offset }),
+      JSON.stringify({
+        valor: valor,
+        limit: limit,
+        offset: offset,
+        esc_id: esc_id,
+        usr_id: usr_id
+      }),
       headers
     );
   }

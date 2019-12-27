@@ -183,6 +183,18 @@ export class Utils {
     }
   }
 
+  public static pegarDadosEscopo(): { esc_id, usr_id, epu_id, nome, nivel } {
+    try {
+      let str_escopo = Utils.decriptAtoB(localStorage.getItem("escopo_perfil"), CONSTANTES.PASSO_CRIPT);
+      const objetoRetorno = JSON.parse(str_escopo)[0];
+      return { esc_id: objetoRetorno['esc_id'], usr_id: objetoRetorno['usr_id'], epu_id: objetoRetorno['epu_id'], nome: objetoRetorno['nome'], nivel: objetoRetorno['nivel'] }
+    } catch (error) {
+      return null;
+    }
+  }
+
+
+
   public static verificarGrupos(): Object {
     try {
       let str_obj = Utils.decriptAtoB(

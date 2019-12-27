@@ -4,6 +4,10 @@ import * as CryptoJS from 'crypto-js';
 export class CONSTANTES {
 
   //Quantidade de passo que a string será convertida para base 64 - Profundidade da encriptação.
+  public static ESCOPO_GLOBAL = 'Global';
+  public static ESCOPO_REGIONAL = 'Regional';
+  public static ESCOPO_LOCAL = 'Local';
+
   public static PASSO_CRIPT = 5;
   public static PRODUCAO = true; //no deploy essa linha deverá ser trocada
   public static DEF_MSG_ERRO = "ERROR 404 NOT FOUND";

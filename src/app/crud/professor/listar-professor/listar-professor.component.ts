@@ -55,13 +55,21 @@ export class ListarProfessorComponent implements OnInit {
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
   public decrescente: boolean = true;
+  public valorEscopo: number;
+  public nomeEscopo: string;
+  public usr_id: number;
+  public esc_id: number;
+
 
   ngOnInit() {
+    this.usr_id = Utils.verificarDados()[0]['id'];
+    this.esc_id = Utils.pegarDadosEscola()['id'];
     this.professores = undefined;
     this.exibirComponentesEdicao();
     this.listar();
+    this.valorEscopo = Utils.pegarDadosEscopo().nivel;
+    this.nomeEscopo = Utils.pegarDadosEscopo().nome;
   }
-
 
   public exibirComponentesEdicao(): void {
     this.exibirComponenteInserir = Utils.exibirComponente('inserir-professor');
@@ -88,8 +96,8 @@ export class ListarProfessorComponent implements OnInit {
             this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
             //registra log de erro no firebase usando serviço singlenton
             this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
             //Caso token seja invalido, reenvia rota para login
             Utils.tratarErro({ router: this.router, response: erro });
             this.feedbackUsuario = undefined;
@@ -117,8 +125,7 @@ export class ListarProfessorComponent implements OnInit {
     this.saltarQuantidade = limit;
     this.feedbackUsuario = undefined;
     this.feedbackUsuario = "Carregando dados, aguarde...";
-    this.professorService
-      .listar(limit, offset, true)
+    this.professorService.listar(limit, offset, true, this.usr_id, this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.professores = Object.values(response);
@@ -135,8 +142,8 @@ export class ListarProfessorComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -261,7 +268,7 @@ export class ListarProfessorComponent implements OnInit {
       this.feedbackUsuario = undefined;
       this.feedbackUsuario = "Carregando dados, aguarde...";
       this.professorService
-        .filtrar(this.valorFiltro, limit, offset)
+        .filtrar(this.valorFiltro, limit, offset, this.esc_id, this.usr_id)
         .toPromise()
         .then((response: Response) => {
           this.professores = Object.values(response);
@@ -278,8 +285,8 @@ export class ListarProfessorComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
@@ -295,7 +302,7 @@ export class ListarProfessorComponent implements OnInit {
       this.feedbackUsuario = undefined;
       this.feedbackUsuario = "Carregando dados, aguarde...";
       this.professorService
-        .filtrar(this.valorFiltro, limit, offset)
+        .filtrar(this.valorFiltro, limit, offset, this.esc_id, this.usr_id)
         .toPromise()
         .then((response: Response) => {
           this.professores = Object.values(response);
@@ -312,8 +319,8 @@ export class ListarProfessorComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
