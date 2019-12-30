@@ -97,7 +97,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   public listarProfessoresSemDisciplina(): void {
     this.feedbackUsuario = "Carregando, aguarde...";
     this.professorService
-      .listarSemDisciplina(50000, 0, true)
+      .listarSemDisciplina(50000, 0, true, this.usr_id, this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.professores = Object.values(response);

@@ -66,9 +66,9 @@ export class InserirProfessorEscolaComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.carregarDadosEscolaProfessor();
     this.esc_id = Utils.pegarDadosEscola()['id'];
     this.usr_id = Utils.verificarDados()[0]['id'];
+    this.carregarDadosEscolaProfessor();
   }
 
   public carregarDadosEscolaProfessor(): void {

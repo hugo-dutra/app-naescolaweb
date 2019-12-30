@@ -43,12 +43,14 @@ export class ProfessorService {
   public listarSemDisciplina(
     limit: number,
     offset: number,
-    asc: boolean
+    asc: boolean,
+    usr_id: number,
+    esc_id: number,
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "professores-sem-disciplina",
-      JSON.stringify({ limit: limit, offset: offset, asc: asc }),
+      JSON.stringify({ limit: limit, offset: offset, asc: asc, usr_id: usr_id, esc_id: esc_id }),
       headers
     );
   }
