@@ -46,10 +46,27 @@ export class EscolaService {
 
   public listar(limit: number, offset: number, asc: boolean): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
     return this.http.post(
       CONSTANTES.HOST_API + "escolas",
       JSON.stringify({ limit: limit, offset: offset, asc: asc }),
+      headers
+    );
+  }
+
+  public listarRegional(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "escolas-regional",
+      JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
+      headers
+    );
+  }
+
+  public listarLocal(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "escolas-local",
+      JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
       headers
     );
   }
@@ -90,6 +107,34 @@ export class EscolaService {
     return this.http.post(
       CONSTANTES.HOST_API + "filtrar-escola",
       JSON.stringify({ valor: valor, limit: limit, offset: offset }),
+      headers
+    );
+  }
+
+  public filtrarRegional(
+    valor: string,
+    limit: number,
+    offset: number,
+    esc_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "filtrar-escola-regional",
+      JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
+      headers
+    );
+  }
+
+  public filtrarLocal(
+    valor: string,
+    limit: number,
+    offset: number,
+    esc_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "filtrar-escola-local",
+      JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
       headers
     );
   }

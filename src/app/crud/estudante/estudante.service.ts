@@ -391,6 +391,40 @@ export class EstudanteService {
     );
   }
 
+  public filtrarRegional(
+    valor: string, limit: number,
+    offset: number, esc_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "filtrar-estudante-regional",
+      JSON.stringify({
+        valor: valor,
+        limit: limit,
+        offset: offset,
+        esc_id: esc_id
+      }),
+      headers
+    );
+  }
+
+  public filtrarGlobal(
+    valor: string,
+    limit: number,
+    offset: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "filtrar-estudante-global",
+      JSON.stringify({
+        valor: valor,
+        limit: limit,
+        offset: offset
+      }),
+      headers
+    );
+  }
+
   public filtrarContaOcorrencia(
     valor: string,
     limit: number,
