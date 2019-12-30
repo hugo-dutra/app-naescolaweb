@@ -208,6 +208,39 @@ export class EstudanteService {
     );
   }
 
+  public listarPorRegional(
+    limit: number, offset: number,
+    asc: boolean, esc_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "estudantes-regional",
+      JSON.stringify({
+        limit: limit,
+        offset: offset,
+        asc: asc,
+        esc_id: esc_id
+      }),
+      headers
+    );
+  }
+
+  public listarGlobal(
+    limit: number, offset: number,
+    asc: boolean
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "estudantes-global",
+      JSON.stringify({
+        limit: limit,
+        offset: offset,
+        asc: asc
+      }),
+      headers
+    );
+  }
+
   public listarSemFoto(
     esc_id: number,
     ano: number
