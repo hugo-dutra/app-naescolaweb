@@ -49,6 +49,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
   public exibeTodas: boolean = true;
   public origemChamada: string = undefined;
   public escopoUsuario: string;
+  public esc_id: number;
 
   public formulario = new FormGroup({
     check_diretor: new FormControl(null),
@@ -69,6 +70,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
       this.origemChamada = params["origem"];
     });
+    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
     this.escopoUsuario = Utils.pegarDadosEscopo().nome;
     this.listarEscolas(this.exibeTodas);
     this.listarDiretores(this.exibeTodos);
@@ -86,26 +88,76 @@ export class InserirDiretorEscolaComponent implements OnInit {
 
   public listarEscolas(todas: boolean): void {
     if (todas == false) {
-      /* TODAS POR ESCOPO SEM DIRETOR */
-      this.feedbackUsuario = "Carregando, aguarde...";
-      this.escolaService
-        .listarSemDiretor()
-        .toPromise()
-        .then((response: Response) => {
-          this.escolas = response;
-          this.feedbackUsuario = undefined;
-        })
-        .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
-        });
+
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+        /* TODAS POR ESCOPO SEM DIRETOR */
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.escolaService
+          .listarSemDiretor()
+          .toPromise()
+          .then((response: Response) => {
+            this.escolas = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+        /* REGIONAL POR ESCOPO SEM DIRETOR */
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.escolaService
+          .listarSemDiretorRegional(this.esc_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.escolas = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+        /* REGIONAL POR ESCOPO SEM DIRETOR */
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.escolaService
+          .listarSemDiretorLocal(this.esc_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.escolas = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
     } else {
       /* TODAS POR ESCOPO */
       if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
@@ -176,57 +228,149 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
     }
-
-
-
-
-
-
-
-
   }
 
   public listarDiretores(todos: boolean): void {
     if (!todos) {
-      this.feedbackUsuario = "Carregando, aguarde...";
-      this.diretorService
-        .listarSemEscola()
-        .toPromise()
-        .then((response: Response) => {
-          this.diretores = response;
-          this.feedbackUsuario = undefined;
-        })
-        .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
-        });
+      /* LISTAR SEM ESCOLA */
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.diretorService
+          .listarSemEscola()
+          .toPromise()
+          .then((response: Response) => {
+            this.diretores = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+        let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.diretorService
+          .listarSemEscolaRegional(esc_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.diretores = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+        let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.diretorService
+          .listarSemEscolaLocal(esc_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.diretores = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
     } else {
-      this.feedbackUsuario = "Carregando, aguarde...";
-      this.diretorService
-        .listar(5000, 0, true)
-        .toPromise()
-        .then((response: Response) => {
-          this.diretores = response;
-          this.feedbackUsuario = undefined;
-        })
-        .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
-        });
+      /* LISTAR COM ESCOLA */
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.diretorService
+          .listar(5000, 0, true)
+          .toPromise()
+          .then((response: Response) => {
+            this.diretores = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+        let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.diretorService
+          .listarRegional(5000, 0, true, esc_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.diretores = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+        let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+        this.feedbackUsuario = "Carregando, aguarde...";
+        this.diretorService
+          .listarLocal(5000, 0, true, esc_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.diretores = response;
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
     }
   }
 

@@ -98,6 +98,24 @@ export class EscolaService {
     );
   }
 
+  public listarSemDiretorRegional(esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "escolas-sem-diretor-regional",
+      JSON.stringify({ esc_id: esc_id }),
+      headers
+    );
+  }
+
+  public listarSemDiretorLocal(esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "escolas-sem-diretor-local",
+      JSON.stringify({ esc_id: esc_id }),
+      headers
+    );
+  }
+
   public filtrar(
     valor: string,
     limit: number,

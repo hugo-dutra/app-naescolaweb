@@ -46,6 +46,8 @@ export class InserirDiretorComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
+  public escopoUsuario: string;
+  public esc_id: number;
 
   public formulario: FormGroup = new FormGroup({
     id: new FormControl(null),
@@ -56,8 +58,9 @@ export class InserirDiretorComponent implements OnInit {
     matricula: new FormControl(null)
   });
 
-  ngOnInit() { }
-
+  ngOnInit() {
+    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+  }
 
   public testarDiretorCadastrado(response: Response): string {
     return Object.values(response)[0]["usuario_existente"];
@@ -65,6 +68,7 @@ export class InserirDiretorComponent implements OnInit {
 
   public inserir(): void {
     //Guarda os parametros do formulario nos atributos do objeto diretor
+    if (this.diretor.foto == undefined) this.diretor.foto = "";
     this.diretor.nome = this.formulario.value.nome;
     this.diretor.telefone = this.formulario.value.telefone;
     this.diretor.matricula = this.formulario.value.matricula;
@@ -72,7 +76,7 @@ export class InserirDiretorComponent implements OnInit {
     //Pegar esse valor, passar para um serviço fazer um post http para o servidor laravel gravar no banco e retorna o ultimo objeto inserido
     this.feedbackUsuario = "Salvando dados, aguarde...";
     this.diretorService
-      .inserir(this.diretor)
+      .inserir(this.diretor, this.esc_id)
       .toPromise()
       .then((resposta: Response) => {
         if (this.testarDiretorCadastrado(resposta) == "error") {
@@ -91,8 +95,8 @@ export class InserirDiretorComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -117,8 +121,8 @@ export class InserirDiretorComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -128,8 +132,8 @@ export class InserirDiretorComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
