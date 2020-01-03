@@ -106,8 +106,9 @@ export class InserirUsuarioComponent implements OnInit {
 
   public listarPerfis(): void {
     this.feedbackUsuario = "Carregando dados, aguarde...";
+    let nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
-      .listar()
+      .listar(nivelPerfil)
       .toPromise()
       .then((response: Response) => {
         this.perfis = response;

@@ -61,8 +61,9 @@ export class ListarPerfilComponent implements OnInit {
 
   public listar(): void {
     this.feedbackUsuario = "Carregando dados, aguarde...";
+    let nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
-      .listar()
+      .listar(nivelPerfil)
       .toPromise()
       .then((response: Response) => {
         this.perfis = Object.values(response);

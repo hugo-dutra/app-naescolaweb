@@ -91,8 +91,8 @@ export class InserirPerfilPermissaoComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -109,8 +109,9 @@ export class InserirPerfilPermissaoComponent implements OnInit {
   public listarPerfis(): void {
     this.formulario.reset();
     this.feedbackUsuario = "Carregando dados, aguarde...";
+    let nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
-      .listar()
+      .listar(nivelPerfil)
       .toPromise()
       .then((response: Response) => {
         this.perfis = response;
@@ -123,8 +124,8 @@ export class InserirPerfilPermissaoComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -144,8 +145,8 @@ export class InserirPerfilPermissaoComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -191,8 +192,8 @@ export class InserirPerfilPermissaoComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.exibirAlerta = true;

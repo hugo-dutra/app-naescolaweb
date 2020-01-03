@@ -54,6 +54,24 @@ export class UsuarioService {
     );
   }
 
+  public listarRegional(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "usuarios-regional",
+      JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
+      headers
+    );
+  }
+
+  public listarLocal(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "usuarios-local",
+      JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
+      headers
+    );
+  }
+
   public alterarStatusUsuario(use_id: number, status_ativo: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
@@ -91,14 +109,37 @@ export class UsuarioService {
   }
 
   public filtrar(
-    valor: string,
-    limit: number,
+    valor: string, limit: number,
     offset: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "filtrar-usuario",
       JSON.stringify({ valor: valor, limit: limit, offset: offset }),
+      headers
+    );
+  }
+
+  public filtrarRegional(
+    valor: string, limit: number,
+    offset: number, esc_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "filtrar-usuario-regional",
+      JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
+      headers
+    );
+  }
+
+  public filtrarLocal(
+    valor: string, limit: number,
+    offset: number, esc_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "filtrar-usuario-local",
+      JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
       headers
     );
   }

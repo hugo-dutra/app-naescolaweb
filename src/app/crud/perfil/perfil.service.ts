@@ -9,11 +9,11 @@ export class PerfilService {
 
   constructor(private http: HttpClient) { }
 
-  public listar(): Observable<any> {
+  public listar(nivel: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "perfis",
-      null,
+      JSON.stringify({ nivel: nivel }),
       headers
     );
   }

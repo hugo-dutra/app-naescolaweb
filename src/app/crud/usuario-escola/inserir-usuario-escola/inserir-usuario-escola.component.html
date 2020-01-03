@@ -22,12 +22,7 @@
               Usuários
             </div>
           </div>
-          <div class="row">
-            <input type="checkbox" checked="checked" class="form-control checkbox col-lg-1 col-sm-11 mt-2"
-              id="exibeTodos" name="exibeTodos" (click)="exibirTodos()">
-            <label for="exibeTodos" class="text-dark text-left col-lg-11 col-sm-11">Todos / Não associados</label>
-          </div>
-          <div class="usuarios">
+          <div class="usuarios mt-4">
             <input type="text" (input)="filtrarUsuario($event)" class="form-control mb-2"
               placeholder="Procurar usuario...">
             <div *ngFor="let usuario of usuarios" class="form-group inline row mt-2">

@@ -57,8 +57,9 @@ export class ExcluirUsuarioComponent implements OnInit {
 
   public listarPerfis(): void {
     this.feedbackUsuario = "Carregando perfis..."
+    let nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
-      .listar()
+      .listar(nivelPerfil)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
@@ -69,8 +70,8 @@ export class ExcluirUsuarioComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -91,8 +92,8 @@ export class ExcluirUsuarioComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
