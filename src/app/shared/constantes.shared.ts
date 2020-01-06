@@ -13,7 +13,8 @@ export class CONSTANTES {
   public static DEF_MSG_ERRO = "ERROR 404 NOT FOUND";
   public static TEMPO_CONSULTA_ALERTAS = 1800000;
   //********************URLS****************************/
-  public static HOST = "http://localhost:8000";
+  //public static HOST = "http://localhost:8000";
+  public static HOST = "http://www.supervisorescolar.com.br"
   //public static HOST = "http://localhost";
   //public static HOST = "http://academico.se.df.gov.br";
   //public static HOST = "http://34.73.55.201:8080"; --Google

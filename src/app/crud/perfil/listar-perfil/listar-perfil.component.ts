@@ -48,8 +48,7 @@ export class ListarPerfilComponent implements OnInit {
     private perfilService: PerfilService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router,
-    private activeRoute: ActivatedRoute) { }
+    private router: Router) { }
 
   ngOnInit() {
     this.perfis = undefined;
@@ -57,9 +56,8 @@ export class ListarPerfilComponent implements OnInit {
     this.listar();
   }
 
-
-
   public listar(): void {
+
     this.feedbackUsuario = "Carregando dados, aguarde...";
     let nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
@@ -80,6 +78,7 @@ export class ListarPerfilComponent implements OnInit {
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
+
   }
 
   public ordenarColuna(campo: string): void {
@@ -109,6 +108,7 @@ export class ListarPerfilComponent implements OnInit {
     }
     this.decrescente = !this.decrescente;
   }
+
   public inserir(): void {
     this.router.navigate([`${this.router.url}/inserir-perfil`]);
   }
