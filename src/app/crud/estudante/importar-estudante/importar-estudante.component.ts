@@ -11,6 +11,7 @@ import { CONSTANTES } from '../../../shared/constantes.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Utils } from '../../../shared/utils.shared';
+import * as moment from "moment";
 
 @Component({
   selector: 'app-importar-estudante',
@@ -107,7 +108,7 @@ export class ImportarEstudanteComponent implements OnInit {
       const camposDePreenchimento = ['Número', 'Matrícula', 'Nome', 'Data de nascimento', 'Nome do responsável'];
       modeloPlanilhaImportareEstudantes.worksheets[0].addRows([camposDePreenchimento]);
       for (let i = 0; i < QuantidadeEsEstudantesPorTurma; i++) {
-        const preenchimentoPadrao = ['0', '-', '-', '01-01-0001', '-']
+        const preenchimentoPadrao = ['0', '-', '-', '01-01-0001', '-'];
         modeloPlanilhaImportareEstudantes.worksheets[0].addRows([preenchimentoPadrao]);
       }
     })
@@ -179,6 +180,7 @@ export class ImportarEstudanteComponent implements OnInit {
       let bstr = arr.join("");
       let workbook = XLSX.read(bstr, { type: "binary" });
       let first_sheet_name = workbook.SheetNames[0];
+
       let worksheet = workbook.Sheets[first_sheet_name];
       let jsonWorkSheet = XLSX.utils.sheet_to_json(worksheet, { raw: true });
 
@@ -193,8 +195,7 @@ export class ImportarEstudanteComponent implements OnInit {
           const numero = objetoLinha[0];
           const matricula = objetoLinha[1];
           const nome = objetoLinha[2];
-          const dataNascimentoInvertida = (<string>objetoLinha[3]).split('/').reverse().join();
-          const dataNascimento = (<string>dataNascimentoInvertida).replace(',', '-').replace(',', '-');
+          const dataNascimento = this.ExcelDateToJSDate(<string>objetoLinha[3]);
           const responsavel = objetoLinha[4];
           this.arrayOfEstudantes.push({ trm_id: trm_id, numero: numero, matricula: matricula, nome: nome, dataNascimento: dataNascimento, responsavel: responsavel, esc_id: this.esc_id });
         }
@@ -202,6 +203,13 @@ export class ImportarEstudanteComponent implements OnInit {
       this.inserirEstudanteImportado();
     }
     fileReader.readAsArrayBuffer(arquivo);
+  }
+
+  public ExcelDateToJSDate(serial) {
+    var utc_days = Math.floor(serial - 25568);
+    var utc_value = utc_days * 86400;
+    var date_info = new Date(utc_value * 1000);
+    return `${date_info.getFullYear()}-${date_info.getMonth() + 1}-${date_info.getDate()}`;
   }
 
   public inserirEstudanteImportado(): void {
