@@ -104,6 +104,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       })
       .then(() => {
         if (this.primeiraExecucao) {
+          //this.listarDisciplinasSEDF();
           this.listarDisciplinas();
           this.primeiraExecucao = false;
         } else {
@@ -157,6 +158,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       })
       .then(() => {
         if (this.primeiraExecucao) {
+          //this.listarDisciplinasSEDF();
           this.listarDisciplinas();
           this.primeiraExecucao = false;
         } else {
@@ -205,7 +207,15 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
     this.alertarChecksVazios();
   }
 
-  public listarDisciplinas(): void {
+  /* Esse método é exclusivo da SEDF.
+    Sem ele, muitas disciplinas são listadas,
+    pois cada curso pode ter uma disciplina e
+    para saber de qual curso cada disciplina é,
+    é necessário que o estudante tenha um boletim,
+    com uma determinda nota, de certa disciplina,
+    para associação correta */
+
+  public listarDisciplinasSEDF(): void {
     this.feedbackUsuario = "Carregando, aguarde...";
     this.disciplinaService
       .integracaoListar(this.esc_id)
@@ -213,8 +223,28 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       .then((response: Response) => {
         this.disciplinas = response;
         this.feedbackUsuario = undefined;
-      })
-      .catch((erro: Response) => {
+      }).catch((erro: Response) => {
+        //Mostra modal
+        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+        //registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Caso token seja invalido, reenvia rota para login
+        Utils.tratarErro({ router: this.router, response: erro });
+        this.feedbackUsuario = undefined;
+      });
+  }
+
+  public listarDisciplinas(): void {
+    this.feedbackUsuario = "Carregando, aguarde...";
+    this.disciplinaService
+      .listar()
+      .toPromise()
+      .then((response: Response) => {
+        this.disciplinas = response;
+        this.feedbackUsuario = undefined;
+      }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton

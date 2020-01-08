@@ -14,10 +14,9 @@ export class CONSTANTES {
   public static TEMPO_CONSULTA_ALERTAS = 1800000;
   //********************URLS****************************/
   public static HOST = "http://localhost:8000";
-  // public static HOST = "http://www.supervisorescolar.com.br"
-  //public static HOST = "http://localhost";
+  //public static HOST = "http://www.supervisorescolar.com.br"
   //public static HOST = "http://academico.se.df.gov.br";
-  //public static HOST = "http://10.221.37.124"; //--SEDF
+
   public static HOST_API = CONSTANTES.HOST + "/api/";
   public static CK = "OEqpJdFaYtaY0eI087eNA6KKSMsi22vh";
   //********************FILES**************************/
