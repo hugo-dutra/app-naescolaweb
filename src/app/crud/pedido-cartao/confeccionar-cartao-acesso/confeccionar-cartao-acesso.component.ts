@@ -82,7 +82,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public carregarLayouts(): void {
-    this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }]
+    this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }, { id: 3, name: "PVC-SEDF-FRENTE E VERSO" }]
   }
 
 
@@ -120,7 +120,13 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   public selecionarLayout(layout: Object): void {
     this.stringLayoutSelecionado = layout["name"];
     this.id_layout_selecionado = layout["id"];
-    this.listarEstudantesTurmaSelecionada();
+    //this.listarEstudantesTurmaSelecionada(); --> Retirar esse comentário ao terminar de criar o layout sedf
+
+    /* remover duas linhas abaixo quando terminar o layout base */
+    setTimeout(() => {
+      document.getElementById(`ngx_Barcode_1122`).parentElement.appendChild(document.getElementById(`ngx_Barcode_1122`).children[0].children[0]);
+      document.getElementById(`ngx_Barcode_1122`).remove()
+    }, 500);
   }
 
   public listarEstudantesTurmaSelecionada(): void {
@@ -169,7 +175,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
-
       this.feedbackUsuario = undefined;
     })
   }
