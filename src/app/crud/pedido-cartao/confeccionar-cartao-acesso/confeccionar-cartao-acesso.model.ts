@@ -9,4 +9,6 @@ export class CartaoAcessoImpressao {
   public foto: string;
   public logoEscola: string;
   public logoRedeEnsino: string;
+  public dataNascimento: string;
+
 }

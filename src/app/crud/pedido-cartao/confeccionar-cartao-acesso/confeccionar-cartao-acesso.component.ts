@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { TurmaService } from '../../turma/turma.service';
+import { EscolaService } from '../../escola/escola.service';
 import { EstudanteService } from '../../estudante/estudante.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CONSTANTES } from '../../../shared/constantes.shared';
@@ -15,7 +16,7 @@ import { Utils } from '../../../shared/utils.shared';
   selector: 'ngx-confeccionar-cartao-acesso',
   templateUrl: './confeccionar-cartao-acesso.component.html',
   styleUrls: ['./confeccionar-cartao-acesso.component.scss'],
-  providers: [FirebaseService, TurmaService, EstudanteService],
+  providers: [FirebaseService, TurmaService, EstudanteService, EscolaService],
   animations: [
     trigger("chamado", [
       state(
@@ -39,7 +40,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private turmaService: TurmaService,
-    private estudanteService: EstudanteService
+    private estudanteService: EstudanteService,
+    private escolaService: EscolaService,
   ) { }
 
   public feedbackUsuario: string;
@@ -64,6 +66,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   public enderecoEscola: string;
   public cepEscola: string;
   public telefoneEscola: string;
+  public urlAssinaguraGestor: string;
 
   ngOnInit() {
     this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
@@ -75,16 +78,21 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     this.cepEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0].cep;
     this.enderecoEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0].endereco;
     this.telefoneEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0].telefone;
-
     this.anoAtual = (new Date()).getFullYear();
+    this.pegarUrlAssinaguraDiretor();
     this.listarTurmas();
     this.carregarLayouts();
+  }
+
+  public pegarUrlAssinaguraDiretor(): void {
+    this.escolaService.litarAssinaturaGestor(this.esc_id).toPromise().then((response: Response) => {
+      this.urlAssinaguraGestor = Object.values(response)[0]["assinatura_gestor"];
+    })
   }
 
   public carregarLayouts(): void {
     this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }, { id: 3, name: "PVC-SEDF-FRENTE E VERSO" }]
   }
-
 
   public gerenciarPortaria(): void {
     this.router.navigate(["gerenciar-pedido-cartao"]);
@@ -104,7 +112,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
-
       this.feedbackUsuario = undefined;
     })
   }
@@ -120,13 +127,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   public selecionarLayout(layout: Object): void {
     this.stringLayoutSelecionado = layout["name"];
     this.id_layout_selecionado = layout["id"];
-    //this.listarEstudantesTurmaSelecionada(); --> Retirar esse comentário ao terminar de criar o layout sedf
-
-    /* remover duas linhas abaixo quando terminar o layout base */
-    setTimeout(() => {
-      document.getElementById(`ngx_Barcode_1122`).parentElement.appendChild(document.getElementById(`ngx_Barcode_1122`).children[0].children[0]);
-      document.getElementById(`ngx_Barcode_1122`).remove()
-    }, 500);
+    this.listarEstudantesTurmaSelecionada();
   }
 
   public listarEstudantesTurmaSelecionada(): void {
@@ -152,6 +153,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         cartaoAcessoImpressao.stringCodigoBarras = Utils.gerarDigitosCodigoDeBarras(cartaoAcessoImpressao.est_id.toString(), this.anoAtual);
         cartaoAcessoImpressao.turma = turma;
         cartaoAcessoImpressao.turno = turno;
+        cartaoAcessoImpressao.dataNascimento = elem["data_nascimento"];
         this.arrayOfEstudantesCartaoConfeccionado.push(cartaoAcessoImpressao);
       })
 

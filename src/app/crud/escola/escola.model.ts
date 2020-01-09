@@ -11,4 +11,5 @@ export class Escola {
   public cep: string;
   public cnpj: string;
   public nome_abreviado: string;
+  public assinatura_gestor: string;
 }
