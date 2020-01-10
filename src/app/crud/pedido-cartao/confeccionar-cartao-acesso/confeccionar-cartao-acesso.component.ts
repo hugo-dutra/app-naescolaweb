@@ -91,7 +91,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public carregarLayouts(): void {
-    this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }, { id: 3, name: "PVC-SEDF-FRENTE E VERSO" }]
+    this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }, { id: 3, name: "Pvc-Sedf" }]
   }
 
   public gerenciarPortaria(): void {
@@ -185,67 +185,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     //alert(JSON.stringify(estudante));
   }
 
-  public gerarCarteirinhaBasicoFrenteVersoCanvasEPdf(): void {
-    this.feedbackUsuario = `Criando cartões, aguarde..`;
-    setTimeout(() => {
-      var doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-        compressPdf: true,
-      });
-      new Promise(resolve => {
-        let alturaPagina = doc.internal.pageSize.height;
-        let larguraPagina = doc.internal.pageSize.width;
-        let distanciaVertical = 4;
-        let distanciHorizontal = 0;
-        let alturaCartao = ((alturaPagina / 4) - distanciaVertical)
-        let larguraCartao = ((larguraPagina) - distanciHorizontal);
-        let yPos = 0;
-        let xPos = 0;
-        let margem = 2;
-        let contaCartao = 0;
-        let quantidadeColunas = 1;
-        let quantidadeCartoesPorPagina = 4;
-
-        this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
-          html2canvas(document.querySelector(`#frente_verso${elem["est_id"]}`), { useCORS: true }).then(canvas => {
-            this.feedbackUsuario = `Criando cartão do(a) estudante ${elem["nome"]}`;
-
-
-            if (contaCartao % quantidadeColunas == 0 && contaCartao > 0) {
-              yPos += alturaCartao;
-              xPos = 0;
-            }
-            if (contaCartao % quantidadeCartoesPorPagina == 0 && contaCartao > 0) {
-              yPos = 0;
-              xPos = 0;
-              doc.addPage('portrait', 'a4');
-            }
-
-            if (xPos >= margem) {
-              xPos += larguraCartao + margem;
-            } else {
-              xPos = 0 + margem;
-            }
-
-            var imgData = canvas.toDataURL('image/jpeg');
-            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["est_id"]);
-
-            contaCartao += 1
-            if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
-              this.feedbackUsuario = undefined;
-              doc.save(`cartoes.pdf`);
-              resolve("ok");
-            }
-
-          });
-
-        })
-      })
-    }, 2000);
-  }
-
   public gerarCarteirinhaEtiquetaCanvasEPdf(): void {
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     setTimeout(() => {
@@ -299,7 +238,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
               resolve("ok");
             }
           });
-
         })
       })
     }, 2000);
@@ -360,4 +298,106 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     }, 2000);
   }
 
+  public gerarCarteirinhaBasicoFrenteVersoCanvasEPdf(): void {
+    this.feedbackUsuario = `Criando cartões, aguarde..`;
+    setTimeout(() => {
+      var doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compressPdf: true,
+      });
+      new Promise(resolve => {
+        let alturaPagina = doc.internal.pageSize.height;
+        let larguraPagina = doc.internal.pageSize.width;
+        let distanciaVertical = 4;
+        let distanciHorizontal = 0;
+        let alturaCartao = ((alturaPagina / 4) - distanciaVertical)
+        let larguraCartao = ((larguraPagina) - distanciHorizontal);
+        let yPos = 0;
+        let xPos = 0;
+        let margem = 2;
+        let contaCartao = 0;
+        let quantidadeColunas = 1;
+        let quantidadeCartoesPorPagina = 4;
+
+        this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
+          html2canvas(document.querySelector(`#frente_verso${elem["est_id"]}`), { useCORS: true }).then(canvas => {
+            this.feedbackUsuario = `Criando cartão do(a) estudante ${elem["nome"]}`;
+
+
+            if (contaCartao % quantidadeColunas == 0 && contaCartao > 0) {
+              yPos += alturaCartao;
+              xPos = 0;
+            }
+            if (contaCartao % quantidadeCartoesPorPagina == 0 && contaCartao > 0) {
+              yPos = 0;
+              xPos = 0;
+              doc.addPage('portrait', 'a4');
+            }
+
+            if (xPos >= margem) {
+              xPos += larguraCartao + margem;
+            } else {
+              xPos = 0 + margem;
+            }
+
+            var imgData = canvas.toDataURL('image/jpeg');
+            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["est_id"]);
+
+            contaCartao += 1
+            if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
+              this.feedbackUsuario = undefined;
+              doc.save(`cartoes.pdf`);
+              resolve("ok");
+            }
+          });
+        })
+      })
+    }, 2000);
+  }
+
+  public gerarCarteirinhaSEDFFrenteVersoPdf(): void {
+
+    this.feedbackUsuario = `Criando cartões, aguarde..`;
+    setTimeout(() => {
+      var doc = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: [86.0, 54.00],
+        compressPdf: true,
+      });
+      new Promise(resolve => {
+        let alturaPagina = doc.internal.pageSize.height;
+        let larguraPagina = doc.internal.pageSize.width;
+        let alturaCartao = alturaPagina;
+        let larguraCartao = larguraPagina;
+        let yPos = 0;
+        let xPos = 0;
+        this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
+          html2canvas(document.querySelector(`#frente_sedf_${elem["est_id"]}`), { useCORS: true }).then(canvas => {
+            this.feedbackUsuario = `Criando frente cartão do(a) estudante ${elem["nome"]}`;
+            yPos = 0;
+            xPos = 0;
+            var imgData = canvas.toDataURL('image/jpeg');
+            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, `#frente_sedf_${elem["est_id"]}`);
+            doc.addPage();
+          });
+        })
+
+        const elemVerso = this.arrayOfEstudantesCartaoConfeccionado[0]
+        html2canvas(document.querySelector(`#verso_sedf_${elemVerso["est_id"]}`), { useCORS: true }).then(canvas => {
+          this.feedbackUsuario = `Criando verso cartão do(a) estudante ${elemVerso["nome"]}`;
+          yPos = 0;
+          xPos = 0;
+          var imgData = canvas.toDataURL('image/jpeg');
+          doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, `#verso_sedf_${elemVerso["est_id"]}`);
+          doc.addPage();
+          doc.save(`cartoes.pdf`);
+          this.feedbackUsuario = undefined;
+          resolve('ok')
+        });
+      })
+    }, 2000);
+  }
 }

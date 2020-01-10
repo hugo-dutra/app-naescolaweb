@@ -87,8 +87,6 @@ export class InserirEscolaComponent implements OnInit {
     this.escola.ren_id = this.formulario.value.ren_id;
     this.escola.cnpj = this.formulario.value.cnpj;
     this.escola.nome_abreviado = this.formulario.value.nome_abreviado;
-    this.escola.assinatura_gestor = this.formulario.value.assinatura_gestor;
-
     //Pegar esse valor, passar para um serviço fazer um post http para o servidor laravel gravar no banco e retorna o ultimo objeto inserido
     this.feedbackUsuario = "Salvando dados, aguarde...";
     this.diretorService
@@ -102,18 +100,30 @@ export class InserirEscolaComponent implements OnInit {
         this.exibirAlerta = false;
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+        this.tratarErro(erro);
         this.feedbackUsuario = undefined;
         this.escola.logo = undefined;
         this.exibirAlerta = true;
       });
+  }
+
+  public enviarArquivoAssinatura(event: Event): void {
+    let arquivos: FileList = (<HTMLInputElement>event.target).files;
+    let firebaseUpload = new FirebaseUpload(arquivos[0]);
+    firebaseUpload.name = Utils.gerarNomeUnico();
+    this.feedbackUsuario = "Enviando assinatura, aguarde...";
+    let basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ESCOLA}`;
+    this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
+      this.feedbackUsuario = "Carregando assinatura, aguarde...";
+      this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
+        this.escola.assinatura_gestor = url_download;
+        this.feedbackUsuario = undefined;
+      }).catch((erro: Response) => {
+        this.tratarErro(erro);
+      })
+    }).catch((erro: Response) => {
+      this.tratarErro(erro);
+    })
   }
 
   public enviarArquivo(event: Event): void {
@@ -128,26 +138,10 @@ export class InserirEscolaComponent implements OnInit {
         this.escola.logo = url_download;
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       })
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.tratarErro(erro);
     })
   }
 
@@ -170,15 +164,7 @@ export class InserirEscolaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
@@ -195,15 +181,20 @@ export class InserirEscolaComponent implements OnInit {
         localStorage.setItem("ren_id", redeEnsino.id.toString());
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
+
+  public tratarErro(erro: Response): void {
+    //Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    //registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+    //Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    //Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
+  }
+
 }

@@ -24,6 +24,10 @@
         <button *ngIf="id_layout_selecionado === 2"
           class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
           (click)="gerarCarteirinhaEtiquetaCanvasEPdf()">GerarDocumento</button>
+        <!--############# ETIQUETAS - id:3 #############-->
+        <button *ngIf="id_layout_selecionado === 3"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          (click)="gerarCarteirinhaSEDFFrenteVersoPdf()">GerarDocumento</button>
       </div>
     </div>
     <div class="card-body">
@@ -209,8 +213,8 @@
       <div *ngIf="id_layout_selecionado === 3" class="mt-3">
         <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="row">
           <!-- FRENTE -->
-          <div [id]="'frente_sedf_'+estudante.est_id" class="col-lg-6">
-            <div class="card ">
+          <div [id]="'frente_sedf_'+estudante.est_id" class="col-lg-6  bg-sedf">
+            <div class="card card_frente">
               <div class="card-header bg-sedf pt-5 pb">
                 <p class="color-texto-sedf float-left" style="font-size: 40px; font-weight: 500;">Carteira de
                   Identificação
@@ -290,7 +294,7 @@
           </div>
           <!-- VERSO -->
           <div [id]="'verso_sedf_'+estudante.est_id" class="col-lg-6">
-            <div class="card">
+            <div class="card card_verso">
               <div class="card-body">
                 <div class="row">
                   <div class="col-1"></div>

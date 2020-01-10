@@ -56,6 +56,11 @@
           <input type="file" accept=".jpg,.jpeg" (change)="enviarArquivo($event)" id="files" style="visibility: hidden;"
             class="form-control col-sm-12 col-lg-1" formControlName="logo">
         </div>
+        <div class="row m-3">
+          <label for="filesAssinatura" class="btn btn-warning col-sm-12 col-lg-4 mt-2">Selecionar assinatura</label>
+          <input type="file" accept=".jpg,.jpeg" (change)="enviarArquivoAssinatura($event)" id="filesAssinatura"
+            style="visibility: hidden;" class="form-control col-sm-12 col-lg-1" formControlName="assinatura_gestor">
+        </div>
         <div class="row m-3 form-group">
           <div class="col-sm-12 col-lg-10 mt-2"></div>
           <button type="submit" class="btn btn-primary form-control col-sm-12 col-lg-2">Salvar</button>
