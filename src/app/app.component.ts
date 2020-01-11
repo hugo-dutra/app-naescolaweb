@@ -15,6 +15,7 @@ import { OcorrenciaService } from './crud/ocorrencia/ocorrencia.service';
 import { AlertModalService } from './shared-module/alert-modal.service';
 import { FirebaseService } from './shared/firebase/firebase.service';
 import * as CryptoJS from 'crypto-js';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'ngx-app',
@@ -38,6 +39,7 @@ export class AppComponent implements OnInit {
   public observacaoAlertaVerificado: string;
 
   constructor(
+    private titleService: Title,
     private analytics: AnalyticsService,
     private router: Router,
     private acessoComumService: AcessoComumService,
@@ -52,6 +54,15 @@ export class AppComponent implements OnInit {
     });
   }
 
+  public setTitle(): void {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
+      this.titleService.setTitle('Acadêmico');
+    }
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
+      this.titleService.setTitle('NaEscola');
+    }
+  }
+
   ngOnInit(): void {
     this.analytics.trackPageViews();
     this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: string) => {
@@ -60,6 +71,7 @@ export class AppComponent implements OnInit {
       firebase.initializeApp(JSON.parse(cfg));
     })
     this.verificarAlertasOcorrenciasDisciplinares();
+    this.setTitle();
   }
 
   public verificarAlertasOcorrenciasDisciplinares(): void {

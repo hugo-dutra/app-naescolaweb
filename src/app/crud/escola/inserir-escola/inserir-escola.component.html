@@ -36,7 +36,8 @@
             maxlength="40" required (input)="validar($event)" (focusout)="validar($event)">
           <div class="col-sm-12 col-lg-1"></div>
           <input type="text" placeholder="cnpj..." class="form-control col-sm-12 col-lg-2 mt-2" formControlName="cnpj"
-            maxlength="25" required (input)="validar($event)" (focusout)="validar($event)">
+            maxlength="25" required (input)="validar($event)" (focusout)="validar($event)"
+            (focusout)="validarCNPJ($event)">
           <div class="col-sm-12 col-lg-1"></div>
           <input type="text" placeholder="cep..." class="form-control col-sm-12 col-lg-2 mt-2" formControlName="cep"
             maxlength="12" required (input)="validar($event)" (focusout)="validar($event)">

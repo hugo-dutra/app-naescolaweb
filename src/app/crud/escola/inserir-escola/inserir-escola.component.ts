@@ -154,6 +154,18 @@ export class InserirEscolaComponent implements OnInit {
     this.exibirAlerta = false;
   }
 
+
+  public validarCNPJ(event: Event): void {
+    const cnpj = (<HTMLInputElement>event.target).value;
+    const validadeCNPJ = Utils.validarCNPJ(cnpj);
+    if (!validadeCNPJ) {
+      this.alertModalService.showAlertDanger("CNPJ Inválido");
+      this.formulario.get('cnpj').reset();
+    }
+  }
+
+
+
   public listarRegiaoEscola(): void {
     this.feedbackUsuario = "Carregando dados, aguarde...";
     this.regiaoEscolaService

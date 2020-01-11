@@ -27,8 +27,8 @@
             <tr class="row" *ngFor="let periodo of periodosLetivos">
               <td class="col-sm-12 col-lg-1 text-left"></td>
               <td class="col-sm-12 col-lg-5 text-left">{{ periodo.periodo }}</td>
-              <td class="col-sm-12 col-lg-2 text-center">{{ periodo.inicio }}</td>
-              <td class="col-sm-12 col-lg-2 text-center">{{ periodo.fim }}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{ periodo.inicio | date:'dd-MM-yyyy'}}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{ periodo.fim  | date:'dd-MM-yyyy'}}</td>
               <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1"><button class="btn btn-warning btn-sm"
                   value="{{ periodo }}" (click)="alterar(periodo)">Alterar</button></td>
               <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1"><button class="btn btn-danger btn-sm"

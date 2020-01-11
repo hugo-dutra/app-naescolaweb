@@ -3,16 +3,21 @@ import * as CryptoJS from 'crypto-js';
 
 export class CONSTANTES {
 
-  //Quantidade de passo que a string será convertida para base 64 - Profundidade da encriptação.
-  public static ESCOPO_GLOBAL = 'Global';
-  public static ESCOPO_REGIONAL = 'Regional';
-  public static ESCOPO_LOCAL = 'Local';
 
+  //Quantidade de passo que a string será convertida para base 64 - Profundidade da encriptação.
   public static PASSO_CRIPT = 5;
   public static PRODUCAO = true; //no deploy essa linha deverá ser trocada
   public static DEF_MSG_ERRO = "ERROR 404 NOT FOUND";
   public static TEMPO_CONSULTA_ALERTAS = 1800000;
+
+  public static ESCOPO_GLOBAL = 'Global';
+  public static ESCOPO_REGIONAL = 'Regional';
+  public static ESCOPO_LOCAL = 'Local';
   //********************URLS****************************/
+  public static BUILD_SEDF = '1';
+  public static BUILS_RESOLVIDOS = '2'
+  public static BUILD_DESTINO = '2'
+
   public static HOST = "http://localhost:8000";
   //public static HOST = "http://www.supervisorescolar.com.br"
   //public static HOST = "http://academico.se.df.gov.br";
