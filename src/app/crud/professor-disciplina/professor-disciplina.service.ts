@@ -37,6 +37,15 @@ export class ProfessorDisciplinaService {
     return null;
   }
 
+  public desvincularProfessorDisciplina(prf_id: number, dsp_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "desvincular-professor-disciplina",
+      JSON.stringify({ prf_id: prf_id, dsp_id: dsp_id }),
+      headers
+    );
+  }
+
   public inserir(
     professores: number[],
     disciplinas: number[]

@@ -40,6 +40,26 @@
             (click)="alterar()">Salvar</button>
         </div>
       </form>
+
+      <div class="professores col-lg-12">
+        <table class="table table-striped table-hover">
+          <thead class="thead-light">
+            <tr class="row">
+              <th class="col-lg-9 col-sm-12 text-center" scope="col"> Disciplina</th>
+              <th class="col-lg-3 col-sm-12 text-center" scope="col"> Desvincular disciplina</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="disciplinasProfessor.length > 0">
+            <tr class="row" *ngFor="let disciplina of disciplinasProfessor" [@chamado]="estado">
+              <td class="col-lg-9 col-sm-12 text-left">{{ disciplina.disciplina }}</td>
+              <td class="col-lg-3 col-sm-12 te-center"><button class="btn btn-danger btn-sm" value="{{ disciplina }}"
+                  (click)="desvincularProfessorDisciplina(disciplina.dsp_id)">Desvincular</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
     <div class="card-footer text-muted bg-dark mt-2 ">
       <i class="fa fa-lg fa-info-circle text-light "> Alterar dados do professor</i>

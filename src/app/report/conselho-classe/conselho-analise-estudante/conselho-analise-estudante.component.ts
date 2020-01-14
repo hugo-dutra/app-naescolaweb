@@ -513,36 +513,42 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     this.resultadosEstudantes = []
     this.rendimentoService.listarRendimentoTurmaPeriodo(this.trm_id_selecionada, this.prl_id_selecionado).toPromise().then((response: Response) => {
       let resultados_turma = Object.values(response);
-      let last_est_id: number = 0;
-      let resultadoEstudante: ResultadoEstudante;
-      if (resultados_turma.length == 0) {
-        this.barChartnotaFaltasPeriodo.destroy();
-        this.estudanteSelecionado.estudante = "";
-      }
-      resultados_turma.forEach(resultado => {
-        let est_id: number = resultado["est_id"];
-        if (est_id != last_est_id) {
-          last_est_id = est_id;
-          resultadoEstudante = new ResultadoEstudante();
-          resultadoEstudante.est_id = last_est_id;
-          resultadoEstudante.estudante = resultado["nome"];
-          if (resultado["foto"] != "") {
-            resultadoEstudante.foto = resultado["foto"];
-          } else {
-            resultadoEstudante.foto = "../../../../assets/images/noavatar.jpg";
+      if (resultados_turma.length > 0) {
+        let last_est_id: number = 0;
+        let resultadoEstudante: ResultadoEstudante;
+        if (resultados_turma.length == 0) {
+          this.barChartnotaFaltasPeriodo.destroy();
+          this.estudanteSelecionado.estudante = "";
+        }
+        resultados_turma.forEach(resultado => {
+          let est_id: number = resultado["est_id"];
+          if (est_id != last_est_id) {
+            last_est_id = est_id;
+            resultadoEstudante = new ResultadoEstudante();
+            resultadoEstudante.est_id = last_est_id;
+            resultadoEstudante.estudante = resultado["nome"];
+            if (resultado["foto"] != "") {
+              resultadoEstudante.foto = resultado["foto"];
+            } else {
+              resultadoEstudante.foto = "../../../../assets/images/noavatar.jpg";
+            }
+            this.resultadosEstudantes.push(resultadoEstudante);
           }
-          this.resultadosEstudantes.push(resultadoEstudante);
-        }
-        if (est_id == last_est_id) {
-          let notaFaltasDisciplinaEstudante = new NotaFaltasDisciplinaEstudante();
-          notaFaltasDisciplinaEstudante.nota = resultado["nota"];
-          notaFaltasDisciplinaEstudante.faltas = resultado["faltas"];
-          notaFaltasDisciplinaEstudante.descricao = resultado["disciplina"];
-          notaFaltasDisciplinaEstudante.descricao_abv = resultado["disciplina_abv"];
-          resultadoEstudante.notaFaltasdisciplinas.push(notaFaltasDisciplinaEstudante);
-        }
-      })
-      this.carregarDadosDisciplinaresTurma();
+          if (est_id == last_est_id) {
+            let notaFaltasDisciplinaEstudante = new NotaFaltasDisciplinaEstudante();
+            notaFaltasDisciplinaEstudante.nota = resultado["nota"];
+            notaFaltasDisciplinaEstudante.faltas = resultado["faltas"];
+            notaFaltasDisciplinaEstudante.descricao = resultado["disciplina"];
+            notaFaltasDisciplinaEstudante.descricao_abv = resultado["disciplina_abv"];
+            resultadoEstudante.notaFaltasdisciplinas.push(notaFaltasDisciplinaEstudante);
+          }
+        })
+        this.carregarDadosDisciplinaresTurma();
+      } else {
+        this.alertModalService.showAlertWarning("Sem registro de notas para período selecionado");
+        this.feedbackUsuario = undefined;
+      }
+
     }).catch((erro: Response) => {
       //Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

@@ -63,7 +63,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public nomeEstudanteOcorrenciaProcurado: string;
 
   public tiposOcorrenciasDisciplinares: Object;
-  public tipoOcorrenciaSimples: string;
+  public tipoOcorrenciaSimples: string = "";
   public tipoOcorrenciaMultiplo: string;
   public trm_id: number;
   public esc_id: number;
@@ -114,14 +114,20 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.listarTipoOcorrenciaDisciplinar();
     this.listarTurmas();
     this.dataOcorrencia = moment().format('YYYY-MM-DD');
-    this.horaOcorrencia = moment().format('HH:mm');
-
     this.dataOcorrenciaMultipla = moment().format('YYYY-MM-DD');
+    this.atualizarHoraLancamentoOcorrencias();
+  }
+
+  public atualizarHoraLancamentoOcorrencias(): void {
+    this.horaOcorrencia = moment().format('HH:mm');
     this.horaOcorrenciaMultipla = moment().format('HH:mm');
+    setInterval(() => {
+      this.horaOcorrencia = moment().format('HH:mm');
+      this.horaOcorrenciaMultipla = moment().format('HH:mm');
+    }, 60000);
   }
 
   //#region ######################################### OCORRENCIA SIMPLES #################################################
-
   public ordenarColunaSimples(campo: string): void {
     if (!this.decrescente) {
       let retorno = this.estudantes.sort(function (a, b) {
@@ -226,6 +232,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public montarMensagensNovasOcorrencias(): void {
+
     let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
     let inep = dados_escola[0]["inep"];
     this.arrayDeMensagensSimples = [];
@@ -460,6 +467,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.ocorrencia.ocorrencia = "";
     this.ocorrencia.tod_id = -1;
     this.ocorrencia.usr_id = -1;
+    this.tipoOcorrenciaSimples = "";
 
     this.estudantes = [];
     this.arrayDeMensagensSimples = [];
@@ -472,6 +480,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     (<HTMLInputElement>document.getElementById("input_descricao")).value = "";
     (<HTMLInputElement>document.getElementById("input_tipo_ocorrencia")).value = "";
     (<HTMLInputElement>document.getElementById("input_consulta")).value = "";
+    this.validarSalvarOcorrenciaSimples();
   }
 
   public listarTipoOcorrenciaDisciplinar(): void {
@@ -522,10 +531,8 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public validarSalvarOcorrenciaSimples(): void {
-    if (this.arrayOfEstudantes.length > 0 &&
-      this.arrayOfMatriculasEstudantes.length > 0 &&
-      this.arrayOfNomesEstudantes.length > 0 &&
-      this.ocorrencia.tod_id != undefined) {
+    let descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao')).value;
+    if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantes.length > 0 && this.arrayOfNomesEstudantes.length > 0 && this.ocorrencia.tod_id != undefined) {
       this.statusBotaoSalvarOcorrenciaSimples = false;
     } else {
       this.statusBotaoSalvarOcorrenciaSimples = true;
@@ -569,6 +576,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     if (this.ocorrencia.ocorrencia.length == 0) {
       this.caracteresDisponiveis = "";
     }
+    this.validarSalvarOcorrenciaSimples();
   }
 
   public gravaStatusEstudantes(event: Event): void {
@@ -717,6 +725,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     (<HTMLInputElement>(
       document.getElementById("selecionarTodos")
     )).checked = false;
+    this.validarSalvarOcorrenciaMultipla();
   }
 
   public listarTurmas(): void {
@@ -749,6 +758,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     if (this.ocorrencia.ocorrencia.length == 0) {
       this.caracteresDisponiveis = "";
     }
+    this.validarSalvarOcorrenciaMultipla();
   }
 
   public gravarTipoOcorrenciaMultiplo(event: Event): void {
@@ -825,7 +835,8 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public validarSalvarOcorrenciaMultipla(): void {
-    if (this.arrayOfEstudantesMultiplo.length > 0 && this.tipoOcorrenciaMultiplo != undefined) {
+    let descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao_multipla')).value;
+    if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantesMultiplo.length > 0 && this.tipoOcorrenciaMultiplo != undefined) {
       this.statusBotaoSalvarOcorrenciaMultipla = false;
     } else {
       this.statusBotaoSalvarOcorrenciaMultipla = true;

@@ -50,7 +50,6 @@ export class ListarTurmaDisciplinaProfessorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.dados_escola = JSON.parse(
       Utils.decriptAtoB(
         localStorage.getItem("dados_escola"),
@@ -68,7 +67,7 @@ export class ListarTurmaDisciplinaProfessorComponent implements OnInit {
   }
 
   public carregarTurmasDisciplinas(): void {
-    this.feedbackUsuario = "Carregando turmas e disciplinas, aguarde..."
+    this.feedbackUsuario = "Carregando turmas e disciplinas, aguarde...";
     this.professorService.listarTurmaDisciplina(this.esc_id, this.usr_id, this.anoAtual).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.arrayOfProfessorDisciplinasTurmas = Object.values(response);
@@ -77,8 +76,8 @@ export class ListarTurmaDisciplinaProfessorComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined

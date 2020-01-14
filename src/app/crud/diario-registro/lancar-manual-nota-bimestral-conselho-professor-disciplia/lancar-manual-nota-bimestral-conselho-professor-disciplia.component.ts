@@ -78,6 +78,13 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
     this.esc_id = Utils.pegarDadosEscola()['id'];
   }
 
+  public retirarVirgula(event: KeyboardEvent): boolean {
+    if (event.key === ".") {
+      return false;
+    }
+    return true;
+  }
+
   public listarEstudantesTurmaSelecionada(): void {
     this.feedbackUsuario = "Carregando lista de estudantes, aguarde..."
     this.estudanteService.listarTurmaId(this.trm_id).toPromise().then((response: Response) => {

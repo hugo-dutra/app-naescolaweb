@@ -7,12 +7,13 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { ProfessorDisciplinaService } from '../../professor-disciplina/professor-disciplina.service';
 
 @Component({
   selector: 'ngx-alterar-professor',
   templateUrl: './alterar-professor.component.html',
   styleUrls: ['./alterar-professor.component.scss'],
-  providers: [ProfessorService],
+  providers: [ProfessorService, ProfessorDisciplinaService],
   animations: [
     trigger("chamado", [
       state(
@@ -31,6 +32,7 @@ import { Utils } from '../../../shared/utils.shared';
 export class AlterarProfessorComponent implements OnInit {
 
   public professor = new Professor();
+  public disciplinasProfessor = new Array<Object>();
   public estado: string = "visivel";
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -40,6 +42,7 @@ export class AlterarProfessorComponent implements OnInit {
   constructor(
     private professorService: ProfessorService,
     private alertModalService: AlertModalService,
+    private professorDisciplina: ProfessorDisciplinaService,
     private firebaseService: FirebaseService,
     private activeroute: ActivatedRoute,
     private router: Router
@@ -49,6 +52,7 @@ export class AlterarProfessorComponent implements OnInit {
     this.activeroute.queryParams.subscribe((professor: Professor) => {
       this.professor = JSON.parse(professor["professor"]);
     });
+    this.listarDisciplinas(this.professor);
   }
 
   public alterar(): void {
@@ -65,8 +69,8 @@ export class AlterarProfessorComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.exibirAlerta = true;
@@ -89,5 +93,34 @@ export class AlterarProfessorComponent implements OnInit {
   public listar(): void {
     this.router.navigate(['listar-professor']);
   }
+
+  public listarDisciplinas(professor: Object): void {
+    this.feedbackUsuario = "Carregando disciplinas vinculadas ao professor, aguarde..."
+    let prf_id = parseInt(professor["id"]);
+    this.professorService.listarDisciplina(prf_id).toPromise().then((response: Response) => {
+      this.disciplinasProfessor = Object.values(response);
+      console.log(this.disciplinasProfessor);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
+  }
+
+  public desvincularProfessorDisciplina(dsp_id: number): void {
+    this.feedbackUsuario = "Desvinculando disciplina, aguarde..."
+    this.professorDisciplina.desvincularProfessorDisciplina(this.professor.id, dsp_id).toPromise().then((response: Response) => {
+      this.feedbackUsuario = undefined;
+      this.listarDisciplinas(this.professor);
+    })
+  }
+
 
 }

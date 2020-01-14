@@ -11,3 +11,9 @@
   border-radius: 10px;
   z-index: 10000000;
 }
+
+.professores {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 40vh;
+}

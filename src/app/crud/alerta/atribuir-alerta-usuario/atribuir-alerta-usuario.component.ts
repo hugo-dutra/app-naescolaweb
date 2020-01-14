@@ -149,55 +149,68 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
   public salvarRegrasAlertasUsuarios(): void {
     this.arrayOfRegrasAlertasUsuariosEscola = [];
     this.feedbackUsuario = "Associando regras selecionados aos usuários informados,aguarde...";
+    let contaRegras = 0;
+    let contaUsuario = 0;
     this.arrayOfRegrasSelecionadas.forEach(ral_id => {
+      contaRegras++;
       this.arrayOfUsuariosSelecionados.forEach(usr_id => {
+        contaUsuario++
         this.arrayOfRegrasAlertasUsuariosEscola.push({ ral_id: ral_id, usr_id: usr_id, esc_id: this.esc_id })
+        if (contaRegras == this.arrayOfRegrasSelecionadas.length && contaUsuario == this.arrayOfUsuariosSelecionados.length) {
+          this.alertaService.inserirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
+            .toPromise()
+            .then((response: Response) => {
+              this.feedbackUsuario = undefined;
+              this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
+              this.limparMatrizesComponentes();
+            }).catch((erro: Response) => {
+              //Mostra modal
+              this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+              //registra log de erro no firebase usando serviço singlenton
+              this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+              //Gravar erros no analytics
+              Utils.gravarErroAnalytics(JSON.stringify(erro));
+              //Caso token seja invalido, reenvia rota para login
+              Utils.tratarErro({ router: this.router, response: erro });
+              this.feedbackUsuario = undefined;
+            })
+        }
       })
     })
-    this.alertaService.inserirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
-      .toPromise()
-      .then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
-        this.limparMatrizesComponentes();
-      }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
   }
 
   public revogarRegrasAlertasUsuarios(): void {
     this.arrayOfRegrasAlertasUsuariosEscola = [];
     this.feedbackUsuario = "Revogando regras selecionados aos usuários informados,aguarde...";
+    let contaRegras = 0;
+    let contaUsuario = 0;
     this.arrayOfRegrasSelecionadas.forEach(ral_id => {
+      contaRegras++;
       this.arrayOfUsuariosSelecionados.forEach(usr_id => {
+        contaUsuario++
         this.arrayOfRegrasAlertasUsuariosEscola.push({ ral_id: ral_id, usr_id: usr_id, esc_id: this.esc_id })
+        if (contaRegras == this.arrayOfRegrasSelecionadas.length && contaUsuario == this.arrayOfUsuariosSelecionados.length) {
+          this.alertaService.excluirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
+            .toPromise()
+            .then((response: Response) => {
+              this.feedbackUsuario = undefined;
+              this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
+              this.limparMatrizesComponentes();
+            }).catch((erro: Response) => {
+              //Mostra modal
+              this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+              //registra log de erro no firebase usando serviço singlenton
+              this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+              //Gravar erros no analytics
+              Utils.gravarErroAnalytics(JSON.stringify(erro));
+              //Caso token seja invalido, reenvia rota para login
+              Utils.tratarErro({ router: this.router, response: erro });
+              this.feedbackUsuario = undefined;
+            })
+        }
       })
     })
-    this.alertaService.excluirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
-      .toPromise()
-      .then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
-        this.limparMatrizesComponentes();
-      }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
+
   }
 
   public limparMatrizesComponentes(): void {

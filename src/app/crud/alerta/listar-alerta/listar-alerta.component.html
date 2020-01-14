@@ -36,8 +36,8 @@
                 <td class="col-lg-3 col-sm-12 text-center">{{ regra.tipo_ocorrencia }}</td>
                 <td class="col-lg-2 col-sm-12 text-center">{{ regra.operador }}</td>
                 <td class="col-lg-1 col-sm-12 text-center">{{ regra.valor_referencia }}</td>
-                <td class="col-lg-2 col-sm-12 text-center">{{ regra.data_inicio }}</td>
-                <td class="col-lg-2 col-sm-12 text-center">{{ regra.data_fim }}</td>
+                <td class="col-lg-2 col-sm-12 text-center">{{ regra.data_inicio | date:"dd-MM-yyyy" }}</td>
+                <td class="col-lg-2 col-sm-12 text-center">{{ regra.data_fim | date:"dd-MM-yyyy" }}</td>
                 <td *ngIf="exibirComponenteAlterar" class="col-lg-1 col-sm-12 text-center"><button
                     class="btn btn-warning btn-sm form-control" value="{{ regra }}"
                     (click)="alterar(regra)">Alterar</button></td>
