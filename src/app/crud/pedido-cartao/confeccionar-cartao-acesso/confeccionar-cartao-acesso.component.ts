@@ -91,10 +91,15 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public carregarLayouts(): void {
-    this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }, { id: 3, name: "Pvc-Sedf" }]
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
+      this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }, { id: 3, name: "Pvc-Sedf" }]
+    }
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
+      this.layouts = [{ id: 0, name: "Básico-frente" }, { id: 1, name: "Básico-frente e verso" }, { id: 2, name: "Etiqueta" }, { id: 4, name: "Pvc-Resolvidos" }]
+    }
   }
 
-  public gerenciarPortaria(): void {
+  public gerenciarPedidos(): void {
     this.router.navigate(["gerenciar-pedido-cartao"]);
   }
 
@@ -156,6 +161,9 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         cartaoAcessoImpressao.dataNascimento = elem["data_nascimento"];
         this.arrayOfEstudantesCartaoConfeccionado.push(cartaoAcessoImpressao);
       })
+      this.arrayOfEstudantesCartaoConfeccionado = this.arrayOfEstudantesCartaoConfeccionado.filter((valor) => {
+        return valor.foto.length > 0
+      })
 
       if (this.arrayOfEstudantesCartaoConfeccionado.length > 0 && this.id_layout_selecionado >= 0) {
         this.feedbackUsuario = "Ajustando layouts, aguarde...";
@@ -167,6 +175,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
           this.feedbackUsuario = undefined;
         }, 2000);
       }
+      this.feedbackUsuario = undefined;
 
     }).catch((erro: Response) => {
       //Mostra modal
@@ -400,4 +409,90 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       })
     }, 2000);
   }
+
+  public gerarCarteirinhaPVCResolvidos(): void {
+    this.feedbackUsuario = `Criando cartões, aguarde..`;
+    let canvasCartaoFrente = 0;
+    let canvasCartaoVerso = 0;
+
+    setTimeout(() => {
+      var doc = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: [86.0, 54.00],
+        compressPdf: true,
+      });
+
+      let arrayOfCanvas = new Array<any>();
+      this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
+        html2canvas(document.querySelector(`#frente_resolvidos_${elem["est_id"]}`), { useCORS: true }).then(canvasFrente => {
+          arrayOfCanvas.push({ canvas: canvasFrente, est_id: elem["est_id"], face: 'frente', nome: elem['nome'] });
+          canvasCartaoFrente++;
+          if (canvasCartaoVerso == this.arrayOfEstudantesCartaoConfeccionado.length && canvasCartaoFrente == this.arrayOfEstudantesCartaoConfeccionado.length) {
+            this.desenharPDF(arrayOfCanvas, doc);
+          }
+        });
+      })
+
+      this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
+        html2canvas(document.querySelector(`#verso_resolvidos_${elem["est_id"]}`), { useCORS: true }).then(canvasVerso => {
+          arrayOfCanvas.push({ canvas: canvasVerso, est_id: elem["est_id"], face: 'verso', nome: elem['nome'] });
+          canvasCartaoVerso++;
+          if (canvasCartaoVerso == this.arrayOfEstudantesCartaoConfeccionado.length && canvasCartaoFrente == this.arrayOfEstudantesCartaoConfeccionado.length) {
+            this.desenharPDF(arrayOfCanvas, doc);
+          }
+        });
+      })
+
+    }, 2000);
+  }
+
+
+
+  public desenharPDF(arrayOfCanvas: any[], doc: jsPDF): void {
+    let alturaPagina = doc.internal.pageSize.height;
+    let larguraPagina = doc.internal.pageSize.width;
+    let alturaCartao = alturaPagina;
+    let larguraCartao = larguraPagina;
+    let yPos = 0;
+    let xPos = 0;
+
+    const canvasFaceOrdenado = arrayOfCanvas.sort((a, b) => {
+      if (a['face'] > b['face']) {
+        return 1
+      }
+      if (a['face'] < b['face']) {
+        return -1
+      }
+      return 0;
+    })
+
+
+    const canvasOrdenado = canvasFaceOrdenado.sort((a, b) => {
+      if (a['nome'] > b['nome']) {
+        return 1
+      }
+      if (a['nome'] < b['nome']) {
+        return -1
+      }
+      return 0;
+    })
+
+    canvasOrdenado.forEach(elemento => {
+      console.log(elemento);
+      let canvas = elemento['canvas'];
+      let est_id = elemento['est_id'];
+      let face = elemento['face'];
+      yPos = 0;
+      xPos = 0;
+      var imgData = canvas.toDataURL('image/jpeg');
+      doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, `#elemento_resolvidos_${est_id}_${face}`);
+      doc.addPage();
+    })
+
+    this.feedbackUsuario = undefined;
+    doc.save(`cartoes.pdf`);
+  }
+
+
 }

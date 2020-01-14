@@ -18,8 +18,8 @@ export class CONSTANTES {
   public static BUILS_RESOLVIDOS = '2'
   public static BUILD_DESTINO = '2'
 
-  //public static HOST = "http://localhost:8000"; //2
-  public static HOST = "http://www.supervisorescolar.com.br" //2
+  public static HOST = "http://localhost:8000"; //2
+  //public static HOST = "http://www.supervisorescolar.com.br" //2
   //public static HOST = "http://academico.se.df.gov.br"; //1
 
   public static HOST_API = CONSTANTES.HOST + "/api/";

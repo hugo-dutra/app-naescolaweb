@@ -8,7 +8,7 @@
       </div>
       <div class="row">
         <button class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
-          (click)="gerenciarPortaria()">Gerenciar</button>
+          (click)="gerenciarPedidos()">Gerenciar</button>
         <div class="col-lg-1 col-sm-12"></div>
         <!--############# CARTÃO SIMPLES - FRENTE id:0 #############-->
         <button *ngIf="id_layout_selecionado === 0"
@@ -28,6 +28,10 @@
         <button *ngIf="id_layout_selecionado === 3"
           class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
           (click)="gerarCarteirinhaSEDFFrenteVersoPdf()">GerarDocumento</button>
+        <!--############# ETIQUETAS - id:3 #############-->
+        <button *ngIf="id_layout_selecionado === 4"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          (click)="gerarCarteirinhaPVCResolvidos()">GerarDocumento</button>
       </div>
     </div>
     <div class="card-body">
@@ -337,20 +341,133 @@
         </div>
 
       </div>
-    </div>
-  </div>
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
-    <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
-        <div class="col-2">
-          <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+
+      <!--############# MODELO CARTÃO PVC RESOLVIDOS id:4 #############-->
+      <div *ngIf="id_layout_selecionado === 4" class="mt-3">
+        <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="row">
+          <!-- FRENTE -->
+          <div [id]="'frente_resolvidos_'+estudante.est_id" class="col-lg-6">
+
+            <div class="row card-resolvidos-frente pt-5">
+              <div class="col-lg-2">
+                <img class="foto-estudante rounded-circle"
+                  style="transform: scale(0.6,0.6); margin-left: -50px; margin-top: -25px;"
+                  [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                  alt="foto do estudante">
+              </div>
+
+              <div class="col-lg-2"></div>
+
+              <div class="col-lg-8">
+                <div class="row">
+                  <label class="float-left col-lg-12 text-secondary" style="text-align: left;">Nome</label>
+                  <label class="float-left text-dark col-lg-12 strong"
+                    style="text-align: left; text-transform: uppercase; font-weight: 500;"><strong>{{estudante.nome}}</strong></label>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="float-left col-lg-12 text-secondary" style="text-align: left;">Série</label>
+                    <label class="float-left text-dark col-lg-12 strong"
+                      style="text-align: left; text-transform: uppercase; font-weight: 500;"><strong>{{estudante.serie}}</strong></label>
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="float-left col-lg-12 text-secondary" style="text-align: left;">Turma</label>
+                    <label class="float-left text-dark col-lg-12 strong"
+                      style="text-align: left; text-transform: uppercase; font-weight: 500;"><strong>{{estudante.turma}}</strong></label>
+                  </div>
+
+                </div>
+                <div class="row mb-5">
+                  <div class="col-lg-6">
+                    <label class="float-left col-lg-12 text-secondary" style="text-align: left;">Turno</label>
+                    <label class="float-left text-dark col-lg-12 strong"
+                      style="text-align: left; text-transform: uppercase; font-weight: 500;"><strong>{{estudante.turno}}</strong></label>
+                  </div>
+                  <div class="col-lg-6">
+                    <label class="float-left col-lg-12 text-secondary" style="text-align: left;">Código</label>
+                    <label class="float-left text-dark col-lg-12 strong"
+                      style="text-align: left; text-transform: uppercase; font-weight: 500;"><strong>{{estudante.est_id}}</strong></label>
+                  </div>
+                </div>
+
+
+                <div class="row mt-5">
+                  <div class="col-lg-6"></div>
+                  <div class="col-lg-4">
+                    <img src="../../../../assets/images/NomeNaEscolaSmall.png" alt="">
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+
+
+
+
+          </div>
+          <!-- VERSO -->
+          <div [id]="'verso_resolvidos_'+estudante.est_id" class="col-lg-6">
+            <div class="card card_verso">
+
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-2"></div>
+                  <!-- DADOS REGIONAIS E DA ESCOLA -->
+                  <div class="col-8">
+                    <img src="../../../../assets/images/NomeNaEscola.png" alt="">
+                  </div>
+                  <div class="col-2"></div>
+                </div>
+                <div class="row"></div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label style="text-align: left; font-weight: 600;">{{nomeEscola}}</label><br>
+                    <label style="text-align: left; font-weight: 600;">{{enderecoEscola}}</label><br>
+                    <label style="text-align: left; font-weight: 600;">{{telefoneEscola}}</label>
+                  </div>
+                </div>
+                <div class="row mt-3"></div>
+                <div class="row mt-2">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-8">
+                    <ngx-barcode class="col-sm-12" [id]="'ngx_Barcode_'+estudante.est_id"
+                      [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75"
+                      [bc-width]="3">
+                    </ngx-barcode><br>
+                    <label><small>{{estudante.nome}}</small></label>
+
+                  </div>
+                  <div class="col-lg-2"></div>
+
+                </div>
+              </div>
+
+
+
+
+            </div>
+
+          </div>
         </div>
-        <div class="col-10">
-          <h4>
-            <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
-          </h4>
+
+
+
+      </div>
+    </div>
+    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+      <div>
+        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+          <div class="col-2">
+            <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+          </div>
+          <div class="col-10">
+            <h4>
+              <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+            </h4>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
