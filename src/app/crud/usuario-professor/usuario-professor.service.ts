@@ -17,4 +17,14 @@ export class UsuarioProfessorService {
       headers
     );
   }
+
+  public desvincular(usr_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "desvincular-usuario-professor",
+      JSON.stringify({ usr_id: usr_id }),
+      headers
+    );
+  }
+
 }

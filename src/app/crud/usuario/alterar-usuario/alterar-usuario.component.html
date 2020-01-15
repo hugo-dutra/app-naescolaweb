@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="card-body">
-      <form (ngSubmit)="alterar()">
+      <form>
 
         <div class="col-lg-1 col-sm-12 bg-dark m-2 p-2 rounded" *ngIf="usuario.foto !== undefined">
           <img [src]="usuario.foto" class="rounded-circle" width="80" height="80" alt="">
@@ -30,12 +30,18 @@
         </div>
 
         <div class="row m-0 form-group">
-          <label for="files" class="btn btn-warning col-lg-4 col-sm-12 mt-2">Selecionar foto</label>
+          <label for="files" class="btn btn-warning col-lg-3 col-sm-12 mt-2">Selecionar foto</label>
           <input type="file" accept=".jpg,.jpeg" (change)="enviarArquivo($event)" id="files" style="visibility: hidden;"
             class="form-control col-lg-1 col-sm-12 mt-2">
           <div class="col-lg-1 col-sm-12 mt-2"></div>
-          <button type="submit" class="btn btn-primary form-control col-lg-2 col-sm-2 mt-2">Salvar</button>
+          <button (click)="alterar()" type="submit"
+            class="btn btn-primary form-control col-lg-2 col-sm-12 mt-2">Salvar</button>
+          <div class="col-lg-1 col-sm-12 mt-2"></div>
+          <button (click)="desvincular()" class="btn btn-warning form-control col-lg-3 col-sm-12 mt-2">Desvincular
+            usuário de professor</button>
         </div>
+
+
       </form>
       <div class="perfis mt-4">
         <div class="row bg-dark mb-2">

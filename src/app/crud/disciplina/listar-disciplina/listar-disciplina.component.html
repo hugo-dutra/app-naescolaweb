@@ -19,19 +19,22 @@
           <table class="table table-striped table-hover">
             <thead class="thead-light">
               <tr class="row">
-                <th class="col-sm-12 mt-2 col-lg-8 text-center" scope="col" (click)="ordenarColuna('nome')">Nome</th>
+                <th class="col-sm-12 mt-2 col-lg-6 text-center" scope="col" (click)="ordenarColuna('nome')">Nome</th>
                 <th class="col-sm-12 mt-2 col-lg-2 text-center" scope="col" (click)="ordenarColuna('abreviatura')">
                   Abreviatura</th>
+                <th class="col-sm-12 mt-2 col-lg-2 text-center" scope="col">Area Conhecimento</th>
                 <th *ngIf="exibirComponenteAlterar" class="col-sm-12 mt-2 col-lg-1 text-center" scope="col">Alterar
                 </th>
                 <th *ngIf="exibirComponenteExcluir" class="col-sm-12 mt-2 col-lg-1 text-center" scope="col">Excluir
                 </th>
+
               </tr>
             </thead>
             <tbody>
               <tr class="row" *ngFor="let disciplina of disciplinas">
-                <td class="col-sm-12 col-lg-8 text-center">{{ disciplina.nome}}</td>
+                <td class="col-sm-12 col-lg-6 text-center">{{ disciplina.nome}}</td>
                 <td class="col-sm-12 col-lg-2 text-center">{{ disciplina.abreviatura }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ disciplina.area_conhecimento_abv }}</td>
                 <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
                     class="btn btn-warning btn-sm" value="{{ disciplina }}"
                     (click)="alterar(disciplina)">Alterar</button>
