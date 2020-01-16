@@ -26,6 +26,7 @@ import { FirebaseService } from './shared/firebase/firebase.service';
 import { AuthGuardService } from './guards/auth.guard.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SharedModuleModule } from './shared-module/shared-module.module';
+import { HintModule } from 'angular-custom-tour';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +36,7 @@ import { SharedModuleModule } from './shared-module/shared-module.module';
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
+    HintModule,
     ThemeModule.forRoot(),
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),

@@ -17,6 +17,10 @@
       <nb-icon (click)="visualizarAlertasOcorrencia()" class="text-danger bold" icon="{{alertIcon}}"
         title="Visualizar {{alertasTratados}} alertas"></nb-icon>
     </nb-action>
+    <nb-action>
+      <nb-icon (click)="iniciarTour()" class="text-success bold" icon="{{tourIcon}}"
+        title="Tour explicativo sobre página atual"></nb-icon>
+    </nb-action>
     <nb-action class="user-action" *nbIsGranted="['view', 'user']">
       <nb-icon *ngIf="dashboardMaximizedStatus==false" (click)="alterarTamanhoDashboard($event)" icon="{{expandedIcon}}"
         title="Máximizar dashboard"></nb-icon>

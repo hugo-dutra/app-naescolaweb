@@ -74,6 +74,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public expandedIcon = "expand-outline";
   public collapseIcon = "collapse-outline";
   public alertIcon = "alert-triangle"
+  public tourIcon = "question-mark-circle"
   public element;
   public exibirBotaoAlertaOcorrencia: boolean = false;
   public alertasTratados: number = 0;
@@ -147,6 +148,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public visualizarAlertasOcorrencia(): void {
     this.router.navigate(['gerenciar-alerta-ocorrencia/receber-alerta-ocorrencia']);
+  }
+
+  public iniciarTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.emit();
   }
 
   public exibirComponente(rota: string): boolean {

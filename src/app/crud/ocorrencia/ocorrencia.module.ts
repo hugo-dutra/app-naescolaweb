@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModuleModule } from '../../shared-module/shared-module.module';
 import { FormsModule } from '@angular/forms';
+import { HintModule } from 'angular-custom-tour';
 
 @NgModule({
   declarations: [InserirOcorrenciaComponent],
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     HttpClientModule,
     FormsModule,
+    HintModule,
     NgbModule,
     OcorrenciaRoutingModule,
     SharedModuleModule,

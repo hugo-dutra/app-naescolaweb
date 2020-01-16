@@ -1,7 +1,28 @@
+<tour-overlay></tour-overlay>
+
 <div class="container-fluid">
   <div class="row">
+
     <div class="col-sm-12 col-lg-2">
-      <div class="list-group estudantes" id="style-7" role="tablist">
+
+      <tour-step selector="listagem-estudantes-conselho" order="3" position="right" title="Lista de estudantes">
+        <ul class="list-group text-left">
+          <li class="list-group-item">Fotos dos estudantes. Clique sobre a foto para ver os detalhes</li>
+          <li class="list-group-item"><i class="fa fa-2x fa-clock-o text-light bg-primary border-light rounded"></i>
+            Dados de pontualidade</li>
+          <li class="list-group-item"><i
+              class="fa fa-2x fa-comments-o text-light bg-primary border-light rounded"></i>Entrega de notificações</li>
+          <li class="list-group-item"><i class="fa fa-2x fa-warning text-light bg-primary border-light rounded"></i>
+            Histórico completo de
+            ocorrências disciplinares</li>
+          <li class="list-group-item"><i class="fa fa-2x fa-expand text-light bg-primary border-light rounded"></i>
+            Amplia a foto</li>
+          <li class="list-group-item"><i class="fa fa-2x fa-pencil text-light bg-primary border-light rounded"></i>
+            Adicionar observação</li>
+        </ul>
+      </tour-step>
+
+      <div id="listagem-estudantes-conselho" class="list-group estudantes" role="tablist">
         <div class="row mb-1" *ngFor="let resultadoEstudante of resultadosEstudantes" [id]="resultadoEstudante.est_id">
           <div class="col-lg-12 col-sm-12 text-center">
             <img (click)="selecionarEstudante(resultadoEstudante)"
@@ -12,7 +33,8 @@
               class="img-fluid rounded-circle ml-1 mt-1" width="135" height="150" alt="">
           </div>
           <div class="col-lg-12 col-sm-12 text-center"><small> {{resultadoEstudante.estudante}}</small></div>
-          <div class="col-lg-3 bg-blue pt-2 pb-2">
+          <!-- INFORMAÇÕES DE PONTUALIDADE -->
+          <div class="col-lg-2 bg-blue pt-2 pb-2">
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudantePontualidade' + resultadoEstudante.est_id">
@@ -41,7 +63,8 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 bg-blue pt-2 pb-2">
+          <!-- STATUS DE NOTIFICAÇÃO -->
+          <div class="col-lg-2 bg-blue pt-2 pb-2">
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudanteNotificacao' + resultadoEstudante.est_id">
@@ -70,7 +93,8 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 bg-blue pt-2 pb-2">
+          <!-- OCORRENCIAS -->
+          <div class="col-lg-2 bg-blue pt-2 pb-2">
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudanteOcorrencia' + resultadoEstudante.est_id">
@@ -121,8 +145,8 @@
               </div>
             </div>
           </div>
-
-          <div class="col-lg-3 bg-blue pt-2 pb-2">
+          <!-- AMPLIAR FOTO -->
+          <div class="col-lg-2 bg-blue pt-2 pb-2">
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudante' + resultadoEstudante.est_id">
@@ -164,45 +188,91 @@
               </div>
             </div>
           </div>
+          <!-- OBSERVAÇÕES DO ESTUDANTE -->
+          <div class="col-lg-2 bg-blue pt-2 pb-2">
+            <!-- Botão -->
+            <a data-toggle="modal" class="border-light"
+              [attr.data-target]="'#observacaoEstudante' + resultadoEstudante.est_id">
+              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-pencil text-light"></i></button>
+            </a>
+            <!-- Modal -->
+            <div class="modal fade large" id="observacaoEstudante{{ resultadoEstudante.est_id }}" tabindex="-1"
+              role="dialog" aria-labelledby="observacaoLabelEstudante" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+
+
+                <div class="modal-content">
+                  <div class="modal-header bg-blue text-light">
+                    <div class="col-sm-12 col-lg-9">
+                      <b>{{ resultadoEstudante.estudante }}</b>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true" class="text-light">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-justify">
+
+                    <div class="observacoes">
+                      <textarea rows="8" cols="10" class="form-control" id="textAreaObservacaoEstudante"
+                        placeholder="Adicionar observação sobre estudante selecionado..." style="resize: none"
+                        maxlength="2000" (change)="atualizarTextoObservacao($event)"></textarea>
+                      <button type="button" class="btn btn-dark text-light form-control mt-2"
+                        (click)="inserirObservacaoEstudante()">Adicionar observação</button>
+                    </div>
+
+
+
+
+                  </div>
+
+                </div>
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2 bg-blue pt-2 pb-2">
+
+          </div>
+
+
+
+
         </div>
       </div>
-      <div class="observacoes">
-        <textarea rows="8" cols="10" class="form-control" id="textAreaObservacaoEstudante"
-          placeholder="Adicionar observação sobre estudante selecionado..." style="resize: none" maxlength="2000"
-          (change)="atualizarTextoObservacao($event)"></textarea>
-        <button type="button" class="btn btn-dark text-light form-control mt-2"
-          (click)="inserirObservacaoEstudante()">Adicionar observação</button>
-      </div>
+
     </div>
 
     <div class="col-sm-12 col-lg-10 detalhes">
       <div class="row">
-
-        <div class="col-sm-12 col-lg-4 form-group">
-          <div class="dropdown col-sm-12 col-lg-12">
-            <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButton"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{ stringTurmaSelecionada }}
-            </button>
-            <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButton">
-              <a *ngFor="let turma of turmas" (click)="selecionarTurma($event)" [id]="turma.id"
-                name="{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }}"
-                class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
-                Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
-            </div>
-          </div>
+        <tour-step selector="lista-turmas" order="1" position="bottom" title="Lista de turmas">
+          Turmas disponíveis. Selecione uma para ver os estudantes.
+        </tour-step>
+        <div id="lista-turmas" class="form-group col-sm-12 col-lg-4">
+          <!-- <label for="dropbox-lista-turmas" class="text-muted">Selecione uma turma</label> -->
+          <select id="dropbox-lista-turmas" name="dropDownTurmas" class="form-control"
+            (change)="selecionarTurma($event)">
+            <option value="">selecione uma turma Turma</option>
+            <option *ngFor="let turma of turmas" [value]="turma.id">{{ turma.serie }} {{ turma.etapa }} -
+              {{ turma.nome }} - {{ turma.turno }} Matriculados: {{ turma.matriculados }}</option>
+          </select>
         </div>
-        <div class="dropdown col-sm-12 col-lg-6">
-          <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonPeriodos"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ stringPeriodoSelecionado }}
-          </button>
-          <div class="dropdown-menu turmas" aria-labelledby="dropdownMenuButtonPeriodos">
-            <a *ngFor="let periodo of periodosLetivos" (click)="selecionarPeriodo($event,periodo)" [id]="periodo.id"
-              name="{{ periodo.periodo }} - {{ periodo.inicio | date:'dd-MM-yyyy'}} - {{ periodo.fim | date:'dd-MM-yyyy'}}"
-              class="dropdown-item dropdown">{{ periodo.periodo }} - {{ periodo.inicio | date:'dd-MM-yyyy'}} -
-              {{ periodo.fim | date:'dd-MM-yyyy'}}</a>
-          </div>
+
+        <tour-step selector="lista-periodos" order="2" position="bottom" title="Lista de turmas">
+          Períodos disponíveis. Selecione um para ver os resultados dos estudantes<br>nesse intervalo de tempo
+        </tour-step>
+        <div id="lista-periodos" class="form-group col-sm-12 col-lg-4">
+          <!-- <label for="dropbox-lista-periodos" class="text-muted">Selecione uma turma</label> -->
+          <select id="dropbox-lista-periodos" name="dropDownPeriodos" class="form-control"
+            (change)="selecionarPeriodo($event)">
+            <option value="">selecione um período</option>
+            <option *ngFor="let periodo of periodosLetivos" [value]="periodo.id">{{ periodo.periodo }} -
+              {{ periodo.inicio | date:'dd-MM-yyyy'}} -
+              {{ periodo.fim | date:'dd-MM-yyyy'}}</option>
+          </select>
         </div>
 
       </div>
@@ -218,20 +288,36 @@
       </div>
 
       <div class="row">
+        <tour-step selector="chartDisciplinarPeriodo" order="3" position="bottom" title="Ocorrências disciplinares">
+          <p class="text-left">Lista as ocorrências disciplinares do estudante<br>no período letivo selecionado</p>
+        </tour-step>
         <div class="col-sm-12 col-lg-8" id="chartDisciplinarPeriodo"
           style="position: relative; height:25vh; width:80vw">
           <canvas id="barChartDisciplinarPeriodo"></canvas>
         </div>
+
+        <tour-step selector="chartFrequenciaPortariaPeriodo" order="4" position="left" title="Frequencia na portaria">
+          <p class="text-left">Registros de passagem na portaria<br>Presenças em verde e faltas em vermelho</p>
+        </tour-step>
         <div class="col-sm-12 col-lg-4" id="chartFrequenciaPortariaPeriodo"
           style="position: relative; height:25vh; width:80vw">
           <canvas id="pieChartFrequenciaPortariaPeriodo"></canvas>
         </div>
       </div>
       <div class="row">
+
+        <tour-step selector="chartContainerPeriodo" order="5" position="top" title="Gráfico de aproveitamento">
+          <p class="text-left">Registros de notas e faltas do estudante<br> no período selecionado</p>
+        </tour-step>
         <div class="col-sm-12 col-lg-8" id="chartContainerPeriodo" style="position: relative; height:40vh; width:55vw">
           <canvas id="barChartnotaFaltasPeriodo"></canvas>
         </div>
 
+
+        <tour-step selector="chartMediaAreaConhecimento" order="6" position="left"
+          title="Aproveitamento por área do conhecimento">
+          <p class="text-left">Aproveitamento do estudante<br> agrupado por área do conhecimento</p>
+        </tour-step>
         <div class="col-sm-12 col-lg-4" id="chartMediaAreaConhecimento"
           style="position: relative; height:37vh; width:25vw">
           <canvas id="radarChartMediaAreaConhecimento"></canvas>
@@ -243,7 +329,12 @@
 
       </div>
       <div class="row">
-        <div *ngIf="arrayOfDadosNotaPeriodo.length != 0 && arrayOfDadosFaltasPeriodo.length != 0 "
+        <tour-step selector="agrupamento-aproveitamento" order="7" position="top"
+          title="Modos do gráfico de aproveitamento">
+          <p class="text-left">Motodos de visualização do gráfico de aproveitamento</p>
+        </tour-step>
+        <div id="agrupamento-aproveitamento"
+          *ngIf="arrayOfDadosNotaPeriodo.length != 0 && arrayOfDadosFaltasPeriodo.length != 0 "
           class="col-sm-12 col-lg-12">
           <label class="radio-inline">
             <input type="radio" name="optradio" checked (click)="selecionarTipoGrafico(0)">Aproveitamento &nbsp;
@@ -258,6 +349,8 @@
       </div>
     </div>
   </div>
+
+
 </div>
 
 <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">

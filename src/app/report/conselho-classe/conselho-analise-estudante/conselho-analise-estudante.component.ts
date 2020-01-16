@@ -14,6 +14,8 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
 import { OcorrenciaService } from '../../../crud/ocorrencia/ocorrencia.service';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
+import { HintService } from 'angular-custom-tour';
 
 @Component({
   selector: 'ngx-conselho-analise-estudante',
@@ -27,6 +29,7 @@ import { OcorrenciaService } from '../../../crud/ocorrencia/ocorrencia.service';
     PortariaService,
     EstudanteService,
     OcorrenciaService,
+    HintService,
   ],
   animations: [
     trigger("chamado", [
@@ -109,6 +112,8 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     private router: Router,
     private estudanteService: EstudanteService,
     private ocorrenciaService: OcorrenciaService,
+    private acessoComumService: AcessoComumService,
+    private hintService: HintService
   ) { }
 
   ngOnInit() {
@@ -117,6 +122,14 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     this.usr_id = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id;
     this.anoAtual = (new Date()).getFullYear();
     this.carregarTurmas();
+    this.subscribeTour();
+  }
+
+  public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
+      this.hintService.initialize({ elementsDisabled: false });
+
+    })
   }
 
   //####################################### BLOCO DE MÉTODOS DE AUXILIARES #######################################//
@@ -147,8 +160,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
   }
 
   public selecionarTurma(event: Event): void {
-    this.trm_id_selecionada = parseInt((<HTMLInputElement>event.target).id);
-    this.stringTurmaSelecionada = (<HTMLInputElement>event.target).name;
+    this.trm_id_selecionada = parseInt((<HTMLInputElement>event.target).value);
     if (this.trm_id_selecionada != 0 && this.prl_id_selecionado != 0) {
       this.feedbackUsuario = "Carregando estudantes, aguarde...";
       this.carregarResultadosTurma();
@@ -160,11 +172,8 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     }
   }
 
-  public selecionarPeriodo(event: Event, periodo: Object): void {
-    this.prl_id_selecionado = parseInt((<HTMLInputElement>event.target).id);
-    this.stringPeriodoSelecionado = (<HTMLInputElement>event.target).name;
-    this.stringInicioPeriodoSelecionado = periodo["inicio"]
-    this.stringFimPeriodoSelecionado = periodo["fim"]
+  public selecionarPeriodo(event: Event): void {
+    this.prl_id_selecionado = parseInt((<HTMLInputElement>event.target).value);
     if (this.trm_id_selecionada != 0 && this.prl_id_selecionado != 0) {
       this.feedbackUsuario = "Carregando estudantes, aguarde...";
       this.carregarResultadosTurma();

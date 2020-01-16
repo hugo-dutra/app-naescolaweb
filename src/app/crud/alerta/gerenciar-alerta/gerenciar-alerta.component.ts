@@ -3,11 +3,14 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { HintService } from 'angular-custom-tour';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-gerenciar-alerta',
   templateUrl: './gerenciar-alerta.component.html',
   styleUrls: ['./gerenciar-alerta.component.scss'],
+  providers: [HintService],
   animations: [
     trigger("chamado", [
       state(
@@ -30,10 +33,16 @@ export class GerenciarAlertaComponent implements OnInit {
   public esc_id: number;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
-  constructor(private router: Router) { }
+  constructor(private router: Router, private hintService: HintService, private acessoComumService: AcessoComumService, ) { }
 
   ngOnInit() {
+    this.subscribeTour();
+  }
 
+  public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
+      this.hintService.initialize({ elementsDisabled: false });
+    })
   }
 
   public listarAlertas(): void {

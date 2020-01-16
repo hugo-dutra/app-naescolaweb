@@ -16,6 +16,8 @@ import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 import { Utils } from '../../../shared/utils.shared';
 import * as moment from "moment";
+import { HintService } from 'angular-custom-tour';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-inserir-ocorrencia',
@@ -26,7 +28,8 @@ import * as moment from "moment";
     EstudanteService,
     TipoOcorrenciaDisciplinarService,
     TurmaService,
-    ComunicadoDiversoService
+    ComunicadoDiversoService,
+    HintService,
   ],
   animations: [
     trigger("chamado", [
@@ -106,7 +109,9 @@ export class InserirOcorrenciaComponent implements OnInit {
     private tipoOcorrenciaDisciplinarService: TipoOcorrenciaDisciplinarService,
     private comunicadoDiversoService: ComunicadoDiversoService,
     private alertModalService: AlertModalService,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private hintService: HintService,
+    private acessoComumService: AcessoComumService,
   ) { }
 
   ngOnInit() {
@@ -116,6 +121,13 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.dataOcorrencia = moment().format('YYYY-MM-DD');
     this.dataOcorrenciaMultipla = moment().format('YYYY-MM-DD');
     this.atualizarHoraLancamentoOcorrencias();
+    this.subscribeTour();
+  }
+
+  public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
+      this.hintService.initialize({ elementsDisabled: false });
+    })
   }
 
   public atualizarHoraLancamentoOcorrencias(): void {

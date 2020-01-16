@@ -1,7 +1,14 @@
 <!--##############################################################################################-->
+<tour-overlay></tour-overlay>
+
 <div class="container-fluid container-card">
   <div class="row">
-    <div class="col-lg-4 col-sm-12 col-xs-12">
+
+    <tour-step selector="listar-alertas" order="1" position="right" title="title string">
+      Listagem de alertas alertas existemtes. Alertas podem ser alterados e excluídos.<br>
+      Para excluir um alerta, esse não pode estar associado a nenhum usuário.
+    </tour-step>
+    <div id="listar-alertas" class="col-lg-4 col-sm-12 col-xs-12">
       <nb-card *ngIf="exibirComponente('listar-alerta')" (click)="listarAlertas()">
         <nb-card-header>
           <i class="fa fa-4x fa-list-ul text-primary"></i>
@@ -12,7 +19,10 @@
       </nb-card>
     </div>
 
-    <div class="col-lg-4 col-sm-12 col-xs-12">
+    <tour-step selector="criar-novo-alerta" order="2" position="bottom" title="Dica 2">
+      Criação de alertas para serem<br>associados a determinados usuários.
+    </tour-step>
+    <div id="criar-novo-alerta" class="col-lg-4 col-sm-12 col-xs-12">
       <nb-card *ngIf="exibirComponente('inserir-alerta')" (click)="inserirAlerta()">
         <nb-card-header>
           <i class="fa fa-4x fa-plus text-success"></i>
@@ -23,7 +33,10 @@
       </nb-card>
     </div>
 
-    <div class="col-lg-4 col-sm-12 col-xs-12">
+    <tour-step selector="atribuir-alerta-usuario" order="3" position="left" title="Dica 3">
+      Neste item, alertas criados podem ser atribuidos<br>a determinados usuários.
+    </tour-step>
+    <div id="atribuir-alerta-usuario" class="col-lg-4 col-sm-12 col-xs-12">
       <nb-card *ngIf="exibirComponente('atribuir-alerta-usuario')" (click)="atribuirAlertaUsuario()">
         <nb-card-header>
           <i class="fa fa-4x fa-link text-warning"></i>
@@ -36,4 +49,7 @@
 
   </div>
 </div>
+
+
+
 <!--###############################################################################################-->

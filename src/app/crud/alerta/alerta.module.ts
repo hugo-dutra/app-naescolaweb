@@ -10,6 +10,7 @@ import { InserirAlertaComponent } from './inserir-alerta/inserir-alerta.componen
 import { ListarAlertaComponent } from './listar-alerta/listar-alerta.component';
 import { ReceberAlertaOcorrenciaComponent } from './receber-alerta-ocorrencia/receber-alerta-ocorrencia.component';
 import { NbCardModule } from '@nebular/theme';
+import { HintModule } from 'angular-custom-tour';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NbCardModule } from '@nebular/theme';
   imports: [
     CommonModule,
     AlertaRoutingModule,
+    HintModule,
     NbCardModule,
   ],
 })
