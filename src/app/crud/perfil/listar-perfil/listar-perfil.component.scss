@@ -8,6 +8,12 @@
   height: 66vh;
 }
 
+.permissoes {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 66vh;
+}
+
 #loadingDiv {
   position: fixed;
   top: 45%;

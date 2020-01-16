@@ -555,6 +555,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
         this.carregarDadosDisciplinaresTurma();
       } else {
         this.alertModalService.showAlertWarning("Sem registro de notas para período selecionado");
+        this.limparDadosDetalhes();
         this.feedbackUsuario = undefined;
       }
 
@@ -589,6 +590,28 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
       default:
         break;
     }
+  }
+
+
+  public limparDadosDetalhes(): void {
+    let resultadoTemporarioEstudante = new ResultadoEstudante();
+    resultadoTemporarioEstudante.estudante = "";
+    resultadoTemporarioEstudante.est_id = 0;
+    resultadoTemporarioEstudante.foto = "";
+    resultadoTemporarioEstudante.notaFaltasdisciplinas = [];
+    this.selecionarEstudante(resultadoTemporarioEstudante);
+
+    if (this.barChartnotaFaltasPeriodo != undefined)
+      this.barChartnotaFaltasPeriodo.destroy();
+
+    if (this.radarChartMediaAreaConhecimento != undefined)
+      this.radarChartMediaAreaConhecimento.destroy();
+
+    if (this.barChartDisciplinarPeriodo != undefined)
+      this.barChartDisciplinarPeriodo.destroy();
+
+    if (this.pieChartFrequenciaPortariaPeriodo != undefined)
+      this.pieChartFrequenciaPortariaPeriodo.destroy();
   }
 
   public selecionarEstudante(resultadoEstudante: ResultadoEstudante): void {

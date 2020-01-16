@@ -7,12 +7,13 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { PerfilPermissaoService } from '../../perfil-permissao/perfil-permissao.service'
 
 @Component({
   selector: 'ngx-listar-perfil',
   templateUrl: './listar-perfil.component.html',
   styleUrls: ['./listar-perfil.component.scss'],
-  providers: [PerfilService],
+  providers: [PerfilService, PerfilPermissaoService],
   animations: [
     trigger("chamado", [
       state(
@@ -34,6 +35,7 @@ export class ListarPerfilComponent implements OnInit {
   public perfis = new Array<Object>();
   public escoposPerfil = new Array<Object>();
   public perfil = new Perfil();
+  public permissoesPerfil = new Array<Object>();
   public feedbackUsuario: string;
   public estado: string = "visivel";
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -42,12 +44,14 @@ export class ListarPerfilComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public exibirComponenteDetalhar: Boolean = false;
   public decrescente: boolean = true;
 
   constructor(
     private perfilService: PerfilService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
+    private perfilPermissaoService: PerfilPermissaoService,
     private router: Router) { }
 
   ngOnInit() {
@@ -80,6 +84,8 @@ export class ListarPerfilComponent implements OnInit {
       });
 
   }
+
+
 
   public ordenarColuna(campo: string): void {
     if (!this.decrescente) {
@@ -127,6 +133,26 @@ export class ListarPerfilComponent implements OnInit {
     this.router.navigate([`${this.router.url}/excluir-perfil`], navigationExtras);
   }
 
+  public detalharPerfil(perfil: Perfil): void {
+    this.permissoesPerfil = [];
+    this.feedbackUsuario = "Carregando detalhes, aguarde...";
+    this.perfilPermissaoService.listarPermissaoAcesso(perfil.id).toPromise().then((response: Response) => {
+      let listadePerfils = Object.values(response);
+      this.permissoesPerfil = listadePerfils.sort((a, b) => {
+        if (a['nome'] > b['nome']) {
+          return 1;
+        } else {
+          return -1;
+        }
+      })
+      this.feedbackUsuario = undefined;
+      console.log(this.permissoesPerfil);
+    })
+
+  }
+
+
+
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
   }
@@ -139,6 +165,7 @@ export class ListarPerfilComponent implements OnInit {
     this.exibirComponenteAlterar = Utils.exibirComponente('alterar-perfil');
     this.exibirComponenteExcluir = Utils.exibirComponente('excluir-perfil');
     this.exibirComponenteInserir = Utils.exibirComponente('inserir-perfil');
+    this.exibirComponenteDetalhar = Utils.exibirComponente('detalhar-perfil');
   }
 
 

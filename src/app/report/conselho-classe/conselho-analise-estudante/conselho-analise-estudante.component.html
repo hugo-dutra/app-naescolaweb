@@ -219,16 +219,8 @@
                       <button type="button" class="btn btn-dark text-light form-control mt-2"
                         (click)="inserirObservacaoEstudante()">Adicionar observação</button>
                     </div>
-
-
-
-
                   </div>
-
                 </div>
-
-
-
 
               </div>
             </div>
@@ -321,9 +313,13 @@
         <div class="col-sm-12 col-lg-4" id="chartMediaAreaConhecimento"
           style="position: relative; height:37vh; width:25vw">
           <canvas id="radarChartMediaAreaConhecimento"></canvas>
-          <input *ngIf="arrayLabelsAreaConhecimentoEstudanteSelecionado.length != 0" type="checkbox" class="checkbox"
-            id="areaConhecimentoEscalaFixa" name="areaConhecimentoEscalaFixa" (change)="usarMediaEscalaFixa()" checked>
-          <label *ngIf="arrayLabelsAreaConhecimentoEstudanteSelecionado.length != 0" for="areaConhecimentoEscalaFixa">
+          <input
+            *ngIf="arrayLabelsAreaConhecimentoEstudanteSelecionado.length != 0 && arrayOfDadosNotaPeriodo.length != 0 && arrayOfDadosFaltasPeriodo.length != 0"
+            type="checkbox" class="checkbox" id="areaConhecimentoEscalaFixa" name="areaConhecimentoEscalaFixa"
+            (change)="usarMediaEscalaFixa()" checked>
+          <label
+            *ngIf="arrayLabelsAreaConhecimentoEstudanteSelecionado.length != 0 && arrayOfDadosNotaPeriodo.length != 0 && arrayOfDadosFaltasPeriodo.length != 0"
+            for="areaConhecimentoEscalaFixa">
             Escala fixa</label>
         </div>
 

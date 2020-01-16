@@ -8,6 +8,7 @@ import { InserirPerfilComponent } from './inserir-perfil/inserir-perfil.componen
 import { ListarPerfilComponent } from './listar-perfil/listar-perfil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    PerfilRoutingModule
+    PerfilRoutingModule,
+    NgbPopoverModule,
   ]
 })
 export class PerfilModule { }
