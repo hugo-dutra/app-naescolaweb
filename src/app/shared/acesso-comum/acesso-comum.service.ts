@@ -12,6 +12,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 export class AcessoComumService {
   emitirAlertaOcorrenciaDisciplinar = new EventEmitter<Object[]>();
   emitirAlertaInicioTour = new EventEmitter<Object[]>();
+  emitirAlertaExibirIconeAjuda = new EventEmitter<boolean>();
 
   public constructor(private http: HttpClient = null) {
 

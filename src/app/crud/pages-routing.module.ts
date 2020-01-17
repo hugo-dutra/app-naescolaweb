@@ -1,7 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
-import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { LoginComponent } from '../access/login/login.component';
 import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-atalho.component';
 import { GerenciarIntegracaoComponent } from '../shared/sedf/gerenciar-integracao/gerenciar-integracao.component';
@@ -77,18 +76,11 @@ const routes: Routes = [{
     { path: 'listar-boleto-bancario-mensalidade', loadChildren: () => import('../shared/financeiro/boleto-bancario/boleto-bancario.module').then(m => m.BoletoBancarioModule), },
     { path: 'gerenciar-integracao-sedf', loadChildren: () => import('../shared/sedf/sedf.module').then(m => m.SedfModule), },
 
-    { path: 'layout', loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule), },
-    { path: 'forms', loadChildren: () => import('./forms/forms.module').then(m => m.FormsModule), },
-    { path: 'ui-features', loadChildren: () => import('./ui-features/ui-features.module').then(m => m.UiFeaturesModule), },
-    { path: 'modal-overlays', loadChildren: () => import('./modal-overlays/modal-overlays.module').then(m => m.ModalOverlaysModule), },
-    { path: 'extra-components', loadChildren: () => import('./extra-components/extra-components.module').then(m => m.ExtraComponentsModule), },
-    { path: 'maps', loadChildren: () => import('./maps/maps.module').then(m => m.MapsModule), },
     { path: 'charts', loadChildren: () => import('./charts/charts.module').then(m => m.ChartsModule), },
     { path: 'editors', loadChildren: () => import('./editors/editors.module').then(m => m.EditorsModule), },
-    { path: 'tables', loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule), },
-    { path: 'miscellaneous', loadChildren: () => import('./miscellaneous/miscellaneous.module').then(m => m.MiscellaneousModule), },
+
     { path: '', redirectTo: 'dashboard', pathMatch: 'full', },
-    { path: '**', component: NotFoundComponent, },
+
   ],
 }];
 

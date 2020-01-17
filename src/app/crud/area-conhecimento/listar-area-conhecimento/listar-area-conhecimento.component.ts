@@ -7,6 +7,7 @@ import { Utils } from '../../../shared/utils.shared';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-listar-area-conhecimento',
@@ -46,9 +47,11 @@ export class ListarAreaConhecimentoComponent implements OnInit {
     private areaConhecimentoService: AreaConhecimentoService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
+    private acessoComumService: AcessoComumService,
     private router: Router
   ) { }
   ngOnInit() {
+    this.acessoComumService.emitirAlertaExibirIconeAjuda.emit(false);
     this.exibirComponentesEdicao();
     this.listar();
   }

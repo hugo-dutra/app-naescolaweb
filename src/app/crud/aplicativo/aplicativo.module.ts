@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { QRCodeModule } from 'angular2-qrcode';
 import { NbCardModule } from '@nebular/theme';
+import { HintModule } from 'angular-custom-tour';
 
 @NgModule({
   declarations: [BaixarFotoEstudanteAplicativoComponent, GerarQrcodeAplicativoAdministrativoComponent, GerarQrcodeAplicativoEstudanteComponent, GerenciarAplicativoComponent, SincronizarEstudanteAplicativoComponent],
@@ -21,6 +22,7 @@ import { NbCardModule } from '@nebular/theme';
     HttpClientModule,
     QRCodeModule,
     NbCardModule,
+    HintModule,
     AplicativoRoutingModule
   ]
 })

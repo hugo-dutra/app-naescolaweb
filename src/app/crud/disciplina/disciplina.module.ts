@@ -7,7 +7,6 @@ import { ExcluirDisciplinaComponent } from './excluir-disciplina/excluir-discipl
 import { InserirDisciplinaComponent } from './inserir-disciplina/inserir-disciplina.component';
 import { ListarDisciplinaComponent } from './listar-disciplina/listar-disciplina.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '../forms/forms.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({

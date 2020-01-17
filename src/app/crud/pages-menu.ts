@@ -31,6 +31,7 @@ const verificarPermissaoAcesso = (link: any): boolean => {
 }
 
 try {
+
   localStorageGrupos = Object.values(Utils.verificarGrupos());
   localStorageMenus = Object.values(Utils.verificarMenus());
   for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {

@@ -78,6 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public element;
   public exibirBotaoAlertaOcorrencia: boolean = false;
   public alertasTratados: number = 0;
+  public exibirIconeAjuda: boolean = false;
 
   constructor(private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
@@ -94,6 +95,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+
     this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.subscribe((alertas: Object[]) => {
       this.alertasTratados = alertas.length;
       if (this.alertasTratados > 0) {
@@ -102,7 +105,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.exibirBotaoAlertaOcorrencia = false;
       }
     })
-
     this.element = document.documentElement;
 
     try {
@@ -146,6 +148,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.carregarDadosEscola();
   }
 
+
   public visualizarAlertasOcorrencia(): void {
     this.router.navigate(['gerenciar-alerta-ocorrencia/receber-alerta-ocorrencia']);
   }
@@ -153,6 +156,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public iniciarTour(): void {
     this.acessoComumService.emitirAlertaInicioTour.emit();
   }
+
+
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
@@ -180,6 +185,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public limparDadosLocalStorage(): void {
+
     localStorage.removeItem("perm");
     localStorage.removeItem("dados");
     localStorage.removeItem("escola");

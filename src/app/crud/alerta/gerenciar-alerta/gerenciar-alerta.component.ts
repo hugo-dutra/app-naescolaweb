@@ -6,6 +6,7 @@ import { Utils } from '../../../shared/utils.shared';
 import { HintService } from 'angular-custom-tour';
 import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
+
 @Component({
   selector: 'ngx-gerenciar-alerta',
   templateUrl: './gerenciar-alerta.component.html',
@@ -39,11 +40,16 @@ export class GerenciarAlertaComponent implements OnInit {
     this.subscribeTour();
   }
 
+
+
   public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaExibirIconeAjuda.emit(true);
     this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
       this.hintService.initialize({ elementsDisabled: false });
     })
   }
+
+
 
   public listarAlertas(): void {
     this.router.navigate([`${this.router.url}/listar-alerta`]);

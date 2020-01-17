@@ -2,18 +2,26 @@
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item col-sm-4 col-md-4 col-lg-4">
+  <li (click)="setarGuiaAtiva(1)" class="nav-item col-sm-4 col-md-4 col-lg-4">
     <tour-step selector="home-tab" order="1" position="bottom" title="Ocorrência simples.">
       Insere ocorrências disciplinares para estudantes individualmente. Todos os campos são obrigatórios
     </tour-step>
     <a class="nav-link active bg-light text-dark" id="home-tab" data-toggle="tab" href="#simples" role="tab"
       aria-controls="home" aria-selected="true">Ocorrência simples</a>
   </li>
-  <li class="nav-item col-sm-4 col-md-4 col-lg-4">
+  <li (click)="setarGuiaAtiva(2)" class="nav-item col-sm-4 col-md-4 col-lg-4">
+    <tour-step selector="profile-tab" order="2" position="bottom" title="Ocorrência Multipla">
+      Nesta guia, podem ser registradas diversas ocorrências simultâneas para alunos da mesma turma.<br>Todos os campos
+      também são obrigarórios.
+    </tour-step>
     <a class="nav-link bg-light text-dark" id="profile-tab" data-toggle="tab" href="#multipla" role="tab"
       aria-controls="profile" aria-selected="false">Ocorrência multipla</a>
   </li>
-  <li class="nav-item col-sm-4 col-md-4 col-lg-4">
+  <li (click)="setarGuiaAtiva(3)" class="nav-item col-sm-4 col-md-4 col-lg-4">
+    <tour-step selector="messages-tab" order="3" position="bottom" title="Consultar ocorrência">
+      Nesta guia, as ocorrências dos estudantes podem ser consultadas e impressas.<br>Para imprimir as ocorrências de
+      determinado estudante, o filtro deverá conter apenas um único nome.
+    </tour-step>
     <a class="nav-link bg-light text-dark" id="messages-tab" data-toggle="tab" href="#consulta" role="tab"
       aria-controls="messages" aria-selected="false">Consultar ocorrências</a>
   </li>
@@ -39,7 +47,7 @@
             <div id="pesquisar-estudante-simples" class="form-group col-sm-12 col-lg-12">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <tour-step selector="btn-pesquisar" order="3" position="bottom" title="Acionar filtro">
+                  <tour-step selector="btn-pesquisar" order="5" position="bottom" title="Acionar filtro">
                     Pressione esse botão para pesquisar
                   </tour-step>
                   <button class="btn btn-primary" type="button" id="btn-pesquisar" (click)="filtrar()"><i
@@ -47,7 +55,7 @@
                       Pesquisar</i></button>
                 </div>
 
-                <tour-step selector="input_consulta" order="2" position="bottom" title="Texto Filtro">
+                <tour-step selector="input_consulta" order="4" position="bottom" title="Texto Filtro">
                   Insira o texto a ser filtrado nesse componente.
                 </tour-step>
                 <input type="text" id="input_consulta" class="form-control" (keydown)="filtrarEnter($event)"
@@ -57,7 +65,7 @@
             </div>
           </div>
           <div class="row mt-2">
-            <tour-step selector="table-estudantes" order="4" position="top" title="listagem de estudantes">
+            <tour-step selector="table-estudantes" order="6" position="top" title="listagem de estudantes">
               Listagem de estudantes encontrados. Marque um ou mais estudantes para registrar a ocorrência
               disciplinar.
             </tour-step>
@@ -152,7 +160,7 @@
             </div>
             <div class="col-sm-12 col-lg-2 mt-2">
               <div class="row">
-                <tour-step selector="input_tipo_ocorrencia" order="5" position="left" title="Tipo de ocorrência">
+                <tour-step selector="input_tipo_ocorrencia" order="7" position="left" title="Tipo de ocorrência">
                   Selecione o tipo de ocorrência disciplinar. Campo de preenchimento obrigatório
                 </tour-step>
                 <select name="tipoOcorrencia" id="input_tipo_ocorrencia" class="form-control col-sm-12 col-lg-12"
@@ -164,7 +172,7 @@
                 </select>
               </div>
               <div class="row">
-                <tour-step selector="input_descricao" order="6" position="left" title="Detalhes">
+                <tour-step selector="input_descricao" order="8" position="left" title="Detalhes">
                   Descreva os detalhes da ocorrência aqui. Campo de preenchimento obrigatório
                 </tour-step>
                 <textarea maxlength="300" id="input_descricao" spellcheck="true" class="form-control"
@@ -176,7 +184,7 @@
                 <label class="text-muted"> {{ caracteresDisponiveis }}</label>
               </div>
               <div class="row">
-                <tour-step selector="data-ocorrencia-simples" order="7" position="top" title="Data">
+                <tour-step selector="data-ocorrencia-simples" order="9" position="top" title="Data">
                   Data da ocorrência. Campo de preenchimento obrigatório
                 </tour-step>
                 <label for="" class="small muted">Data</label>
@@ -185,7 +193,7 @@
               </div>
               <div class="row">
                 <label for="" class="small muted">Hora</label>
-                <tour-step selector="hora-ocorrencia-simples" order="8" position="top" title="Hora">
+                <tour-step selector="hora-ocorrencia-simples" order="10" position="top" title="Hora">
                   hora da ocorrência. Campo de preenchimento obrigatório
                 </tour-step>
                 <input id="hora-ocorrencia-simples" class="form-control col-sm-12 col-lg-12" type="time"
@@ -196,7 +204,7 @@
           <div class="row">
             <div class="col-lg-10 col-sm-12 mt-2"></div>
             <div class="col-lg-2 col-sm-12 mt-2 text-center">
-              <tour-step selector="btn_salvar_ocorrencia_simples" order="8" position="top" title="Tipo de ocorrência">
+              <tour-step selector="btn_salvar_ocorrencia_simples" order="11" position="top" title="Tipo de ocorrência">
                 Preenchidos todos os campos, clique neste botão.
               </tour-step>
               <button id="btn_salvar_ocorrencia_simples" [disabled]="statusBotaoSalvarOcorrenciaSimples"

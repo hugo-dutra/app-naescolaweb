@@ -98,7 +98,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public horaOcorrencia: string = "";
   public dataOcorrenciaMultipla: string = "";
   public horaOcorrenciaMultipla: string = "";
-
+  public guiaAtivaId: number = 1;
   private relatorioPDFOcorrenciasEstudante: jsPDF;
 
   constructor(
@@ -126,8 +126,14 @@ export class InserirOcorrenciaComponent implements OnInit {
 
   public subscribeTour(): void {
     this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
-      this.hintService.initialize({ elementsDisabled: false });
+      if (this.guiaAtivaId == 1) {
+        this.hintService.initialize({ elementsDisabled: false });
+      }
     })
+  }
+
+  public setarGuiaAtiva(guiaId: number): void {
+    this.guiaAtivaId = guiaId;
   }
 
   public atualizarHoraLancamentoOcorrencias(): void {

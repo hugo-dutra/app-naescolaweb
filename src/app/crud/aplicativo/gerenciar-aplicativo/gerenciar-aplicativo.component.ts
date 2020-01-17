@@ -5,12 +5,14 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { CONSTANTES } from '../../../shared/constantes.shared';
 import { Utils } from '../../../shared/utils.shared';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
+import { HintService } from 'angular-custom-tour';
 
 @Component({
   selector: 'ngx-gerenciar-aplicativo',
   templateUrl: './gerenciar-aplicativo.component.html',
   styleUrls: ['./gerenciar-aplicativo.component.scss'],
-  providers: [EstudanteService, FirebaseService],
+  providers: [EstudanteService, FirebaseService, HintService],
   animations: [
     trigger("chamado", [
       state(
@@ -37,7 +39,9 @@ export class GerenciarAplicativoComponent implements OnInit {
   public dados_escola: Object;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private hintService: HintService,
+    private acessoComumService: AcessoComumService,
   ) { }
 
   ngOnInit() {
@@ -48,7 +52,18 @@ export class GerenciarAplicativoComponent implements OnInit {
       )
     )[0];
     this.esc_id = parseInt(this.dados_escola["id"]);
+    this.subscribeTour();
   }
+
+
+
+  public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
+      this.hintService.initialize({ elementsDisabled: false });
+    })
+  }
+
+
 
   public sincronizarAplicativo(): void {
     this.router.navigate([`${this.router.url}/sincronizar-estudante-aplicativo`]);

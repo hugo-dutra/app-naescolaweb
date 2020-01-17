@@ -1,4 +1,6 @@
 <!--##############################################################################################-->
+<tour-overlay></tour-overlay>
+
 <div class="container-fluid container-card" [@chamado]="estado">
 
   <div class="row">
@@ -14,8 +16,15 @@
       </nb-card>
     </div> -->
 
-    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
-      <nb-card *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" (click)="baixarFotosEstudanteAplicativo()">
+    <tour-step selector="sincronizar-aplicativo" *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')" order="1"
+      position="right" title="Sincronização">
+      Sincroniza dados do aplicativo administravivo.<br>
+      Fotos retiradas de estudantes, ocorrências disciplinares registradas por aplicativo<br>entre outras são
+      sincronizadas.
+    </tour-step>
+    <div id="sincronizar-aplicativo" *ngIf="exibirComponente('baixar-foto-estudante-aplicativo')"
+      class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="baixarFotosEstudanteAplicativo()">
         <nb-card-header>
           <i class="fa fa-4x fa-refresh text-primary"></i>
         </nb-card-header>
@@ -25,8 +34,15 @@
       </nb-card>
     </div>
 
-    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
-      <nb-card *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')" (click)="gerarQrcodeAplicativoEstudante()">
+    <tour-step selector="qrcode-aplicativo-estudante" *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')"
+      order="2" position="bottom" title="QRCode aplicativo estudantes">
+      Gera QRCode para responsáveis cadastrarem os estudantes no aplicativo<br>
+      Informações sobre entrada, saída, ocorrências disciplinares e comunicados diversos<br>
+      poderão ser recebidas a partir disso.
+    </tour-step>
+    <div id="qrcode-aplicativo-estudante" *ngIf="exibirComponente('gerar-qrcode-aplicativo-estudante')"
+      class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="gerarQrcodeAplicativoEstudante()">
         <nb-card-header>
           <i class="fa fa-4x fa-qrcode text-dark"></i>
         </nb-card-header>
@@ -36,9 +52,17 @@
       </nb-card>
     </div>
 
-    <div class="col-lg-4 col-sm-12 col-xs-12 mt-2">
-      <nb-card *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')"
-        (click)="gerarQrcodeAplicativoAdministrativo()">
+    <tour-step selector="qrcode-aplicativo-administrativo"
+      *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')" order="2" position="left"
+      title="QRCode aplicativo administrativo">
+      Gera QRCode para servidores usarem o aplicativo administravivo<br>
+      A partir daí, fotos podem ser retiradas pelo aplicativo,<br>
+      ocorrências disciplinares podem ser registradas e a <br>
+      portaria pode ser remotamente controlada.
+    </tour-step>
+    <div id="qrcode-aplicativo-administrativo" *ngIf="exibirComponente('gerar-qrcode-aplicativo-administrativo')"
+      class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="gerarQrcodeAplicativoAdministrativo()">
         <nb-card-header>
           <i class="fa fa-4x fa-qrcode text-danger"></i>
         </nb-card-header>
@@ -47,7 +71,6 @@
         </nb-card-footer>
       </nb-card>
     </div>
-
   </div>
 </div>
 

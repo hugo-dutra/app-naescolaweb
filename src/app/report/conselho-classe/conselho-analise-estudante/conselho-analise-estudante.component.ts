@@ -128,7 +128,6 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
   public subscribeTour(): void {
     this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
       this.hintService.initialize({ elementsDisabled: false });
-
     })
   }
 
