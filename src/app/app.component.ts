@@ -13,7 +13,7 @@ import { Utils } from './shared/utils.shared';
 import { AlertaService } from './crud/alerta/alerta.service';
 import { OcorrenciaService } from './crud/ocorrencia/ocorrencia.service';
 import { AlertModalService } from './shared-module/alert-modal.service';
-import { FirebaseService } from './shared/firebase/firebase.service';
+import { FirebaseService } from '../app/shared/firebase/firebase.service';
 import * as CryptoJS from 'crypto-js';
 import { Title } from '@angular/platform-browser';
 
@@ -45,7 +45,8 @@ export class AppComponent implements OnInit {
     private acessoComumService: AcessoComumService,
     private alertaService: AlertaService,
     private ocorrenciaService: OcorrenciaService,
-    private alertModalService: AlertModalService) {
+    private alertModalService: AlertModalService,
+  ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         (<any>window).ga('set', 'page', event.urlAfterRedirects);
@@ -65,14 +66,35 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.analytics.trackPageViews();
+    this.verificarAlertasOcorrenciasDisciplinares();
+    this.setTitle();
+  }
+
+  public inicialiarFirebase(): void {
     this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: string) => {
       const ct = (response);
       const cfg = Utils.decypher(ct);
       firebase.initializeApp(JSON.parse(cfg));
+      this.logarUsuarioAnonimamenteFirebase();
     })
-    this.verificarAlertasOcorrenciasDisciplinares();
-    this.setTitle();
   }
+
+  public logarUsuarioAnonimamenteFirebase(): void {
+    const auth = firebase.auth();
+    auth.signInAnonymously().then((userCredencials: firebase.auth.UserCredential) => {
+      const uid = userCredencials.user.uid;
+      const nome = Utils.verificarDados()[0]['nome'];
+      const usr_id = Utils.verificarDados()[0]['id'];
+      const escola = Utils.pegarDadosEscola()['nome'];
+      const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
+      const inep = dados_escola["inep"];
+      const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id }
+      const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
+      criarUsuarioAnonimo({ user: user, uid: uid }).then(() => { });
+    })
+  }
+
+
 
   public verificarAlertasOcorrenciasDisciplinares(): void {
     this.carregarDados();
@@ -94,6 +116,8 @@ export class AppComponent implements OnInit {
       this.esc_id = parseInt(this.dados_escola['id'], 10);
       this.usr_id = parseInt(this.dados_usuario['id'], 10);
     }
+
+    this.inicialiarFirebase();
   }
 
   public listarRegrasAlertasUsuario(): void {

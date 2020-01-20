@@ -18,6 +18,7 @@ import { reject } from 'q';
 @Injectable()
 export class FirebaseService {
   private firestore = firebase.firestore();
+  private auth = firebase.auth();
   //private sett = { timestampsInSnapshots: true };
   constructor(private http: HttpClient) {
     //this.firestore.settings(this.sett);
@@ -767,10 +768,34 @@ export class FirebaseService {
   }
 
   //**********************************************************************************/
+  //***************************FIREBASE AUTH*****************************************/
+  public logarAnonimamente(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.auth.signInAnonymously().then((credencial: firebase.auth.UserCredential) => {
+        resolve(credencial.user.uid)
+      }).catch((erro: any) => {
+        reject(erro)
+      })
+    })
+  }
+
+  //**********************************************************************************/
   //***************************CLOUD FUNCTION*****************************************/
   public carregarEstudantesPortariaFirebaseFirestore = async (estudantes: Object[], codigoPortaria: string) => new Promise((resolve) => {
     const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesPortaria');
     carregarEstudantesPortaria({ estudantes: estudantes, codigoPortaria: codigoPortaria }).then(retorno => {
+      resolve(retorno)
+    })
+  })
+
+  public criarUsuarioAnonimoFirestore = async (uid: string, nome: string, escola: string, inep: string, usr_id: string) => new Promise((resolve) => {
+    const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id }
+    console.log(user);
+    const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
+    criarUsuarioAnonimo({
+      user: user,
+      uid: uid
+    }).then(retorno => {
       resolve(retorno)
     })
   })

@@ -55,6 +55,7 @@ export class LoginComponent implements OnInit {
       .deslogar()
       .toPromise()
       .then((response: Response) => {
+
         this.limparSenha();
       }).catch((erro: Response) => {
         this.limparSenha();

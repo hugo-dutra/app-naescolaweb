@@ -89,7 +89,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private acessoComumService: AcessoComumService,
 
-
     @Inject(DOCUMENT) private document: any
   ) {
   }
