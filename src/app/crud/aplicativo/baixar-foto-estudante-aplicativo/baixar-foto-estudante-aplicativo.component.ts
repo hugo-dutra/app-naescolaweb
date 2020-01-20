@@ -78,11 +78,10 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
         })
         this.feedbackUsuario = 'Atualizando fotos na base, aguarde...'
         this.estudanteService
-          .alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes)
+          .alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes, sobrescrever)
           .toPromise()
           .then(() => {
             this.sincronizarDadosNoAplicativoAdministrativo();
-
           })
       }).catch((erro: Response) => {
         this.mostrarAlertaErro(erro);
