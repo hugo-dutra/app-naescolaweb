@@ -126,11 +126,11 @@ export class EstudanteService {
     );
   }
 
-  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[]): Observable<any> {
+  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[], sobrescreverFoto: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "alterar-foto-estudantes-aplicativo-administrativo",
-      JSON.stringify({ fotosEstudantes: fotosEstudantes }),
+      JSON.stringify({ fotosEstudantes: fotosEstudantes, sobrescreverFoto: sobrescreverFoto }),
       headers
     );
   }

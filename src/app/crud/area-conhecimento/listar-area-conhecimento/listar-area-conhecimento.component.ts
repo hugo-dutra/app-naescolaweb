@@ -51,7 +51,6 @@ export class ListarAreaConhecimentoComponent implements OnInit {
     private router: Router
   ) { }
   ngOnInit() {
-    this.acessoComumService.emitirAlertaExibirIconeAjuda.emit(false);
     this.exibirComponentesEdicao();
     this.listar();
   }

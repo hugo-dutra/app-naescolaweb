@@ -537,6 +537,7 @@ export class FirebaseService {
    * @param turno
    */
   public gravarEstudanteFirebaseFirestoreAplicativo(inep: string, est_id: string, foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
+
     return this.firestore
       .collection('naescolaApp')
       .doc(inep)
