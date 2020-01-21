@@ -161,8 +161,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
   public selecionarTurma(event: Event): void {
     this.trm_id_selecionada = parseInt((<HTMLInputElement>event.target).value);
     if (this.trm_id_selecionada != 0 && this.prl_id_selecionado != 0) {
-      this.feedbackUsuario = "Carregando estudantes, aguarde...";
-      this.carregarResultadosTurma();
+      this.carregarDadosDoPeriodoSelecionado();
     } else {
       this.arrayOfLabelsNotaPeriodo = [];
       this.arrayOfDadosNotaPeriodo = [];
@@ -171,11 +170,21 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     }
   }
 
+  public carregarDadosDoPeriodoSelecionado(): void {
+    this.feedbackUsuario = 'Carregando dados...';
+    this.periodoLetivoService.listarPorId(this.prl_id_selecionado).toPromise().then((response: Response) => {
+      const dadosPeriodoLetivo = Object.values(response);
+      this.stringInicioPeriodoSelecionado = dadosPeriodoLetivo[0]['inicio'];
+      this.stringFimPeriodoSelecionado = dadosPeriodoLetivo[0]['fim'];
+      this.feedbackUsuario = "Carregando estudantes, aguarde...";
+      this.carregarResultadosTurma();
+    })
+  }
+
   public selecionarPeriodo(event: Event): void {
     this.prl_id_selecionado = parseInt((<HTMLInputElement>event.target).value);
     if (this.trm_id_selecionada != 0 && this.prl_id_selecionado != 0) {
-      this.feedbackUsuario = "Carregando estudantes, aguarde...";
-      this.carregarResultadosTurma();
+      this.carregarDadosDoPeriodoSelecionado();
     } else {
       this.arrayOfLabelsNotaPeriodo = [];
       this.arrayOfDadosNotaPeriodo = [];

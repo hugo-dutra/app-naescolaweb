@@ -154,34 +154,34 @@ export class VerificarAbsenteismoPortariaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         let alunosSelecionados = Object.values(response);
-        /* Ordena decrescente por faltas */
-        alunosSelecionados.sort((a, b) => {
-          if (a['faltas'] > b['faltas']) {
-            return -1
-          } else {
-            return 1
-          }
-        });
-
-
-
-
-
-        alunosSelecionados.forEach(elem => {
-          const alunoFrequenciaPortaria = new FrequenciaPortaria();
-          alunoFrequenciaPortaria.faltas = elem["faltas"];
-          alunoFrequenciaPortaria.foto = elem["foto"];
-          alunoFrequenciaPortaria.id = elem["est_id"];
-          alunoFrequenciaPortaria.matricula = elem["matricula"];
-          alunoFrequenciaPortaria.nome = elem["nome"];
-          alunoFrequenciaPortaria.presencas = elem["presencas"];
-          alunoFrequenciaPortaria.etapa = elem["etapa"];
-          alunoFrequenciaPortaria.serie = elem["serie"];
-          alunoFrequenciaPortaria.turma = elem["turma"];
-          alunoFrequenciaPortaria.turno = elem["turno"];
-          this.estudantesTurmaSelecionada.push(alunoFrequenciaPortaria);
-        })
-        this.feedbackUsuario = undefined;
+        if (alunosSelecionados.length > 0) {
+          /* Ordena decrescente por faltas */
+          alunosSelecionados.sort((a, b) => {
+            if (a['faltas'] > b['faltas']) {
+              return -1
+            } else {
+              return 1
+            }
+          });
+          alunosSelecionados.forEach(elem => {
+            const alunoFrequenciaPortaria = new FrequenciaPortaria();
+            alunoFrequenciaPortaria.faltas = elem["faltas"];
+            alunoFrequenciaPortaria.foto = elem["foto"];
+            alunoFrequenciaPortaria.id = elem["est_id"];
+            alunoFrequenciaPortaria.matricula = elem["matricula"];
+            alunoFrequenciaPortaria.nome = elem["nome"];
+            alunoFrequenciaPortaria.presencas = elem["presencas"];
+            alunoFrequenciaPortaria.etapa = elem["etapa"];
+            alunoFrequenciaPortaria.serie = elem["serie"];
+            alunoFrequenciaPortaria.turma = elem["turma"];
+            alunoFrequenciaPortaria.turno = elem["turno"];
+            this.estudantesTurmaSelecionada.push(alunoFrequenciaPortaria);
+          })
+          this.feedbackUsuario = undefined;
+        } else {
+          this.feedbackUsuario = undefined;
+          this.alertModalService.showAlertWarning('Sem resultados para dados informados.');
+        }
       }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

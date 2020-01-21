@@ -27,6 +27,15 @@ export class PeriodoLetivoService {
     );
   }
 
+  public listarPorId(prl_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "periodo-letivo-por-id",
+      JSON.stringify({ prl_id: prl_id }),
+      headers
+    );
+  }
+
   public listarPorAno(ano: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(

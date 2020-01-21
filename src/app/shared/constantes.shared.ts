@@ -16,11 +16,11 @@ export class CONSTANTES {
   //********************URLS****************************/
   public static BUILD_SEDF = '1';
   public static BUILS_RESOLVIDOS = '2';
-  public static BUILD_DESTINO = '2';
+  public static BUILD_DESTINO = '1';
 
-  public static HOST = "http://localhost:8000"; //2
+  //public static HOST = "http://localhost:8000"; //2
   //public static HOST = "http://www.supervisorescolar.com.br" //2
-  //public static HOST = "http://academico.se.df.gov.br"; //1
+  public static HOST = "http://academico.se.df.gov.br"; //1
 
   public static HOST_API = CONSTANTES.HOST + "/api/";
   public static CK = "OEqpJdFaYtaY0eI087eNA6KKSMsi22vh";

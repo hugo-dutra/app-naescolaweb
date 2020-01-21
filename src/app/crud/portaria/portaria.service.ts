@@ -137,7 +137,6 @@ export class PortariaService {
 
   public alterar(portaria: Portaria): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
     return this.http.post(
       CONSTANTES.HOST_API + "alterar-portaria",
       JSON.stringify({ portaria: portaria }),
@@ -147,7 +146,6 @@ export class PortariaService {
 
   public excluir(por_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
     return this.http.post(
       CONSTANTES.HOST_API + "excluir-portaria",
       JSON.stringify({ por_id: por_id }),

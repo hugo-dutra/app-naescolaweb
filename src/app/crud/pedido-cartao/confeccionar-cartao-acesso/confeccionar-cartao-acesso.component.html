@@ -316,10 +316,11 @@
                   <div class="col-1"></div>
                 </div>
                 <!-- IMAGEM ASSINATURA DIRETOR -->
-                <div class="row">
+                <div *ngIf="urlAssinaguraGestor!='' && urlAssinaguraGestor!=undefined && urlAssinaguraGestor!=null"
+                  class="row">
                   <div class="col-2"></div>
                   <div class="col-8">
-                    <img [src]=urlAssinaguraGestor alt="">
+                    <img [src]=urlAssinaguraGestor alt="" style="width: 20vw; height:20vh">
                   </div>
                   <div class="col-2"></div>
                 </div>
@@ -330,11 +331,12 @@
                     <label>____________________________________________________</label><br>
                     <label>Diretor(a)</label><br>
                     <label>Assinatura e Carimbo</label>
+                    <label>Assinatura e Carimbo</label>
+                    <label>Válido em todo território nacional</label>
                   </div>
                   <div class="col-2"></div>
                 </div>
               </div>
-              <p class="mb-4">Válido em todo território nacional</p>
             </div>
           </div>
 
