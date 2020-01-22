@@ -1,19 +1,38 @@
+<tour-overlay></tour-overlay>
+
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
+
+  <tour-step selector="tour-ocorrencia-por-periodo" order="1" position="bottom" title="Ocorrências por período">
+    Esse relatório mostra o valor absoluto da quantidade de ocorrências registradas em cada dia letivo para um dado
+    período informado.
+  </tour-step>
+  <li id="tour-ocorrencia-por-periodo" class="nav-item">
     <a class="nav-link active" id="quantidade-tab" data-toggle="tab" href="#periodo" role="tab" aria-controls="home"
       aria-selected="true">Ocorrência por período</a>
   </li>
-  <li class="nav-item" (click)="mostrarOcorrenciasPorTurma()">
+
+  <tour-step selector="tour-ocorrencia-por-turma" order="2" position="bottom" title="Ocorrências por turma">
+    A quantidade absoluta de ocorrências registradas em cada turma para um dado intervalo de tempo.
+  </tour-step>
+  <li id="tour-ocorrencia-por-turma" class="nav-item" (click)="mostrarOcorrenciasPorTurma()">
     <a class="nav-link" id="turma-tab" data-toggle="tab" href="#turma" role="tab" aria-controls="profile"
       aria-selected="false">Ocorrência
       por turma</a>
   </li>
-  <li class="nav-item">
+
+  <tour-step selector="tour-ocorrencia-por-estudante" order="3" position="bottom" title="Ocorrências por estudante">
+    O total de ocorrências disciplinares que cada estudante possui num dado intervalo de tempo, para a turma informada.
+  </tour-step>
+  <li id="tour-ocorrencia-por-estudante" class="nav-item">
     <a class="nav-link" id="estudante-tab" data-toggle="tab" href="#estudante" role="tab" aria-controls="messages"
       aria-selected="false">Ocorrências por estudante</a>
   </li>
-  <li class="nav-item" (click)="mostrarOcorrenciasPorTipo()">
+
+  <tour-step selector="tour-ocorrencia-por-tipo" order="4" position="bottom" title="Ocorrências por tipo">
+    O total de ocorrências de cada tipo para o período informado.
+  </tour-step>
+  <li id="tour-ocorrencia-por-tipo" class="nav-item" (click)="mostrarOcorrenciasPorTipo()">
     <a class="nav-link" id="tipo-ocorrencia-tab" data-toggle="tab" href="#tipo-ocorrencia" role="tab"
       aria-controls="messages" aria-selected="false">Ocorrências por tipo</a>
   </li>

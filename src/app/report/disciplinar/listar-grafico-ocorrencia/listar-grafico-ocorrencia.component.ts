@@ -8,12 +8,14 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Utils } from '../../../shared/utils.shared';
+import { HintService } from 'angular-custom-tour';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-listar-grafico-ocorrencia',
   templateUrl: './listar-grafico-ocorrencia.component.html',
   styleUrls: ['./listar-grafico-ocorrencia.component.scss'],
-  providers: [DisciplinarService, TurmaService],
+  providers: [DisciplinarService, TurmaService, HintService],
   animations: [
     trigger("chamado", [
       state(
@@ -79,14 +81,22 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
     private alertModalService: AlertModalService,
     private router: Router,
     private firebaseService: FirebaseService,
-    private turmaService: TurmaService
+    private turmaService: TurmaService,
+    private hintService: HintService,
+    private acessoComumService: AcessoComumService,
   ) { }
 
   ngOnInit() {
     this.listarTurma();
     this.inicializarDatas();
+    this.subscribeTour();
   }
 
+  public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
+      this.hintService.initialize({ elementsDisabled: false });
+    })
+  }
   public inicializarDatas(): void {
     this.data_inicio_padrao = new Date().getFullYear().toString() + "-01-01";
     this.data_fim_padrao =

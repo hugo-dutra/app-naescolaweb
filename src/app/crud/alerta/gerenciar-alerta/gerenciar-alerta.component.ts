@@ -43,7 +43,6 @@ export class GerenciarAlertaComponent implements OnInit {
 
 
   public subscribeTour(): void {
-    this.acessoComumService.emitirAlertaExibirIconeAjuda.emit(true);
     this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
       this.hintService.initialize({ elementsDisabled: false });
     })

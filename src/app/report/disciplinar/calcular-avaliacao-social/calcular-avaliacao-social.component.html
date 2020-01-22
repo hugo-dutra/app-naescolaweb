@@ -1,6 +1,14 @@
+<tour-overlay></tour-overlay>
 <div class="container-fluid">
+
   <div class="card">
-    <div class="card-header bg-dark">
+    <tour-step selector="card-avaliacao-social" order="1" position="bottom" title="Definição - avaliação social">
+      Nessa tela, é possível obter um relatório da avaliação social do estudante. Cada ocorrência disciplinar que o
+      estudante possui corresponde a um valor debitado do total da nota relacionada a avaliação social. A quantidade a
+      ser
+      debidata depende do valor associado ao tipo de ocorrência disciplinar registrodo para o estudante.
+    </tour-step>
+    <div id="card-avaliacao-social" class="card-header bg-dark">
       <div class="row">
         <div class="col-sm-12 col-lg-12">
           <div class="row">
@@ -15,7 +23,10 @@
       <div class="row">
         <div class="mt-2 col-sm-12 col-lg-4 form-group">
           <div class="row">
-            <div class="dropdown mt-2 col-sm-12 col-lg-12">
+            <tour-step selector="tour-turma-avaliacao-social" order="2" position="bottom" title="Seleção de turma">
+              Seleção da turma cujo relatório deseja-se obter os valores da nota social.
+            </tour-step>
+            <div id='tour-turma-avaliacao-social' class="dropdown mt-2 col-sm-12 col-lg-12">
               <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButton"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{ stringTurmaSelecionada }}
@@ -26,28 +37,40 @@
                   class="dropdown-item">{{ turma.serie }} {{ turma.etapa }} - {{ turma.nome }} - {{ turma.turno }} -
                   Matriculados:&nbsp;<span class="badge badge-success">{{ turma.matriculados }}</span> </a>
               </div>
-
             </div>
           </div>
         </div>
 
-        <div class="col-sm-12 col-lg-2">
+        <tour-step selector="tour-valor-maximo-nota-social" order="3" position="bottom" title="Valor máximo">
+          Valor máximo possível para nota social. Os valors das ocorrências disciplinares serão subtraídos desse valor.
+        </tour-step>
+        <div id="tour-valor-maximo-nota-social" class="col-sm-12 col-lg-2">
           <label for="maximo_avaliacao_social">Valor da avaliação social</label>
           <input type="number" name="maximo_avaliacao_social" value="1" id="maximo_avaliacao_social"
             class="form-control" (change)="modificarMaximaAvaliacaoSocial($event)">
         </div>
 
-        <div class="col-sm-12 col-lg-2">
+        <tour-step selector="tour-data-inicial" order="4" position="bottom" title="Data inicial">
+          Início do período considerado. As ativertências serão contadas a partir da data informada
+        </tour-step>
+        <div id="tour-data-inicial" class="col-sm-12 col-lg-2">
           <label for="data_inicio">Data inicial</label>
           <input type="date" name="data_inicio" id="data_inicio" value="{{data_inicio_padrao}}" class="form-control"
             (change)="atualizarData($event)">
         </div>
-        <div class="col-sm-12 col-lg-2">
+        <tour-step selector="tour-data-final" order="5" position="bottom" title="Data final">
+          Início do período considerado. As ativertências serão contadas a partir da data informada
+        </tour-step>
+        <div id="tour-data-final" class="col-sm-12 col-lg-2">
           <label for="data_fim">Data final</label>
           <input type="date" name="data_fim" id="data_fim" value="{{data_fim_padrao}}" class="form-control"
             (change)="atualizarData($event)">
         </div>
-        <div class="col-sm-12 col-lg-2">
+
+        <tour-step selector="tour-btn-calcular-avaliacao-social" order="6" position="bottom" title="Efetuar cálculo">
+          Preenchido todos os campos, esse botão efetual os cálculo e gera o relatório.
+        </tour-step>
+        <div id="tour-btn-calcular-avaliacao-social" class="col-sm-12 col-lg-2">
           <label for="btn_ponto_social" class="text-light">&nbsp;</label>
           <button name="btn_ponto_social" class="form-control btn btn-dark" (click)="calcularAvaliacaoSocial()">Calcular
             avaliação

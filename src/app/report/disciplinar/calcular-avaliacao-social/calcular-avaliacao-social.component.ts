@@ -7,12 +7,14 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { HintService } from 'angular-custom-tour';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-calcular-avaliacao-social',
   templateUrl: './calcular-avaliacao-social.component.html',
   styleUrls: ['./calcular-avaliacao-social.component.scss'],
-  providers: [OcorrenciaService, TurmaService],
+  providers: [OcorrenciaService, TurmaService, HintService],
   animations: [
     trigger("chamado", [
       state(
@@ -51,6 +53,8 @@ export class CalcularAvaliacaoSocialComponent implements OnInit {
     private turmaService: TurmaService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
+    private hintService: HintService,
+    private acessoComumService: AcessoComumService,
     private router: Router) { }
 
 
@@ -58,6 +62,13 @@ export class CalcularAvaliacaoSocialComponent implements OnInit {
   ngOnInit() {
     this.inicializarVariaveis();
     this.listarTurmas();
+    this.subscribeTour();
+  }
+
+  public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
+      this.hintService.initialize({ elementsDisabled: false });
+    })
   }
 
   public inicializarVariaveis(): void {

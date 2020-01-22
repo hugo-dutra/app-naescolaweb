@@ -7,12 +7,14 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Utils } from '../../../shared/utils.shared';
+import { HintService } from 'angular-custom-tour';
+import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
 @Component({
   selector: 'ngx-listar-quantidade-tipo-ocorrencia',
   templateUrl: './listar-quantidade-tipo-ocorrencia.component.html',
   styleUrls: ['./listar-quantidade-tipo-ocorrencia.component.scss'],
-  providers: [OcorrenciaService, TipoOcorrenciaDisciplinarService],
+  providers: [OcorrenciaService, TipoOcorrenciaDisciplinarService, HintService],
   animations: [
     trigger("chamado", [
       state(
@@ -47,13 +49,22 @@ export class ListarQuantidadeTipoOcorrenciaComponent implements OnInit {
     private alertModalService: AlertModalService,
     private router: Router,
     private firebaseService: FirebaseService,
-    private tipoOcorrenciaDisciplinarService: TipoOcorrenciaDisciplinarService
+    private tipoOcorrenciaDisciplinarService: TipoOcorrenciaDisciplinarService,
+    private hintService: HintService,
+    private acessoComumService: AcessoComumService,
   ) { }
 
   ngOnInit() {
     this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
     this.inicializarDatas();
     this.listarTipoOcorrencia();
+    this.subscribeTour();
+  }
+
+  public subscribeTour(): void {
+    this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
+      this.hintService.initialize({ elementsDisabled: false });
+    })
   }
 
   public inicializarDatas(): void {
@@ -93,8 +104,8 @@ export class ListarQuantidadeTipoOcorrenciaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
     })
@@ -114,8 +125,8 @@ export class ListarQuantidadeTipoOcorrenciaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       })
