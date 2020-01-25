@@ -5,6 +5,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { Router } from '@angular/router';
 import { Utils } from '../../shared/utils.shared';
 
+
+declare var particlesJS: any;
+
 @Component({
   selector: 'ngx-login',
   templateUrl: './login.component.html',
@@ -45,6 +48,7 @@ export class LoginComponent implements OnInit {
   public status_ativo_usuario: number = 0;
   public mostraSenha: boolean = false;
   public nomeDoSistema: string = "";
+  public caminhoImagemLogo: string = "";
 
 
   constructor(
@@ -53,7 +57,13 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.definirNomeSistema();
+    setTimeout(() => {
+      particlesJS.load('particles-js', '../../../assets/particles.json', function () {
+        console.log('callback - particles.js config loaded');
+      });
+    }, 200);
+
+    this.definirDadosDoSistema();
     this.accessService
       .deslogar()
       .toPromise()
@@ -70,12 +80,16 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  public definirNomeSistema(): void {
+
+
+  public definirDadosDoSistema(): void {
     if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
       this.nomeDoSistema = CONSTANTES.NOME_SISTEMA_SEDF;
+      this.caminhoImagemLogo = CONSTANTES.CAMINHO_LOGO_SEDF;
     }
     if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
       this.nomeDoSistema = CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
+      this.caminhoImagemLogo = CONSTANTES.CAMINHO_LOGO_RESOLVIDOS;
     }
   }
 

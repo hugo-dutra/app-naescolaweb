@@ -21,8 +21,13 @@ export class CONSTANTES {
   public static NOME_SISTEMA_SEDF = "Acadêmico";
   public static NOME_SISTEMA_RESOLVIDOS = "SupervisorEscolar";
 
-  public static HOST = "http://localhost:8000"; //2
-  //public static HOST = "http://www.supervisorescolar.com.br" //2
+  public static CAMINHO_LOGO_SEDF = "../../../assets/images/sedf.png";
+  public static CAMINHO_LOGO_RESOLVIDOS = "../../../assets/images/supervisor_escolar.png";
+
+
+
+  //public static HOST = "http://localhost:8000"; //2
+  public static HOST = "http://www.supervisorescolar.com.br" //2
   //public static HOST = "http://academico.se.df.gov.br"; //1
 
   public static HOST_API = CONSTANTES.HOST + "/api/";
