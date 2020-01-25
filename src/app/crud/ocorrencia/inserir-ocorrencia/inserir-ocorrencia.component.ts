@@ -1124,10 +1124,12 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public criarCabecalhoPDFOcorrenciasEstudantesPaginasSeguintes(inicioLinha: number, fimLinha: number, ocorrencias: Array<Object>, pagina: number): void {
+    let nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
+    let nomeSistema = CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
     /*CABEÇALHO PAGINAS SUBSEQUENTES*/
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(10);
-    this.relatorioPDFOcorrenciasEstudante.text('Sistema de Gestão Pedagógica - SupervisorEscolar®', 62, 7);
+    this.relatorioPDFOcorrenciasEstudante.text(`Sistema de Gestão Pedagógica - ${nomeSistema} - ${nomeEscola}`, 10, 7);
     this.relatorioPDFOcorrenciasEstudante.line(inicioLinha, 10, fimLinha, 10);
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(10);
@@ -1139,10 +1141,12 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public criarCabecalhoPDFOcorrenciasEstudante(inicioLinha: number, fimLinha: number, ocorrencias: Array<Object>): void {
+    let nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
+    let nomeSistema = CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
     /*CABEÇALHO*/
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(10);
-    this.relatorioPDFOcorrenciasEstudante.text('Sistema de Gestão Pedagógica - SupervisorEscolar®', 62, 7);
+    this.relatorioPDFOcorrenciasEstudante.text(`Sistema de Gestão Pedagógica - ${nomeSistema} - ${nomeEscola}`, 10, 7);
     this.relatorioPDFOcorrenciasEstudante.line(inicioLinha, 10, fimLinha, 10);
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(14);

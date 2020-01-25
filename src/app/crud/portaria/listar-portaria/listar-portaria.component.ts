@@ -217,7 +217,7 @@ export class ListarPortariaComponent implements OnInit {
                 this.portariaService.inserirSemUniforme(this.usr_id, this.esc_id, semUniforme).toPromise()
                   .then(() => {
                     this.feedbackUsuario = "Atualizando cronograma...";
-                    this.gravarCronogramaPortaria(portaria)
+                    this.gravarCronogramaPortaria(portaria);
                     //this.sincronizar(portaria);
                   }).catch((erro: Response) => {
                     //Mostra modal

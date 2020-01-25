@@ -220,7 +220,6 @@ export class Utils {
   }
 
   public static validarCNPJ(cnpj) {
-
     cnpj = cnpj.replace(/[^\d]+/g, '');
 
     if (cnpj == '') return false;
@@ -283,6 +282,15 @@ export class Utils {
   }
 
   public static pegarDadosEscola(): Object {
+    return JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+  }
+
+  public static pegarDadosEscolaDetalhado(): {
+    id, ren_id, nome, email,
+    telefone, endereco, logo, ree_id, inep
+    cep, cnpj, rede_ensino, abv_rede_ensino,
+    email_rede_ensino, responsavel_rede_ensino, telefone_rede_ensino, endereco_rede_ensino, cnpj_rede_ensino, logo_rede_ensino, nome_abreviado
+  } {
     return JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
   }
 
