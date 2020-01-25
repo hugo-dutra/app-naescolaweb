@@ -57,12 +57,14 @@ export class AppComponent implements OnInit {
 
   public setTitle(): void {
     if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
-      this.titleService.setTitle('Acadêmico');
+      this.titleService.setTitle(CONSTANTES.NOME_SISTEMA_SEDF);
     }
     if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
-      this.titleService.setTitle('NaEscola');
+      this.titleService.setTitle(CONSTANTES.NOME_SISTEMA_RESOLVIDOS);
     }
   }
+
+
 
   ngOnInit(): void {
     this.analytics.trackPageViews();

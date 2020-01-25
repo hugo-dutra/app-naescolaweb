@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit {
   public mensagemAlerta: string = "";
   public status_ativo_usuario: number = 0;
   public mostraSenha: boolean = false;
+  public nomeDoSistema: string = "";
+
 
   constructor(
     private accessService: AccessService,
@@ -51,6 +53,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.definirNomeSistema();
     this.accessService
       .deslogar()
       .toPromise()
@@ -65,6 +68,15 @@ export class LoginComponent implements OnInit {
           console.log(erro);
         } */
       });
+  }
+
+  public definirNomeSistema(): void {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
+      this.nomeDoSistema = CONSTANTES.NOME_SISTEMA_SEDF;
+    }
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
+      this.nomeDoSistema = CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
+    }
   }
 
   public mostrarSenha(): void {

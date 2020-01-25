@@ -437,25 +437,14 @@
                     <ngx-barcode class="col-sm-12" [id]="'ngx_Barcode_'+estudante.est_id"
                       [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75"
                       [bc-width]="3">
-                    </ngx-barcode><br>
-                    <label><small>{{estudante.nome}}</small></label>
-
+                    </ngx-barcode>
                   </div>
                   <div class="col-lg-2"></div>
-
                 </div>
               </div>
-
-
-
-
             </div>
-
           </div>
         </div>
-
-
-
       </div>
     </div>
     <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
