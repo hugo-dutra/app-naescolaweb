@@ -14,18 +14,19 @@ export class CONSTANTES {
   public static ESCOPO_REGIONAL = 'Regional';
   public static ESCOPO_LOCAL = 'Local';
   //********************URLS****************************/
-  public static BUILD_SEDF = '1';
-  public static BUILS_RESOLVIDOS = '2';
   public static BUILD_DESTINO = '2';
 
+  public static BUILD_SEDF = '1';
+  public static BUILS_RESOLVIDOS = '2';
+  /* ------ */
   public static NOME_SISTEMA_SEDF = "Acadêmico";
   public static NOME_SISTEMA_RESOLVIDOS = "SupervisorEscolar";
 
-  public static CAMINHO_LOGO_SEDF = "../../../assets/images/sedf.png";
-  public static CAMINHO_LOGO_RESOLVIDOS = "../../../assets/images/supervisor_escolar.png";
+  public static CAMINHO_LOGO_SEDF = "../../../assets/images/sedf_login.png";
+  public static CAMINHO_LOGO_RESOLVIDOS = "../../../assets/images/supervisor_escolar_login.png";
 
-  public static HOST = "http://localhost:8000"; //2
-  //public static HOST = "http://www.supervisorescolar.com.br" //2
+  //public static HOST = "http://localhost:8000"; //2
+  public static HOST = "http://www.supervisorescolar.com.br" //2
   //public static HOST = "http://academico.se.df.gov.br"; //1
 
   public static HOST_API = CONSTANTES.HOST + "/api/";

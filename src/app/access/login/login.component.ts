@@ -49,6 +49,7 @@ export class LoginComponent implements OnInit {
   public mostraSenha: boolean = false;
   public nomeDoSistema: string = "";
   public caminhoImagemLogo: string = "";
+  public dia: boolean = true;
 
 
   constructor(
@@ -57,6 +58,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.verificarDiaNoite();
     setTimeout(() => {
       particlesJS.load('particles-js', '../../../assets/particles.json', function () {
         console.log('callback - particles.js config loaded');
@@ -80,7 +82,14 @@ export class LoginComponent implements OnInit {
       });
   }
 
-
+  public verificarDiaNoite(): void {
+    const hora = (new Date()).getHours();
+    if (hora >= 6 && hora <= 18) {
+      this.dia = true;
+    } else {
+      this.dia = false;
+    }
+  }
 
   public definirDadosDoSistema(): void {
     if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {

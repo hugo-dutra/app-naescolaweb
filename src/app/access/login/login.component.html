@@ -1,14 +1,24 @@
-<div id="particles-js" class="bg-primary">
-  <img src={{caminhoImagemLogo}} alt="" style="position: absolute; left:0%;top:0%">
+<div *ngIf="dia==true" id="particles-js" class="bg-primary">
   <div class="row">
     <div class="position-absolute center-block col-lg-6 col-sm-12 col-md-12" style="left:25%;top:15%;">
       <div class="card text-center">
         <div class="card-header text-light">
           Login - {{nomeDoSistema}}
         </div>
-        <div class="card-body m-5">
-          <h5 class="card-title text-dark"><i class="fa fa-lg fa-user-secret"></i> Informe E-mail e senha para acessar
-            o sistema</h5>
+        <div class="card-body">
+          <div class="row mb-1">
+            <div class="col-1">
+              <img src={{caminhoImagemLogo}} alt="">
+            </div>
+            <div class="col-10"></div>
+            <div class="col-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <h6>Informe e-mail e senha para acessar o sistema</h6>
+            </div>
+          </div>
+
           <div class="input-group">
             <input type="email" class="form-control" placeholder="email" (focusout)="listarEscolas($event)"
               (focusin)="limparDadosLogin()" aria-label="Input group example" aria-describedby="btnGroupAddon"
@@ -35,7 +45,7 @@
           </div>
 
           <br>
-          <input type="button" class="form-control btn btn-primary" value="Login" (click)="logar()">
+          <input type="button" class="form-control btn btn_login text-light" value="Login" (click)="logar()">
 
           <br>
           <br>
@@ -43,6 +53,7 @@
             <h4>{{mensagemAlerta}}</h4>
           </div>
         </div>
+
         <div class="card-footer text-light">
           Sistema de gestão pedagógica {{nomeDoSistema}}
         </div>
@@ -56,6 +67,81 @@
 
 
 </div>
+
+<div *ngIf="dia==false" id="particles-js" style="background-color: black;">
+  <div class="row">
+    <div class="position-absolute center-block col-lg-6 col-sm-12 col-md-12" style="left:25%;top:15%;">
+      <div class="card text-center">
+        <div class="card-header text-light">
+          Login - {{nomeDoSistema}}
+        </div>
+        <div class="card-body">
+          <div class="row mb-1">
+            <div class="col-1">
+              <img src={{caminhoImagemLogo}} alt="">
+            </div>
+            <div class="col-10"></div>
+            <div class="col-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+
+              <h6> <i class="fa fa-lg fa-user-secret"></i> Informe E-mail e senha para
+                acessar
+                o sistema</h6>
+
+            </div>
+          </div>
+
+          <div class="input-group">
+            <input type="email" class="form-control" placeholder="email" (focusout)="listarEscolas($event)"
+              (focusin)="limparDadosLogin()" aria-label="Input group example" aria-describedby="btnGroupAddon"
+              (input)="carregarValor($event)" name="email">
+          </div>
+          <br>
+          <div class="input-group">
+            <select name="dropDownEscolas" id="dropDownEscolas" class="form-control"
+              (change)="selecionarEscola($event)">
+              <option value="">selecione uma escola</option>
+              <option *ngFor="let escola of escolas" [value]="escola.id"> {{ escola.nome }}</option>
+            </select>
+          </div>
+          <br>
+          <div class="input-group">
+            <input type="password" class="form-control" id="senha" placeholder="senha" aria-label="Input group example"
+              aria-describedby="btnGroupAddon" (keypress)="chamarLogin($event)" (input)="carregarValor($event)"
+              name="senha">
+            <div class="input-group-append">
+              <div class="input-group-text" id="btnGroupAddon" (mousedown)="mostrarSenha()" (mouseup)="mostrarSenha()">
+                <i class="fa fa-sm fa-eye"></i>
+              </div>
+            </div>
+          </div>
+
+          <br>
+          <input type="button" class="form-control btn btn_login text-light" value="Login" (click)="logar()">
+
+          <br>
+          <br>
+          <div class="text-danger" [@chamado]="estado">
+            <h4>{{mensagemAlerta}}</h4>
+          </div>
+        </div>
+
+        <div class="card-footer text-light">
+          Sistema de gestão pedagógica {{nomeDoSistema}}
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+
+</div>
+
 
 
 
