@@ -29,6 +29,7 @@ const routes: Routes = [{
     { path: 'listar-escola', loadChildren: () => import('./escola/escola.module').then(m => m.EscolaModule), },
     { path: 'listar-etapa-ensino', loadChildren: () => import('./etapa-ensino/etapa-ensino.module').then(m => m.EtapaEnsinoModule), },
     { path: 'listar-tipo-ocorrencia-disciplinar', loadChildren: () => import('./tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.module').then(m => m.TipoOcorrenciaDisciplinarModule), },
+    { path: 'gerenciar-transferencia', loadChildren: () => import('./transferencia/transferencia.module').then(m => m.TransferenciaModule), },
     { path: 'listar-turma', loadChildren: () => import('./turma/turma.module').then(m => m.TurmaModule), },
     { path: 'listar-turno', loadChildren: () => import('./turno/turno.module').then(m => m.TurnoModule), },
     { path: 'listar-usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule), },
