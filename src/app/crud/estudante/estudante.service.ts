@@ -107,6 +107,18 @@ export class EstudanteService {
     );
   }
 
+  public alterarTurma(
+    estudantes: Object[],
+    trm_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "alterar-turma-estudante",
+      JSON.stringify({ estudantes: estudantes, trm_id: trm_id }),
+      headers
+    );
+  }
+
   /** Método que atualiza a foto do estudante
    * @param matricula Matrícula do estudante
    * @param link Link para foto

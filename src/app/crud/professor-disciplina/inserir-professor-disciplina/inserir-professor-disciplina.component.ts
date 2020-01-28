@@ -101,6 +101,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.professores = Object.values(response);
+        this.matrizReferencia = this.professores;
       })
       .then(() => {
         if (this.primeiraExecucao) {
@@ -144,7 +145,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
         this.professores = this.matrizReferencia
         this.feedbackUsuario = undefined;
         this.filtrarProfessor(event);
-      }, 2000)
+      }, 50)
     }
   }
 
@@ -155,6 +156,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.professores = Object.values(response);
+        this.matrizReferencia = this.professores;
       })
       .then(() => {
         if (this.primeiraExecucao) {

@@ -1,3 +1,74 @@
-<p>
-  transferir-turma works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header text-light bg-dark text-center">
+      <i class="fa fa-lg fa-exchange text-light text-center float-center"> Transferir estudantes de turma</i>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="form-group col-lg-3 col-md-4 col-sm-12">
+          <label for="turmas_origem">Turma origem</label>
+          <select class="form-control" id="turmas_origem_estudante" (change)="listarEstudantesTurmaSelecionada($event)">
+            <option disabled>Selecione a turma de origem...</option>
+            <option [value]="-1">Todos os estudantes</option>
+            <option [value]="turma.id" *ngFor="let turma of arrayDeTurmas">{{turma.serie_abv}} - {{turma.nome}} -
+              {{turma.turno_abv}} - {{turma.etapa}}</option>
+          </select>
+        </div>
+
+        <div class="form-group col-lg-3 col-md-4 col-sm-12">
+          <label for="turmas_origem">Turma destino</label>
+          <select class="form-control" id="turmas_destino_estudante" (change)="selecionarTrmIdDestinoEstudante($event)">
+            <option [value]="-1">Selecione a turma de destino...</option>
+            <option [value]="turma.id" *ngFor="let turma of arrayDeTurmas">{{turma.serie_abv}} - {{turma.nome}} -
+              {{turma.turno_abv}} - {{turma.etapa}}</option>
+          </select>
+        </div>
+
+        <div class="form-group col-lg-6 col-md-4 col-sm-12">
+          <br>
+          <button id="trocarTurmaEstudante"
+            class="form-control btn btn-sm btn-primary col-lg-4 col-md-4 col-sm-12 float-right"
+            (click)="transferirDeTurma()">Trocar turma</button>
+        </div>
+      </div>
+
+      <div class="estudantes bg-light text-dark">
+        <div class="ml-2">
+          <input *ngIf="exibirCampoFiltro" type="text" name="input-filtro" value="" class="form-control mb-3"
+            placeholder="Digite o nome do estudante..." (keyup)="limparFiltro($event)"
+            (keyup)="filtrarEstudantePorNome($event)">
+          <div *ngFor="let estudante of arrayDeEstudantesNaTurma" class="form-group inline row">
+            <div class="col-lg-1 col-sm-1">
+              <input type="checkbox" class="form-control checkbox float-right" [name]="estudante.id"
+                (click)="gravaEstudanteSelecionado($event)" [value]="estudante.id" [id]="estudante.id">
+            </div>
+            <div class="col-lg-11 col-sm-11 text-left">
+              <label [for]="estudante.id" class="text-left">
+                {{ estudante.nome }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
