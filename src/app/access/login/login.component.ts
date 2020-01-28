@@ -23,7 +23,7 @@ declare var particlesJS: any;
       ),
       transition("void => visivel", [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME * 2 + "ms ease-in-out")
+        animate(CONSTANTES.ANIMATION_DELAY_TIME * 4 + "ms ease-in-out")
       ])
     ])
   ]

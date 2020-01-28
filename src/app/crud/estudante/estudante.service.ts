@@ -119,6 +119,19 @@ export class EstudanteService {
     );
   }
 
+  public alterarEscola(
+    estudantes: Object[],
+    esc_id: number
+  ): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    console.log(estudantes, esc_id);
+    return this.http.post(
+      CONSTANTES.HOST_API + "alterar-escola-estudante",
+      JSON.stringify({ estudantes: estudantes, esc_id: esc_id }),
+      headers
+    );
+  }
+
   /** Método que atualiza a foto do estudante
    * @param matricula Matrícula do estudante
    * @param link Link para foto

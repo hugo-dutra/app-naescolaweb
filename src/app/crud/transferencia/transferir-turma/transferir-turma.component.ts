@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AlertModalService } from './../../../shared-module/alert-modal.service';
 import { CONSTANTES } from './../../../shared/constantes.shared';
 import { EstudanteService } from './../../estudante/estudante.service';
@@ -28,11 +29,15 @@ export class TransferirTurmaComponent implements OnInit {
   public arrayDeEstudantesNaTurma: Object[];
   public arrayDeReferenciaEstudantesNaTurma: Object[];
 
-  constructor(private turmaService: TurmaService, private estudanteService: EstudanteService, private alertModalService: AlertModalService) { }
+  constructor(private router: Router, private turmaService: TurmaService, private estudanteService: EstudanteService, private alertModalService: AlertModalService) { }
 
   ngOnInit() {
     this.carregarDados();
     this.listarTurmas();
+  }
+
+  public navegarGerenciarTransferencia(): void {
+    this.router.navigate(['gerenciar-transferencia'])
   }
 
   public carregarDados(): void {

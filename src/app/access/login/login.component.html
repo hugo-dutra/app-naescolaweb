@@ -1,4 +1,4 @@
-<div *ngIf="dia==true" id="particles-js" class="bg-primary">
+<div *ngIf="dia==true" id="particles-js" class="bg-primary" [@chamado]="estado">
   <div class="row">
     <div class="position-absolute center-block col-lg-6 col-sm-12 col-md-12" style="left:25%;top:15%;">
       <div class="card text-center">
@@ -68,7 +68,7 @@
 
 </div>
 
-<div *ngIf="dia==false" id="particles-js" style="background-color: black;">
+<div *ngIf="dia==false" id="particles-js" style="background-color: black;" [@chamado]="estado">
   <div class="row">
     <div class="position-absolute center-block col-lg-6 col-sm-12 col-md-12" style="left:25%;top:15%;">
       <div class="card text-center">
