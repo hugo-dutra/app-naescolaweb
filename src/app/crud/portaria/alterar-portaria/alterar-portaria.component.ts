@@ -1,3 +1,4 @@
+import { TurnoService } from './../../turno/turno.service';
 import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { PortariaService } from '../portaria.service';
@@ -8,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Utils } from '../../../shared/utils.shared';
-import { TurnoService } from '../../turno/turno.service';
 import { PortariaFirebase } from '../portaria.firebase.model';
 import { TurnoPortariaService } from '../../turno-portaria/turno-portaria.service';
 import { TurnoPortaria } from '../../turno-portaria/turno-portaria.model';
@@ -47,6 +47,7 @@ export class AlterarPortariaComponent implements OnInit {
   public esc_id: number;
   public arrayDeTurnos: Object[];
   public turnosPortaria = new Array<Object>();
+  public turnosEscola = new Array<Object>();
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +55,8 @@ export class AlterarPortariaComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private portariaService: PortariaService,
-    private turnoPortariaService: TurnoPortariaService) { }
+    private turnoPortariaService: TurnoPortariaService,
+    private turnoService: TurnoService) { }
 
   public formulario: FormGroup = new FormGroup({
     inicioMatutino: new FormControl(null),
@@ -86,20 +88,40 @@ export class AlterarPortariaComponent implements OnInit {
   }
 
   public listarTurnosPortaria(): void {
-    this.feedbackUsuario = "Carregando informações de turnos, aguarde..."
-    this.turnoPortariaService.listar(this.portaria.por_id).toPromise().then((response: Response) => {
-      this.turnosPortaria = Object.values(response);
-      this.feedbackUsuario = undefined;
+    this.feedbackUsuario = "Carregando informações de turnos, aguarde...";
+    this.turnoService.listar(this.esc_id).toPromise().then((response: Response) => {
+      this.turnosEscola = Object.values(response).map((turno) => {
+        return {
+          trn_id: turno['id'], turno: turno['nome'],
+          inicio: turno['horaInicio'], fim: turno['horaFim'],
+          por_id: this.portaria.por_id, nome: this.portaria.nome,
+          tolerancia_inicio: 0,
+          tolerancia_fim: 0
+        }
+      });
+      this.feedbackUsuario = "Carregando turnos da portaria, aguarde...";
+      this.turnoPortariaService.listar(this.portaria.por_id).toPromise().then((response: Response) => {
+        this.turnosPortaria = Object.values(response);
+        this.turnosEscola.map((turnoEscola) => {
+          this.turnosPortaria.forEach((turnoPortaria) => {
+            if (turnoPortaria['trn_id'] == turnoEscola['trn_id']) {
+              return Object.assign(turnoEscola, {
+                por_id: this.portaria.por_id,
+                nome: this.portaria.nome,
+                tolerancia_inicio: turnoPortaria['tolerancia_inicio'],
+                tolerancia_fim: turnoPortaria['tolerancia_fim']
+              })
+            }
+          })
+        })
+        this.turnosPortaria = this.turnosEscola;
+        //this.atualizarInputTolerancia();
+        this.feedbackUsuario = undefined;
+      }).catch((erro: Response) => {
+        this.tratarErro(erro);
+      })
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.tratarErro(erro);
     })
   }
 
@@ -147,12 +169,12 @@ export class AlterarPortariaComponent implements OnInit {
    * @param event
    */
   public alterarParametrosPortaria(turnoPortaria: Object, valor: string, event: Event): void {
-    const tup_id: number = parseInt(turnoPortaria['tup_id']);
+    const trn_id: number = parseInt(turnoPortaria['trn_id']);
     if (valor == 'inicio') {
       let contaTurno = 0;
       const tolerancia_inicio = parseInt((<HTMLInputElement>event.target).value);
       this.turnosPortaria.forEach(turnoPort => {
-        if (turnoPort['tup_id'] == tup_id) {
+        if (turnoPort['trn_id'] == trn_id) {
           this.turnosPortaria[contaTurno] = {
             fim: turnoPort['fim'],
             inicio: turnoPort['inicio'],
@@ -172,7 +194,7 @@ export class AlterarPortariaComponent implements OnInit {
       let contaTurno = 0;
       const tolerancia_fim = parseInt((<HTMLInputElement>event.target).value);
       this.turnosPortaria.forEach(turnoPort => {
-        if (turnoPort['tup_id'] == tup_id) {
+        if (turnoPort['trn_id'] == trn_id) {
           this.turnosPortaria[contaTurno] = {
             fim: turnoPort['fim'],
             inicio: turnoPort['inicio'],
@@ -210,26 +232,10 @@ export class AlterarPortariaComponent implements OnInit {
         this.firebaseService.alterarConfiguracaoPortariaFirestoreApp(this.portaria.codigo.split('_')[0], this.portaria.codigo, this.portaria.nome);
         this.listar();
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       })
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
+      this.tratarErro(erro);
     })
   }
 
@@ -248,6 +254,18 @@ export class AlterarPortariaComponent implements OnInit {
   public validar(event: Event) {
     Utils.validarCampos({ event: event });
     this.exibirAlerta = false;
+  }
+
+  public tratarErro(erro: Response): void {
+    //Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    //registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+    //Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    //Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 
 }
