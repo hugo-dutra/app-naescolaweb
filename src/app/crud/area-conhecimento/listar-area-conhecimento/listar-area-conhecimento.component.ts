@@ -81,10 +81,10 @@ export class ListarAreaConhecimentoComponent implements OnInit {
     this.router.navigate([`${this.router.url}/inserir-area-conhecimento`]);
   }
 
-  public alterar(areaConhecimento: AreaConhecimento): void {
+  public alterar(area: AreaConhecimento): void {
     let navigationExtras: NavigationExtras = {
       queryParams: {
-        area: JSON.stringify(areaConhecimento)
+        area: JSON.stringify(area)
       }
     };
     this.router.navigate([`${this.router.url}/alterar-area-conhecimento`], navigationExtras);
@@ -97,6 +97,7 @@ export class ListarAreaConhecimentoComponent implements OnInit {
       }
     };
     this.router.navigate([`${this.router.url}/excluir-area-conhecimento`], navigationExtras);
+
   }
 
   public exibirComponente(rota: string): boolean {

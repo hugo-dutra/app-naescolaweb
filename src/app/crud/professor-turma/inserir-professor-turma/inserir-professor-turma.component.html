@@ -21,7 +21,7 @@
               <div class="form-group inline row">
                 <input type="checkbox" checked="checked" class="form-control checkbox col-sm-12 col-lg-1"
                   id="exibeTodos" name="exibeTodos" (click)="exibirTodos()">
-                <label for="exibeTodos" class="text-left col-sm-12 col-lg-5">Todos / Não associados</label>
+                <label for="exibeTodos" class="text-left col-sm-12 col-lg-5 text-dark">Todos / Não associados</label>
                 <h4 class="col-sm-12 col-lg-6">Professores</h4>
               </div>
             </div>
@@ -34,7 +34,7 @@
                     <input type="checkbox" class="form-control checkbox col-sm-12 col-lg-1 float-left professor"
                       formControlName="check_professor" [name]="professor.prd_id" [checked]="statusCheck"
                       (click)="gravaStatusProfessores($event)" [value]="professor.prd_id" [id]="professor.prd_id">
-                    <label [for]="professor.prd_id" class="col-sm-12 col-lg-11 text-left">
+                    <label [for]="professor.prd_id" class="col-sm-12 col-lg-11 text-left text-dark">
                       <b>{{ professor.professor }} - {{ professor.disciplina_abreviada }}</b>
                     </label>
                   </div>
@@ -56,7 +56,7 @@
                   <input type="checkbox" class="form-control checkbox col-sm-12 col-lg-1 float-left turma"
                     formControlName="check_turma" [name]="turma.id" [id]="turma.id" [checked]="statusCheck"
                     (click)="gravaStatusTurmas($event)" [value]="turma.id">
-                  <label [for]="turma.id" class="col-sm-12 col-lg-11 text-left">
+                  <label [for]="turma.id" class="col-sm-12 col-lg-11 text-left text-dark">
                     <b>{{ turma.serie }} {{ turma.nome }} - {{ turma.turno }}</b>
                   </label>
                 </div>

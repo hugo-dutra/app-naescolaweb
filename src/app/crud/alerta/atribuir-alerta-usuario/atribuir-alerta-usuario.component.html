@@ -19,7 +19,7 @@
         <div class="col-lg-8 col-sm-8 alertas">
           <div class="row">
             <div class="col-lg-12 col-sm-12 text-center">
-              <h5>
+              <h5 class="text-dark">
                 Selecione as regras
               </h5>
             </div>
@@ -31,15 +31,15 @@
               </div>
               <div class="card-body">
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-12 text-dark">
                     Operador: <span class="text-danger">{{regra.operador}}</span>
                   </div>
-                  <div class="col-12">
+                  <div class="col-12 text-dark">
                     Valor:<span class="text-danger">{{regra.valor_referencia}}</span>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-12 text-dark">
                     Período: <span class="text-danger">{{regra.data_inicio | date:'dd-MM-yyyy'}}</span> a
                     <span class="text-danger">{{regra.data_fim | date:'dd-MM-yyyy'}}</span>
                   </div>
@@ -48,9 +48,10 @@
               <div class="card-footer">
                 <div class="row">
                   <div class="col-12">
-                    <input type="checkbox" class="checkbox-inline checkbox" [name]="'chkb_'+regra.ral_id"
+                    <input type="checkbox" class="checkbox-inline checkbox text-dark" [name]="'chkb_'+regra.ral_id"
                       [id]="'chkb_'+regra.ral_id" (change)="selecionarRegraAlerta(regra.ral_id,$event)">
-                    <label for="chkb_{{regra.ral_id}}" class="card-text col-8 my_label"><b>Selecionar</b></label>
+                    <label for="chkb_{{regra.ral_id}}"
+                      class="card-text col-8 my_label text-dark"><b>Selecionar</b></label>
                   </div>
                 </div>
               </div>
@@ -62,25 +63,27 @@
         <div class="col-lg-4 col-sm-4 usuarios">
           <div class="row">
             <div class="col-lg-12 col-sm-12 text-center">
-              <h5>
+              <h5 class="text-dark">
                 Selecione os usuários
               </h5>
             </div>
             <div class="row">
-              <div class="card col-lg-6 col-sm-12 mb-2" *ngFor="let usuario of arrayOfUsuariosEscola"
+              <div class="col-lg-1 col-sm-12"></div>
+              <div class="card col-lg-5 col-sm-12 mb-2" *ngFor="let usuario of arrayOfUsuariosEscola"
                 [@chamado]="estado">
                 <div class="card-header text-warning bg-dark">{{usuario.usuario}}</div>
                 <div class="card-body">
                   <h5 class="card-title">
                     <div class="row">
-                      <img [src]="usuario.foto" class="img rounded-circle ml-1 mt-1 col-12 center-block" width="135"
-                        height="135">
+                      <img src="{{ usuario.foto !== undefined && usuario.foto || 'assets/images/noavatar.jpg' }}"
+                        class="img rounded-circle ml-1 mt-1 col-12 center-block" width="135" height="135">
                     </div>
                   </h5>
                   <div class="row">
-                    <input type="checkbox" class="checkbox col-1" [id]="'check_usr_'+usuario.usr_id"
+                    <input type="checkbox" class="checkbox col-1 text-dark" [id]="'check_usr_'+usuario.usr_id"
                       (change)="selecionarUsuario(usuario.usr_id,$event)">
-                    <label for="check_usr_{{usuario.usr_id}}" class="card-text col-8 my_label"><b>Selecionar</b></label>
+                    <label for="check_usr_{{usuario.usr_id}}"
+                      class="card-text col-8 my_label text-dark"><b>Selecionar</b></label>
                     <div class="col-2">
                       <i class="fa fa-2x fa-question-circle text-primary alerta_question"
                         (click)="verificarRegrasAlertasUsuario(usuario.usr_id)"></i>
@@ -88,8 +91,8 @@
                   </div>
                 </div>
               </div>
+              <div class="col-lg-1 col-sm-12"></div>
             </div>
-
           </div>
         </div>
       </div>

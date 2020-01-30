@@ -22,7 +22,7 @@
               <!--LISTAGEM DE TURNOS-->
               <div class="row">
                 <div class="col-5">
-                  <label for="turnos" class="float-left">Turno</label>
+                  <label for="turnos" class="float-left text-dark">Turno</label>
                   <select name="turnos" required class="form-control" formControlName="trn_id">
                     <option value="" disabled>Selecione uma turno</option>
                     <option *ngFor="let turno of turnos" value="{{ turno.id }}">{{ turno.nome }}</option>
@@ -30,7 +30,7 @@
                 </div>
                 <!--LISTAGEM DE SÉRIES-->
                 <div class="col-7">
-                  <label for="series" class="float-left">Série</label>
+                  <label for="series" class="float-left text-dark">Série</label>
                   <select name="series" required class="form-control" formControlName="sre_id">
                     <option value="" disabled>Selecione uma série</option>
                     <option *ngFor="let serie of series" value="{{ serie.id }}">{{ serie.nome }} -
@@ -55,23 +55,25 @@
           <div class="col-1"></div>
           <ul class="list-group col-4">
             <!--CAMPO PARA ADICIONAR TURMA PERSONALIZADA-->
-            <!--li class="list-group-item bg-light">
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control toUpper" formControlName="turma_personalizada" maxlength="5" placeholder="Turma personalizada..."
-                    aria-label="Turma personalizada" aria-describedby="basic-addon2">
-                  <div class="input-group-append">
-                    <span class="input-group-text btn btn-info" id="basic-addon2" (click)="adicionarTurmaPersonalizada($event)">Adicionar</span>
-                  </div>
+            <li class="list-group-item bg-light">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control toUpper" formControlName="turma_personalizada" maxlength="5"
+                  placeholder="Turma personalizada..." aria-label="Turma personalizada" aria-describedby="basic-addon2"
+                  maxlength="10">
+                <div class="input-group-append">
+                  <span class="input-group-text btn btn-info" id="basic-addon2"
+                    (click)="adicionarTurmaPersonalizada($event)">Adicionar</span>
                 </div>
-              </li-->
+              </div>
+            </li>
 
             <!--LISTAGEM DE TURMAS DISPONÍVEIS-->
             <li class="list-group-item" *ngFor="let turma of turmasPadrao">
               <div class="form-group inline" [@chamado]="estado">
                 <input type="checkbox" class="form-control checkbox float-left" [name]="turma.nome"
                   [checked]="statusCheck" formControlName="check_turma" (click)="gravaTurmasAdicionadas($event,turma)">
-                <label class=" ml-1 text-left float-left">
-                  <h5>{{ turma.nome }}</h5>
+                <label class=" ml-1 text-left float-left text-dark">
+                  <h5 class="text-dark">{{ turma.nome }}</h5>
                 </label>
               </div>
             </li>
@@ -87,6 +89,8 @@
       </div>
     </div>
   </div>
+
+
   <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
     <div>
       <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
@@ -95,7 +99,7 @@
         </div>
         <div class="col-10">
           <h4>
-            <p class="text-justify pr-3">{{ feedbackUsuario }}</p>
+            <p class="text-justify pr-3 text-dark">{{ feedbackUsuario }}</p>
           </h4>
         </div>
       </div>

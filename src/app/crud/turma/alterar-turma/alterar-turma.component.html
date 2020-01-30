@@ -15,14 +15,7 @@
         <div class="row m-3 form-group">
           <input type="hidden" class="form-control">
 
-          <div class="mt-2 col-sm-12 col-lg-4">
-            <select name="escola" class="form-control" required name="esc_id" (change)="modificarInputs($event)">
-              <option value="" disabled selected>Selecione uma escola</option>
-              <option *ngFor="let escola of escolas" [selected]="escola.id === turma.esc_id ? true : false"
-                [value]="escola.id">{{
-                  escola.nome }}</option>
-            </select>
-          </div>
+
           <div class="mt-2 col-sm-12 col-lg-3">
             <select name="serie" class="form-control" required name="sre_id" (change)="modificarInputs($event)">
               <option value="" disabled selected>Selecione uma série</option>
@@ -45,6 +38,16 @@
               <option *ngFor="let turno of turnos" [selected]="turno.id === turma.trn_id ? true : false"
                 [value]="turno.id">{{
                   turno.nome }}</option>
+            </select>
+          </div>
+
+          <div class="mt-2 col-sm-12 col-lg-4">
+            <select hidden="true" name="escola" class="form-control" required name="esc_id"
+              (change)="modificarInputs($event)">
+              <option value="" disabled selected>Selecione uma escola</option>
+              <option *ngFor="let escola of escolas" [selected]="escola.id === turma.esc_id ? true : false"
+                [value]="escola.id">{{
+                  escola.nome }}</option>
             </select>
           </div>
         </div>
