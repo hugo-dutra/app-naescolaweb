@@ -28,7 +28,7 @@
         title="Minimizar dashboard"></nb-icon>
     </nb-action>
 
-    <nb-action class="user-action" *nbIsGranted="['view', 'user']">
+    <nb-action (click)="gerenciarPerfil()" class="user-action" *nbIsGranted="['view', 'user']">
       <nb-user [name]="nomeUsuario" [picture]="fotoUsuario"></nb-user>
     </nb-action>
     <nb-action class="user-action" *nbIsGranted="['view', 'user']">

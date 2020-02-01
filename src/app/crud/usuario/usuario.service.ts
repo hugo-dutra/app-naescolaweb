@@ -1,3 +1,4 @@
+import { SugestaoUsuario } from './sugestao-usuario/sugestao-usuario.model';
 import { Injectable } from '@angular/core';
 import { Usuario } from './usuario.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -14,6 +15,15 @@ export class UsuarioService {
     return this.http.post(
       CONSTANTES.HOST_API + "inserir-usuario",
       JSON.stringify(usuario),
+      headers
+    );
+  }
+
+  public inserirSugestaoUsuario(sugestao: SugestaoUsuario): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "inserir-sugestao-usuario",
+      JSON.stringify(sugestao),
       headers
     );
   }

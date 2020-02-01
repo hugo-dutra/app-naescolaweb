@@ -14,7 +14,8 @@ export class CONSTANTES {
   public static ESCOPO_REGIONAL = 'Regional';
   public static ESCOPO_LOCAL = 'Local';
   //********************URLS****************************/
-  public static BUILD_DESTINO = '2';
+  public static BUILD_DESTINO = '1';
+
   public static BUILD_SEDF = '1';
   public static BUILS_RESOLVIDOS = '2';
   /* ------ */

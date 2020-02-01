@@ -147,6 +147,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.carregarDadosEscola();
   }
 
+  public gerenciarPerfil(): void {
+    this.router.navigate(['listar-usuario/gerenciar-usuario']);
+  }
+
 
   public visualizarAlertasOcorrencia(): void {
     this.router.navigate(['gerenciar-alerta-ocorrencia/receber-alerta-ocorrencia']);

@@ -1,3 +1,4 @@
+import { SugestaoUsuarioComponent } from './sugestao-usuario/sugestao-usuario.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ListarUsuarioComponent } from './listar-usuario/listar-usuario.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: "alterar-usuario", component: AlterarUsuarioComponent, data: { objeto: "objeto" }, canActivate: [AuthGuardService] },
   { path: "gerenciar-usuario", component: GerenciarUsuarioComponent, data: { objeto: "objeto" }, canActivate: [AuthGuardService] },
   { path: "alterar-senha-usuario", component: AlterarSenhaUsuarioComponent, data: { objeto: "objeto" }, canActivate: [AuthGuardService] },
+  { path: "enviar-sugestao-usuario", component: SugestaoUsuarioComponent, data: { objeto: "objeto" } },
 ];
 
 @NgModule({

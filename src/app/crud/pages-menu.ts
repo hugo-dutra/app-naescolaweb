@@ -100,7 +100,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Sugestões',
     icon: 'bell',
-    link: ''
+    link: '/listar-usuario/enviar-sugestao-usuario'
   }
 ];
 

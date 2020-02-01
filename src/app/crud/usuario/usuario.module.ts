@@ -1,3 +1,4 @@
+import { NbCardModule } from '@nebular/theme';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -10,6 +11,7 @@ import { InserirUsuarioComponent } from './inserir-usuario/inserir-usuario.compo
 import { ListarUsuarioComponent } from './listar-usuario/listar-usuario.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { SugestaoUsuarioComponent } from './sugestao-usuario/sugestao-usuario.component';
 
 @NgModule({
   declarations: [
@@ -18,13 +20,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     ExcluirUsuarioComponent,
     GerenciarUsuarioComponent,
     InserirUsuarioComponent,
-    ListarUsuarioComponent],
+    ListarUsuarioComponent,
+    SugestaoUsuarioComponent],
   imports: [
     CommonModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    UsuarioRoutingModule
+    UsuarioRoutingModule,
+    NbCardModule,
   ]
 })
 export class UsuarioModule { }

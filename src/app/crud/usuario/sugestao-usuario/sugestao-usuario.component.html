@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3 col-md-2 col-sm-12"></div>
+    <div class="col-lg-6 col-md-8 col-sm-12">
+      <div class="card">
+        <div class="card-header bg-dark text-light">
+          <label for=""><i class="fa fa-sm fa-bell"></i> Caixa de sugestões</label>
+        </div>
+        <div class="card-body">
+          <div class="form-control-group">
+            <div class="row mb-4">
+              <h6 class="text-dark m-3" style="text-align: justify;"> Este espaço visa proporcionar ao usuário um meio
+                de envio de
+                sugestões e
+                críticas
+                diretamente
+                para a equipe de desenvolvimento do sistema. Ficaremos felizes em ler suas mensagens.</h6>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-control-group col-lg-4">
+              <label for="tipo_mensagem">Selecione o tipo</label>
+              <select [(ngModel)]="tipoMensagemSelecionada" id="tipo-mensagem" class="form-control">
+                <option value="" disabled>Tipo...</option>
+                <option *ngFor="let tipoMensagem of arrayTipoMensagem" value="{{tipoMensagem.tipo}}">
+                  {{tipoMensagem.tipo}}
+                </option>
+              </select>
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="form-control-group col-lg-7">
+              <label for="titulo-mensagem">Título</label>
+              <input [(ngModel)]="tituloMensagem" class="form-control" type="text" name="titulo-mensagem" value=""
+                placeholder="Informe o título da mensagem">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-control-group col-lg-12">
+              <label for="text-area-mensagem"></label>
+              <textarea [(ngModel)]="textoMensagem" rows="10" cols="" class="form-control" id="text-area-mensagem"
+                placeholder="Mensagem" maxlength="1000" style="resize: none;"></textarea>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="form-control-group col-lg-12">
+              <button class="form-control btn-dark text-light" (click)="enviarMensagem()">Enviar
+                {{tipoMensagemSelecionada}}
+              </button>
+            </div>
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

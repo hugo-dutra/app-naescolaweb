@@ -63,8 +63,8 @@ export class AlterarSenhaUsuarioComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -73,9 +73,6 @@ export class AlterarSenhaUsuarioComponent implements OnInit {
   }
 
   public validarEntradaSenha(): boolean {
-
-    String.prototype.trim
-
     if (this.senha1 === this.senha2) {
       if (this.senha1 != "" && this.senha2 != "") {
         return true;
@@ -91,7 +88,7 @@ export class AlterarSenhaUsuarioComponent implements OnInit {
   }
 
   public cancelarAlterarSenha(): void {
-    this.router.navigate(['gerenciar-usuario']);
+    this.router.navigate(['listar-usuario/gerenciar-usuario']);
   }
 
   public limparCampos(): void {

@@ -40,7 +40,6 @@ export class ListarUsuarioComponent implements OnInit {
   ) { }
   public perfis: Object;
   public usuarios = new Array<Object>();
-  public feedbackUsuario: string;
   public estado: string = "visivel";
   public tableLimit: number = 10;
   public totalRegistros: number;
@@ -50,6 +49,7 @@ export class ListarUsuarioComponent implements OnInit {
   public navegacaoFim: boolean = undefined;
   public valorFiltro: string = "";
   public statusFiltro: boolean = false;
+  public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirComponenteAlterar: Boolean = false;
