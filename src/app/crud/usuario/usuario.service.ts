@@ -19,7 +19,7 @@ export class UsuarioService {
     );
   }
 
-  public inserirSugestaoUsuario(sugestao: SugestaoUsuario): Observable<any> {
+  public inserirSugestaoUsuario(sugestao: Object): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "inserir-sugestao-usuario",

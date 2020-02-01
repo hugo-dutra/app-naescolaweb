@@ -147,7 +147,7 @@ export class FirebaseService {
   }
 
 
-  public gravarSugestaoInformacaoBug = async (rota, detalhesInformacao) => {
+  public gravarSugestaoInformacaoBug = async (rota: string, detalhesInformacao: Object) => {
     const dataInformacao = Utils.dataAtual();
     const horaInformacao = Utils.horaAtual();
 

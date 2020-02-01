@@ -34,7 +34,7 @@ export class SugestaoUsuarioComponent implements OnInit {
   public tituloMensagem: string = "";
   public textoMensagem: string = ""
   public arrayTipoMensagem: Object[] = [{ tipo: 'Crítica' }, { tipo: 'Sugestão' }]
-  public sugestaoUsuario = new SugestaoUsuario();
+  public sugestaoUsuario = new Object();
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
@@ -50,10 +50,13 @@ export class SugestaoUsuarioComponent implements OnInit {
 
   public enviarMensagem(): void {
     if (this.validarEnvioMensagem()) {
-      this.feedbackUsuario = "Enviando sugestão, aguarde..."
+      this.feedbackUsuario = "Enviando sugestão, aguarde...";
       this.usuarioService.inserirSugestaoUsuario(this.sugestaoUsuario).toPromise().then((response: Response) => {
-        this.feedbackUsuario = undefined;
-        this.reiniciarValores();
+        this.feedbackUsuario = "Finalizando, aguarde...";
+        this.firebaseService.gravarSugestaoInformacaoBug(this.router.url, this.sugestaoUsuario).then(() => {
+          this.feedbackUsuario = undefined;
+          this.reiniciarValores();
+        });
       }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
@@ -71,24 +74,24 @@ export class SugestaoUsuarioComponent implements OnInit {
   }
 
   public validarEnvioMensagem(): boolean {
-    this.sugestaoUsuario.titulo = this.tituloMensagem;
-    this.sugestaoUsuario.mensagem = this.textoMensagem;
-    this.sugestaoUsuario.tipoSugestao = this.tipoMensagemSelecionada;
-    this.sugestaoUsuario.esc_id = Utils.pegarDadosEscolaDetalhado().id;
+    this.sugestaoUsuario['titulo'] = this.tituloMensagem;
+    this.sugestaoUsuario['mensagem'] = this.textoMensagem;
+    this.sugestaoUsuario['tipoSugestao'] = this.tipoMensagemSelecionada;
+    this.sugestaoUsuario['esc_id'] = Utils.pegarDadosEscolaDetalhado().id;
     const dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
-    this.sugestaoUsuario.usr_id = parseInt(dados_usuario['id'], 10);
-    if (this.sugestaoUsuario.titulo.trim() != "" &&
-      this.sugestaoUsuario.mensagem.trim() != "" &&
-      this.sugestaoUsuario.tipoSugestao.trim() != "") {
+    this.sugestaoUsuario['usr_id'] = parseInt(dados_usuario['id'], 10);
+    if (this.sugestaoUsuario['titulo'].trim() != "" &&
+      this.sugestaoUsuario['mensagem'].trim() != "" &&
+      this.sugestaoUsuario['tipoSugestao'].trim() != "") {
       return true;
     }
     return false;
   }
 
   public reiniciarValores(): void {
-    this.sugestaoUsuario.mensagem = "";
-    this.sugestaoUsuario.tipoSugestao = "";
-    this.sugestaoUsuario.titulo = "";
+    this.sugestaoUsuario['mensagem'] = "";
+    this.sugestaoUsuario['tipoSugestao'] = "";
+    this.sugestaoUsuario['titulo'] = "";
     this.tituloMensagem = "";
     this.textoMensagem = "";
     this.tipoMensagemSelecionada = "";
