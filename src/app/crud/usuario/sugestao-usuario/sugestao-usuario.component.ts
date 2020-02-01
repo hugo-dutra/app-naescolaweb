@@ -53,7 +53,12 @@ export class SugestaoUsuarioComponent implements OnInit {
       this.feedbackUsuario = "Enviando sugestão, aguarde...";
       this.usuarioService.inserirSugestaoUsuario(this.sugestaoUsuario).toPromise().then((response: Response) => {
         this.feedbackUsuario = "Finalizando, aguarde...";
-        this.firebaseService.gravarSugestaoInformacaoBug(this.router.url, this.sugestaoUsuario).then(() => {
+        const detalhesSugestao = {
+          mensagem: this.sugestaoUsuario['mensagem'],
+          tipoSugestao: this.sugestaoUsuario['tipoSugestao'],
+          titulo: this.sugestaoUsuario['titulo']
+        }
+        this.firebaseService.gravarSugestaoInformacaoBug(this.router.url, detalhesSugestao).then(() => {
           this.feedbackUsuario = undefined;
           this.reiniciarValores();
         });
