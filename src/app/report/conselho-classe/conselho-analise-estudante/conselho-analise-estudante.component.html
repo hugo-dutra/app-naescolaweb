@@ -38,7 +38,7 @@
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudantePontualidade' + resultadoEstudante.est_id">
-              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-clock-o text-light"></i></button>
+              <button class="btn btn-sm"><i class="fa fa-clock-o text-light"></i></button>
             </a>
             <!-- Modal -->
             <div class="modal fade large" id="modelEstudantePontualidade{{ resultadoEstudante.est_id }}" tabindex="-1"
@@ -68,7 +68,7 @@
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudanteNotificacao' + resultadoEstudante.est_id">
-              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-comments-o text-light"></i></button>
+              <button class="btn btn-sm"><i class="fa fa-comments-o text-light"></i></button>
             </a>
             <!-- Modal -->
             <div class="modal fade large" id="modelEstudanteNotificacao{{ resultadoEstudante.est_id }}" tabindex="-1"
@@ -98,8 +98,7 @@
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudanteOcorrencia' + resultadoEstudante.est_id">
-              <button class="btn bg-blue border-light rounded p-1"
-                (click)="listarOcorrenciasEstudante(resultadoEstudante)"><i
+              <button class="btn btn-sm" (click)="listarOcorrenciasEstudante(resultadoEstudante)"><i
                   class="fa fa-warning text-light"></i></button>
             </a>
             <!-- Modal -->
@@ -150,7 +149,7 @@
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudante' + resultadoEstudante.est_id">
-              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-expand text-light"></i></button>
+              <button class="btn btn-sm"><i class="fa fa-expand text-light"></i></button>
             </a>
             <!-- Modal -->
             <div class="modal fade large" id="modelEstudante{{ resultadoEstudante.est_id }}" tabindex="-1" role="dialog"
@@ -193,14 +192,12 @@
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#observacaoEstudante' + resultadoEstudante.est_id">
-              <button class="btn bg-blue border-light rounded p-1"><i class="fa fa-pencil text-light"></i></button>
+              <button class="btn btn-sm"><i class="fa fa-pencil text-light"></i></button>
             </a>
             <!-- Modal -->
             <div class="modal fade large" id="observacaoEstudante{{ resultadoEstudante.est_id }}" tabindex="-1"
               role="dialog" aria-labelledby="observacaoLabelEstudante" aria-hidden="true">
               <div class="modal-dialog" role="document">
-
-
                 <div class="modal-content">
                   <div class="modal-header bg-blue text-light">
                     <div class="col-sm-12 col-lg-9">
