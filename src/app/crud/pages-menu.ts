@@ -76,10 +76,6 @@ try {
     }
   }
 
-
-
-
-
 } catch (erro) {
   console.log('Falha ao carregar dados de perfil!');
 }
