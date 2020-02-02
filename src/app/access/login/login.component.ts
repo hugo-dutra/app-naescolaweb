@@ -1,3 +1,4 @@
+import { LinkAcessado } from './../../shared/acesso-comum/link-acessado.model';
 import { AcessoComumService } from './../../shared/acesso-comum/acesso-comum.service';
 import { Component, OnInit } from '@angular/core';
 import { AccessService } from '../access.service';
@@ -210,6 +211,8 @@ export class LoginComponent implements OnInit {
             this.dados_escola = response["dados_escola"];
             this.escopo_perfil = response['escopo_perfil'];
             this.status_ativo_usuario = (response["status_ativo_usuario"])[0]["status_ativo_usuario"];
+
+
             if (this.status_ativo_usuario === 1) {
               let str_permissoes = JSON.stringify(this.permissoes);
               let str_dados = JSON.stringify(this.dados);
@@ -224,14 +227,15 @@ export class LoginComponent implements OnInit {
               localStorage.setItem("dados_escola", Utils.encriptBtoA(str_dados_escola, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("escopo_perfil", Utils.encriptBtoA(str_escopo_perfil, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("esc_id", Utils.encriptBtoA(this.esc_id.toString(), CONSTANTES.PASSO_CRIPT));
-              this.router.navigate(["dashboard"]); /* setTimeout(() => { window.location.reload(true); }, 1000); */
+              this.logarUsuarioAnonimamenteFirebase();
+              this.atualizarAtalhos();
+              this.feedbackUsuario = undefined;
+              this.router.navigate(["dashboard"]);
+              this.acessoComumService.emitirAlertaLogout.emit(false);
             } else {
               this.limparSenha();
               this.mensagemAlerta = "Acesso não autorizado!";
             }
-            this.feedbackUsuario = undefined;
-            this.acessoComumService.emitirAlertaLogout.emit(false);
-            this.logarUsuarioAnonimamenteFirebase();
           }).catch((erro: Response) => {
             //Utils.tratarErro({ router: this.router, response: erro });
             if (!CONSTANTES.PRODUCAO) {
@@ -253,6 +257,36 @@ export class LoginComponent implements OnInit {
         this.feedbackUsuario = undefined;
       });
   }
+
+  public atualizarAtalhos(): void {
+    const localStorageMenus = Object.values(Utils.verificarMenus());
+    for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
+      if (this.verificarPermissaoAcesso(localStorageMenus[idxMenu])) {
+        this.adicionarLinkAcessado(localStorageMenus[idxMenu]);
+      }
+    }
+  }
+
+  public verificarPermissaoAcesso = (link: any): boolean => {
+    let permissoes: Object = Utils.verificarPermissoes();
+    let rota: string = link["link"].toString().split(",")[0];
+    for (let key in permissoes) {
+      if (permissoes[key]["rota"] == rota) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public adicionarLinkAcessado = (link: any) => {
+    let linkAcessado = new LinkAcessado();
+    linkAcessado.link = link["link"];
+    linkAcessado.descricao = link["texto"];
+    linkAcessado.fontAwesome = link["imagem"];
+    linkAcessado.corFontAwesome = link["cor"];
+    this.acessoComumService.adicionarLinkAcessado(linkAcessado);
+  }
+
 
   public logarUsuarioAnonimamenteFirebase(): void {
     const auth = firebase.auth();

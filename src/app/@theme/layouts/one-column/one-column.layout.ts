@@ -20,9 +20,9 @@ export class OneColumnLayoutComponent implements OnInit {
   constructor(private accessService: AccessService, private router: Router, private acessoComumService: AcessoComumService, ) { }
 
   ngOnInit() {
-    this.assinarEventoLogout();
     this.carregarDados();
     this.listarPermissoes();
+    this.assinarEventoLogout();
   }
 
   public assinarEventoLogout(): void {

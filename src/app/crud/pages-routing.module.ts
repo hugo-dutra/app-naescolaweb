@@ -14,7 +14,6 @@ const routes: Routes = [{
     { path: 'dashboard', component: MenuAtalhoComponent, },
 
     /*CRUDS*/
-
     { path: 'logar', component: LoginComponent },
     { path: 'gerenciar-alerta-ocorrencia', loadChildren: () => import('./alerta/alerta.module').then(m => m.AlertaModule), },
     { path: 'gerenciar-aplicativo', loadChildren: () => import('./aplicativo/aplicativo.module').then(m => m.AplicativoModule), },
