@@ -1,3 +1,4 @@
+import { AcessoComumService } from './../../../shared/acesso-comum/acesso-comum.service';
 import { Component, OnInit } from '@angular/core';
 import { AccessService } from '../../../access/access.service';
 import { Router } from '@angular/router';
@@ -15,12 +16,21 @@ export class OneColumnLayoutComponent implements OnInit {
   public exibirLogin: boolean;
   public dados_escola = new Array<Object>();
   public esc_id: number;
-  constructor(private accessService: AccessService, private router: Router) { }
+
+  constructor(private accessService: AccessService, private router: Router, private acessoComumService: AcessoComumService, ) { }
 
   ngOnInit() {
+    this.assinarEventoLogout();
     this.carregarDados();
     this.listarPermissoes();
   }
+
+  public assinarEventoLogout(): void {
+    this.acessoComumService.emitirAlertaLogout.subscribe((retorno: boolean) => {
+      this.exibirLogin = retorno;
+    })
+  }
+
 
   public carregarDados(): void {
     const dados_escola = localStorage.getItem('dados_escola');

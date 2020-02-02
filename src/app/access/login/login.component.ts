@@ -1,9 +1,11 @@
+import { AcessoComumService } from './../../shared/acesso-comum/acesso-comum.service';
 import { Component, OnInit } from '@angular/core';
 import { AccessService } from '../access.service';
 import { CONSTANTES } from '../../shared/constantes.shared';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 import { Utils } from '../../shared/utils.shared';
+import * as firebase from 'firebase';
 
 
 declare var particlesJS: any;
@@ -54,6 +56,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private accessService: AccessService,
+    private acessoComumService: AcessoComumService,
     private router: Router,
   ) { }
 
@@ -64,22 +67,18 @@ export class LoginComponent implements OnInit {
         console.log('callback - particles.js config loaded');
       });
     }, 200);
-
     this.definirDadosDoSistema();
-    this.accessService
-      .deslogar()
-      .toPromise()
-      .then((response: Response) => {
 
-        this.limparSenha();
-      }).catch((erro: Response) => {
-        this.limparSenha();
-        /* if (!CONSTANTES.PRODUCAO) {
-          console.log(CONSTANTES.DEF_MSG_ERRO);
-        } else {
-          console.log(erro);
-        } */
-      });
+    setTimeout(() => {
+      this.accessService
+        .deslogar()
+        .toPromise()
+        .then((response: Response) => {
+          this.limparSenha();
+        }).catch((erro: Response) => {
+          this.limparSenha();
+        });
+    }, 500);
   }
 
   public verificarDiaNoite(): void {
@@ -210,10 +209,7 @@ export class LoginComponent implements OnInit {
             this.menus = response["menus"];
             this.dados_escola = response["dados_escola"];
             this.escopo_perfil = response['escopo_perfil'];
-            console.log(this.escopo_perfil);
-
             this.status_ativo_usuario = (response["status_ativo_usuario"])[0]["status_ativo_usuario"];
-
             if (this.status_ativo_usuario === 1) {
               let str_permissoes = JSON.stringify(this.permissoes);
               let str_dados = JSON.stringify(this.dados);
@@ -221,7 +217,6 @@ export class LoginComponent implements OnInit {
               let str_menus = JSON.stringify(this.menus);
               let str_dados_escola = JSON.stringify(this.dados_escola);
               let str_escopo_perfil = JSON.stringify(this.escopo_perfil);
-
               localStorage.setItem("perm", Utils.encriptBtoA(str_permissoes, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("dados", Utils.encriptBtoA(str_dados, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("grupos", Utils.encriptBtoA(str_grupos, CONSTANTES.PASSO_CRIPT));
@@ -229,13 +224,14 @@ export class LoginComponent implements OnInit {
               localStorage.setItem("dados_escola", Utils.encriptBtoA(str_dados_escola, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("escopo_perfil", Utils.encriptBtoA(str_escopo_perfil, CONSTANTES.PASSO_CRIPT));
               localStorage.setItem("esc_id", Utils.encriptBtoA(this.esc_id.toString(), CONSTANTES.PASSO_CRIPT));
-              this.router.navigate(["dashboard"]); setTimeout(() => { window.location.reload(true); }, 1000);
+              this.router.navigate(["dashboard"]); /* setTimeout(() => { window.location.reload(true); }, 1000); */
             } else {
               this.limparSenha();
               this.mensagemAlerta = "Acesso não autorizado!";
             }
-
             this.feedbackUsuario = undefined;
+            this.acessoComumService.emitirAlertaLogout.emit(false);
+            this.logarUsuarioAnonimamenteFirebase();
           }).catch((erro: Response) => {
             //Utils.tratarErro({ router: this.router, response: erro });
             if (!CONSTANTES.PRODUCAO) {
@@ -256,6 +252,21 @@ export class LoginComponent implements OnInit {
         this.mensagemAlerta = "Senha inválida!";
         this.feedbackUsuario = undefined;
       });
+  }
+
+  public logarUsuarioAnonimamenteFirebase(): void {
+    const auth = firebase.auth();
+    auth.signInAnonymously().then((userCredencials: firebase.auth.UserCredential) => {
+      const uid = userCredencials.user.uid;
+      const nome = Utils.verificarDados()[0]['nome'];
+      const usr_id = Utils.verificarDados()[0]['id'];
+      const escola = Utils.pegarDadosEscola()['nome'];
+      const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
+      const inep = dados_escola["inep"];
+      const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id }
+      const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
+      criarUsuarioAnonimo({ user: user, uid: uid }).then(() => { });
+    })
   }
 
 }

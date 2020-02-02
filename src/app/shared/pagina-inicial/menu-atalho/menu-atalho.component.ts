@@ -54,7 +54,6 @@ export class MenuAtalhoComponent implements OnInit {
   public filtrarAtalho(event: Event): void {
     let valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<LinkAcessado>();
-
     matrizRetorno = this.arrayOfLinkAcessado.filter((elemento) => {
       return elemento["descricao"].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
     })

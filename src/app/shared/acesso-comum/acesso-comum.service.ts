@@ -13,6 +13,7 @@ export class AcessoComumService {
   emitirAlertaOcorrenciaDisciplinar = new EventEmitter<Object[]>();
   emitirAlertaInicioTour = new EventEmitter<Object[]>();
   emitirAlertaExibirIconeAjuda = new EventEmitter<boolean>();
+  emitirAlertaLogout = new EventEmitter<boolean>();
 
   public constructor(private http: HttpClient = null) {
 

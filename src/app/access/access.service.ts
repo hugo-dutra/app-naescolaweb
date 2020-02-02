@@ -14,8 +14,10 @@ export class AccessService {
   }
 
   public deslogar(): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json") }
+    /* const headers = { headers: new HttpHeaders().append("Content-type", "application/json") } */
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(CONSTANTES.HOST_API + "invalidar-token", null, headers);
+
   }
 
   public listarPermissoes(esc_id: number): Observable<any> {

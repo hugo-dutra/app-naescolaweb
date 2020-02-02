@@ -73,15 +73,28 @@ export class AppComponent implements OnInit {
   }
 
   public inicialiarFirebase(): void {
+
+    const config = {
+      apiKey: 'AIzaSyAfgiA5ogBvZXkZISWNWGOlPD8iID2KGzo',
+      authDomain: 'naescolaweb-af337.firebaseapp.com',
+      databaseURL: 'https://naescolaweb-af337.firebaseio.com',
+      projectId: 'naescolaweb-af337',
+      storageBucket: 'naescolaweb-af337.appspot.com',
+      messagingSenderId: '134371598864',
+    };
+    firebase.initializeApp(config);
+    //this.logarUsuarioAnonimamenteFirebase();
+
+    /*
     this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: string) => {
       const ct = (response);
       const cfg = Utils.decypher(ct);
       firebase.initializeApp(JSON.parse(cfg));
       this.logarUsuarioAnonimamenteFirebase();
-    })
+    }) */
   }
 
-  public logarUsuarioAnonimamenteFirebase(): void {
+  /* public logarUsuarioAnonimamenteFirebase(): void {
     const auth = firebase.auth();
     auth.signInAnonymously().then((userCredencials: firebase.auth.UserCredential) => {
       const uid = userCredencials.user.uid;
@@ -94,7 +107,7 @@ export class AppComponent implements OnInit {
       const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
       criarUsuarioAnonimo({ user: user, uid: uid }).then(() => { });
     })
-  }
+  } */
 
 
 

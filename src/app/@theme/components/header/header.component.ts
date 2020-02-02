@@ -160,8 +160,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.acessoComumService.emitirAlertaInicioTour.emit();
   }
 
-
-
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
   }
@@ -188,8 +186,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public limparDadosLocalStorage(): void {
+    this.router.navigate(['logar']);
+    this.acessoComumService.emitirAlertaLogout.emit(true);
 
-    localStorage.removeItem("perm");
+    /* localStorage.removeItem("perm");
     localStorage.removeItem("dados");
     localStorage.removeItem("escola");
     localStorage.removeItem("grupos");
@@ -198,7 +198,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     localStorage.removeItem("esc_id");
     localStorage.removeItem("token");
     this.router.navigate(['']);
-    window.location.reload();
+    window.location.reload(); */
   }
 
   public carregarDadosUsuario(): void {
