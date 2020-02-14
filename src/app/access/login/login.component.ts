@@ -231,7 +231,11 @@ export class LoginComponent implements OnInit {
               this.atualizarAtalhos();
               this.feedbackUsuario = undefined;
               this.router.navigate(["dashboard"]);
-              this.acessoComumService.emitirAlertaLogout.emit(false);
+              setTimeout(() => {
+                window.location.reload(true);
+                this.acessoComumService.emitirAlertaLogout.emit(false);
+              }, 500);
+
             } else {
               this.limparSenha();
               this.mensagemAlerta = "Acesso não autorizado!";

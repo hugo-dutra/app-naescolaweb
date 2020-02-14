@@ -43,6 +43,7 @@ export class AlterarUsuarioComponent implements OnInit {
   public exibirAlerta: boolean = false;
   public dados_escola = new Array<Object>();
   public esc_id: number;
+  public usr_id_solicitante: number;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -62,18 +63,23 @@ export class AlterarUsuarioComponent implements OnInit {
     this.listarPerfis();
   }
 
+
+
+
   public carregarDados(): void {
     const dados_escola = localStorage.getItem('dados_escola');
     if (dados_escola != undefined && dados_escola != null && dados_escola != "") {
       this.dados_escola = JSON.parse(Utils.decriptAtoB(dados_escola, CONSTANTES.PASSO_CRIPT))[0];
       this.esc_id = parseInt(this.dados_escola['id']);
     }
+    const dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
+    this.usr_id_solicitante = (dados_usuario['id']);
   }
 
   public listarPerfis(): void {
     this.feedbackUsuario = "Carregando perfis..."
     this.usuarioService
-      .listarEscolaPerfilStatus(this.usuario.id, this.esc_id)
+      .listarEscolaPerfilStatus(this.usuario.id, this.esc_id, this.usr_id_solicitante)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;

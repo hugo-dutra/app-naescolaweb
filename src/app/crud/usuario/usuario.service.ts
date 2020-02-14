@@ -91,11 +91,11 @@ export class UsuarioService {
     );
   }
 
-  public listarEscolaPerfilStatus(usr_id: number, esc_id: number): Observable<any> {
+  public listarEscolaPerfilStatus(usr_id: number, esc_id: number, usr_id_solicitante: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "listar-escola-perfil-status",
-      JSON.stringify({ usr_id: usr_id, esc_id: esc_id }),
+      JSON.stringify({ usr_id: usr_id, esc_id: esc_id, usr_id_solicitante: usr_id_solicitante }),
       headers
     );
   }

@@ -223,16 +223,15 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public sincronizarEstudantes(): void {
     this.feedbackUsuario = 'Listando Estudantes...';
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
-      console.log({ response });
-
+      /* console.table(response)
       Object.values(response).forEach(objeto => {
-        if (objeto['nome'] == 'Isis Vitória Vilar Cunha') {
+        if (objeto['nome'] == 'ALANA VITÓRIA FARIAS DE SOUZA') {
           console.log({ objeto })
         }
-      })
-
+      }) */
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
       this.arrayOfEstudantesEscola = Utils.removerCaracteresEspeciaisArray(Object.values(response));
+      console.table(this.arrayOfEstudantesEscola);
       this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then((response: Response) => {
         this.feedbackUsuario = undefined;
         this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then((response: Response) => {
