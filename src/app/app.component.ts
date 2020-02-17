@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
       messagingSenderId: '134371598864',
     };
     firebase.initializeApp(config);
-    //this.logarUsuarioAnonimamenteFirebase();
+    this.logarUsuarioAnonimamenteFirebase();
 
     /*
     this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: string) => {
@@ -94,7 +94,7 @@ export class AppComponent implements OnInit {
     }) */
   }
 
-  /* public logarUsuarioAnonimamenteFirebase(): void {
+  public logarUsuarioAnonimamenteFirebase(): void {
     const auth = firebase.auth();
     auth.signInAnonymously().then((userCredencials: firebase.auth.UserCredential) => {
       const uid = userCredencials.user.uid;
@@ -107,9 +107,7 @@ export class AppComponent implements OnInit {
       const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
       criarUsuarioAnonimo({ user: user, uid: uid }).then(() => { });
     })
-  } */
-
-
+  }
 
   public verificarAlertasOcorrenciasDisciplinares(): void {
     this.carregarDados();

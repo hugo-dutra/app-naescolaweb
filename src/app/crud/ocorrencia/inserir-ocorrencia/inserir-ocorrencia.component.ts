@@ -658,18 +658,15 @@ export class InserirOcorrenciaComponent implements OnInit {
         let estudantesArray: Array<Object> = Object.keys(this.estudantes).map(
           i => this.estudantes[i]
         );
-        for (let i = 0; i < estudantesArray.length; i++) {
-          let est_id: number = estudantesArray[i]["id"];
-          this.tipoOcorrenciaDisciplinarService
-            .listarEstId(est_id)
-            .toPromise()
-            .then((response: Response) => {
-              this.arrayOfResumoOcorrencias.push(response);
-              this.feedbackUsuario = undefined;
-            }).catch((erro: Response) => {
-              this.feedbackUsuario = undefined;
-            });
-        }
+
+        this.tipoOcorrenciaDisciplinarService.listarNomeEstudante(this.nomeEstudanteProcurado, this.esc_id).toPromise().then((response: Response) => {
+          this.arrayOfResumoOcorrencias.push(response);
+          console.log(this.arrayOfResumoOcorrencias);
+          this.feedbackUsuario = undefined;
+        }).catch((erro: Response) => {
+          this.feedbackUsuario = undefined;
+        })
+
         if (estudantesArray.length == 0) {
           this.feedbackUsuario = undefined;
         }
