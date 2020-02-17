@@ -82,11 +82,15 @@
                       <th class="col-sm-12 col-lg-2 text-left" scope="col" (click)="ordenarColunaSimples('matricula')">
                         matricula
                       </th>
-                      <th class="col-sm-12 col-lg-2 text-left" scope="col" (click)="ordenarColunaSimples('email')">Email
+
+                      <th class="col-sm-12 col-lg-1 text-left" scope="col" (click)="ordenarColunaSimples('serie')">Série
                       </th>
-                      <th class="col-sm-12 col-lg-2 text-left" scope="col"
-                        (click)="ordenarColunaSimples('responsavel')">
-                        Responsável</th>
+                      <th class="col-sm-12 col-lg-2 text-left" scope="col" (click)="ordenarColunaSimples('turma')">
+                        Turma</th>
+                      <th class="col-sm-12 col-lg-1 text-left" scope="col" (click)="ordenarColunaSimples('turno')">
+                        Turno</th>
+
+
                       <th class="col-sm-12 col-lg-1 text-center" scope="col">Obs.
                       </th>
                     </tr>
@@ -106,8 +110,11 @@
 
                       <td class="col-sm-12 col-lg-3 text-left">{{ estudante.nome }}</td>
                       <td class="col-sm-12 col-lg-2 text-left">{{ estudante.matricula }}</td>
-                      <td class="col-sm-12 col-lg-2 text-left">{{ estudante.email }}</td>
-                      <td class="col-sm-12 col-lg-2 text-left">{{ estudante.responsavel }}</td>
+
+                      <td class="col-sm-12 col-lg-1 text-left">{{ estudante.serie }}</td>
+                      <td class="col-sm-12 col-lg-2 text-left">{{ estudante.turma }}</td>
+                      <td class="col-sm-12 col-lg-1 text-left">{{ estudante.turno }}</td>
+
                       <td class="col-sm-12 col-lg-1 text-center">
                         <ng-template #popContent>
                           <div class="detalhes">

@@ -1,3 +1,4 @@
+import { Utils } from './../../../shared/utils.shared';
 import { Component, OnInit } from '@angular/core';
 import { TurmaService } from '../turma.service';
 import { EscolaService } from '../../escola/escola.service';
@@ -10,7 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Utils } from '../../../shared/utils.shared';
+
 
 @Component({
   selector: 'ngx-alterar-turma',
@@ -38,13 +39,15 @@ export class AlterarTurmaComponent implements OnInit {
   public escolas: Object;
   public series: Object;
   public turnos: Object;
-  public turmas: Array<Turma> = CONSTANTES.TURMAS_PADRAO;
+  public turmas: Array<Turma>;// = CONSTANTES.TURMAS_PADRAO;
 
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
   public estado: string = "visivel";
+  public anoAtual: number = 0;
+  public esc_id: number = 0;
   constructor(
     private turmaService: TurmaService,
     private router: Router,
@@ -64,13 +67,35 @@ export class AlterarTurmaComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.anoAtual = (new Date()).getFullYear();
+    this.esc_id = Utils.pegarDadosEscolaDetalhado().id;
     this.route.queryParams.subscribe((turma: Turma) => {
       this.turma = JSON.parse(turma["turma"]);
     });
     this.listarEscola();
     this.listarSerie();
     this.listarTurno();
+    this.listarTurmas();
   }
+
+  public listarTurmas(): void {
+    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.turmaService.listarTodasAno(this.anoAtual, this.esc_id).toPromise().then((response: Response) => {
+      this.turmas = Object.values(response);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      //Mostra modal
+      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+      //registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Caso token seja invalido, reenvia rota para login
+      Utils.tratarErro({ router: this.router, response: erro });
+      this.feedbackUsuario = undefined;
+    })
+  }
+
 
   public alterar(): void {
     this.feedbackUsuario = "Alterando dados, aguarde...";
@@ -86,8 +111,8 @@ export class AlterarTurmaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -117,8 +142,8 @@ export class AlterarTurmaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -138,8 +163,8 @@ export class AlterarTurmaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -161,8 +186,8 @@ export class AlterarTurmaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;

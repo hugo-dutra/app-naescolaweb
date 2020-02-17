@@ -127,7 +127,7 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
     this.firebaseService
       .listarStatusEntregaMensagensColecao(
         'comunicados',
-        this.estudante['matricula'],
+        this.estudante.id.toString(),
         this.inep)
       .then((response: firebase.firestore.QuerySnapshot) => {
         response.docs.forEach((documento) => {
@@ -140,7 +140,7 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
         this.firebaseService
           .listarStatusEntregaMensagensColecao(
             'ocorrencias',
-            this.estudante['matricula'],
+            this.estudante.id.toString(),
             this.inep)
           .then((response: firebase.firestore.QuerySnapshot) => {
             response.docs.forEach((documento) => {
@@ -154,7 +154,7 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
         this.firebaseService
           .listarStatusEntregaMensagensColecao(
             'entradas',
-            this.estudante['matricula'],
+            this.estudante.id.toString(),
             this.inep)
           .then((response: firebase.firestore.QuerySnapshot) => {
             response.docs.forEach((documento) => {
@@ -167,7 +167,7 @@ export class DetalharEstudanteNotificacaoComponent implements OnInit {
             this.firebaseService
               .listarStatusEntregaMensagensColecao(
                 'saidas',
-                this.estudante['matricula'],
+                this.estudante.id.toString(),
                 this.inep)
               .then((response: firebase.firestore.QuerySnapshot) => {
                 response.docs.forEach((documento) => {

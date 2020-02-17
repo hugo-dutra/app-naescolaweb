@@ -646,6 +646,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.estudantes = Object.values(response);
+        console.log(this.estudantes);
         if (this.estudantes != undefined) {
           if (this.estudantes.length > 0) {
             this.totalRegistros = parseInt(this.estudantes[0]["total"]);
@@ -661,7 +662,6 @@ export class InserirOcorrenciaComponent implements OnInit {
 
         this.tipoOcorrenciaDisciplinarService.listarNomeEstudante(this.nomeEstudanteProcurado, this.esc_id).toPromise().then((response: Response) => {
           this.arrayOfResumoOcorrencias.push(response);
-          console.log(this.arrayOfResumoOcorrencias);
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
           this.feedbackUsuario = undefined;
