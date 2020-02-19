@@ -329,6 +329,21 @@ export class FirebaseService {
     })
   }
 
+  public gravarTiposOcorrenciasAplicativoAdministravivo(tiposOcorrencias: Object, inep: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firestore.collection('naescolaApp')
+        .doc(inep)
+        .collection('listagens')
+        .doc('modoAdmin')
+        .collection('tiposOcorrencias')
+        .doc('0').set({ tiposOcorrencias: tiposOcorrencias }).then((response: any) => {
+          resolve('ok')
+        }).catch((reason: any) => {
+          reject(reason)
+        })
+    })
+  }
+
   public gravarListagemEstudantesAplicativoAdministrativoBatch(estudantes: Object[]): Promise<any> {
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
     const inepEscola = dadosEscola["inep"];
