@@ -81,6 +81,10 @@ export class GerenciarAplicativoComponent implements OnInit {
     this.router.navigate([`${this.router.url}/baixar-foto-estudante-aplicativo`]);
   }
 
+  public gravarTipoOcorrenciaAplicativoAdministrativo(): void {
+    this.router.navigate([`${this.router.url}/gravar-tipo-ocorrencia-aplicativo-administrativo`]);
+  }
+
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
   }

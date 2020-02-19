@@ -87,7 +87,6 @@ export class ListarEstudanteDestaqueComponent implements OnInit {
       this.feedbackUsuario = "Procurando por estudantes destaque, aguarde..."
       this.boletimEstudanteService.listarEstudantesDestaque(this.prl_id, this.notaCorte, this.esc_id, this.quantidadeDisciplinas, 0).toPromise().then((response: Response) => {
         this.listaDeEstudantesDestaque = Object.values(response);
-        console.table(this.listaDeEstudantesDestaque);
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
         //Mostra modal

@@ -396,9 +396,6 @@ export class InserirUsuarioEscolaComponent implements OnInit {
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
-
-
-
   }
 
   public inserir(event: Event): void {
@@ -411,6 +408,8 @@ export class InserirUsuarioEscolaComponent implements OnInit {
         .then((response: Response) => {
           this.feedbackUsuario = undefined;
           this.limparTodosChecks();
+          this.alertModalService.showAlertSuccess("Permissões salvas com sucesso");
+          this.router.navigate(['/']);
         })
         .catch((erro: Response) => {
           //Mostra modal

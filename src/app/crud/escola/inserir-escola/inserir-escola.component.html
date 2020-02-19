@@ -18,7 +18,7 @@
         <div class="row m-3 form-group">
           <input type="hidden" class="form-control" formControlName="id">
           <input type="text" placeholder="Nome..." class="form-control col-sm-12 col-lg-7 mt-2" formControlName="nome"
-            maxlength="50" required (input)="validar($event)" (focusout)="validar($event)">
+            maxlength="250" required (input)="validar($event)" (focusout)="validar($event)">
           <div class="col-lg-1 col-sm-12"></div>
           <input type="text" placeholder="Abreviatura..." class="form-control col-sm-12 col-lg-4 mt-2"
             formControlName="nome_abreviado" maxlength="5" required (input)="validar($event)"

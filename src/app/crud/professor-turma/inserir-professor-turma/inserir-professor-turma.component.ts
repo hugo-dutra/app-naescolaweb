@@ -102,7 +102,6 @@ export class InserirProfessorTurmaComponent implements OnInit {
     this.feedbackUsuario = "Carregando professores, aguarde...";
     this.professorDisciplinaService.listarDisciplina(this.esc_id, this.exibeTodos).toPromise().then((response: Response) => {
       this.professores = Object.values(response);
-      console.table(this.professores);
       this.matrizReferencia = this.professores;
       this.listarTurmas();
     }).catch((erro: Response) => {

@@ -231,7 +231,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
       }) */
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
       this.arrayOfEstudantesEscola = Utils.removerCaracteresEspeciaisArray(Object.values(response));
-      console.table(this.arrayOfEstudantesEscola);
       this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then((response: Response) => {
         this.feedbackUsuario = undefined;
         this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then((response: Response) => {

@@ -92,12 +92,18 @@ export class InserirEscolaComponent implements OnInit {
     this.diretorService
       .inserir(this.escola)
       .toPromise()
-      .then((resposta: Response) => {
-        this.feedbackUsuario = "Dados Salvos";
-        this.formulario.reset();
-        this.feedbackUsuario = undefined;
-        this.escola.logo = undefined;
-        this.exibirAlerta = false;
+      .then((response: Response) => {
+        if (Object.values(response).length == 0) {
+          this.feedbackUsuario = "Dados Salvos";
+          this.formulario.reset();
+          this.feedbackUsuario = undefined;
+          this.escola.logo = undefined;
+          this.exibirAlerta = false;
+        } else {
+          this.alertModalService.showAlertWarning("Já existe uma escola com o INEP informado");
+          this.feedbackUsuario = undefined;
+          this.exibirAlerta = false;
+        }
       })
       .catch((erro: Response) => {
         this.tratarErro(erro);

@@ -103,6 +103,9 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
     this.feedbackUsuario = "Atualizando dados para aplicativo adminstrativo, aguarde..."
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((response: Response) => {
       this.arrayOfEstudantesAplicativo = Object.values(response);
+
+      console.log(this.arrayOfEstudantesAplicativo);
+
       const arrayDeEstudantesAplicativoEstruturado = new Array<Object>();
       const arrayDeEstudantesAplicativo = new Array<Object>();
       this.arrayOfEstudantesAplicativo.forEach(estudante => {

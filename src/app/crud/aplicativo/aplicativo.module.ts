@@ -12,9 +12,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { QRCodeModule } from 'angular2-qrcode';
 import { NbCardModule } from '@nebular/theme';
 import { HintModule } from 'angular-custom-tour';
+import { GravarTipoOcorrenciaAplicativoAdministrativoComponent } from './gravar-tipo-ocorrencia-aplicativo-administrativo/gravar-tipo-ocorrencia-aplicativo-administrativo.component';
 
 @NgModule({
-  declarations: [BaixarFotoEstudanteAplicativoComponent, GerarQrcodeAplicativoAdministrativoComponent, GerarQrcodeAplicativoEstudanteComponent, GerenciarAplicativoComponent, SincronizarEstudanteAplicativoComponent],
+  declarations: [BaixarFotoEstudanteAplicativoComponent, GerarQrcodeAplicativoAdministrativoComponent, GerarQrcodeAplicativoEstudanteComponent, GerenciarAplicativoComponent, SincronizarEstudanteAplicativoComponent, GravarTipoOcorrenciaAplicativoAdministrativoComponent],
   imports: [
     CommonModule,
     FormsModule,
