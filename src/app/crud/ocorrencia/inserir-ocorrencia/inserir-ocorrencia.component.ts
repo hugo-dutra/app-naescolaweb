@@ -250,7 +250,6 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public montarMensagensNovasOcorrencias(): void {
-
     let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
     let inep = dados_escola[0]["inep"];
     this.arrayDeMensagensSimples = [];

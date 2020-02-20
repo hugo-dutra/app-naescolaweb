@@ -3,7 +3,6 @@ export class MessageFirebase {
   public est_id: string;
   public titulo: string;
   public msg: string;
-  //public matricula: string;
   public cod_inep: string;
   public tipo_msg: string;
   public nome_estudante: string;

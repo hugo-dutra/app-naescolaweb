@@ -19,6 +19,15 @@ export class OcorrenciaService {
     );
   }
 
+  public inserirDoAplicativo(ocorrencias: Object): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(
+      CONSTANTES.HOST_API + "inserir-ocorrencia-aplicativo-administrativo",
+      JSON.stringify({ ocorrencias }),
+      headers
+    );
+  }
+
   /**
    *
    * @param tod_id Id do tipo de ocorrência

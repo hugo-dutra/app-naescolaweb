@@ -75,7 +75,7 @@
     <tour-step selector="gerenciar-ocorrencias-aplicativo-supervisor"
       *ngIf="exibirComponente('gravar-tipo-ocorrencia-aplicativo-administrativo')" order="2" position="left"
       title="Ocorrencias pelo aplicativo">
-      Permite definir queis ocorrências disciplinares podem ser<br>
+      Permite definir quais ocorrências disciplinares podem ser<br>
       registradas a partir do aplicativo Supervisor Escolar.
     </tour-step>
     <div id="gerenciar-ocorrencias-aplicativo-supervisor"
@@ -87,6 +87,25 @@
         </nb-card-header>
         <nb-card-footer>
           <h5 class="text-center"> Definir ocorrencias para aplicativo</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+    <tour-step selector="baixar-ocorrencias-aplicativo-administrativo"
+      *ngIf="exibirComponente('gravar-tipo-ocorrencia-aplicativo-administrativo')" order="2" position="left"
+      title="Sincronizar ocorrências disciplinares">
+      Sincroniza as ocorrências disciplinares<br>
+      registradas a partir do aplicativo Supervisor Escolar.
+    </tour-step>
+    <div id="baixar-ocorrencias-aplicativo-administrativo"
+      *ngIf="exibirComponente('baixar-ocorrencias-aplicativo-administrativo')"
+      class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="baixarOcorrenciasDisciplinaresAplicativoAdministrativo()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-warning text-warning"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center"> Sincronizar ocorrencias para aplicativo</h5>
         </nb-card-footer>
       </nb-card>
     </div>

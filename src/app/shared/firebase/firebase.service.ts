@@ -344,6 +344,35 @@ export class FirebaseService {
     })
   }
 
+  public listarOcorrenciasDisciplinaresAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
+    return new Promise((resolve, reject) => {
+      this.firestore.collection('naescolaApp')
+        .doc(inep)
+        .collection('sincronizar')
+        .where('sincronizada', '==', false)
+        .get()
+        .then((retorno: firebase.firestore.QuerySnapshot) => {
+          resolve(retorno)
+        }).catch((reason: any) => {
+          reject(reason)
+        })
+    })
+  }
+
+  public atualizarStatusDepoisDeSincronizar(inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
+    return new Promise((resolve) => {
+      const documentos = documentosParaAtualizar.docs;
+      documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
+        const status = true;
+        const id = documento.id;
+        this.firestore.collection('naescolaApp')
+          .doc(inep)
+          .collection('sincronizar').doc(id).update({ sincronizada: status })
+      })
+      resolve('ok');
+    })
+  }
+
   public gravarListagemEstudantesAplicativoAdministrativoBatch(estudantes: Object[]): Promise<any> {
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
     const inepEscola = dadosEscola["inep"];
