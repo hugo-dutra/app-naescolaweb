@@ -18,6 +18,7 @@ const routes: Routes = [{
     { path: 'gerenciar-alerta-ocorrencia', loadChildren: () => import('./alerta/alerta.module').then(m => m.AlertaModule), },
     { path: 'gerenciar-aplicativo', loadChildren: () => import('./aplicativo/aplicativo.module').then(m => m.AplicativoModule), },
     { path: 'listar-area-conhecimento', loadChildren: () => import('./area-conhecimento/area-conhecimento.module').then(m => m.AreaConhecimentoModule), },
+    { path: 'listar-atestado-medico', loadChildren: () => import('./atestado-medico/atestado-medico.module').then(m => m.AtestadoMedicoModule), },
     { path: 'enviar-nota-boletim', loadChildren: () => import('./boletim-estudante/boletim-estudante.module').then(m => m.BoletimEstudanteModule), },
     { path: 'listar-disciplina', loadChildren: () => import('./disciplina/disciplina.module').then(m => m.DisciplinaModule), },
     { path: 'listar-comunicado-diverso', loadChildren: () => import('./comunicado-diverso/comunicado-diverso.module').then(m => m.ComunicadoDiversoModule), },

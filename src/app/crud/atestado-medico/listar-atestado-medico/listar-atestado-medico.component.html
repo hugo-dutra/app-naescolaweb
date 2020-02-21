@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row mb-2 text-center">
+        <div class="col-sm-11 col-lg-11">
+          <i class="fa fa-lg fa-medkit text-light text-center float-center"> Atestados médicos</i>
+        </div>
+        <div class="col-sm-1 col-lg-1">
+          <button class="btn btn-sm btn-dark text-light border-light" (click)="inserir()">Inserir</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body atestados">
+
+      <table class="table table-striped table-hover" [@chamado]="estado">
+        <thead class="thead-light">
+          <tr class="row">
+            <th class="col-sm-12 col-lg-6 text-left" scope="col"><span
+                (click)="ordenarColuna('estudante')">Estudante</span></th>
+            <th class="col-sm-12 col-lg-2 text-left" scope="col"><span (click)="ordenarColuna('data_inicio')">Data
+                inicial</span>
+            </th>
+            <th class="col-sm-12 col-lg-2 text-left" scope="col"><span (click)="ordenarColuna('data_fim')">data
+                final</span>
+            </th>
+
+            <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
+            </th>
+            <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
+            </th>
+          </tr>
+        </thead>
+        <tbody *ngIf="arrayDeAtestados !== null">
+          <!-- <tr class="row" *ngFor="let atestados of arrayDeAtestados" [@chamado]="estado">
+
+              <td class="col-sm-12 col-lg-3 text-left">{{ escola.nome }}</td>
+              <td class="col-sm-12 col-lg-2 text-left">{{ escola.telefone }}</td>
+              <td class="col-sm-12 col-lg-3 text-left">{{ escola.email }}</td>
+              <td class="col-sm-12 col-lg-1 text-left">{{ escola.inep }}</td>
+              <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
+                  class="btn btn-warning btn-sm" value="{{ escola }}" (click)="alterar(escola)">Alterar</button></td>
+              <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
+                  class="btn btn-danger btn-sm" value="{{ escola }}" (click)="excluir(escola)">Excluir</button></td>
+
+            </tr> -->
+        </tbody>
+      </table>
+
+
+    </div>
+
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
