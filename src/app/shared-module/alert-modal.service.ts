@@ -5,7 +5,8 @@ import { AlertModalComponent } from './alert-modal/alert-modal.component';
 export enum AlertTypes {
   DANGER = 'danger',
   SUCCESS = 'success',
-  WARNING = 'warning'
+  WARNING = 'warning',
+  INFORMATION = 'information'
 }
 
 @Injectable()
@@ -29,6 +30,10 @@ export class AlertModalService {
 
   public showAlertWarning(message: string): void {
     this.showAlert(message, AlertTypes.WARNING);
+  }
+
+  public showAlertInformation(message: string): void {
+    this.showAlert(message, AlertTypes.INFORMATION);
   }
 
 }

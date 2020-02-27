@@ -48,11 +48,11 @@ export class AtestadoMedicoService {
     );
   }
 
-  public listar(nomeEstudante: string): Observable<any> {
+  public listar(nomeEstudante: string, esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "listar-atestado-medico",
-      JSON.stringify({ nomeEstudante: nomeEstudante }),
+      JSON.stringify({ nomeEstudante: nomeEstudante, esc_id: esc_id }),
       headers
     );
   }

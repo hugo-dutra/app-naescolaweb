@@ -12,38 +12,48 @@
     </div>
 
     <div class="card-body atestados">
+      <div class="row">
+        <div class="input-group mb-3 col-lg-5 col-md-12 col-sm-12">
+          <input type="text" class="form-control" [(ngModel)]="nomeEstudanteAtestadoProcurado"
+            placeholder="Nome do estudante..." aria-label="Recipient's username" aria-describedby="basic-addon2"
+            (keydown)="listarAtestadosMedicosKeyDown($event)">
+          <div class="input-group-append">
+            <button class="btn btn-dark text-light border-light" type="button"
+              (click)="listarAtestadosMedicos()">Pesquisar</button>
+          </div>
+        </div>
+      </div>
 
       <table class="table table-striped table-hover" [@chamado]="estado">
         <thead class="thead-light">
           <tr class="row">
-            <th class="col-sm-12 col-lg-6 text-left" scope="col"><span
+            <th class="col-sm-12 col-lg-5 text-left" scope="col"><span
                 (click)="ordenarColuna('estudante')">Estudante</span></th>
             <th class="col-sm-12 col-lg-2 text-left" scope="col"><span (click)="ordenarColuna('data_inicio')">Data
-                inicial</span>
-            </th>
+                inicial</span></th>
             <th class="col-sm-12 col-lg-2 text-left" scope="col"><span (click)="ordenarColuna('data_fim')">data
-                final</span>
+                final</span></th>
+            <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('codigo_cid')">CID</span>
             </th>
-
-            <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar
-            </th>
-            <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir
-            </th>
+            <th *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center" scope="col">Alterar</th>
+            <th *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center" scope="col">Excluir</th>
           </tr>
         </thead>
         <tbody *ngIf="arrayDeAtestados !== null">
-          <!-- <tr class="row" *ngFor="let atestados of arrayDeAtestados" [@chamado]="estado">
+          <tr class="row" *ngFor="let atestado of arrayDeAtestados" [@chamado]="estado">
 
-              <td class="col-sm-12 col-lg-3 text-left">{{ escola.nome }}</td>
-              <td class="col-sm-12 col-lg-2 text-left">{{ escola.telefone }}</td>
-              <td class="col-sm-12 col-lg-3 text-left">{{ escola.email }}</td>
-              <td class="col-sm-12 col-lg-1 text-left">{{ escola.inep }}</td>
-              <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
-                  class="btn btn-warning btn-sm" value="{{ escola }}" (click)="alterar(escola)">Alterar</button></td>
-              <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
-                  class="btn btn-danger btn-sm" value="{{ escola }}" (click)="excluir(escola)">Excluir</button></td>
+            <td class="col-sm-12 col-lg-5 text-left">{{ atestado.estudante }}</td>
+            <td class="col-sm-12 col-lg-2 text-left">{{ atestado.data_inicio | date:"dd-MM-yyyy"}}</td>
+            <td class="col-sm-12 col-lg-2 text-left">{{ atestado.data_fim | date:"dd-MM-yyyy" }}</td>
+            <td class="col-sm-12 col-lg-1 text-left">{{ atestado.codigo_cid }} <button
+                (click)="detalharCID(atestado.descricao_cid)" class="btn btn-sm btn-primary text-light"><i
+                  class="fa fa-sm fa-question"></i></button> </td>
+            <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
+                class="btn btn-warning btn-sm" value="{{ escola }}" (click)="alterar(atestado)">Alterar</button></td>
+            <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button
+                class="btn btn-danger btn-sm" value="{{ escola }}" (click)="excluir(atestado)">Excluir</button></td>
 
-            </tr> -->
+          </tr>
         </tbody>
       </table>
 

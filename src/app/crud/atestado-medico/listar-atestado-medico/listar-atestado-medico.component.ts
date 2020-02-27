@@ -1,3 +1,6 @@
+import { AlertModalService } from './../../../shared-module/alert-modal.service';
+import { AtestadoMedicoService } from './../atestado-medico.service';
+
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -8,6 +11,7 @@ import { Utils } from '../../../shared/utils.shared';
   selector: 'ngx-listar-atestado-medico',
   templateUrl: './listar-atestado-medico.component.html',
   styleUrls: ['./listar-atestado-medico.component.scss'],
+  providers: [AtestadoMedicoService],
   animations: [
     trigger("chamado", [
       state(
@@ -34,11 +38,25 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
+  public nomeEstudanteAtestadoProcurado: string = "";
+  public esc_id: number = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private atestadoMedicoService: AtestadoMedicoService,
+    private alertModalService: AlertModalService
+
+  ) { }
 
   ngOnInit() {
     this.exibirComponentesEdicao();
+    this.carregarDados();
+  }
+
+  public carregarDados(): void {
+    this.esc_id = Utils.pegarDadosEscolaDetalhado().id;
   }
 
   public exibirComponente(rota: string): boolean {
@@ -78,8 +96,36 @@ export class ListarAtestadoMedicoComponent implements OnInit {
     this.decrescente = !this.decrescente;
   }
 
+  public listarAtestadosMedicos(): void {
+    console.log(this.esc_id);
+    this.feedbackUsuario = "Filtrando atestados, aguarde..."
+    this.atestadoMedicoService.listar(this.nomeEstudanteAtestadoProcurado, this.esc_id).toPromise().then((response: Response) => {
+      this.arrayDeAtestados = Object.values(response);
+      this.feedbackUsuario = undefined;
+      console.log(this.arrayDeAtestados);
+    })
+  }
+
+  public detalharCID(descricao_cid: string): void {
+    this.alertModalService.showAlertInformation(descricao_cid);
+  }
+
+  public listarAtestadosMedicosKeyDown(key: KeyboardEvent): void {
+    if (key.keyCode == 13) {
+      this.listarAtestadosMedicos();
+    }
+  }
+
   public inserir(): void {
     this.router.navigate([`${this.route.parent.routeConfig.path}/inserir-atestado-medico`]);
+  }
+
+  public alterar(atestado: Object) {
+    console.log(atestado);
+  }
+
+  public excluir(atestado: Object) {
+    console.log(atestado)
   }
 
 }

@@ -150,9 +150,7 @@ export class InserirAtestadoMedicoComponent implements OnInit {
   }
 
   public listar(): void {
-    alert('Ir para a listagem de atestados médicos');
+    this.router.navigate(['listar-atestado-medico']);
   }
-
-
 
 }
