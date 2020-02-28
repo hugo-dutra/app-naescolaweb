@@ -39,11 +39,11 @@ export class AtestadoMedicoService {
     );
   }
 
-  public excluir(atestadoMedico: AtestadoMedico): Observable<any> {
+  public excluir(atm_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "excluir-atestado-medico",
-      JSON.stringify({ atestadoMedico: atestadoMedico }),
+      JSON.stringify({ atm_id: atm_id }),
       headers
     );
   }

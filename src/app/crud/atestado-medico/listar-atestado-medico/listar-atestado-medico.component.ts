@@ -1,7 +1,7 @@
 import { AlertModalService } from './../../../shared-module/alert-modal.service';
 import { AtestadoMedicoService } from './../atestado-medico.service';
 
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CONSTANTES } from '../../../shared/constantes.shared';
@@ -40,7 +40,6 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   public exibirComponenteExcluir: Boolean = false;
   public nomeEstudanteAtestadoProcurado: string = "";
   public esc_id: number = 0;
-
 
   constructor(
     private router: Router,
@@ -97,7 +96,6 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   }
 
   public listarAtestadosMedicos(): void {
-    console.log(this.esc_id);
     this.feedbackUsuario = "Filtrando atestados, aguarde..."
     this.atestadoMedicoService.listar(this.nomeEstudanteAtestadoProcurado, this.esc_id).toPromise().then((response: Response) => {
       this.arrayDeAtestados = Object.values(response);
@@ -121,11 +119,22 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   }
 
   public alterar(atestado: Object) {
-    console.log(atestado);
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        atestado: JSON.stringify(atestado)
+      }
+    };
+    this.router.navigate([`${this.route.parent.routeConfig.path}/alterar-atestado-medico`], navigationExtras);
+
   }
 
   public excluir(atestado: Object) {
-    console.log(atestado)
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        atestado: JSON.stringify(atestado)
+      }
+    };
+    this.router.navigate([`${this.route.parent.routeConfig.path}/excluir-atestado-medico`], navigationExtras);
   }
 
 }
