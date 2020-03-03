@@ -76,7 +76,7 @@ export class GravarTipoOcorrenciaAplicativoAdministrativoComponent implements On
     }
   }
 
-  public salvarTiposOcorrenciasSelecionadas(event: Event, tipoOcorrencia: Object): void {
+  public salvarTiposOcorrenciasSelecionadas(): void {
     this.feedbackUsuario = 'Gravando no aplicativo, aguarde...';
     const arrayMapeada = this.arrayDeTiposOcorrenciasSelecionadas.map((valor) => {
       return { categoria: valor['nome'], categoriaId: valor['id'], valor: valor['valor'] }

@@ -119,7 +119,87 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   public selecionarTurma(event: Event): void {
     this.trm_id = parseInt((<HTMLInputElement>event.target).value);
     this.feedbackUsuario = "Carregando dados, aguarde...";
-    if (this.trm_id < 0) {
+    /* Para todos os turnos */
+    if (this.turnoSelecionado == -1) {
+      if (this.trm_id < 0) {
+        //Seleciona todos os estudantes da escola
+        this.estudanteService
+          .listar(50000, 0, true, this.esc_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.arrayOfEstudantes = Object.values(response);
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      } else {
+        //Seleciona todos os estudantes da turma selecionada
+        this.feedbackUsuario = "Carregando dados, aguarde...";
+        this.estudanteService
+          .listarTurmaId(this.trm_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.arrayOfEstudantes = Object.values(response);
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+    } else {
+      /* Para um turno específico */
+      if (this.trm_id == -1) {
+        this.estudanteService.listarTurnoId(this.turnoSelecionado).toPromise().then((response: Response) => {
+          this.arrayOfEstudantes = Object.values(response);
+          this.feedbackUsuario = undefined;
+        })
+      } else {
+        this.feedbackUsuario = "Carregando dados, aguarde...";
+        this.estudanteService
+          .listarTurmaId(this.trm_id)
+          .toPromise()
+          .then((response: Response) => {
+            this.arrayOfEstudantes = Object.values(response);
+            this.feedbackUsuario = undefined;
+          })
+          .catch((erro: Response) => {
+            //Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            //registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+            //Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            //Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      }
+
+    }
+
+
+
+
+
+
+    /* if (this.trm_id < 0) {
       //Seleciona todos os estudantes da escola
       this.estudanteService
         .listar(50000, 0, true, this.esc_id)
@@ -160,7 +240,11 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
         });
-    }
+    } */
+
+
+
+
   }
 
   public listarTurmas(): void {

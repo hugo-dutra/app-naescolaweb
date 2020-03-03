@@ -67,7 +67,7 @@
                 <td class="col-sm-12 col-lg-1">{{ turma.turno }}</td>
                 <td class="col-sm-12 col-lg-1">{{ turma.ano }}</td>
                 <td class="col-sm-12 col-lg-1"><button class="btn btn-info btn-sm fa fa-question"
-                    (click)="listarEstudantes(turma.id)"></button></td>
+                    (click)="listarEstudantes(turma.id, turma.serie, turma.nome, turma.turno)"></button></td>
                 <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center"><button
                     class="btn btn-warning btn-sm" value="{{ turma }}" (click)="alterar(turma)">Alterar</button></td>
                 <td *ngIf="exibirComponenteExcluir" class="col-sm-12 col-lg-1 text-center"><button

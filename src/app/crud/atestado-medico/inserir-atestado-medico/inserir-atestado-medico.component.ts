@@ -43,7 +43,7 @@ export class InserirAtestadoMedicoComponent implements OnInit {
   public est_id: number = 0;
   public codigoCid: string = "";
   public cid: string = "";
-  public estudanteProcurado: string = "";
+  public estudante: string = "";
   public estudanteSelecionado = new Object();
   public data_inicio: string = "";
   public data_fim: string = "";
@@ -73,12 +73,12 @@ export class InserirAtestadoMedicoComponent implements OnInit {
       this.arrayDeEstudantes = [];
       this.filtrarEstudante();
     }
-    this.estudanteProcurado = (<HTMLInputElement>event.target).value;
+    this.estudante = (<HTMLInputElement>event.target).value;
   }
 
   public filtrarEstudante(): void {
     this.feedbackUsuario = 'Procurando estudantes, aguarde...';;
-    this.estudanteService.filtrar(this.estudanteProcurado, 20, 0, this.esc_id).toPromise().then((response: Response) => {
+    this.estudanteService.filtrar(this.estudante, 20, 0, this.esc_id).toPromise().then((response: Response) => {
       this.arrayDeEstudantes = Object.values(response);
       this.feedbackUsuario = undefined;
     })
@@ -127,6 +127,7 @@ export class InserirAtestadoMedicoComponent implements OnInit {
   }
 
   public validarSalvarAtestadoMedico(): boolean {
+    debugger;
     if (this.atestadoMedico.atm_codigo_cid != "" &&
       this.atestadoMedico.atm_data_fim != "" &&
       this.atestadoMedico.atm_data_inicio != "" &&

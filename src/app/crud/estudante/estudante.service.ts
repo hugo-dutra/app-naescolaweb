@@ -329,6 +329,16 @@ export class EstudanteService {
     );
   }
 
+  public listarTurnoId(trn_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+
+    return this.http.post(
+      CONSTANTES.HOST_API + "estudantes-turno-id",
+      JSON.stringify({ trn_id: trn_id }),
+      headers
+    );
+  }
+
   public alterarManualNumeroChamada(est_id: number, trm_id: number, numero_chamada: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
 

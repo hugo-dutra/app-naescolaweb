@@ -36,6 +36,9 @@ export class ListarEstudantesTurmaComponent implements OnInit {
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public trm_id: number;
+  public serie: string = "";
+  public turma: string = "";
+  public turno: string = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -45,8 +48,11 @@ export class ListarEstudantesTurmaComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((trm_id: Object) => {
-      this.trm_id = parseInt(JSON.parse(trm_id["trm_id"]));
+    this.route.queryParams.subscribe((objetoEnviado: Object) => {
+      this.trm_id = parseInt(JSON.parse(objetoEnviado["trm_id"]));
+      this.serie = JSON.parse(objetoEnviado['serie']);
+      this.turma = JSON.parse(objetoEnviado['turma']);
+      this.turno = JSON.parse(objetoEnviado['turno']);
     });
     this.listarEstudantesTurma();
   }
@@ -65,8 +71,8 @@ export class ListarEstudantesTurmaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
@@ -88,14 +94,13 @@ export class ListarEstudantesTurmaComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
         })
     }, 1000);
   }
-
 
 }
