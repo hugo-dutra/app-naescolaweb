@@ -15,14 +15,12 @@ export class SedfService {
       const ct = response;
       const cfg = Utils.decypher(ct);
       this.HOST_TOKEN_INTEGRACAO = cfg;
-      console.log(this.HOST_TOKEN_INTEGRACAO);
     });
 
     this.pegarUrlHostIntegracao().toPromise().then((response: string) => {
       const ct = response;
       const cfg = Utils.decypher(ct);
       this.HOST_INTEGRACAO = cfg;
-      console.log(this.HOST_INTEGRACAO);
     })
   }
 

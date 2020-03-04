@@ -224,7 +224,8 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.feedbackUsuario = 'Listando Estudantes...';
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
-      this.arrayOfEstudantesEscola = Utils.removerCaracteresEspeciaisArray(Object.values(response));
+      //this.arrayOfEstudantesEscola = Utils.removerCaracteresEspeciaisArray(Object.values(response));
+      this.arrayOfEstudantesEscola = Object.values(response);
       this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then((response: Response) => {
         this.feedbackUsuario = undefined;
         this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then((response: Response) => {
@@ -255,7 +256,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']).toPromise().then((response: Response) => {
       if (response != null && response != undefined) {
         const notasFaltas = Object.values(response);
-
         this.atualizarDisciplinas(notasFaltas).then(() => {
           this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
           this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual).toPromise().then(() => {

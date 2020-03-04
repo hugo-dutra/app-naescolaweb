@@ -344,11 +344,11 @@ export class FirebaseService {
     })
   }
 
-  public listarOcorrenciasDisciplinaresAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
+  public listarOcorrenciasDisciplinaresEntradasManuaisAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
     return new Promise((resolve, reject) => {
       this.firestore.collection('naescolaApp')
         .doc(inep)
-        .collection('sincronizar')
+        .collection('sincronizarOcorrencias')
         .where('sincronizada', '==', false)
         .get()
         .then((retorno: firebase.firestore.QuerySnapshot) => {
@@ -359,15 +359,35 @@ export class FirebaseService {
     })
   }
 
-  public atualizarStatusDepoisDeSincronizar(inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
+  public atualizarStatusOcorrenciasDepoisDeSincronizar(inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
     return new Promise((resolve) => {
       const documentos = documentosParaAtualizar.docs;
       documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
         const status = true;
         const id = documento.id;
-        this.firestore.collection('naescolaApp')
-          .doc(inep)
-          .collection('sincronizar').doc(id).update({ sincronizada: status })
+        const dados = documento.data();
+        if (dados["registrarEntradaManual"] == false) {
+          this.firestore.collection('naescolaApp')
+            .doc(inep)
+            .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status })
+        }
+      })
+      resolve('ok');
+    })
+  }
+
+  public atualizarStatusEntradasManuaisDepoisDeSincronizar(inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
+    return new Promise((resolve) => {
+      const documentos = documentosParaAtualizar.docs;
+      documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
+        const status = true;
+        const id = documento.id;
+        const dados = documento.data();
+        if (dados["registrarEntradaManual"] == true) {
+          this.firestore.collection('naescolaApp')
+            .doc(inep)
+            .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status })
+        }
       })
       resolve('ok');
     })
@@ -475,6 +495,29 @@ export class FirebaseService {
         })
     })
   }
+
+  /**
+   *
+   *
+   * @memberof FirebaseService
+   */
+  public gravarEntradasManuaisFirebaseFirestore = async (messageFirebase: MessageFirebase) => {
+    return new Promise(resolve => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(messageFirebase.cod_inep)
+        .collection('matriculados')
+        .doc(messageFirebase.est_id.toString())
+        .collection('ocorrencias')
+        .add({ data: messageFirebase.data, hora: messageFirebase.hora, categoria: messageFirebase.tipo_msg, leitura: 0 }).then((retorno) => {
+          resolve(retorno);
+        }).catch((error: Response) => {
+          resolve(error);
+        })
+    })
+  }
+
+
   /**
    *Gravar comunicados da direção.
    *

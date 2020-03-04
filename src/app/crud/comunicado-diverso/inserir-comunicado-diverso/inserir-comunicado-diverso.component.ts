@@ -194,60 +194,10 @@ export class InserirComunicadoDiversoComponent implements OnInit {
 
     }
 
-
-
-
-
-
-    /* if (this.trm_id < 0) {
-      //Seleciona todos os estudantes da escola
-      this.estudanteService
-        .listar(50000, 0, true, this.esc_id)
-        .toPromise()
-        .then((response: Response) => {
-          this.arrayOfEstudantes = Object.values(response);
-          this.feedbackUsuario = undefined;
-        })
-        .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
-        });
-    } else {
-      //Seleciona todos os estudantes da turma selecionada
-      this.feedbackUsuario = "Carregando dados, aguarde...";
-      this.estudanteService
-        .listarTurmaId(this.trm_id)
-        .toPromise()
-        .then((response: Response) => {
-          this.arrayOfEstudantes = Object.values(response);
-          this.feedbackUsuario = undefined;
-        })
-        .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
-        });
-    } */
-
-
-
-
   }
 
   public listarTurmas(): void {
+    (<HTMLInputElement>document.getElementById('select-turma')).value = "Selecione uma turma";
     this.feedbackUsuario = "Carregando dados, aguarde...";
     this.turmaService
       .listarTurnoId(this.turnoSelecionado, this.esc_id, this.anoAtual)

@@ -191,6 +191,15 @@ export class PortariaService {
       headers);
   }
 
+  public inserirEntradasDoAplicativo(por_id: number, entradas: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+
+    return this.http.post(
+      CONSTANTES.HOST_API + 'inserir-frequencia-entrada-do-aplicativo',
+      JSON.stringify({ por_id: por_id, entradas: entradas }),
+      headers);
+  }
+
   public inserirSaidas(por_id: number, saidas: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
 
