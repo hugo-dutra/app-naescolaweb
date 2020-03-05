@@ -344,12 +344,27 @@ export class FirebaseService {
     })
   }
 
-  public listarOcorrenciasDisciplinaresEntradasManuaisAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
+  public listarOcorrenciasDisciplinaresAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
     return new Promise((resolve, reject) => {
       this.firestore.collection('naescolaApp')
         .doc(inep)
         .collection('sincronizarOcorrencias')
-        .where('sincronizada', '==', false)
+        .where('sincronizada', '==', false).where("registrarEntradaManual", "==", false)
+        .get()
+        .then((retorno: firebase.firestore.QuerySnapshot) => {
+          resolve(retorno)
+        }).catch((reason: any) => {
+          reject(reason)
+        })
+    })
+  }
+
+  public listarEntradasManuaisAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
+    return new Promise((resolve, reject) => {
+      this.firestore.collection('naescolaApp')
+        .doc(inep)
+        .collection('sincronizarOcorrencias')
+        .where('sincronizada', '==', false).where("registrarEntradaManual", "==", true)
         .get()
         .then((retorno: firebase.firestore.QuerySnapshot) => {
           resolve(retorno)
@@ -508,7 +523,7 @@ export class FirebaseService {
         .doc(messageFirebase.cod_inep)
         .collection('matriculados')
         .doc(messageFirebase.est_id.toString())
-        .collection('ocorrencias')
+        .collection('entradas')
         .add({ data: messageFirebase.data, hora: messageFirebase.hora, categoria: messageFirebase.tipo_msg, leitura: 0 }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {

@@ -113,7 +113,7 @@ export class GerenciarAplicativoComponent implements OnInit {
   public baixarOcorrenciasAplicativoAdministrativo(): void {
     this.limparArrays();
     this.feedbackUsuario = 'Verificando ocorrências registradas no aplicativo, aguarde...';
-    this.firebaseService.listarOcorrenciasDisciplinaresEntradasManuaisAplicativoAdministravivo(this.inep).then((retorno: firebase.firestore.QuerySnapshot) => {
+    this.firebaseService.listarOcorrenciasDisciplinaresAplicativoAdministravivo(this.inep).then((retorno: firebase.firestore.QuerySnapshot) => {
       if (retorno.docs.length > 0) {
         this.documentosParaAtualizar = retorno;
         const documentos = retorno.docs;
@@ -217,7 +217,8 @@ export class GerenciarAplicativoComponent implements OnInit {
     this.feedbackUsuario = 'Finalizando, aguarde...';
     this.ocorrenciaService.inserirDoAplicativo(this.arrayDeOcorrenciasDoAplicativo).toPromise().then((response: Response) => {
       this.firebaseService.atualizarStatusOcorrenciasDepoisDeSincronizar(this.inep, this.documentosParaAtualizar).then(() => {
-        this.baixarEntradasManuaisAplicativoAdministrativo();
+        this.feedbackUsuario = undefined;
+        this.alertModalService.showAlertSuccess("Operação finalizada com sucesso");
       }).catch((erro: Response) => {
         this.tratarErro(erro);
       })
@@ -228,28 +229,38 @@ export class GerenciarAplicativoComponent implements OnInit {
 
   /* ENTRADA MANUAL */
   public baixarEntradasManuaisAplicativoAdministrativo(): void {
-    this.feedbackUsuario = 'Verificando entradas manuais, aguarde...';
-    const documentos = this.documentosParaAtualizar;
-    documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
-      const firebase_dbkey_admin = documento.id;
-      const dados = documento.data();
-      const registrarEntradaManual = dados['registrarEntradaManual']
-      /* entrada manual */
-      if (registrarEntradaManual == true) {
-        const data = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('YYYY-MM-DD');
-        const hora = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('HH:mm');
-        const est_id = dados['est_id'];
-        const usr_id = parseInt(dados['userId']);
-        const nome = dados['estudanteNome'];
-        const por_id = parseInt((<String>dados['portariaId']).split('_')[1]);
-        this.arrayDeEntradasPeloAplicativo.push({
-          est_id: est_id, data: data, hora: hora,
-          por_id: por_id, usr_id: usr_id, firebase_dbkey_admin: firebase_dbkey_admin,
-          firebase_dbkey: '', nome: nome
+    this.limparArrays();
+    this.feedbackUsuario = 'Verificando ocorrências registradas no aplicativo, aguarde...';
+    this.firebaseService.listarEntradasManuaisAplicativoAdministravivo(this.inep).then((retorno: firebase.firestore.QuerySnapshot) => {
+      if (retorno.docs.length > 0) {
+        this.documentosParaAtualizar = retorno;
+        this.feedbackUsuario = 'Verificando entradas manuais, aguarde...';
+        const documentos = this.documentosParaAtualizar;
+        documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
+          const firebase_dbkey_admin = documento.id;
+          const dados = documento.data();
+          const registrarEntradaManual = dados['registrarEntradaManual']
+          /* entrada manual */
+          if (registrarEntradaManual == true) {
+            const data = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('YYYY-MM-DD');
+            const hora = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('HH:mm');
+            const est_id = dados['est_id'];
+            const usr_id = parseInt(dados['userId']);
+            const nome = dados['estudanteNome'];
+            const por_id = parseInt((<String>dados['portariaId']).split('_')[1]);
+            this.arrayDeEntradasPeloAplicativo.push({
+              est_id: est_id, data: data, hora: hora,
+              por_id: por_id, usr_id: usr_id, firebase_dbkey_admin: firebase_dbkey_admin,
+              firebase_dbkey: '', nome: nome
+            });
+          }
         });
+        this.montarMensagensNovasEntradasManuais();
+      } else {
+        this.alertModalService.showAlertWarning('Não há dados a serem sincronizadas');
+        this.feedbackUsuario = undefined;
       }
-    });
-    this.montarMensagensNovasEntradasManuais();
+    })
   }
 
   public montarMensagensNovasEntradasManuais(): void {
