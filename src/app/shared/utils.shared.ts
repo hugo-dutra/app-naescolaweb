@@ -14,18 +14,43 @@ export class Utils {
     const arrayInicial = array;
     const arrayFinal = new Array<Object>();
     arrayInicial.forEach((elemento: Object) => {
-      elemento['nome'] = elemento['nome'] != null ? elemento['nome'].replace(/[^\u0020-\u007a]/g, '') : null;
-      elemento['nome_mae'] = elemento['nome_mae'] != null ? elemento['nome_mae'].replace(/[^\u0020-\u007a]/g, '') : null;
-      elemento['nome_pai'] = elemento['nome_pai'] != null ? elemento['nome_pai'].replace(/[^\u0020-\u007a]/g, '') : null;
-      elemento['nome_resp'] = elemento['nome_resp'] != null ? elemento['nome_resp'].replace(/[^\u0020-\u007a]/g, '') : null;
-      elemento['complemento'] = elemento['complemento'] != null ? elemento['complemento'].replace(/[^\u0020-\u007a]/g, '') : null;
-      elemento['loc_no'] = elemento['loc_no'] != null ? elemento['loc_no'].replace(/[^\u0020-\u007a]/g, '') : null;
-      elemento['log_no'] = elemento['log_no'] != null ? elemento['log_no'].replace(/[^\u0020-\u007a]/g, '') : null;
-      elemento['bai_no'] = elemento['bai_no'] != null ? elemento['bai_no'].replace(/[^\u0020-\u007a]/g, '') : null;
+      elemento['nome'] = this.ajusteDeString(elemento['nome']);
+      elemento['nome_mae'] = this.ajusteDeString(elemento['nome_mae']);
+      elemento['nome_pai'] = this.ajusteDeString(elemento['nome_pai']);
+      elemento['nome_resp'] = this.ajusteDeString(elemento['nome_resp']);
+      elemento['complemento'] = this.ajusteDeString(elemento['complemento']);
+      elemento['loc_no'] = this.ajusteDeString(elemento['loc_no']);
+      elemento['log_no'] = this.ajusteDeString(elemento['log_no']);
+      elemento['bai_no'] = this.ajusteDeString(elemento['bai_no']);
+
       arrayFinal.push(elemento);
     })
     return arrayFinal;
   }
+
+
+  private static ajusteDeString(originalString: string): string {
+    let retorno = "";
+    const arrayDeCaracteresValidos = ['', ',', ' ', '!', '"', '#', '$', '%', '&', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3',
+      '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+      'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+      'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', 'ª', '®', '°', '´', '·', '¸', 'º', 'À', 'Á', 'Â', 'Ã',
+      'Ç', 'È', 'É', 'Ê', 'Ì', 'Í', 'Î', 'Ò', 'Ó', 'Ô', 'Õ', 'Ù', 'Ú', 'à', 'á', 'â', 'ã', 'ç', 'è', 'é', 'ê',
+      'ì', 'í', 'ò', 'ó', 'ô', 'õ', '÷', 'ù', 'ú'];
+    if (originalString != null && originalString != undefined) {
+      for (let i = 0; i < originalString.length; i++) {
+        const caractereAvaliado = originalString[i];
+        const indiceObjeto = arrayDeCaracteresValidos.indexOf(caractereAvaliado);
+        if (indiceObjeto > -1) {
+          retorno += caractereAvaliado;
+        }
+      }
+    }
+
+    return retorno;
+  }
+
+
 
   public static validarCampos(model: { event: Event }): void {
     if (!(<HTMLInputElement>event.target).validity.valid) {

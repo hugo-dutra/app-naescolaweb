@@ -13,7 +13,7 @@ export class AtestadoMedicoService {
 
   public consultarCid(codigo: string): Promise<Object> {
     return new Promise((resolve, reject) => {
-      this.http.get(`http://cid10-api.herokuapp.com/cid10/${codigo}`).toPromise().then((response: Object) => {
+      this.http.get(`https://cid10-api.herokuapp.com/cid10/${codigo}`).toPromise().then((response: Object) => {
         resolve(response)
       }).catch((reason: any) => {
         reject(reason)
