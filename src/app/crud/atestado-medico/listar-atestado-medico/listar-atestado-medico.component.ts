@@ -13,24 +13,24 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./listar-atestado-medico.component.scss'],
   providers: [AtestadoMedicoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class ListarAtestadoMedicoComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public arrayDeAtestados = new Array<Object>();
@@ -38,14 +38,14 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   public exibirComponenteAlterar: Boolean = false;
   public exibirComponenteInserir: Boolean = false;
   public exibirComponenteExcluir: Boolean = false;
-  public nomeEstudanteAtestadoProcurado: string = "";
+  public nomeEstudanteAtestadoProcurado: string = '';
   public esc_id: number = 0;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private atestadoMedicoService: AtestadoMedicoService,
-    private alertModalService: AlertModalService
+    private alertModalService: AlertModalService,
 
   ) { }
 
@@ -70,7 +70,7 @@ export class ListarAtestadoMedicoComponent implements OnInit {
 
   public ordenarColuna(campo: string): void {
     if (!this.decrescente) {
-      let retorno = this.arrayDeAtestados.sort(function (a, b) {
+      const retorno = this.arrayDeAtestados.sort(function (a, b) {
         if (a[campo] < b[campo]) {
           return 1;
         }
@@ -78,10 +78,10 @@ export class ListarAtestadoMedicoComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.arrayDeAtestados = retorno;
     } else {
-      let retorno = this.arrayDeAtestados.sort(function (a, b) {
+      const retorno = this.arrayDeAtestados.sort(function (a, b) {
         if (a[campo] > b[campo]) {
           return 1;
         }
@@ -89,19 +89,19 @@ export class ListarAtestadoMedicoComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.arrayDeAtestados = retorno;
     }
     this.decrescente = !this.decrescente;
   }
 
   public listarAtestadosMedicos(): void {
-    this.feedbackUsuario = "Filtrando atestados, aguarde..."
-    this.atestadoMedicoService.listar(this.nomeEstudanteAtestadoProcurado, this.esc_id).toPromise().then((response: Response) => {
-      this.arrayDeAtestados = Object.values(response);
-      this.feedbackUsuario = undefined;
-      console.log(this.arrayDeAtestados);
-    })
+    this.feedbackUsuario = 'Filtrando atestados, aguarde...';
+    this.atestadoMedicoService.listar(this.nomeEstudanteAtestadoProcurado, this.esc_id)
+      .toPromise().then((response: Response) => {
+        this.arrayDeAtestados = Object.values(response);
+        this.feedbackUsuario = undefined;
+      });
   }
 
   public detalharCID(descricao_cid: string): void {
@@ -109,7 +109,7 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   }
 
   public listarAtestadosMedicosKeyDown(key: KeyboardEvent): void {
-    if (key.keyCode == 13) {
+    if (key.keyCode === 13) {
       this.listarAtestadosMedicos();
     }
   }
@@ -119,20 +119,20 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   }
 
   public alterar(atestado: Object) {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
-        atestado: JSON.stringify(atestado)
-      }
+        atestado: JSON.stringify(atestado),
+      },
     };
     this.router.navigate([`${this.route.parent.routeConfig.path}/alterar-atestado-medico`], navigationExtras);
 
   }
 
   public excluir(atestado: Object) {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
-        atestado: JSON.stringify(atestado)
-      }
+        atestado: JSON.stringify(atestado),
+      },
     };
     this.router.navigate([`${this.route.parent.routeConfig.path}/excluir-atestado-medico`], navigationExtras);
   }

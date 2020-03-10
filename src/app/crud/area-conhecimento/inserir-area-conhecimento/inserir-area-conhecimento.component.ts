@@ -15,19 +15,19 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./inserir-area-conhecimento.component.scss'],
   providers: [AreaConhecimentoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirAreaConhecimentoComponent implements OnInit {
 
@@ -35,12 +35,12 @@ export class InserirAreaConhecimentoComponent implements OnInit {
     private areaConhecimentoService: AreaConhecimentoService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
   ) { }
 
   public areaConhecimento = new AreaConhecimento();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta = false;
@@ -48,7 +48,7 @@ export class InserirAreaConhecimentoComponent implements OnInit {
   public formulario = new FormGroup({
     id: new FormControl(null),
     nome: new FormControl(null),
-    abreviatura: new FormControl(null)
+    abreviatura: new FormControl(null),
   });
 
   ngOnInit() {
@@ -59,23 +59,24 @@ export class InserirAreaConhecimentoComponent implements OnInit {
     this.areaConhecimento.nome = this.formulario.value.nome;
     this.areaConhecimento.abreviatura = this.formulario.value.abreviatura;
 
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.areaConhecimentoService
       .inserir(this.areaConhecimento)
       .toPromise()
       .then((response: Response) => {
         this.formulario.reset();
         this.feedbackUsuario = undefined;
-        this.router.navigateByUrl("listar-area-conhecimento");
+        this.router.navigateByUrl('listar-area-conhecimento');
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.exibirAlerta = true;
         this.feedbackUsuario = undefined;
@@ -83,7 +84,7 @@ export class InserirAreaConhecimentoComponent implements OnInit {
   }
 
   public listar() {
-    this.router.navigateByUrl("listar-area-conhecimento");
+    this.router.navigateByUrl('listar-area-conhecimento');
   }
 
   public listarObjeto(): Object {

@@ -14,19 +14,19 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./alterar-area-conhecimento.component.scss'],
   providers: [AreaConhecimentoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class AlterarAreaConhecimentoComponent implements OnInit {
 
@@ -35,40 +35,41 @@ export class AlterarAreaConhecimentoComponent implements OnInit {
     private router: Router,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private areaConhecimentoService: AreaConhecimentoService
+    private areaConhecimentoService: AreaConhecimentoService,
   ) { }
 
   public areaConhecimento = new AreaConhecimento();
   public feedbackUsuario: string;
   public feedbackAlerta: string;
-  public estado = "visivel";
+  public estado = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
 
   ngOnInit() {
     this.route.queryParams.subscribe((area: AreaConhecimento) => {
-      this.areaConhecimento = JSON.parse(area["area"]);
+      this.areaConhecimento = JSON.parse(area['area']);
     });
   }
 
   public alterar() {
-    this.feedbackUsuario = "Alterando dados, aguarde...";
+    this.feedbackUsuario = 'Alterando dados, aguarde...';
     this.areaConhecimentoService
       .alterar(this.areaConhecimento)
       .toPromise()
       .then((response: Response) => {
-        this.router.navigateByUrl("listar-area-conhecimento");
+        this.router.navigateByUrl('listar-area-conhecimento');
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.exibirAlerta = true;
         this.feedbackUsuario = undefined;
@@ -76,8 +77,8 @@ export class AlterarAreaConhecimentoComponent implements OnInit {
   }
 
   public modificarInputs(event: Event) {
-    let campo: string = (<HTMLInputElement>event.target).name;
-    let valor: string = (<HTMLInputElement>event.target).value;
+    const campo: string = (<HTMLInputElement>event.target).name;
+    const valor: string = (<HTMLInputElement>event.target).value;
     this.areaConhecimento[campo] = valor;
     this.validar(event);
   }

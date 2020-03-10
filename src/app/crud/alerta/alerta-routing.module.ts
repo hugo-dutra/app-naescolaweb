@@ -10,17 +10,17 @@ import { ReceberAlertaOcorrenciaComponent } from './receber-alerta-ocorrencia/re
 import { AuthGuardService } from '../../guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: "", component: GerenciarAlertaComponent, canActivate: [AuthGuardService] },
-  { path: "listar-alerta", component: ListarAlertaComponent, canActivate: [AuthGuardService] },
-  { path: "alterar-alerta", component: AlterarAlertaComponent, canActivate: [AuthGuardService] },
-  { path: "atribuir-alerta-usuario", component: AtribuirAlertaUsuarioComponent, canActivate: [AuthGuardService] },
-  { path: "inserir-alerta", component: InserirAlertaComponent, canActivate: [AuthGuardService] },
-  { path: "excluir-alerta", component: ExcluirAlertaComponent, canActivate: [AuthGuardService] },
-  { path: "receber-alerta-ocorrencia", component: ReceberAlertaOcorrenciaComponent, canActivate: [AuthGuardService] },
+  { path: '', component: GerenciarAlertaComponent, canActivate: [AuthGuardService] },
+  { path: 'listar-alerta', component: ListarAlertaComponent, canActivate: [AuthGuardService] },
+  { path: 'alterar-alerta', component: AlterarAlertaComponent, canActivate: [AuthGuardService] },
+  { path: 'atribuir-alerta-usuario', component: AtribuirAlertaUsuarioComponent, canActivate: [AuthGuardService] },
+  { path: 'inserir-alerta', component: InserirAlertaComponent, canActivate: [AuthGuardService] },
+  { path: 'excluir-alerta', component: ExcluirAlertaComponent, canActivate: [AuthGuardService] },
+  { path: 'receber-alerta-ocorrencia', component: ReceberAlertaOcorrenciaComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AlertaRoutingModule { }

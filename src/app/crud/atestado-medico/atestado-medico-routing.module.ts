@@ -7,14 +7,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from '../../guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: "", component: ListarAtestadoMedicoComponent, canActivate: [AuthGuardService] },
-  { path: "alterar-atestado-medico", component: AlterarAtestadoMedicoComponent, canActivate: [AuthGuardService] },
-  { path: "excluir-atestado-medico", component: ExcluirAtestadoMedicoComponent, canActivate: [AuthGuardService] },
-  { path: "inserir-atestado-medico", component: InserirAtestadoMedicoComponent, canActivate: [AuthGuardService] },
+  { path: '', component: ListarAtestadoMedicoComponent, canActivate: [AuthGuardService] },
+  { path: 'alterar-atestado-medico', component: AlterarAtestadoMedicoComponent, canActivate: [AuthGuardService] },
+  { path: 'excluir-atestado-medico', component: ExcluirAtestadoMedicoComponent, canActivate: [AuthGuardService] },
+  { path: 'inserir-atestado-medico', component: InserirAtestadoMedicoComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AtestadoMedicoRoutingModule { }

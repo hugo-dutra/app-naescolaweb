@@ -9,11 +9,15 @@ import { ExcluirAtestadoMedicoComponent } from './excluir-atestado-medico/exclui
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [InserirAtestadoMedicoComponent, ListarAtestadoMedicoComponent, AlterarAtestadoMedicoComponent, ExcluirAtestadoMedicoComponent],
+  declarations: [
+    InserirAtestadoMedicoComponent,
+    ListarAtestadoMedicoComponent,
+    AlterarAtestadoMedicoComponent,
+    ExcluirAtestadoMedicoComponent],
   imports: [
     CommonModule,
     AtestadoMedicoRoutingModule,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
 export class AtestadoMedicoModule { }

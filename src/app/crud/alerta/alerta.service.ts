@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AlertaService {
 
@@ -15,8 +15,11 @@ export class AlertaService {
    * @param esc_id id da escola no qual os alertas foram criados
    */
   public listarRegraAlerta(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "listar-regra-alerta", JSON.stringify({ esc_id: esc_id }), headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'listar-regra-alerta', JSON.stringify({ esc_id: esc_id }), headers);
   }
 
   /**
@@ -36,12 +39,15 @@ export class AlertaService {
     usr_id: number, esc_id: number, data_criacao: string,
     data_inicio: string, data_fim: string): Observable<any> {
 
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "inserir-regra-alerta",
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'inserir-regra-alerta',
       JSON.stringify({
         valor_referencia: valor_referencia, opa_id: opa_id, tod_id: tod_id,
         usr_id: usr_id, esc_id: esc_id, data_criacao: data_criacao,
-        data_inicio: data_inicio, data_fim: data_fim
+        data_inicio: data_inicio, data_fim: data_fim,
       }),
       headers);
   }
@@ -62,12 +68,15 @@ export class AlertaService {
     valor_referencia: number, data_inicio: string, data_fim: string,
     esc_id: number, usr_id: number): Observable<any> {
 
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "alterar-regra-alerta", JSON.stringify(
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'alterar-regra-alerta', JSON.stringify(
       {
         ral_id: ral_id, tod_id: tod_id, opa_id: opa_id,
         valor_referencia: valor_referencia, data_inicio: data_inicio, data_fim: data_fim,
-        esc_id: esc_id, usr_id: usr_id
+        esc_id: esc_id, usr_id: usr_id,
       }),
       headers);
   }
@@ -78,8 +87,12 @@ export class AlertaService {
    * @param ral_id id da regra de alerta que será excluído.
    */
   public excluirRegraAlerta(ral_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "excluir-regra-alerta", JSON.stringify({ ral_id: ral_id }), headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'excluir-regra-alerta',
+      JSON.stringify({ ral_id: ral_id }), headers);
   }
 
   /**
@@ -88,8 +101,12 @@ export class AlertaService {
  * usr_id(Id do usuario) e esc_id(Id da escola que está fazendo a atribuição do alerta)
  */
   public inserirRegraAlertaUsuario(arrayOfRegraAlertaUsuario: Object[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "inserir-regra-alerta-usuario", JSON.stringify({ arrayOfRegraAlertaUsuario: arrayOfRegraAlertaUsuario }), headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'inserir-regra-alerta-usuario',
+      JSON.stringify({ arrayOfRegraAlertaUsuario: arrayOfRegraAlertaUsuario }), headers);
   }
 
   /**
@@ -97,8 +114,12 @@ export class AlertaService {
    * @param arrayOfRegraAlertaUsuario
    */
   public excluirRegraAlertaUsuario(arrayOfRegraAlertaUsuario: Object[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "excluir-regra-alerta-usuario", JSON.stringify({ arrayOfRegraAlertaUsuario: arrayOfRegraAlertaUsuario }), headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'excluir-regra-alerta-usuario',
+      JSON.stringify({ arrayOfRegraAlertaUsuario: arrayOfRegraAlertaUsuario }), headers);
   }
 
 
@@ -108,12 +129,17 @@ export class AlertaService {
    * @param esc_id Id da escola onde o usuário está logado.
    */
   public listarRegraAlertaUsuario(usr_id: number, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "listar-regra-alerta-usuario", JSON.stringify({ usr_id: usr_id, esc_id: esc_id }), headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'listar-regra-alerta-usuario',
+      JSON.stringify({ usr_id: usr_id, esc_id: esc_id }), headers);
   }
 
   /**
-  * Insere qual ocorrencia já foi verificada por determinado usuário, em determinada data, e o que foi feito referente aquele alerta.
+  * Insere qual ocorrencia já foi verificada por determinado usuário, em determinada
+  *  data, e o que foi feito referente aquele alerta.
   * @param est_id Id do estudante para aplicar o filtro e inserir na tabela de alertas de ocorrencias verificadas
   * @param tod_id Id do tipo de ocorrência do alerta
   * @param usr_id Id do usuário que recebeu o alerta
@@ -127,12 +153,15 @@ export class AlertaService {
     est_id: number, tod_id: number, usr_id: number,
     esc_id: number, data_inicio_considerado: string, data_fim_considerado: string,
     oov_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "inserir-alerta-ocorrencia-verificada",
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'inserir-alerta-ocorrencia-verificada',
       JSON.stringify({
         est_id: est_id, tod_id: tod_id, usr_id: usr_id,
         esc_id: esc_id, data_inicio_considerado: data_inicio_considerado, data_fim_considerado: data_fim_considerado,
-        oov_id: oov_id
+        oov_id: oov_id,
       }), headers);
   }
 
@@ -144,16 +173,23 @@ export class AlertaService {
   public inserirObservacaoAlertaOcorrenciaVerificada(
     data_verificacao: string,
     observacao: string): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "inserir-observacao-alerta-ocorrencia-verificada", JSON.stringify({ observacao: observacao, data_verificacao: data_verificacao }), headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'inserir-observacao-alerta-ocorrencia-verificada',
+      JSON.stringify({ observacao: observacao, data_verificacao: data_verificacao }), headers);
   }
 
   /**
    * Metodo lista os operadores lógicos que definem o critério de ativação dos alertas.
    */
   public listarOperadorAlerta(): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "listar-operador-alerta", null, headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'listar-operador-alerta', null, headers);
   }
 
 }

@@ -20,7 +20,7 @@ import { HintModule } from 'angular-custom-tour';
     GerenciarAlertaComponent,
     InserirAlertaComponent,
     ListarAlertaComponent,
-    ReceberAlertaOcorrenciaComponent
+    ReceberAlertaOcorrenciaComponent,
   ],
   imports: [
     CommonModule,

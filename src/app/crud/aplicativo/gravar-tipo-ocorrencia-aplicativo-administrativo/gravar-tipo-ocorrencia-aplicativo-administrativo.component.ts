@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { FirebaseService } from './../../../shared/firebase/firebase.service';
 import { CONSTANTES } from './../../../shared/constantes.shared';
 import { Utils } from './../../../shared/utils.shared';
-import { TipoOcorrenciaDisciplinarService } from './../../tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.service';
+import {
+  TipoOcorrenciaDisciplinarService,
+} from './../../tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.service';
 import { Component, OnInit } from '@angular/core';
 
 
@@ -11,12 +13,12 @@ import { Component, OnInit } from '@angular/core';
   selector: 'ngx-gravar-tipo-ocorrencia-aplicativo-administrativo',
   templateUrl: './gravar-tipo-ocorrencia-aplicativo-administrativo.component.html',
   styleUrls: ['./gravar-tipo-ocorrencia-aplicativo-administrativo.component.scss'],
-  providers: [TipoOcorrenciaDisciplinarService]
+  providers: [TipoOcorrenciaDisciplinarService],
 })
 export class GravarTipoOcorrenciaAplicativoAdministrativoComponent implements OnInit {
 
   public feedbackUsuario: string = undefined;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public arrayDeTiposOcorrenciasDisponiveis = new Array<Object>();
@@ -45,13 +47,14 @@ export class GravarTipoOcorrenciaAplicativoAdministrativoComponent implements On
       this.arrayDeTiposOcorrenciasDisponiveis = Object.values(response);
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
     });
@@ -67,31 +70,32 @@ export class GravarTipoOcorrenciaAplicativoAdministrativoComponent implements On
 
   public gravaStatusTipoOcorrencia(event: Event, tipoOcorrencia: Object): void {
     const statusCheck = (<HTMLInputElement>event.target).checked;
-    if (statusCheck == true) {
-      this.arrayDeTiposOcorrenciasSelecionadas.push(tipoOcorrencia)
+    if (statusCheck === true) {
+      this.arrayDeTiposOcorrenciasSelecionadas.push(tipoOcorrencia);
     } else {
       this.arrayDeTiposOcorrenciasSelecionadas = this.arrayDeTiposOcorrenciasSelecionadas.filter((valor) => {
-        return valor['id'] != tipoOcorrencia['id']
-      })
+        return valor['id'] !== tipoOcorrencia['id'];
+      });
     }
   }
 
   public salvarTiposOcorrenciasSelecionadas(): void {
     this.feedbackUsuario = 'Gravando no aplicativo, aguarde...';
     const arrayMapeada = this.arrayDeTiposOcorrenciasSelecionadas.map((valor) => {
-      return { categoria: valor['nome'], categoriaId: valor['id'], valor: valor['valor'] }
-    })
+      return { categoria: valor['nome'], categoriaId: valor['id'], valor: valor['valor'] };
+    });
     this.firebaseService.gravarTiposOcorrenciasAplicativoAdministravivo(arrayMapeada, this.inep).then(() => {
       this.feedbackUsuario = undefined;
       this.alertModalService.showAlertSuccess('Operação finalizada com sucesso');
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
     });

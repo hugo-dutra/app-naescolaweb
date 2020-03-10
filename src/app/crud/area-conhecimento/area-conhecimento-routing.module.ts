@@ -7,14 +7,14 @@ import { ExcluirAreaConhecimentoComponent } from './excluir-area-conhecimento/ex
 import { AlterarAreaConhecimentoComponent } from './alterar-area-conhecimento/alterar-area-conhecimento.component';
 
 const routes: Routes = [
-  { path: "", component: ListarAreaConhecimentoComponent, canActivate: [AuthGuardService] },
-  { path: "inserir-area-conhecimento", component: InserirAreaConhecimentoComponent, canActivate: [AuthGuardService] },
-  { path: "excluir-area-conhecimento", component: ExcluirAreaConhecimentoComponent, canActivate: [AuthGuardService] },
-  { path: "alterar-area-conhecimento", component: AlterarAreaConhecimentoComponent, canActivate: [AuthGuardService] },
+  { path: '', component: ListarAreaConhecimentoComponent, canActivate: [AuthGuardService] },
+  { path: 'inserir-area-conhecimento', component: InserirAreaConhecimentoComponent, canActivate: [AuthGuardService] },
+  { path: 'excluir-area-conhecimento', component: ExcluirAreaConhecimentoComponent, canActivate: [AuthGuardService] },
+  { path: 'alterar-area-conhecimento', component: AlterarAreaConhecimentoComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AreaConhecimentoRoutingModule { }

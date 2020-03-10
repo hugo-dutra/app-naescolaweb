@@ -17,24 +17,24 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./gerar-qrcode-aplicativo-administrativo.component.scss'],
   providers: [UsuarioService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
 
   public feedbackUsuario: string = undefined;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public turmas = new Array<Object>();
@@ -63,13 +63,13 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
   public carregarIdEscola(): void {
     this.dados_escola = JSON.parse(
       Utils.decriptAtoB(
-        localStorage.getItem("dados_escola"),
-        CONSTANTES.PASSO_CRIPT
-      )
+        localStorage.getItem('dados_escola'),
+        CONSTANTES.PASSO_CRIPT,
+      ),
     )[0];
-    this.esc_id = parseInt(this.dados_escola["id"]);
-    this.inep = this.dados_escola["inep"];
-    this.nomeEscola = this.dados_escola["nome"];
+    this.esc_id = parseInt(this.dados_escola['id'], 10);
+    this.inep = this.dados_escola['inep'];
+    this.nomeEscola = this.dados_escola['nome'];
   }
 
   public concederPermissoes(): void {
@@ -77,7 +77,7 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
     setTimeout(() => {
       this.firebaseService.gravarUsuariosAutorizadosTirarFotos(this.arrayOfUsuarios, this.inep).then(() => {
         this.feedbackUsuario = undefined;
-      })
+      });
     }, 1000);
   }
 
@@ -86,7 +86,7 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
     setTimeout(() => {
       this.firebaseService.revogarUsuariosTirarFotos(this.arrayOfUsuarios, this.inep).then(() => {
         this.feedbackUsuario = undefined;
-      })
+      });
     }, 1000);
   }
 
@@ -94,14 +94,14 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
     this.feedbackUsuario = 'Concedendo permissões para tirar fotos, aguarde...';
     this.firebaseService.concederUsuarioIndividual(this.inep, usr_id).then(() => {
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public revogarPermissaoIndividual(usr_id: string): void {
     this.feedbackUsuario = 'Revogando permissões para tirar fotos, aguarde...';
     this.firebaseService.revogarUsuarioIndividual(this.inep, usr_id).then(() => {
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public listarUsuarios(): void {
@@ -110,16 +110,17 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
       this.feedbackUsuario = undefined;
       this.arrayOfUsuarios = Object.values(response);
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public exibirComponente(rota: string): boolean {
@@ -133,54 +134,54 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
   public gerarQRCodeDocumentoPDF(): void {
     this.feedbackUsuario = `Criando acessos administrativos, aguarde..`;
     setTimeout(() => {
-      var doc = new jsPDF({
+      const doc = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4',
         compressPdf: true,
       });
       new Promise(resolve => {
-        let alturaPagina = doc.internal.pageSize.height;
-        let larguraPagina = doc.internal.pageSize.width;
-        let distanciaVertical = 10;
-        let distanciHorizontal = 0;
-        let alturaCartao = ((alturaPagina / 4) - distanciaVertical)
-        let larguraCartao = ((larguraPagina / 2) - distanciHorizontal);
+        const alturaPagina = doc.internal.pageSize.height;
+        const larguraPagina = doc.internal.pageSize.width;
+        const distanciaVertical = 10;
+        const distanciHorizontal = 0;
+        const alturaCartao = ((alturaPagina / 4) - distanciaVertical);
+        const larguraCartao = ((larguraPagina / 2) - distanciHorizontal);
         let yPos = 0;
         let xPos = -1;
-        let margem = 0;
+        const margem = 0;
         let contaCartao = 0;
-        let quantidadeDocumentosPorPagina = 10;
+        const quantidadeDocumentosPorPagina = 10;
 
         this.arrayOfUsuarios.forEach(elem => {
-          html2canvas(document.querySelector(`#qrcode_${elem["usr_id"]}`), { useCORS: true }).then(canvas => {
-            this.feedbackUsuario = `Criando cartão do(a) usuário ${elem["usuario"]}`;
-            if (contaCartao % 2 == 0 && contaCartao > 0) {
+          html2canvas(document.querySelector(`#qrcode_${elem['usr_id']}`), { useCORS: true }).then(canvas => {
+            this.feedbackUsuario = `Criando cartão do(a) usuário ${elem['usuario']}`;
+            if (contaCartao % 2 === 0 && contaCartao > 0) {
               yPos += (alturaPagina / (quantidadeDocumentosPorPagina / 2));
             }
-            if (contaCartao % quantidadeDocumentosPorPagina == 0 && contaCartao > 0) {
+            if (contaCartao % quantidadeDocumentosPorPagina === 0 && contaCartao > 0) {
               yPos = 0;
               xPos = -1 + margem;
               doc.addPage('portrait', 'a4');
             }
-            if (xPos == 0 + margem) {
+            if (xPos === 0 + margem) {
               xPos = (larguraPagina / 2) + margem;
             } else {
-              xPos = 0 + margem
+              xPos = 0 + margem;
             }
 
-            var imgData = canvas.toDataURL('image/jpeg');
-            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem["usr_id"]);
+            const imgData = canvas.toDataURL('image/jpeg');
+            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['usr_id']);
 
-            contaCartao += 1
-            if (contaCartao == this.arrayOfUsuarios.length) {
+            contaCartao += 1;
+            if (contaCartao === this.arrayOfUsuarios.length) {
               this.feedbackUsuario = undefined;
               doc.save(`QRCodeAdministrativoPDF.pdf`);
-              resolve("ok");
+              resolve('ok');
             }
           });
-        })
-      })
+        });
+      });
     }, 2000);
   }
 

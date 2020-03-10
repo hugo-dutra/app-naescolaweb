@@ -6,8 +6,8 @@ import { Utils } from './../../../shared/utils.shared';
 import { EstudanteService } from './../../estudante/estudante.service';
 import { Component, OnInit } from '@angular/core';
 
-import * as Excel from "exceljs/dist/exceljs.min.js";
-import * as ExcelProper from "exceljs";
+import * as Excel from 'exceljs/dist/exceljs.min.js';
+import * as ExcelProper from 'exceljs';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -15,18 +15,16 @@ import * as XLSX from 'xlsx';
   selector: 'ngx-listar-aplicativo-estudante-sem-foto',
   templateUrl: './listar-aplicativo-estudante-sem-foto.component.html',
   styleUrls: ['./listar-aplicativo-estudante-sem-foto.component.scss'],
-  providers: [EstudanteService]
+  providers: [EstudanteService],
 })
 export class ListarAplicativoEstudanteSemFotoComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public arrayEstudantesSemfoto = new Array<Object>();
   public esc_id: number;
-
-
 
   constructor(
     private estudanteService: EstudanteService,
@@ -40,24 +38,24 @@ export class ListarAplicativoEstudanteSemFotoComponent implements OnInit {
   }
 
   public listarEstudantesSemFoto(): void {
-    this.feedbackUsuario = "Listando estudantes sem foto, aguarde...";
+    this.feedbackUsuario = 'Listando estudantes sem foto, aguarde...';
     this.estudanteService.listarSemFotoEscolaId(this.esc_id).toPromise().then((response: Response) => {
       this.arrayEstudantesSemfoto = Object.values(response);
       this.feedbackUsuario = undefined;
-      console.log(this.arrayEstudantesSemfoto);
     }).catch((erro: Response) => {
       this.mostrarAlertaErro(erro);
-    })
+    });
   }
 
   public mostrarAlertaErro(erro: Response): void {
-    //Mostra modal
+    // Mostra modal
     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-    //registra log de erro no firebase usando serviço singlenton
-    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
     Utils.gravarErroAnalytics(JSON.stringify(erro));
-    //Caso token seja invalido, reenvia rota para login
+    // Caso token seja invalido, reenvia rota para login
     Utils.tratarErro({ router: this.router, response: erro });
     this.feedbackUsuario = undefined;
   }
@@ -65,8 +63,8 @@ export class ListarAplicativoEstudanteSemFotoComponent implements OnInit {
 
   public imprimirEstudantesSemFoto(): void {
     Utils.gerarLista(this.arrayEstudantesSemfoto.map((valor) => {
-      return { Nome: valor['nome'], Serie: valor['serie'], Turma: valor['turma'], Turno: valor['turno'] }
-    }), "Estudantes sem foto");
+      return { Nome: valor['nome'], Serie: valor['serie'], Turma: valor['turma'], Turno: valor['turno'] };
+    }), 'Estudantes sem foto');
   }
 
 

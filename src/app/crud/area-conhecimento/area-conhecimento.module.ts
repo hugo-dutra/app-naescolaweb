@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 
 import { AreaConhecimentoRoutingModule } from './area-conhecimento-routing.module';
 import { AlterarAreaConhecimentoComponent } from './alterar-area-conhecimento/alterar-area-conhecimento.component';
@@ -23,7 +23,7 @@ import { NbCardModule } from '@nebular/theme';
     ReactiveFormsModule,
     RouterModule,
     CommonModule,
-    AreaConhecimentoRoutingModule
+    AreaConhecimentoRoutingModule,
   ],
 })
 export class AreaConhecimentoModule { }

@@ -5,7 +5,7 @@ import { AtestadoMedico } from './atestado-medico.model';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AtestadoMedicoService {
 
@@ -14,46 +14,58 @@ export class AtestadoMedicoService {
   public consultarCid(codigo: string): Promise<Object> {
     return new Promise((resolve, reject) => {
       this.http.get(`https://cid10-api.herokuapp.com/cid10/${codigo}`).toPromise().then((response: Object) => {
-        resolve(response)
+        resolve(response);
       }).catch((reason: any) => {
-        reject(reason)
-      })
-    })
+        reject(reason);
+      });
+    });
   }
 
   public inserir(atestadoMedico: AtestadoMedico): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-atestado-medico",
+      CONSTANTES.HOST_API + 'inserir-atestado-medico',
       JSON.stringify({ atestadoMedico: atestadoMedico }),
-      headers
+      headers,
     );
   }
 
   public alterar(atestadoMedico: AtestadoMedico): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-atestado-medico",
+      CONSTANTES.HOST_API + 'alterar-atestado-medico',
       JSON.stringify({ atestadoMedico: atestadoMedico }),
-      headers
+      headers,
     );
   }
 
   public excluir(atm_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-atestado-medico",
+      CONSTANTES.HOST_API + 'excluir-atestado-medico',
       JSON.stringify({ atm_id: atm_id }),
-      headers
+      headers,
     );
   }
 
   public listar(nomeEstudante: string, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-atestado-medico",
+      CONSTANTES.HOST_API + 'listar-atestado-medico',
       JSON.stringify({ nomeEstudante: nomeEstudante, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 

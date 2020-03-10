@@ -13,24 +13,24 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./baixar-foto-estudante-aplicativo.component.scss'],
   providers: [EstudanteService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public arrayOfEstudantesAplicativo = new Array<Object>();
@@ -50,12 +50,12 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
   ngOnInit() {
     this.dados_escola = JSON.parse(
       Utils.decriptAtoB(
-        localStorage.getItem("dados_escola"),
-        CONSTANTES.PASSO_CRIPT
-      )
+        localStorage.getItem('dados_escola'),
+        CONSTANTES.PASSO_CRIPT,
+      ),
     )[0];
-    this.esc_id = parseInt(this.dados_escola["id"]);
-    this.inep = this.dados_escola["inep"];
+    this.esc_id = parseInt(this.dados_escola['id'], 10);
+    this.inep = this.dados_escola['inep'];
     this.anoAtual = (new Date()).getFullYear();
   }
 
@@ -68,29 +68,29 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
   }
 
   public listarSincronizarFotosEstudantesFirebase(sobrescrever: number): void {
-    this.feedbackUsuario = "Listando fotos obtidas no aplicativo administrativo, aguarde..."
+    this.feedbackUsuario = 'Listando fotos obtidas no aplicativo administrativo, aguarde...';
     this.firebaseService.lerFotosEstudanteAplicativoAdministrativo(this.inep)
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         const arrayOfEstudantes = new Array<Object>();
         querySnapshot.forEach(documento => {
           const dadosEstudantes = documento.data();
           arrayOfEstudantes.push(dadosEstudantes);
-        })
-        this.feedbackUsuario = 'Atualizando fotos na base, aguarde...'
+        });
+        this.feedbackUsuario = 'Atualizando fotos na base, aguarde...';
         this.estudanteService
           .alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes, sobrescrever)
           .toPromise()
           .then(() => {
             this.sincronizarDadosNoAplicativoAdministrativo();
-          })
+          });
       }).catch((erro: Response) => {
         this.mostrarAlertaErro(erro);
-      })
+      });
   }
 
   public sobrescreverFoto(event: Event): void {
-    let valor = (<HTMLInputElement>(event.target)).checked;
-    this.sobrescreveFoto = valor == true ? 1 : 0;
+    const valor = (<HTMLInputElement>(event.target)).checked;
+    this.sobrescreveFoto = valor === true ? 1 : 0;
   }
 
   public sincronizarFotos(): void {
@@ -98,24 +98,24 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
   }
 
   public sincronizarDadosNoAplicativoAdministrativo(): void {
-    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
-    const telefone = dados_escola["telefone"];
-    this.feedbackUsuario = "Atualizando dados para aplicativo adminstrativo, aguarde..."
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+    const telefone = dados_escola['telefone'];
+    this.feedbackUsuario = 'Atualizando dados para aplicativo adminstrativo, aguarde...';
     this.estudanteService.listarEstudantesAplicativo(this.esc_id).toPromise().then((response: Response) => {
       this.arrayOfEstudantesAplicativo = Object.values(response);
-
-      console.log(this.arrayOfEstudantesAplicativo);
-
       const arrayDeEstudantesAplicativoEstruturado = new Array<Object>();
       const arrayDeEstudantesAplicativo = new Array<Object>();
       this.arrayOfEstudantesAplicativo.forEach(estudante => {
-        let dataFoto = 0
+        let dataFoto = 0;
         if (estudante['dataFoto'] != null) {
-          dataFoto = parseInt(estudante['dataFoto']) * 1000;
+          dataFoto = parseInt(estudante['dataFoto'], 10) * 1000;
         }
         const escola = estudante['escola'];
         const etapa = estudante['etapa'];
-        const foto = { datePicture: new Date(dataFoto), url: estudante['foto'], userId: estudante['usr_id_foto'], userName: estudante['usuario'] }
+        const foto = {
+          datePicture: new Date(dataFoto), url: estudante['foto'],
+          userId: estudante['usr_id_foto'], userName: estudante['usuario'],
+        };
         const inep = estudante['inep'];
         const est_id = estudante['est_id'];
         const nome = estudante['nome'];
@@ -123,9 +123,15 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
         const telefoneEscola = telefone;
         const turma = estudante['turma'];
         const turno = estudante['turno'];
-        arrayDeEstudantesAplicativoEstruturado.push({ escola, etapa, foto, inep, est_id, nome, serie, telefoneEscola, turma, turno });
-        arrayDeEstudantesAplicativo.push({ escola, etapa, foto, inep, est_id, nome, serie, telefoneEscola, turma, turno });
-      })
+        arrayDeEstudantesAplicativoEstruturado.push({
+          escola, etapa, foto, inep, est_id,
+          nome, serie, telefoneEscola, turma, turno,
+        });
+        arrayDeEstudantesAplicativo.push({
+          escola, etapa, foto, inep, est_id, nome,
+          serie, telefoneEscola, turma, turno,
+        });
+      });
       this.feedbackUsuario = 'Gravando documento para carga única, aguarde...';
       let parteArray = 0;
       const tamanhoDocumento = 500;
@@ -136,29 +142,30 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
             this.mostrarAlertaErro(erro);
           });
         parteArray++;
-        this.feedbackUsuario = 'Gravando coleção de estudantes, pode demorar um pouco, aguarde...'
+        this.feedbackUsuario = 'Gravando coleção de estudantes, pode demorar um pouco, aguarde...';
         this.firebaseService.gravarListagemEstudantesAplicativoAdministrativoBatch(pedaco).then(() => {
-          if (this.feedbackUsuario != undefined) {
+          if (this.feedbackUsuario !== undefined) {
             this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
           }
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
           this.mostrarAlertaErro(erro);
-        })
+        });
       }
     }).catch((erro: Response) => {
       this.mostrarAlertaErro(erro);
-    })
+    });
   }
 
   public mostrarAlertaErro(erro: Response): void {
-    //Mostra modal
+    // Mostra modal
     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-    //registra log de erro no firebase usando serviço singlenton
-    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
     Utils.gravarErroAnalytics(JSON.stringify(erro));
-    //Caso token seja invalido, reenvia rota para login
+    // Caso token seja invalido, reenvia rota para login
     Utils.tratarErro({ router: this.router, response: erro });
     this.feedbackUsuario = undefined;
   }
