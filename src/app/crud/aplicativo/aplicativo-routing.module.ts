@@ -1,3 +1,4 @@
+import { ListarAplicativoEstudanteSemFotoComponent } from './listar-aplicativo-estudante-sem-foto/listar-aplicativo-estudante-sem-foto.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GerenciarAplicativoComponent } from './gerenciar-aplicativo/gerenciar-aplicativo.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: "gerar-qrcode-aplicativo-administrativo", component: GerarQrcodeAplicativoAdministrativoComponent, canActivate: [AuthGuardService] },
   { path: "baixar-foto-estudante-aplicativo", component: BaixarFotoEstudanteAplicativoComponent, canActivate: [AuthGuardService] },
   { path: "gravar-tipo-ocorrencia-aplicativo-administrativo", component: GravarTipoOcorrenciaAplicativoAdministrativoComponent, canActivate: [AuthGuardService] },
+  { path: "listar-estudante-sem-foto", component: ListarAplicativoEstudanteSemFotoComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({

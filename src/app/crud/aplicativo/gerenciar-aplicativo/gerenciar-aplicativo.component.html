@@ -130,6 +130,23 @@
     </div>
 
 
+    <tour-step selector="listar-estudantes-sem-foto" *ngIf="exibirComponente('listar-estudante-sem-foto')" order="2"
+      position="left" title="Sincronizar ocorrências disciplinares">
+      Listar estudantes sem foto
+    </tour-step>
+    <div id="listar-estudantes-sem-foto" *ngIf="exibirComponente('listar-estudante-sem-foto')"
+      class="col-lg-4 col-sm-12 col-xs-12 mt-2">
+      <nb-card (click)="navegarListarEstudantesSemFoto()">
+        <nb-card-header>
+          <i class="fa fa-4x fa-question-circle text-warning"></i>
+        </nb-card-header>
+        <nb-card-footer>
+          <h5 class="text-center"> Estudantes sem foto</h5>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+
+
   </div>
 </div>
 

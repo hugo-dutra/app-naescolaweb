@@ -225,6 +225,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.sedfService.listarEstudantesImportacao(this.tokenIntegracao, this.inep).toPromise().then((response: Response) => {
       this.feedbackUsuario = 'Iniciando carga, aguarde...';
       this.arrayOfEstudantesEscola = Utils.removerCaracteresEspeciaisArray(Object.values(response));
+      this.feedbackUsuario = undefined;
       this.inserirEstudantesEmBlocos(Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id).then((response: Response) => {
         this.feedbackUsuario = undefined;
         this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then((response: Response) => {
@@ -235,7 +236,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
       }).catch((erro: Response) => {
         this.gravarErroMostrarMensagem(erro);
       });
-
     }).catch((erro: Response) => {
       this.gravarErroMostrarMensagem(erro);
     });
