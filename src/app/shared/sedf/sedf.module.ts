@@ -13,6 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
     SedfRoutingModule,
     HttpClientModule,
     NbCardModule,
-  ]
+  ],
 })
 export class SedfModule { }

@@ -4,11 +4,11 @@ import { GerenciarIntegracaoComponent } from './gerenciar-integracao/gerenciar-i
 import { AuthGuardService } from '../../guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: "", component: GerenciarIntegracaoComponent, canActivate: [AuthGuardService] }
+  { path: '', component: GerenciarIntegracaoComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class SedfRoutingModule { }
