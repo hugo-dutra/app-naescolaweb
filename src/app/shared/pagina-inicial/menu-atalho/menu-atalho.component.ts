@@ -12,30 +12,30 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu-atalho.component.scss'],
   providers: [AcessoComumService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
           opacity: 1,
-          transform: "scale(1)"
-        })
+          transform: 'scale(1)',
+        }),
       ),
-      transition("void => visivel", [
-        style({ opacity: 0, transform: "scale(0)" }),
-        animate(`${1.5 * CONSTANTES.ANIMATION_DELAY_TIME / 1000}s 10ms cubic-bezier(.68,.48,.34,1)`)
-      ])
-    ])
-  ]
+      transition('void => visivel', [
+        style({ opacity: 0, transform: 'scale(0)' }),
+        animate(`${1.5 * CONSTANTES.ANIMATION_DELAY_TIME / 1000}s 10ms cubic-bezier(.68,.48,.34,1)`),
+      ]),
+    ]),
+  ],
 })
 export class MenuAtalhoComponent implements OnInit {
 
   public acesso = new Acesso();
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public arrayOfLinkAcessado = new Array<LinkAcessado>();
   public matrizReferencia: Array<LinkAcessado>;
   constructor(
     private acessoComumService: AcessoComumService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -46,17 +46,17 @@ export class MenuAtalhoComponent implements OnInit {
           ? 1
           : a.quantidadeAcessoLink > b.quantidadeAcessoLink
             ? -1
-            : 0
+            : 0,
     );
     this.matrizReferencia = this.arrayOfLinkAcessado;
   }
 
   public filtrarAtalho(event: Event): void {
-    let valorFiltro = (<HTMLInputElement>event.target).value;
+    const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<LinkAcessado>();
     matrizRetorno = this.arrayOfLinkAcessado.filter((elemento) => {
-      return elemento["descricao"].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
-    })
+      return elemento['descricao'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+    });
     if (valorFiltro.length > 0) {
       this.arrayOfLinkAcessado = matrizRetorno;
     } else {
@@ -65,11 +65,11 @@ export class MenuAtalhoComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key == 'Backspace' || event.key == 'Delete') {
+    if (event.key === 'Backspace' || event.key === 'Delete') {
       setTimeout(() => {
-        this.arrayOfLinkAcessado = this.matrizReferencia
+        this.arrayOfLinkAcessado = this.matrizReferencia;
         this.filtrarAtalho(event);
-      }, 50)
+      }, 50);
     }
   }
 
@@ -78,11 +78,11 @@ export class MenuAtalhoComponent implements OnInit {
   }
 
   public adicionarLinkAcessado(link: any) {
-    let linkAcessado = new LinkAcessado();
-    linkAcessado.link = link["link"];
-    linkAcessado.descricao = link["texto"];
-    linkAcessado.fontAwesome = link["imagem"];
-    linkAcessado.corFontAwesome = link["cor"];
+    const linkAcessado = new LinkAcessado();
+    linkAcessado.link = link['link'];
+    linkAcessado.descricao = link['texto'];
+    linkAcessado.fontAwesome = link['imagem'];
+    linkAcessado.corFontAwesome = link['cor'];
     this.acessoComumService.adicionarLinkAcessado(linkAcessado);
   }
 

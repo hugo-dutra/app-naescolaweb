@@ -4,7 +4,7 @@ import { AlertModalComponent } from './alert-modal/alert-modal.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
   ],
   declarations: [AlertModalComponent],
   exports: [AlertModalComponent],

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AcessoComumService {
   emitirAlertaOcorrenciaDisciplinar = new EventEmitter<Object[]>();
@@ -24,17 +24,20 @@ export class AcessoComumService {
   private acesso = new Acesso();
 
   public pegarConfiguracaoFirebase(): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "pcf", null, headers);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'pcf', null, headers);
   }
 
   public adicionarLinkAcessado(linkAcessado: LinkAcessado): void {
-    this.usr_id = Utils.verificarDados()[0]["id"];
-    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+    this.usr_id = Utils.verificarDados()[0]['id'];
+    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
     this.acesso.usr_id = this.usr_id;
 
     if (JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`)) != null) {
-      this.acesso = JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`)
+      this.acesso = JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`),
       );
     }
     if (this.validarNovoLink(this.acesso.arrayOfAcessos, linkAcessado)) {
@@ -45,13 +48,13 @@ export class AcessoComumService {
   }
 
   public listarFavoritos(): Acesso {
-    if (Utils.verificarDados() != null && localStorage.getItem("esc_id") != null) {
-      this.usr_id = Utils.verificarDados()[0]["id"];
+    if (Utils.verificarDados() != null && localStorage.getItem('esc_id') != null) {
+      this.usr_id = Utils.verificarDados()[0]['id'];
       this.acesso.usr_id = this.usr_id;
-      this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+      this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
     }
     if (JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`)) != null) {
-      this.acesso = JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`)
+      this.acesso = JSON.parse(localStorage.getItem(`favoritos_${this.esc_id}_${this.usr_id}`),
       );
     }
     return this.acesso;
@@ -59,7 +62,7 @@ export class AcessoComumService {
 
   public validarNovoLink(linksAcessados: LinkAcessado[], link: LinkAcessado): boolean {
     for (let i = 0; i < linksAcessados.length; i++) {
-      if (link.link == linksAcessados[i].link) {
+      if (link.link === linksAcessados[i].link) {
         return false;
       }
     }
@@ -69,7 +72,7 @@ export class AcessoComumService {
   public contarLinksAcessados(linksAcessados: LinkAcessado[], link: LinkAcessado): Array<LinkAcessado> {
     let linksAcessadosAtualizados: Array<LinkAcessado>;
     for (let i = 0; i < linksAcessados.length; i++) {
-      if (link.link == linksAcessados[i].link) {
+      if (link.link === linksAcessados[i].link) {
         linksAcessados[i].quantidadeAcessoLink += 1;
       }
     }

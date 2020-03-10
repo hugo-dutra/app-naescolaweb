@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { Cobranca } from "./cobranca.model";
-import { CONSTANTES } from "../../constantes.shared";
-import { Observable } from "rxjs";
-import { BoletoBancario } from "./boleto-bancario.model";
+import { Injectable } from '@angular/core';
+import { Cobranca } from './cobranca.model';
+import { CONSTANTES } from '../../constantes.shared';
+import { Observable } from 'rxjs';
+import { BoletoBancario } from './boleto-bancario.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
@@ -10,63 +10,72 @@ export class BoletoBancarioService {
   constructor(private http: HttpClient) { }
 
   public gerarBoletoBancario(cobranca: Cobranca): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json") }
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json') };
 
     return this.http.post(
       CONSTANTES.BOLETO_FACIL_URL_BASE +
       cobranca.token +
-      "&amount=" +
+      '&amount=' +
       cobranca.amount +
-      "&description=" +
+      '&description=' +
       cobranca.description +
-      "&maxOverdueDays=" +
+      '&maxOverdueDays=' +
       cobranca.maxOverdueDays +
-      "&notifyPayer=" +
+      '&notifyPayer=' +
       cobranca.notifyPayer +
-      "&payerCpfCnpj=" +
+      '&payerCpfCnpj=' +
       cobranca.payerCpfCnpj +
-      "&payerEmail=" +
+      '&payerEmail=' +
       cobranca.payerEmail +
-      "&payerName=" +
+      '&payerName=' +
       cobranca.payerName +
-      "&dueDate=" +
+      '&dueDate=' +
       cobranca.dueDate +
-      "&discountAmount=" +
+      '&discountAmount=' +
       cobranca.discountAmount +
-      "&discountDays=" +
+      '&discountDays=' +
       cobranca.discountDays,
       null,
-      headers
+      headers,
     );
   }
 
   public salvarBoletoBancario(boleto: BoletoBancario, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-boleto-mensalidade",
+      CONSTANTES.HOST_API + 'inserir-boleto-mensalidade',
       JSON.stringify({ boleto: boleto, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public salvarBoletoBancarioPedidoCartao(boleto: BoletoBancario, pec_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-boleto-pedido-cartao",
+      CONSTANTES.HOST_API + 'inserir-boleto-pedido-cartao',
       JSON.stringify({ boleto: boleto, pec_id: pec_id }),
-      headers
+      headers,
     );
   }
 
   public listarBoletoAnoEscolaId(ano: number, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-boleto-ano-escola-id",
+      CONSTANTES.HOST_API + 'listar-boleto-ano-escola-id',
       JSON.stringify({ ano: ano, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 

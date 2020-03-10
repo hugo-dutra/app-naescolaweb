@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 
   public dados_escola = new Array<Object>();
   public dados_usuario = new Array<Object>();
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public esc_id: number;
   public usr_id: number;
   public anoAtual: number;
@@ -56,10 +56,10 @@ export class AppComponent implements OnInit {
   }
 
   public setTitle(): void {
-    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
+    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILD_SEDF) {
       this.titleService.setTitle(CONSTANTES.NOME_SISTEMA_SEDF);
     }
-    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
+    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILS_RESOLVIDOS) {
       this.titleService.setTitle(CONSTANTES.NOME_SISTEMA_RESOLVIDOS);
     }
   }
@@ -84,14 +84,6 @@ export class AppComponent implements OnInit {
     };
     firebase.initializeApp(config);
     this.logarUsuarioAnonimamenteFirebase();
-
-    /*
-    this.acessoComumService.pegarConfiguracaoFirebase().toPromise().then((response: string) => {
-      const ct = (response);
-      const cfg = Utils.decypher(ct);
-      firebase.initializeApp(JSON.parse(cfg));
-      this.logarUsuarioAnonimamenteFirebase();
-    }) */
   }
 
   public logarUsuarioAnonimamenteFirebase(): void {
@@ -101,12 +93,13 @@ export class AppComponent implements OnInit {
       const nome = Utils.verificarDados()[0]['nome'];
       const usr_id = Utils.verificarDados()[0]['id'];
       const escola = Utils.pegarDadosEscola()['nome'];
-      const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
-      const inep = dados_escola["inep"];
-      const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id }
+      const dados_escola = JSON.parse(
+        Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+      const inep = dados_escola['inep'];
+      const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id };
       const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
       criarUsuarioAnonimo({ user: user, uid: uid }).then(() => { });
-    })
+    });
   }
 
   public verificarAlertasOcorrenciasDisciplinares(): void {
@@ -123,7 +116,8 @@ export class AppComponent implements OnInit {
     const tempDadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
     const tempDadosUsuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT));
 
-    if (tempDadosEscola != null && tempDadosEscola != undefined && tempDadosUsuario != null && tempDadosUsuario != undefined) {
+    if (tempDadosEscola != null && tempDadosEscola !== undefined &&
+      tempDadosUsuario != null && tempDadosUsuario !== undefined) {
       this.dados_escola = tempDadosEscola[0];
       this.dados_usuario = tempDadosUsuario[0];
       this.esc_id = parseInt(this.dados_escola['id'], 10);
@@ -134,19 +128,19 @@ export class AppComponent implements OnInit {
   }
 
   public listarRegrasAlertasUsuario(): void {
-    if (this.usr_id != null && this.usr_id != undefined && this.esc_id != null && this.esc_id != undefined) {
+    if (this.usr_id != null && this.usr_id !== undefined && this.esc_id != null && this.esc_id !== undefined) {
       this.alertaService.listarRegraAlertaUsuario(this.usr_id, this.esc_id).toPromise().then((response: Response) => {
-        this.arrayOfRegrasAlertasUsuario = Object.values(response)
+        this.arrayOfRegrasAlertasUsuario = Object.values(response);
         this.listarAlertasOcorrencia();
       }).catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
-      })
+      });
     }
   }
 
@@ -155,11 +149,11 @@ export class AppComponent implements OnInit {
     this.arrayOfOcorrenciasSelecionadas = [];
     let contaRequisicoes = 0;
     this.arrayOfRegrasAlertasUsuario.forEach(regraAlerta => {
-      const esc_id = parseInt(regraAlerta["esc_id"]);
+      const esc_id = parseInt(regraAlerta['esc_id'], 10);
       const usr_id = this.usr_id;
-      const tod_id = parseInt(regraAlerta["tod_id"]);
-      const data_inicio = regraAlerta["data_inicio"];
-      const data_fim = regraAlerta["data_fim"];
+      const tod_id = parseInt(regraAlerta['tod_id'], 10);
+      const data_inicio = regraAlerta['data_inicio'];
+      const data_fim = regraAlerta['data_fim'];
       this.ocorrenciaService.listarQuantidadeAlertaNaoVerificado(
         esc_id,
         usr_id,
@@ -168,71 +162,69 @@ export class AppComponent implements OnInit {
         data_fim)
         .toPromise()
         .then((response: Response) => {
-          //const alertas = Object.values(response);
-          //this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(alertas);
           contaRequisicoes++;
           this.arrayOfOcorrenciasPeriodoConsiderado.push(...Object.values(response));
-          if (contaRequisicoes == this.arrayOfRegrasAlertasUsuario.length) {
+          if (contaRequisicoes === this.arrayOfRegrasAlertasUsuario.length) {
             this.avaliarOcorrenciasDentroRegrasAlertas();
           }
         }).catch((erro: Response) => {
-          //Mostra modal
+          // Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          //Gravar erros no analytics
+          // registra log de erro no firebase usando serviço singlenton
+          // Gravar erros no analytics
           Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
+          // Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
 
-        })
-    })
+        });
+    });
   }
 
   public avaliarOcorrenciasDentroRegrasAlertas(): void {
     this.arrayOfRegrasAlertasUsuario.forEach(regraAlerta => {
-      const valor_referencia = parseInt(regraAlerta["valor_referencia"]);
-      const operador = regraAlerta["operador"];
-      const tod_id = regraAlerta["tod_id"];
+      const valor_referencia = parseInt(regraAlerta['valor_referencia'], 10);
+      const operador = regraAlerta['operador'];
+      const tod_id = regraAlerta['tod_id'];
       this.arrayOfOcorrenciasPeriodoConsiderado.forEach(ocorrencia => {
-        const quantidadeOcorrenciasDeTipo = parseInt(ocorrencia["quantidade"]);
+        const quantidadeOcorrenciasDeTipo = parseInt(ocorrencia['quantidade'], 10);
         switch (operador) {
-          case "menor": {
-            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'menor': {
+            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
-          case "menor ou igual": {
-            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'menor ou igual': {
+            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
-          case "igual": {
-            if (quantidadeOcorrenciasDeTipo == valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'igual': {
+            if (quantidadeOcorrenciasDeTipo === valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
-          case "maior ou igual": {
-            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'maior ou igual': {
+            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
-          case "maior": {
-            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'maior': {
+            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
-          case "diferente": {
-            if (quantidadeOcorrenciasDeTipo != valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'diferente': {
+            if (quantidadeOcorrenciasDeTipo !== valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
@@ -241,7 +233,7 @@ export class AppComponent implements OnInit {
           default:
             break;
         }
-      })
-    })
+      });
+    });
   }
 }

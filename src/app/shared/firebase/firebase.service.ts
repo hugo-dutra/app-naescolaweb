@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { MessageFirebase } from "../firebase/message.model";
-import * as firebase from "firebase";
-import 'firebase/firestore' //***** */
-import { FirebaseUpload } from "./firebase.upload.model";
-//import { Portaria } from "src/app/crud/portaria/portaria.model";
-//import { CronogramaPortaria } from "src/app/crud/portaria/cronograma-portaria.model";
-import { Utils } from "../utils.shared";
-import { CONSTANTES } from "../constantes.shared";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { MessageFirebase } from '../firebase/message.model';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import { FirebaseUpload } from './firebase.upload.model';
+// import { Portaria } from "src/app/crud/portaria/portaria.model";
+// import { CronogramaPortaria } from "src/app/crud/portaria/cronograma-portaria.model";
+import { Utils } from '../utils.shared';
+import { CONSTANTES } from '../constantes.shared';
 import { RequestOptions } from 'http';
 import { Portaria } from '../../crud/portaria/portaria.model';
 import { CronogramaPortaria } from '../../crud/portaria/cronograma-portaria.model';
@@ -19,54 +19,57 @@ import { reject } from 'q';
 export class FirebaseService {
   private firestore = firebase.firestore();
   private auth = firebase.auth();
-  //private sett = { timestampsInSnapshots: true };
+  // private sett = { timestampsInSnapshots: true };
   constructor(private http: HttpClient) {
-    //this.firestore.settings(this.sett);
+    // this.firestore.settings(this.sett);
   }
 
-  //****************************************************************************/
-  //******************************PUSH******************************************/
+  // ****************************************************************************/
+  // ******************************PUSH******************************************/
   public enviarPushFirebase(topico: string, titulo: string): Observable<any> {
     try {
       const headers = {
         headers: new HttpHeaders()
           .append('Content-type', 'application/json')
-          .append('Authorization', 'Key=AAAAH0kr4hA:APA91bGlwDwDSBHclBxLBA74s-GT3otyDdmmmGJpNgoxISElSsrnMq1TevXDea5hBrWRpRsK8JDFsB5Af10wWrkstMkCAqGh-tjGseeZcUjPSJU62JtyD9xNDtC52NzsClr-L5SkmFKE')
-      }
+          .append('Authorization',
+            // tslint:disable-next-line: max-line-length
+            'Key=AAAAH0kr4hA:APA91bGlwDwDSBHclBxLBA74s-GT3otyDdmmmGJpNgoxISElSsrnMq1TevXDea5hBrWRpRsK8JDFsB5Af10wWrkstMkCAqGh-tjGseeZcUjPSJU62JtyD9xNDtC52NzsClr-L5SkmFKE'),
+      };
 
-      var message = {
-        to: "/topics/" + topico,
+      const message = {
+        to: '/topics/' + topico,
         notification: {
-          title: "NaEscola",
+          title: 'NaEscola',
           body: titulo,
         },
-        TimeToLive: 2400000
+        TimeToLive: 2400000,
       };
-      return this.http.post("https://fcm.googleapis.com/fcm/send", message, headers);
+      return this.http.post('https://fcm.googleapis.com/fcm/send', message, headers);
     } catch (error) {
-      console.log(error);
+
     }
 
   }
 
 
-  //****************************************************************************/
-  //***************************STORAGE******************************************/
+  // ****************************************************************************/
+  // ***************************STORAGE******************************************/
   public enviarArquivoFirebase(firebaseUpload: FirebaseUpload, basePath: string): Promise<any> {
-    let storageRef = firebase.storage().ref();
+    const storageRef = firebase.storage().ref();
     return storageRef.child(`${basePath}/${firebaseUpload.name}`).put(firebaseUpload.file).then((retorno) => {
       // alert(retorno)
     });
   }
 
   public pegarUrlArquivoUpload(firebaseUpload: FirebaseUpload, basePath: string): Promise<any> {
-    let storageRef = firebase.storage().ref();
-    return storageRef.child(`${basePath}/${firebaseUpload.name}`).getDownloadURL()
+    const storageRef = firebase.storage().ref();
+    return storageRef.child(`${basePath}/${firebaseUpload.name}`).getDownloadURL();
   }
-  //*****************************************************************************/
-  //***************************FIRESTORE*****************************************/
+  // *****************************************************************************/
+  // ***************************FIRESTORE*****************************************/
 
   public listarPortariaControleRemoto(inep: string): Promise<any> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')
@@ -74,11 +77,11 @@ export class FirebaseService {
         .collection('portarias')
         .get()
         .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
-          resolve(querySnapshot)
+          resolve(querySnapshot);
         }).catch((reason: any) => {
-          reject(reason)
-        })
-    })
+          reject(reason);
+        });
+    });
   }
 
   public criarConfiguracaoNovaPortariaApp(inep: string, codigoPortaria: string, nomePortaria: string): void {
@@ -95,7 +98,7 @@ export class FirebaseService {
         controle_saida: true,
         modo: 'entrada',
         nome: nomePortaria,
-        sem_uniforme: false
+        sem_uniforme: false,
       });
   }
 
@@ -113,7 +116,7 @@ export class FirebaseService {
         controle_saida: true,
         modo: 'entrada',
         nome: nomePortaria,
-        sem_uniforme: false
+        sem_uniforme: false,
       });
   }
 
@@ -127,23 +130,28 @@ export class FirebaseService {
   }
 
   public gravarModoPortaria(inep: string, codigoPortaria: string, valor: string): void {
-    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ modo: valor });
+    this.firestore.collection('naescolaApp').doc(inep)
+      .collection('portarias').doc(codigoPortaria).update({ modo: valor });
   }
 
   public gravarModoRegistroOcorrenciaAtrasoPortaria(inep: string, codigoPortaria: string, valor: boolean): void {
-    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ atraso: valor });
+    this.firestore.collection('naescolaApp').doc(inep)
+      .collection('portarias').doc(codigoPortaria).update({ atraso: valor });
   }
 
   public gravarModoRegistroOcorrenciaSemUniformePortaria(inep: string, codigoPortaria: string, valor: boolean): void {
-    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ sem_uniforme: valor });
+    this.firestore.collection('naescolaApp').doc(inep)
+      .collection('portarias').doc(codigoPortaria).update({ sem_uniforme: valor });
   }
 
   public gravarModoControlarSaidaPortaria(inep: string, codigoPortaria: string, valor: boolean): void {
-    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ controle_saida: valor });
+    this.firestore.collection('naescolaApp').doc(inep)
+      .collection('portarias').doc(codigoPortaria).update({ controle_saida: valor });
   }
 
   public gravarAjusteHoraPortaria(inep: string, codigoPortaria: string, valor: number): void {
-    this.firestore.collection('naescolaApp').doc(inep).collection('portarias').doc(codigoPortaria).update({ ajuste_hora: valor });
+    this.firestore.collection('naescolaApp').doc(inep)
+      .collection('portarias').doc(codigoPortaria).update({ ajuste_hora: valor });
   }
 
 
@@ -151,16 +159,16 @@ export class FirebaseService {
     const dataInformacao = Utils.dataAtual();
     const horaInformacao = Utils.horaAtual();
 
-    //**************DADOS ESCOLA**************/
+    // **************DADOS ESCOLA**************/
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
-    const inep = dadosEscola["inep"];
-    const esc_id = dadosEscola["id"];
-    const nome_escola = dadosEscola["nome"];
-    const rede_ensino = dadosEscola["rede_ensino"];
-    //**************DADOS USUÁRIO**************/
+    const inep = dadosEscola['inep'];
+    const esc_id = dadosEscola['id'];
+    const nome_escola = dadosEscola['nome'];
+    const rede_ensino = dadosEscola['rede_ensino'];
+    // **************DADOS USUÁRIO**************/
     const dadosUsuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
-    const usr_id = dadosUsuario["id"];
-    const nome_usuario = dadosUsuario["nome"];
+    const usr_id = dadosUsuario['id'];
+    const nome_usuario = dadosUsuario['nome'];
 
     return new Promise(resolve => {
       this.firestore
@@ -168,7 +176,7 @@ export class FirebaseService {
         .doc(rede_ensino)
         .collection('escolas')
         .doc(inep)
-        .collection("informacoes")
+        .collection('informacoes')
         .add({
           data: dataInformacao,
           hora: horaInformacao,
@@ -177,13 +185,13 @@ export class FirebaseService {
           usr_id: usr_id,
           nome_usuario: nome_usuario,
           rota: rota,
-          detalhesInformacao: detalhesInformacao
+          detalhesInformacao: detalhesInformacao,
         }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
           resolve(error);
-        })
-    })
+        });
+    });
   }
 
   /**
@@ -193,6 +201,7 @@ export class FirebaseService {
    * @param inep Código ine da escola
    */
   public listarStatusEntregaMensagensColecao(colecao: string, est_id: string, inep: string): Promise<any> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')
@@ -200,22 +209,24 @@ export class FirebaseService {
         .collection('matriculados')
         .doc(est_id)
         .collection(colecao)
-        .where("leitura", ">=", 1)
+        .where('leitura', '>=', 1)
         .get()
         .then((response: firebase.firestore.QuerySnapshot) => {
           resolve(response);
         }).catch((reason: any) => {
           reject(reason);
-        })
-    })
+        });
+    });
   }
 
   /**
    *  Grava, na portaria, toda a listagem dos estudantes da escola num único documento.
    * @memberof FirebaseService
    */
-  public gravarListagemEstudantesPortariaDocumentoUnico = (estudantes: Object[], codigoPortaria: string, parteArray: number): Promise<any> => {
-    //**************DADOS ESCOLA**************/
+  public gravarListagemEstudantesPortariaDocumentoUnico = (
+    estudantes: Object[], codigoPortaria: string, parteArray: number): Promise<any> => {
+    // **************DADOS ESCOLA**************/
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('portariaWeb')
@@ -223,11 +234,11 @@ export class FirebaseService {
         .collection('listagem_carga_estudantes')
         .doc(parteArray.toString())
         .set({ estudantes: estudantes }).then(() => {
-          resolve({ retorno: 'ok' })
+          resolve({ retorno: 'ok' });
         }).catch((reason: any) => {
-          reject({ retorno: reason })
-        })
-    })
+          reject({ retorno: reason });
+        });
+    });
   }
 
   /**
@@ -235,6 +246,7 @@ export class FirebaseService {
    * @param usuarios
    */
   public gravarUsuariosAutorizadosTirarFotos(usuarios: Object[], inep: string): Promise<Object> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       let contaUsuariosCadastrados: number = 0;
       const totalUsuariosCadastrados: number = usuarios.length;
@@ -247,16 +259,17 @@ export class FirebaseService {
           .doc(usr_id.toString()).set({ fotos: true }).then(() => {
           }).catch(() => {
             reject('Erro ao gravar autorizações');
-          })
+          });
         contaUsuariosCadastrados++;
-        if (contaUsuariosCadastrados == totalUsuariosCadastrados) {
+        if (contaUsuariosCadastrados === totalUsuariosCadastrados) {
           resolve('usuarios cadastrados');
         }
-      })
-    })
+      });
+    });
   }
 
   public revogarUsuariosTirarFotos(usuarios: Object[], inep: string): Promise<Object> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       let contaUsuariosCadastrados: number = 0;
       const totalUsuariosCadastrados: number = usuarios.length;
@@ -269,16 +282,17 @@ export class FirebaseService {
           .doc(usr_id.toString()).set({ fotos: false }).then(() => {
           }).catch(() => {
             reject('Erro ao gravar autorizações');
-          })
+          });
         contaUsuariosCadastrados++;
-        if (contaUsuariosCadastrados == totalUsuariosCadastrados) {
+        if (contaUsuariosCadastrados === totalUsuariosCadastrados) {
           resolve('usuarios cadastrados');
         }
-      })
-    })
+      });
+    });
   }
 
   public revogarUsuarioIndividual(inep: string, usr_id: string): Promise<Object> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')
@@ -288,11 +302,12 @@ export class FirebaseService {
           resolve('usuarios cadastrados');
         }).catch(() => {
           reject('Erro ao gravar autorizações');
-        })
-    })
+        });
+    });
   }
 
   public concederUsuarioIndividual(inep: string, usr_id: string): Promise<Object> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')
@@ -302,18 +317,20 @@ export class FirebaseService {
           resolve('usuarios cadastrados');
         }).catch(() => {
           reject('Erro ao gravar autorizações');
-        })
-    })
+        });
+    });
   }
 
   /**
    * Grava, no aplicativo, toda a listagem dos estudantes da escola num único documento.
    * @memberof FirebaseService
    */
-  public gravarListagemEstudantesAplicativoDocumentoUnico = (estudantes: Object[], parteArray: number): Promise<any> => {
-    //**************DADOS ESCOLA**************/
+  public gravarListagemEstudantesAplicativoDocumentoUnico = (
+    estudantes: Object[], parteArray: number): Promise<any> => {
+    // **************DADOS ESCOLA**************/
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
-    const inep = dadosEscola["inep"];
+    const inep = dadosEscola['inep'];
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')
@@ -322,14 +339,15 @@ export class FirebaseService {
         .doc('modoAdmin')
         .collection('estudantes')
         .doc(parteArray.toString()).set({ estudantes }).then(() => {
-          resolve({ retorno: 'ok' })
+          resolve({ retorno: 'ok' });
         }).catch((reason: any) => {
-          reject({ retorno: reason })
-        })
-    })
+          reject({ retorno: reason });
+        });
+    });
   }
 
   public gravarTiposOcorrenciasAplicativoAdministravivo(tiposOcorrencias: Object, inep: string): Promise<any> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore.collection('naescolaApp')
         .doc(inep)
@@ -337,82 +355,88 @@ export class FirebaseService {
         .doc('modoAdmin')
         .collection('tiposOcorrencias')
         .doc('0').set({ tiposOcorrencias: tiposOcorrencias }).then((response: any) => {
-          resolve('ok')
+          resolve('ok');
         }).catch((reason: any) => {
-          reject(reason)
-        })
-    })
+          reject(reason);
+        });
+    });
   }
 
-  public listarOcorrenciasDisciplinaresAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
+  public listarOcorrenciasDisciplinaresAplicativoAdministravivo(
+    inep: string): Promise<firebase.firestore.QuerySnapshot> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore.collection('naescolaApp')
         .doc(inep)
         .collection('sincronizarOcorrencias')
-        .where('sincronizada', '==', false).where("registrarEntradaManual", "==", false)
+        .where('sincronizada', '==', false).where('registrarEntradaManual', '==', false)
         .get()
         .then((retorno: firebase.firestore.QuerySnapshot) => {
-          resolve(retorno)
+          resolve(retorno);
         }).catch((reason: any) => {
-          reject(reason)
-        })
-    })
+          reject(reason);
+        });
+    });
   }
 
   public listarEntradasManuaisAplicativoAdministravivo(inep: string): Promise<firebase.firestore.QuerySnapshot> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore.collection('naescolaApp')
         .doc(inep)
         .collection('sincronizarOcorrencias')
-        .where('sincronizada', '==', false).where("registrarEntradaManual", "==", true)
+        .where('sincronizada', '==', false).where('registrarEntradaManual', '==', true)
         .get()
         .then((retorno: firebase.firestore.QuerySnapshot) => {
-          resolve(retorno)
+          resolve(retorno);
         }).catch((reason: any) => {
-          reject(reason)
-        })
-    })
+          reject(reason);
+        });
+    });
   }
 
-  public atualizarStatusOcorrenciasDepoisDeSincronizar(inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
+  public atualizarStatusOcorrenciasDepoisDeSincronizar(
+    inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
     return new Promise((resolve) => {
       const documentos = documentosParaAtualizar.docs;
       documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
         const status = true;
         const id = documento.id;
         const dados = documento.data();
-        if (dados["registrarEntradaManual"] == false) {
+        if (dados['registrarEntradaManual'] === false) {
           this.firestore.collection('naescolaApp')
             .doc(inep)
-            .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status })
+            .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status });
         }
-      })
+      });
       resolve('ok');
-    })
+    });
   }
 
-  public atualizarStatusEntradasManuaisDepoisDeSincronizar(inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
+  public atualizarStatusEntradasManuaisDepoisDeSincronizar(
+    inep: string, documentosParaAtualizar: firebase.firestore.QuerySnapshot): Promise<string> {
     return new Promise((resolve) => {
       const documentos = documentosParaAtualizar.docs;
       documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
         const status = true;
         const id = documento.id;
         const dados = documento.data();
-        if (dados["registrarEntradaManual"] == true) {
+        if (dados['registrarEntradaManual'] === true) {
           this.firestore.collection('naescolaApp')
             .doc(inep)
-            .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status })
+            .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status });
         }
-      })
+      });
       resolve('ok');
-    })
+    });
   }
 
   public gravarListagemEstudantesAplicativoAdministrativoBatch(estudantes: Object[]): Promise<any> {
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
-    const inepEscola = dadosEscola["inep"];
+    const inepEscola = dadosEscola['inep'];
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
-      let batch = this.firestore.batch();
+      const batch = this.firestore.batch();
       estudantes.forEach((estudante: Object) => {
         const escola = estudante['escola'];
         const etapa = estudante['etapa'];
@@ -424,20 +448,25 @@ export class FirebaseService {
         const telefoneEscola = estudante['telefoneEscola'];
         const turma = estudante['turma'];
         const turno = estudante['turno'];
-        let referenciaEstudante = this.firestore.collection('naescolaApp').doc(inepEscola).collection('matriculados').doc(est_id)
-        batch.set(referenciaEstudante, { escola, etapa, foto, inep, est_id, nome, serie, telefoneEscola, turma, turno });
-      })
+        const referenciaEstudante = this.firestore.collection('naescolaApp').doc(inepEscola)
+          .collection('matriculados').doc(est_id);
+        batch.set(referenciaEstudante, {
+          escola, etapa, foto, inep, est_id, nome, serie,
+          telefoneEscola, turma, turno,
+        });
+      });
       batch.commit().then(() => {
         resolve('ok');
       }).catch((reason: any) => {
-        reject(reason)
-      })
-    })
+        reject(reason);
+      });
+    });
   }
 
   public gravarListagemEstudanteAplicativoAdministrativo = (estudante: Object): Promise<any> => {
-    const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
-    const inep = dadosEscola["inep"];
+    const dadosEscola = JSON.parse(Utils.decriptAtoB(
+      localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+    const inep = dadosEscola['inep'];
     return new Promise((resolve) => {
       this.firestore
         .collection('naescolaApp')
@@ -445,9 +474,9 @@ export class FirebaseService {
         .collection('matriculados')
         .doc(estudante['est_id'])
         .set({ estudante }).then(() => {
-          resolve('ok')
-        })
-    })
+          resolve('ok');
+        });
+    });
   }
 
 
@@ -455,16 +484,16 @@ export class FirebaseService {
     const dataErro = Utils.dataAtual();
     const horaErro = Utils.horaAtual();
 
-    //**************DADOS ESCOLA**************/
+    // **************DADOS ESCOLA**************/
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
-    const inep = dadosEscola["inep"];
-    const esc_id = dadosEscola["id"];
-    const nome_escola = dadosEscola["nome"];
-    const rede_ensino = dadosEscola["rede_ensino"];
-    //**************DADOS USUÁRIO**************/
+    const inep = dadosEscola['inep'];
+    const esc_id = dadosEscola['id'];
+    const nome_escola = dadosEscola['nome'];
+    const rede_ensino = dadosEscola['rede_ensino'];
+    // **************DADOS USUÁRIO**************/
     const dadosUsuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
-    const usr_id = dadosUsuario["id"];
-    const nome_usuario = dadosUsuario["nome"];
+    const usr_id = dadosUsuario['id'];
+    const nome_usuario = dadosUsuario['nome'];
 
     return new Promise(resolve => {
       this.firestore
@@ -472,7 +501,7 @@ export class FirebaseService {
         .doc(rede_ensino)
         .collection('escolas')
         .doc(inep)
-        .collection("erros")
+        .collection('erros')
         .add({
           data: dataErro,
           hora: horaErro,
@@ -481,13 +510,13 @@ export class FirebaseService {
           usr_id: usr_id,
           nome_usuario: nome_usuario,
           local_erro: localErro,
-          detalhe_erro: detalhesErro
+          detalhe_erro: detalhesErro,
         }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
           resolve(error);
-        })
-    })
+        });
+    });
   }
 
   /**
@@ -503,12 +532,15 @@ export class FirebaseService {
         .collection('matriculados')
         .doc(messageFirebase.est_id.toString())
         .collection('ocorrencias')
-        .add({ data: messageFirebase.data, hora: messageFirebase.hora, categoria: messageFirebase.tipo_msg, leitura: 0 }).then((retorno) => {
+        .add({
+          data: messageFirebase.data, hora: messageFirebase.hora,
+          categoria: messageFirebase.tipo_msg, leitura: 0,
+        }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
           resolve(error);
-        })
-    })
+        });
+    });
   }
 
   /**
@@ -524,12 +556,15 @@ export class FirebaseService {
         .collection('matriculados')
         .doc(messageFirebase.est_id.toString())
         .collection('entradas')
-        .add({ data: messageFirebase.data, hora: messageFirebase.hora, categoria: messageFirebase.tipo_msg, leitura: 0 }).then((retorno) => {
+        .add({
+          data: messageFirebase.data, hora: messageFirebase.hora,
+          categoria: messageFirebase.tipo_msg, leitura: 0,
+        }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
           resolve(error);
-        })
-    })
+        });
+    });
   }
 
 
@@ -553,23 +588,25 @@ export class FirebaseService {
           msg: messageFirebase.msg,
           leitura: 0,
           anexo: [
-            { nome: 'anexo1', tamanho: '20kb', anexo: "http://linkparaoarquivo", tipo: "pdf" },
-            { nome: 'anexo2', tamanho: '40kb', anexo: "http://linkparaoarquivo", tipo: "pdf" },
-          ]
+            { nome: 'anexo1', tamanho: '20kb', anexo: 'http://linkparaoarquivo', tipo: 'pdf' },
+            { nome: 'anexo2', tamanho: '40kb', anexo: 'http://linkparaoarquivo', tipo: 'pdf' },
+          ],
         }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
           resolve(error);
-        })
-    })
+        });
+    });
   }
 
   public gravarMensagemFirebaseFirestore(messageFirebase: MessageFirebase): void {
-    this.firestore.collection(messageFirebase.cod_inep).doc(messageFirebase.est_id).collection("mensagens").add(messageFirebase).then((retorno) => {
-      console.log({ retorno });
-    })
-    let retorno = firebase.firestore().collection(messageFirebase.cod_inep).onSnapshot(() => {
-    })
+    this.firestore.collection(messageFirebase.cod_inep).doc(messageFirebase.est_id)
+      // tslint:disable-next-line: no-shadowed-variable
+      .collection('mensagens').add(messageFirebase).then((retorno) => {
+
+      });
+    const retorno = firebase.firestore().collection(messageFirebase.cod_inep).onSnapshot(() => {
+    });
     retorno();
   }
 
@@ -581,52 +618,56 @@ export class FirebaseService {
       .where('foto.url', '>', '')
       .get()
       .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
-        resolve(querySnapshot)
-      })
+        resolve(querySnapshot);
+      });
   })
 
-  public lerDadosFrequenciaEntradaPortaria = async (codigoPortaria: string, ultimoRegistro: string) => new Promise((resolve) => {
-    return this.firestore
-      .collection("portariaWeb")
-      .doc(codigoPortaria)
-      .collection("passagens")
-      .doc("entradas")
-      .collection("registros").where("data", ">=", ultimoRegistro)
-      .get()
-      .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
-        resolve(querySnapshot);
-      })
-  })
+  public lerDadosFrequenciaEntradaPortaria = async (
+    codigoPortaria: string, ultimoRegistro: string) => new Promise((resolve) => {
+      return this.firestore
+        .collection('portariaWeb')
+        .doc(codigoPortaria)
+        .collection('passagens')
+        .doc('entradas')
+        .collection('registros').where('data', '>=', ultimoRegistro)
+        .get()
+        .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+          resolve(querySnapshot);
+        });
+    })
 
-  public lerDadosFrequenciaSaidaPortaria = async (codigoPortaria: string, ultimoRegistro: string) => new Promise((resolve) => {
-    return this.firestore
-      .collection("portariaWeb")
-      .doc(codigoPortaria)
-      .collection("passagens")
-      .doc("saidas")
-      .collection("registros").where("data", ">=", ultimoRegistro).get().then((querySnapshot: firebase.firestore.QuerySnapshot) => {
-        resolve(querySnapshot);
-      })
-  })
+  public lerDadosFrequenciaSaidaPortaria = async (
+    codigoPortaria: string, ultimoRegistro: string) => new Promise((resolve) => {
+      return this.firestore
+        .collection('portariaWeb')
+        .doc(codigoPortaria)
+        .collection('passagens')
+        .doc('saidas')
+        .collection('registros').where('data', '>=', ultimoRegistro).get()
+        .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+          resolve(querySnapshot);
+        });
+    })
 
   public lerDadosAtrasoPortaria = async (codigoPortaria: string) => new Promise((resolve) => {
     return this.firestore
-      .collection("portariaWeb")
+      .collection('portariaWeb')
       .doc(codigoPortaria)
-      .collection("ocorrencias").doc('atraso').collection('registros').get().then((querySnapshot: firebase.firestore.QuerySnapshot) => {
+      .collection('ocorrencias').doc('atraso').collection('registros').get()
+      .then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         resolve(querySnapshot);
-      })
+      });
   })
 
   public lerDadosSemUniformePortaria = async (codigoPortaria: string) => new Promise((resolve) => {
     return this.firestore
-      .collection("portariaWeb")
+      .collection('portariaWeb')
       .doc(codigoPortaria)
-      .collection("ocorrencias")
+      .collection('ocorrencias')
       .doc('sem uniforme')
       .collection('registros').get().then((querySnapshot: firebase.firestore.QuerySnapshot) => {
         resolve(querySnapshot);
-      })
+      });
   })
 
   /**
@@ -639,58 +680,68 @@ export class FirebaseService {
    * @param turma
    * @param turno
    */
-  public gravarEstudanteFirebaseFirestoreAplicativo(inep: string, est_id: string, foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
+  public gravarEstudanteFirebaseFirestoreAplicativo(inep: string, est_id: string,
+    foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
 
     return this.firestore
       .collection('naescolaApp')
       .doc(inep)
       .collection('matriculados')
       .doc(est_id)
-      .set({ foto, nome, serie, turma, turno, etapa })
+      .set({ foto, nome, serie, turma, turno, etapa });
   }
 
   /**
    *  Grava configurações da portaria no servidor do FireBase
    * @param portaria
    */
-  public gravarConfiguracaoFirebaseFirestorePortaria = async (portaria: PortariaFirebase) => new Promise((resolve, reject) => {
-    this.firestore
-      .collection('portariaWeb')
-      .doc(portaria.codigo)
-      .collection('parametros')
-      .doc('configuracao')
-      .set({ codigo: portaria['codigo'], esc_id: portaria['esc_id'], nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'] }).then(() => {
-        resolve('sucesso');
-      });
-  });
+  public gravarConfiguracaoFirebaseFirestorePortaria = async (
+    // tslint:disable-next-line: no-shadowed-variable
+    portaria: PortariaFirebase) => new Promise((resolve, reject) => {
+      this.firestore
+        .collection('portariaWeb')
+        .doc(portaria.codigo)
+        .collection('parametros')
+        .doc('configuracao')
+        .set({
+          codigo: portaria['codigo'], esc_id: portaria['esc_id'],
+          nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'],
+        }).then(() => {
+          resolve('sucesso');
+        });
+    })
 
   /**
    * Grava dados do cronograma da portaria
    *
    * @memberof FirebaseService
    */
-  public gravarCronogramaFirebaseFirestorePortaria = async (cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
-    this.firestore
-      .collection('portariaWeb')
-      .doc(cronogramaPortaria.codigoPortaria)
-      .collection('cronogramas').doc(cronogramaPortaria.crpId.toString()).set({
-        horarioInicio: cronogramaPortaria.horarioInicio,
-        horarioFim: cronogramaPortaria.horarioFim,
-        modoPortaria: cronogramaPortaria.modoPortaria,
-      })
-      .then(() => { resolve('sucesso') });
-  });
+  public gravarCronogramaFirebaseFirestorePortaria = async (
+    cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
+      this.firestore
+        .collection('portariaWeb')
+        .doc(cronogramaPortaria.codigoPortaria)
+        .collection('cronogramas').doc(cronogramaPortaria.crpId.toString()).set({
+          horarioInicio: cronogramaPortaria.horarioInicio,
+          horarioFim: cronogramaPortaria.horarioFim,
+          modoPortaria: cronogramaPortaria.modoPortaria,
+        })
+        .then(() => { resolve('sucesso'); });
+    })
 
   /**
    *Exclui cronograma INDIVIDUAL de acordo com o crp_id
    * @param cronogramaPortaria
    * @memberof FirebaseService
    */
-  public apagarCronogramaFirebaseFirestorePortaria = async (cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(cronogramaPortaria['codigo_portaria']).collection('cronogramas').doc(cronogramaPortaria['crp_id'].toString()).delete().then(() => {
-      resolve('sucesso');
-    });
-  });
+  public apagarCronogramaFirebaseFirestorePortaria = async (
+    cronogramaPortaria: CronogramaPortaria) => new Promise((resolve) => {
+      this.firestore.collection('portariaWeb').doc(
+        cronogramaPortaria['codigo_portaria']).collection('cronogramas')
+        .doc(cronogramaPortaria['crp_id'].toString()).delete().then(() => {
+          resolve('sucesso');
+        });
+    })
 
   /**
    *Exclui matriculado INDIVIDUAL de acordo com a matricula
@@ -698,11 +749,13 @@ export class FirebaseService {
    * @param est_id
    * @memberof FirebaseService
    */
-  public apagarMatriculadoFirebaseFirestorePortaria = async (codigo_portaria: string, est_id: string) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('matriculados').doc(est_id).delete().then(() => {
-      resolve('sucesso');
-    });
-  });
+  public apagarMatriculadoFirebaseFirestorePortaria = async (
+    codigo_portaria: string, est_id: string) => new Promise((resolve) => {
+      this.firestore.collection('portariaWeb').doc(codigo_portaria)
+        .collection('matriculados').doc(est_id).delete().then(() => {
+          resolve('sucesso');
+        });
+    })
 
   /**
    * Exclui configurações ÚNICAS de acordo com o código da portaria
@@ -710,10 +763,11 @@ export class FirebaseService {
    * @memberof FirebaseService
    */
   public apagarConfiguracaoFirebaseFirestorePortaria = async (codigo_portaria: string) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('parametros').doc('configuracao').delete().then(() => {
-      resolve('sucesso');
-    });
-  });
+    this.firestore.collection('portariaWeb').doc(codigo_portaria)
+      .collection('parametros').doc('configuracao').delete().then(() => {
+        resolve('sucesso');
+      });
+  })
 
   /**
    * Alterar as configurações ÚNICAS da portaria de acordo com o código da portaria.
@@ -726,7 +780,10 @@ export class FirebaseService {
       .doc(portaria.codigo)
       .collection('parametros')
       .doc('configuracao')
-      .set({ codigo: portaria['codigo'], esc_id: portaria['esc_id'], nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'] }).then(() => {
+      .set({
+        codigo: portaria['codigo'], esc_id: portaria['esc_id'],
+        nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'],
+      }).then(() => {
         resolve('sucesso');
       });
   })
@@ -737,7 +794,10 @@ export class FirebaseService {
       .doc(portaria.codigo)
       .collection('parametros')
       .doc('configuracao')
-      .set({ codigo: portaria['codigo'], esc_id: portaria['esc_id'], nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'] }).then(() => {
+      .set({
+        codigo: portaria['codigo'], esc_id: portaria['esc_id'],
+        nome: portaria['nome'], por_id: portaria['por_id'], turnos: portaria['turnos'],
+      }).then(() => {
         resolve('sucesso');
       });
   })
@@ -748,10 +808,11 @@ export class FirebaseService {
    * @memberof FirebaseService
    */
   public apagarSaidaAntecipadaEventual = async (codigo_portaria: string, est_id: string) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('saida_antecipada_eventual').doc(est_id).delete().then(() => {
-      resolve('sucesso');
-    });
-  });
+    this.firestore.collection('portariaWeb').doc(codigo_portaria)
+      .collection('saida_antecipada_eventual').doc(est_id).delete().then(() => {
+        resolve('sucesso');
+      });
+  })
 
 
   /**
@@ -760,24 +821,26 @@ export class FirebaseService {
    * @memberof FirebaseService
    */
   public apagarMatriculadosFirebaseFirestorePortaria = async (codigo_portaria: string) => new Promise((resolve) => {
-    this.firestore.collection('portariaWeb').doc(codigo_portaria).collection('matriculados').get().then((retorno) => {
-      const matriculados = retorno.docs;
-      let contaExcluiMatriculados = 0;
-      if (matriculados.length > 0) {
-        matriculados.forEach((matriculado) => {
-          const est_id = matriculado.id;
-          this.apagarMatriculadoFirebaseFirestorePortaria(codigo_portaria, est_id).then(() => {
-            contaExcluiMatriculados += 1
-            if (contaExcluiMatriculados == matriculados.length) {
-              resolve('ok');
-            }
-          })
-        })
-      } else {
-        resolve('ok');
-      }
-    })
-  });
+    this.firestore.collection('portariaWeb').doc(codigo_portaria)
+      .collection('matriculados')
+      .get().then((retorno) => {
+        const matriculados = retorno.docs;
+        let contaExcluiMatriculados = 0;
+        if (matriculados.length > 0) {
+          matriculados.forEach((matriculado) => {
+            const est_id = matriculado.id;
+            this.apagarMatriculadoFirebaseFirestorePortaria(codigo_portaria, est_id).then(() => {
+              contaExcluiMatriculados += 1;
+              if (contaExcluiMatriculados === matriculados.length) {
+                resolve('ok');
+              }
+            });
+          });
+        } else {
+          resolve('ok');
+        }
+      });
+  })
 
   /**
    * Apaga conjunto de cronogramas cadastrados na portaria
@@ -790,21 +853,21 @@ export class FirebaseService {
       let contaExcluiCronogramas = 0;
       if (cronogramas.length > 0) {
         cronogramas.forEach((cronograma) => {
-          let cronogramaPortaria = new CronogramaPortaria()
+          const cronogramaPortaria = new CronogramaPortaria();
           cronogramaPortaria['codigo_portaria'] = codigo_portaria;
-          cronogramaPortaria['crp_id'] = parseInt(cronograma.id);
+          cronogramaPortaria['crp_id'] = parseInt(cronograma.id, 10);
           this.apagarCronogramaFirebaseFirestorePortaria(cronogramaPortaria).then(() => {
-            contaExcluiCronogramas += 1
-            if (contaExcluiCronogramas == cronogramas.length) {
+            contaExcluiCronogramas += 1;
+            if (contaExcluiCronogramas === cronogramas.length) {
               resolve('ok');
             }
-          })
-        })
+          });
+        });
       } else {
         resolve('ok');
       }
-    })
-  });
+    });
+  })
 
   /**
   * Apaga, em cascata, os dados da portaria. Primeiro as configurações.
@@ -817,12 +880,12 @@ export class FirebaseService {
       this.apagarCronogramasFirebaseFirestorePortaria(codigo_portaria).then(() => {
         this.apagarMatriculadosFirebaseFirestorePortaria(codigo_portaria).then(() => {
           resolve('ok');
-        })
-      })
+        });
+      });
     }).catch(() => {
       resolve('ok');
-    })
-  });
+    });
+  })
 
   /**
    *  Grava lista de estudantes para serem usados no aplicativo
@@ -835,7 +898,8 @@ export class FirebaseService {
    * @param turno
    * @param etapa
    */
-  public gravarEstudanteFirebaseFirestorePortaria(codigoPortaria: string, est_id: string, foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
+  public gravarEstudanteFirebaseFirestorePortaria(codigoPortaria: string, est_id: string,
+    foto: string, nome: string, serie: string, turma: string, turno: string, etapa: string): Promise<any> {
     return new Promise((resolve) => {
       this.firestore
         .collection('portariaWeb')
@@ -856,7 +920,8 @@ export class FirebaseService {
    * @param data
    * @param hora
    */
-  public gravarSaidaAntecipadaEventual(codigoPortaria: string, est_id: string, data: string, hora: string): Promise<any> {
+  public gravarSaidaAntecipadaEventual(codigoPortaria: string, est_id: string,
+    data: string, hora: string): Promise<any> {
     return new Promise((resolve) => {
       this.firestore
         .collection('portariaWeb')
@@ -865,68 +930,75 @@ export class FirebaseService {
         .doc(est_id)
         .set({ data, hora }).then(() => {
           resolve('ok');
-        })
-    })
+        });
+    });
   }
 
-  //**********************************************************************************/
-  //***************************FIREBASE AUTH*****************************************/
+  // **********************************************************************************/
+  // ***************************FIREBASE AUTH*****************************************/
   public logarAnonimamente(): Promise<string> {
+    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.auth.signInAnonymously().then((credencial: firebase.auth.UserCredential) => {
-        resolve(credencial.user.uid)
+        resolve(credencial.user.uid);
       }).catch((erro: any) => {
-        reject(erro)
-      })
-    })
+        reject(erro);
+      });
+    });
   }
 
-  //**********************************************************************************/
-  //***************************CLOUD FUNCTION*****************************************/
-  public carregarEstudantesPortariaFirebaseFirestore = async (estudantes: Object[], codigoPortaria: string) => new Promise((resolve) => {
-    const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesPortaria');
-    carregarEstudantesPortaria({ estudantes: estudantes, codigoPortaria: codigoPortaria }).then(retorno => {
-      resolve(retorno)
+  // **********************************************************************************/
+  // ***************************CLOUD FUNCTION*****************************************/
+  public carregarEstudantesPortariaFirebaseFirestore = async (
+    estudantes: Object[], codigoPortaria: string) => new Promise((resolve) => {
+      const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesPortaria');
+      carregarEstudantesPortaria({ estudantes: estudantes, codigoPortaria: codigoPortaria }).then(retorno => {
+        resolve(retorno);
+      });
     })
-  })
 
-  public criarUsuarioAnonimoFirestore = async (uid: string, nome: string, escola: string, inep: string, usr_id: string) => new Promise((resolve) => {
-    const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id }
-    console.log(user);
-    const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
-    criarUsuarioAnonimo({
-      user: user,
-      uid: uid
-    }).then(retorno => {
-      resolve(retorno)
+  public criarUsuarioAnonimoFirestore = async (uid: string, nome: string,
+    escola: string, inep: string, usr_id: string) => new Promise((resolve) => {
+      const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id };
+      const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
+      criarUsuarioAnonimo({
+        user: user,
+        uid: uid,
+      }).then(retorno => {
+        resolve(retorno);
+      });
     })
-  })
 
   public pegarTokenIntegracaoIeducar = async () => new Promise((resolve) => {
     const tokenIntegracao = firebase.functions().httpsCallable('pegarTokenIntegracaoIeducarV5');
     tokenIntegracao().then(retorno => {
-      resolve(retorno)
-    })
+      resolve(retorno);
+    });
   })
 
-  public carregarEstudantesAplicativoFirebaseFirestore = async (estudantes: Object[], inep: string) => new Promise((resolve) => {
-    const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesAplicativo');
-    carregarEstudantesPortaria({ estudantes: estudantes, inep: inep }).then(retorno => {
-      resolve(retorno)
+  public carregarEstudantesAplicativoFirebaseFirestore = async (
+    estudantes: Object[], inep: string) => new Promise((resolve) => {
+      const carregarEstudantesPortaria = firebase.functions().httpsCallable('carregarEstudantesAplicativo');
+      carregarEstudantesPortaria({ estudantes: estudantes, inep: inep }).then(retorno => {
+        resolve(retorno);
+      });
     })
-  })
 
   /**
    * Grava saídas antecipadas eventuais de uma vez só.
    *
    * @memberof FirebaseService
    */
-  public gravarSaidaAntecipadaEventualFirebaseFirestore = async (portarias: string[], est_ids: string[], dataSaida: string, horaSaida: string) => new Promise((resolve) => {
-    const gravarSaidaAntecipadaEventual = firebase.functions().httpsCallable('gravarSaidaAntecipadaEventual');
-    gravarSaidaAntecipadaEventual({ portarias: portarias, est_ids: est_ids, dataSaida: dataSaida, horaSaida: horaSaida }).then(retorno => {
-      resolve(retorno)
+  public gravarSaidaAntecipadaEventualFirebaseFirestore = async (
+    portarias: string[], est_ids: string[], dataSaida: string, horaSaida: string) => new Promise((resolve) => {
+      const gravarSaidaAntecipadaEventual = firebase.functions().httpsCallable('gravarSaidaAntecipadaEventual');
+      gravarSaidaAntecipadaEventual({
+        portarias: portarias, est_ids: est_ids,
+        dataSaida: dataSaida, horaSaida: horaSaida,
+      }).then(retorno => {
+        resolve(retorno);
+      });
     })
-  })
 
   /**
    * Grava saídas antecipadas recorrentes de uma vez só.
@@ -943,7 +1015,7 @@ export class FirebaseService {
     quarta: number,
     quinta: number,
     sexta: number,
-    sabado: number
+    sabado: number,
   ) => new Promise((resolve) => {
     const gravarSaidaAntecipadaRecorrente = firebase.functions().httpsCallable('gravarSaidaAntecipadaRecorrente');
     gravarSaidaAntecipadaRecorrente({
@@ -956,10 +1028,10 @@ export class FirebaseService {
       quarta: quarta,
       quinta: quinta,
       sexta: sexta,
-      sabado: sabado
+      sabado: sabado,
     }).then(retorno => {
-      resolve(retorno)
-    })
+      resolve(retorno);
+    });
   })
 
   /**
@@ -970,36 +1042,36 @@ export class FirebaseService {
     const apagarAtrasosPortaria = firebase.functions().httpsCallable('apagarAtrasosPortaria');
     apagarAtrasosPortaria(codigoPortaria).then((retorno) => {
       resolve(retorno);
-    })
+    });
 
     const apagarCronogramaPortaria = firebase.functions().httpsCallable('apagarCronogramaPortaria');
     apagarCronogramaPortaria(codigoPortaria).then((retorno) => {
       resolve(retorno);
-    })
+    });
 
     const apagarEntradasPortaria = firebase.functions().httpsCallable('apagarEntradasPortaria');
     apagarEntradasPortaria(codigoPortaria).then((retorno) => {
       resolve(retorno);
-    })
+    });
 
     const apagarMatriculadosPortaria = firebase.functions().httpsCallable('apagarMatriculadosPortaria');
     apagarMatriculadosPortaria(codigoPortaria).then((retorno) => {
       resolve(retorno);
-    })
+    });
 
     const apagarParametrosPortaria = firebase.functions().httpsCallable('apagarParametrosPortaria');
     apagarParametrosPortaria(codigoPortaria).then((retorno) => {
       resolve(retorno);
-    })
+    });
 
     const apagarSaidasPortaria = firebase.functions().httpsCallable('apagarSaidasPortaria');
     apagarSaidasPortaria(codigoPortaria).then((retorno) => {
       resolve(retorno);
-    })
+    });
 
     const apagarSemUniformePortaria = firebase.functions().httpsCallable('apagarSemUniformePortaria');
     apagarSemUniformePortaria(codigoPortaria).then((retorno) => {
       resolve(retorno);
-    })
+    });
   })
 }

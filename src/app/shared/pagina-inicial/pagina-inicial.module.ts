@@ -6,7 +6,7 @@ import { MenuAtalhoComponent } from './menu-atalho/menu-atalho.component';
   declarations: [MenuAtalhoComponent],
   exports: [MenuAtalhoComponent],
   imports: [
-    CommonModule
-  ]
+    CommonModule,
+  ],
 })
 export class PaginaInicialModule { }
