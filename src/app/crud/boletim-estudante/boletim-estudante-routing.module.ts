@@ -4,12 +4,12 @@ import { EnviarNotaBoletimComponent } from './enviar-nota-boletim/enviar-nota-bo
 import { AuthGuardService } from '../../guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: "", component: EnviarNotaBoletimComponent, canActivate: [AuthGuardService] },
-  //{ path: "importar-nota-boletim", component: ImportarNotaBoletimComponent, canActivate: [AuthGuardService] },
+  { path: '', component: EnviarNotaBoletimComponent, canActivate: [AuthGuardService] },
+  // { path: "importar-nota-boletim", component: ImportarNotaBoletimComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class BoletimEstudanteRoutingModule { }

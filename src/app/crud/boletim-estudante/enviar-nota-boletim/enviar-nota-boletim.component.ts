@@ -21,15 +21,15 @@ import { ResultadoBoletim } from '../resultado-boletim.model';
       state(
         'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
       transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out')
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class EnviarNotaBoletimComponent implements OnInit {
 
@@ -87,13 +87,14 @@ export class EnviarNotaBoletimComponent implements OnInit {
         this.listarPeriodosLetivos();
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
@@ -106,13 +107,14 @@ export class EnviarNotaBoletimComponent implements OnInit {
       this.arrayOfPeriodosLetivos = Object.values(response);
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
     });
@@ -124,78 +126,51 @@ export class EnviarNotaBoletimComponent implements OnInit {
       this.desabilitarBotoes();
       this.exibirAlerta = false;
       this.arrayOfIdsEstudantes = [];
-      const trm_id = parseInt(this.diarioSelecionado["trm_id"]);
-      this.feedbackUsuario = "Listando estudantes...";
+      const trm_id = parseInt(this.diarioSelecionado['trm_id'], 10);
+      this.feedbackUsuario = 'Listando estudantes...';
       this.estudanteService.listarTurmaId(trm_id).toPromise().then((response: Response) => {
         const estudantesTurmaSelecionada = Object.values(response);
         estudantesTurmaSelecionada.forEach(elem => {
-          this.arrayOfIdsEstudantes.push({ id: parseInt(elem['id']), matricula: elem['matricula'] })
+          this.arrayOfIdsEstudantes.push({ id: parseInt(elem['id'], 10), matricula: elem['matricula'] });
         });
-        this.feedbackUsuario = "Atualizando boletins de estudantes...";
-        this.boletimEstudanteService.inserirBoletimEscolar(this.arrayOfIdsEstudantes, (new Date()).getFullYear()).toPromise().then((response: Response) => {
-          this.feedbackUsuario = "Calculando valores de notas...";
-          this.boletimEstudanteService.consolidarNotasBoletimEscolar(this.tipoConsolicacao, this.idPeriodoLetivoSelecionado, parseInt(this.diarioSelecionado["dip_id"]))
-            .toPromise()
-            .then((response: Response) => {
-              const arrayOfNotasConsolidadas = Object.values(response);
-              let arrayOfResultadoBoletim = new Array<ResultadoBoletim>()
-              arrayOfNotasConsolidadas.forEach(elem => {
-                let resultadoBoletim = new ResultadoBoletim();
-                resultadoBoletim.bes_id = parseInt(elem["bes_id"]);
-                resultadoBoletim.dsp_id = parseInt(elem["dsp_id"]);
-                resultadoBoletim.prl_id = parseInt(elem["prl_id"]);
-                resultadoBoletim.reb_falta = parseInt(elem["faltas"]);
-                resultadoBoletim.reb_nota = parseFloat(elem["nota"]);
-                arrayOfResultadoBoletim.push(resultadoBoletim);
-              })
-              this.feedbackUsuario = "Inserindo notas nos boletins, aguarde...";
-              this.boletimEstudanteService.inserirResultadoBoletim(arrayOfResultadoBoletim).toPromise().then(() => {
-                this.feedbackUsuario = "Processo concluído com sucesso!";
-                setTimeout(() => {
-                  this.diarioSelecionado = null;
-                  this.feedbackUsuario = undefined;
-                  this.habilitarBotoes();
-                }, 2000);
-              }).catch((erro: Response) => {
-                //Mostra modal
-                this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-                //registra log de erro no firebase usando serviço singlenton
-                this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-                //Gravar erros no analytics
-                Utils.gravarErroAnalytics(JSON.stringify(erro));
-                //Caso token seja invalido, reenvia rota para login
-                Utils.tratarErro({ router: this.router, response: erro });
-                this.diarioSelecionado = null;
-                this.feedbackUsuario = undefined;
-                this.habilitarBotoes();
-              })
-            })
-        }).catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.diarioSelecionado = null;
-          this.feedbackUsuario = undefined;
-          this.habilitarBotoes();
-        })
+        this.feedbackUsuario = 'Atualizando boletins de estudantes...';
+        this.boletimEstudanteService.inserirBoletimEscolar(
+          this.arrayOfIdsEstudantes, (new Date()).getFullYear()).toPromise().then(() => {
+            this.feedbackUsuario = 'Calculando valores de notas...';
+            this.boletimEstudanteService.consolidarNotasBoletimEscolar(
+              this.tipoConsolicacao, this.idPeriodoLetivoSelecionado, parseInt(this.diarioSelecionado['dip_id'], 10))
+              .toPromise()
+              // tslint:disable-next-line: no-shadowed-variable
+              .then((response: Response) => {
+                const arrayOfNotasConsolidadas = Object.values(response);
+                const arrayOfResultadoBoletim = new Array<ResultadoBoletim>();
+                arrayOfNotasConsolidadas.forEach(elem => {
+                  const resultadoBoletim = new ResultadoBoletim();
+                  resultadoBoletim.bes_id = parseInt(elem['bes_id'], 10);
+                  resultadoBoletim.dsp_id = parseInt(elem['dsp_id'], 10);
+                  resultadoBoletim.prl_id = parseInt(elem['prl_id'], 10);
+                  resultadoBoletim.reb_falta = parseInt(elem['faltas'], 10);
+                  resultadoBoletim.reb_nota = parseFloat(elem['nota']);
+                  arrayOfResultadoBoletim.push(resultadoBoletim);
+                });
+                this.feedbackUsuario = 'Inserindo notas nos boletins, aguarde...';
+                this.boletimEstudanteService.inserirResultadoBoletim(arrayOfResultadoBoletim).toPromise().then(() => {
+                  this.feedbackUsuario = 'Processo concluído com sucesso!';
+                  setTimeout(() => {
+                    this.diarioSelecionado = null;
+                    this.feedbackUsuario = undefined;
+                    this.habilitarBotoes();
+                  }, 2000);
+                }).catch((erro: Response) => {
+                  this.tratarErro(erro);
+                });
+              });
+          }).catch((erro: Response) => {
+            this.tratarErro(erro);
+          });
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.diarioSelecionado = null;
-        this.feedbackUsuario = undefined;
-        this.habilitarBotoes();
-      })
+        this.tratarErro(erro);
+      });
     } else {
       this.exibirAlerta = true;
     }
@@ -206,20 +181,20 @@ export class EnviarNotaBoletimComponent implements OnInit {
   }
 
   public desabilitarBotoes(): void {
-    Array.from(document.getElementsByClassName("bg-danger")).forEach(elem => {
-      (<HTMLInputElement>elem).setAttribute("disabled", "disabled");
-    })
+    Array.from(document.getElementsByClassName('bg-danger')).forEach(elem => {
+      (<HTMLInputElement>elem).setAttribute('disabled', 'disabled');
+    });
   }
 
   public habilitarBotoes(): void {
-    Array.from(document.getElementsByClassName("bg-danger")).forEach(elem => {
-      (<HTMLInputElement>elem).removeAttribute("disabled");
-    })
+    Array.from(document.getElementsByClassName('bg-danger')).forEach(elem => {
+      (<HTMLInputElement>elem).removeAttribute('disabled');
+    });
   }
 
   public validarEnvioNotas(): boolean {
     let retorno = true;
-    if (this.idPeriodoLetivoSelecionado == -1 || this.tipoConsolicacao == -1 || this.diarioSelecionado == null) {
+    if (this.idPeriodoLetivoSelecionado === -1 || this.tipoConsolicacao === -1 || this.diarioSelecionado == null) {
       retorno = false;
     }
     return retorno;
@@ -230,7 +205,7 @@ export class EnviarNotaBoletimComponent implements OnInit {
   }
 
   public selecionarPeriodo(event: Event): void {
-    this.idPeriodoLetivoSelecionado = parseInt((<HTMLInputElement>event.target).value);
+    this.idPeriodoLetivoSelecionado = parseInt((<HTMLInputElement>event.target).value, 10);
   }
 
   public gerenciarDiarioProfessor(): void {
@@ -239,6 +214,21 @@ export class EnviarNotaBoletimComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.diarioSelecionado = null;
+    this.feedbackUsuario = undefined;
+    this.habilitarBotoes();
   }
 
 
