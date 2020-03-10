@@ -2,6 +2,11 @@ import { Router } from "@angular/router";
 import { CONSTANTES } from "./constantes.shared";
 import * as CryptoJS from 'crypto-js';
 
+import * as Excel from "exceljs/dist/exceljs.min.js";
+import * as ExcelProper from "exceljs";
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
+
 /**
  *Classe com métodos que serão usados em muitas classes
  *
@@ -48,6 +53,63 @@ export class Utils {
     }
 
     return retorno;
+  }
+
+  /**
+   * Gera a listagem em arquivo excel .xlsx
+   * @param listagem
+   * @param nomeDoArquivoGerado
+   * IMPORTANTE FAZER ARRAY MAP PARA AJUSTES DOS TITULOS DOS CAMPOS
+   */
+  public static gerarLista(listagem: Array<Object>, nomeDoArquivoGerado: string): void {
+    if (listagem.length > 0) {
+      let modeloPlanilhaListagem: ExcelProper.Workbook = new Excel.Workbook();
+      modeloPlanilhaListagem.addWorksheet(nomeDoArquivoGerado);
+      const tipoBlobArquivo: string = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+      modeloPlanilhaListagem.worksheets[0].addRow([nomeDoArquivoGerado]);
+      modeloPlanilhaListagem.worksheets[0].mergeCells(1, Object.keys(listagem[0]).length, 0, 0);
+      modeloPlanilhaListagem.worksheets[0].getCell(1, 1).alignment = { vertical: 'middle', horizontal: 'center' };
+      const camposDePreenchimento = Object.keys(listagem[0]);
+      modeloPlanilhaListagem.worksheets[0].addRows([camposDePreenchimento]);
+
+      listagem.forEach(dadoDaLista => {
+        const dadosLista = Object.values(dadoDaLista);
+        modeloPlanilhaListagem.worksheets[0].addRows([dadosLista]);
+      })
+
+      //Preenchimento do background da planilha para facilitar a utilização feita pelo usuário
+      for (let i = 0; i < listagem.length + 4; i++) {
+        if (i % 2 == 0) {
+          for (let j = 0; j < 8; j++) {
+            //Formada a entrada de dados para se comportarem como strings.
+            modeloPlanilhaListagem.worksheets[0].getRow(i).getCell(j + 1).numFmt = '';
+            modeloPlanilhaListagem.worksheets[0].getRow(i).getCell(j + 1).fill = {
+              type: 'pattern',
+              pattern: "solid",
+              fgColor: { argb: 'FFDDDDDD' },
+              bgColor: { argb: 'FFDDDDDD' }
+            };
+            modeloPlanilhaListagem.worksheets[0].getRow(i).getCell(j + 1).border = {
+              top: { style: 'thin', color: { argb: 'FFBBBBBB' } },
+              left: { style: 'thin', color: { argb: 'FFBBBBBB' } },
+              bottom: { style: 'thin', color: { argb: 'FFBBBBBB' } },
+              right: { style: 'thin', color: { argb: 'FFBBBBBB' } }
+            };
+          }
+        }
+      }
+
+      //Ajusta tamanho das colunas para preenchimento dos dados
+      for (let i = 0; i < modeloPlanilhaListagem.worksheets[0].columns.length; i++) {
+        modeloPlanilhaListagem.worksheets[0].columns[i].width = 30;
+      }
+
+      //Gerar o arquivo e dispara o download
+      modeloPlanilhaListagem.xlsx.writeBuffer().then((data: Blob) => {
+        const blob = new Blob([data], { type: tipoBlobArquivo });
+        FileSaver.saveAs(blob, `${nomeDoArquivoGerado}.xlsx`);
+      });
+    }
   }
 
 

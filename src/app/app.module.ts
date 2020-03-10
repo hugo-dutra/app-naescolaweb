@@ -20,7 +20,7 @@ import {
   NbMenuModule,
   NbSidebarModule,
   NbToastrModule,
-  NbWindowModule,
+  NbWindowModule
 } from '@nebular/theme';
 import { AlertModalService } from './shared-module/alert-modal.service';
 import { FirebaseService } from './shared/firebase/firebase.service';
@@ -28,6 +28,7 @@ import { AuthGuardService } from './guards/auth.guard.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SharedModuleModule } from './shared-module/shared-module.module';
 import { HintModule } from 'angular-custom-tour';
+
 
 @NgModule({
   declarations: [AppComponent],
