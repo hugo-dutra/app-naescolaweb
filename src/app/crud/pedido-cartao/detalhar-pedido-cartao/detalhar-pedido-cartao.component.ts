@@ -13,26 +13,26 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
   styleUrls: ['./detalhar-pedido-cartao.component.scss'],
   providers: [PedidoCartaoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class DetalharPedidoCartaoComponent implements OnInit {
 
   public pec_id: number;
   public arrayOfDetalhesPedido = new Array<Object>();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
 
@@ -47,13 +47,13 @@ export class DetalharPedidoCartaoComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((pec_id: any) => {
-      this.pec_id = JSON.parse(pec_id["pec_id"]);
+      this.pec_id = JSON.parse(pec_id['pec_id']);
     });
     this.detalharPedido();
   }
 
   public detalharPedido(): void {
-    this.feedbackUsuario = "Carregando detalhes, aguarde...";
+    this.feedbackUsuario = 'Carregando detalhes, aguarde...';
     this.pedidoCartaoService
       .detalharPecId(this.pec_id)
       .toPromise()
@@ -62,13 +62,14 @@ export class DetalharPedidoCartaoComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
 
         this.feedbackUsuario = undefined;

@@ -15,18 +15,18 @@ import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.se
   styleUrls: ['./receber-alerta-ocorrencia.component.scss'],
   providers: [AlertaService, OcorrenciaService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
   ],
 })
 export class ReceberAlertaOcorrenciaComponent implements OnInit {
@@ -34,7 +34,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
   public dados_escola = new Array<Object>();
   public dados_usuario = new Array<Object>();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public esc_id: number;
   public usr_id: number;
   public anoAtual: number;
@@ -70,41 +70,42 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
    *
    */
   public listarRegrasAlertasUsuario(): void {
-    this.feedbackUsuario = "Carregando regras de alertas, aguarde...";
+    this.feedbackUsuario = 'Carregando regras de alertas, aguarde...';
     this.alertaService.listarRegraAlertaUsuario(this.usr_id, this.esc_id).toPromise().then((response: Response) => {
-      this.arrayOfRegrasAlertasUsuario = Object.values(response)
+      this.arrayOfRegrasAlertasUsuario = Object.values(response);
       this.listarAlertasOcorrencia();
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   /**
    *
    */
   public listarAlertasOcorrencia(): void {
-    this.feedbackUsuario = "Procurando por ocorrências dentro das regras, aguarde..."
+    this.feedbackUsuario = 'Procurando por ocorrências dentro das regras, aguarde...';
     this.arrayOfOcorrenciasPeriodoConsiderado = [];
     this.arrayOfOcorrenciasSelecionadas = [];
     let contaRequisicoes = 0;
-    if (this.arrayOfRegrasAlertasUsuario.length == 0) {
+    if (this.arrayOfRegrasAlertasUsuario.length === 0) {
       this.feedbackUsuario = undefined;
     }
 
     this.arrayOfRegrasAlertasUsuario.forEach(regraAlerta => {
-      const esc_id = parseInt(regraAlerta["esc_id"]);
+      const esc_id = parseInt(regraAlerta['esc_id'], 10);
       const usr_id = this.usr_id;
-      const tod_id = parseInt(regraAlerta["tod_id"]);
-      const data_inicio = regraAlerta["data_inicio"];
-      const data_fim = regraAlerta["data_fim"];
+      const tod_id = parseInt(regraAlerta['tod_id'], 10);
+      const data_inicio = regraAlerta['data_inicio'];
+      const data_fim = regraAlerta['data_fim'];
       this.ocorrenciaService.listarQuantidadeAlertaNaoVerificado(
         esc_id,
         usr_id,
@@ -113,28 +114,28 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
         data_fim)
         .toPromise()
         .then((response: Response) => {
-          //this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(response));
           const ocorrenciasRecebias = Object.values(response);
           contaRequisicoes++;
           if (!this.verificarOcorrenciaEstudanteArrayOcorrencias(ocorrenciasRecebias)) {
             this.arrayOfOcorrenciasPeriodoConsiderado.push(...ocorrenciasRecebias);
           }
-          if (contaRequisicoes == this.arrayOfRegrasAlertasUsuario.length) {
+          if (contaRequisicoes === this.arrayOfRegrasAlertasUsuario.length) {
             this.avaliarOcorrenciasDentroRegrasAlertas();
           }
 
         }).catch((erro: Response) => {
-          //Mostra modal
+          // Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
+          // registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+            JSON.stringify(erro));
+          // Gravar erros no analytics
           Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
+          // Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
-        })
-    })
+        });
+    });
   }
 
   /**
@@ -145,11 +146,11 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     let retorno = false;
     this.arrayOfOcorrenciasPeriodoConsiderado.forEach(ocorrenciaExistente => {
       ocorrenciasRecebida.forEach(ocorrencia => {
-        if (ocorrenciaExistente['ocd_id'] == ocorrencia['ocd_id']) {
+        if (ocorrenciaExistente['ocd_id'] === ocorrencia['ocd_id']) {
           retorno = true;
         }
-      })
-    })
+      });
+    });
     return retorno;
   }
 
@@ -159,59 +160,65 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
   public avaliarOcorrenciasDentroRegrasAlertas(): void {
     this.feedbackUsuario = undefined;
     this.arrayOfRegrasAlertasUsuario.forEach(regraAlerta => {
-      const valor_referencia = parseInt(regraAlerta["valor_referencia"]);
-      const operador = regraAlerta["operador"];
-      const tod_id = regraAlerta["tod_id"];
+      const valor_referencia = parseInt(regraAlerta['valor_referencia'], 10);
+      const operador = regraAlerta['operador'];
+      const tod_id = regraAlerta['tod_id'];
       this.arrayOfOcorrenciasPeriodoConsiderado.forEach(ocorrencia => {
-        const quantidadeOcorrenciasDeTipo = parseInt(ocorrencia["quantidade"]);
+        const quantidadeOcorrenciasDeTipo = parseInt(ocorrencia['quantidade'], 10);
         switch (operador) {
-          case "menor": {
-            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'menor': {
+            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
-              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
+                Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
-          case "menor ou igual": {
-            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'menor ou igual': {
+            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
-              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
+                Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
-          case "igual": {
-            if (quantidadeOcorrenciasDeTipo == valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'igual': {
+            if (quantidadeOcorrenciasDeTipo === valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
-              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
+                Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
-          case "maior ou igual": {
-            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'maior ou igual': {
+            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
-              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
+                Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
-          case "maior": {
-            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'maior': {
+            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
-              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
+                Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
-          case "diferente": {
-            if (quantidadeOcorrenciasDeTipo != valor_referencia && ocorrencia["tod_id"] == tod_id) {
+          case 'diferente': {
+            if (quantidadeOcorrenciasDeTipo !== valor_referencia && ocorrencia['tod_id'] === tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
-              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(Object.values(this.arrayOfOcorrenciasSelecionadas));
+              this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
+                Object.values(this.arrayOfOcorrenciasSelecionadas));
             }
             break;
           }
           default:
             break;
         }
-      })
-    })
+      });
+    });
   }
 
   /**
@@ -227,44 +234,46 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
    * @param alertaOcorrencia
    */
   public tratarAlertaOcorrencia(alertaOcorrencia: Object): void {
-    const est_id = parseInt(alertaOcorrencia["est_id"]);
-    const tod_id = parseInt(alertaOcorrencia["tod_id"]);
+    const est_id = parseInt(alertaOcorrencia['est_id'], 10);
+    const tod_id = parseInt(alertaOcorrencia['tod_id'], 10);
     const usr_id = this.usr_id;
     const esc_id = this.esc_id;
     const data_verificacao = Utils.now();
-    const data_inicio_considerado = (alertaOcorrencia["data_inicio_considerado"]);
-    const data_fim_considerado = (alertaOcorrencia["data_fim_considerado"]);
+    const data_inicio_considerado = (alertaOcorrencia['data_inicio_considerado']);
+    const data_fim_considerado = (alertaOcorrencia['data_fim_considerado']);
     const observacao = this.observacaoAlertaVerificado;
     let oov_id = 0;
-    this.feedbackUsuario = "Gravando informações, aguarde...";
+    this.feedbackUsuario = 'Gravando informações, aguarde...';
 
-    this.alertaService.inserirObservacaoAlertaOcorrenciaVerificada(data_verificacao, observacao).toPromise().then((response: Response) => {
-      oov_id = Object.values(response)[0]["oov_id"]
-    }).then(() => {
-      this.feedbackUsuario = "finalizando...";
-      this.alertaService.inserirAlertaOcorrenciaVerificada(
-        est_id,
-        tod_id,
-        usr_id,
-        esc_id,
-        data_inicio_considerado,
-        data_fim_considerado,
-        oov_id
-      ).toPromise()
-        .then((response: Response) => {
-          this.feedbackUsuario = undefined;
-          this.listarAlertasOcorrencia();
-        }).catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
-        })
-    })
+    this.alertaService.inserirObservacaoAlertaOcorrenciaVerificada(data_verificacao, observacao)
+      .toPromise().then((response: Response) => {
+        oov_id = Object.values(response)[0]['oov_id'];
+      }).then(() => {
+        this.feedbackUsuario = 'finalizando...';
+        this.alertaService.inserirAlertaOcorrenciaVerificada(
+          est_id,
+          tod_id,
+          usr_id,
+          esc_id,
+          data_inicio_considerado,
+          data_fim_considerado,
+          oov_id,
+        ).toPromise()
+          .then((response: Response) => {
+            this.feedbackUsuario = undefined;
+            this.listarAlertasOcorrencia();
+          }).catch((erro: Response) => {
+            // Mostra modal
+            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+            // registra log de erro no firebase usando serviço singlenton
+            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+              JSON.stringify(erro));
+            // Gravar erros no analytics
+            Utils.gravarErroAnalytics(JSON.stringify(erro));
+            // Caso token seja invalido, reenvia rota para login
+            Utils.tratarErro({ router: this.router, response: erro });
+            this.feedbackUsuario = undefined;
+          });
+      });
   }
 }

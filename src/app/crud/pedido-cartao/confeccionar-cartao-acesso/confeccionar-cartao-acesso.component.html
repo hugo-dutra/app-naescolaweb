@@ -167,13 +167,20 @@
               <label>Cep.: {{cepEscola}}</label>
             </div>
             <div class="card-body">
-              <br><br><br>
+              <br *ngIf="urlAssinaguraGestor==''"><br *ngIf="urlAssinaguraGestor==''"><br
+                *ngIf="urlAssinaguraGestor==''">
               <div class="row">
                 <div class="col-sm-12 col-lg-12 text-center">
-                  <div class="col-sm-12 col-lg-12">
-                    <label>________________________________________________________________________________</label>
+                  <!-- IMAGEM ASSINATURA DIRETOR -->
+                  <div *ngIf="urlAssinaguraGestor!='' && urlAssinaguraGestor!=undefined && urlAssinaguraGestor!=null"
+                    class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                      <img [src]=urlAssinaguraGestor alt="" style="width: 20vw; height:25vh">
+                    </div>
+                    <div class="col-2"></div>
                   </div>
-                  <div class="col-sm-12 col-lg-12">
+                  <div *ngIf="urlAssinaguraGestor==''" class="col-sm-12 col-lg-12">
                     <label>assinatura do diretor</label>
                   </div>
                 </div>

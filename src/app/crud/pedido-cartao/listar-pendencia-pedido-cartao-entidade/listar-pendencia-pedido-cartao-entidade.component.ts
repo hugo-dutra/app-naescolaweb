@@ -13,19 +13,19 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./listar-pendencia-pedido-cartao-entidade.component.scss'],
   providers: [PedidoCartaoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class ListarPendenciaPedidoCartaoEntidadeComponent implements OnInit {
 
@@ -33,7 +33,7 @@ export class ListarPendenciaPedidoCartaoEntidadeComponent implements OnInit {
   public data_inicio: string;
   public data_fim: string;
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public esc_id: number;
@@ -47,48 +47,54 @@ export class ListarPendenciaPedidoCartaoEntidadeComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
-    this.usr_id = parseInt(JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id);
+    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
+    this.usr_id = parseInt(JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'),
+      CONSTANTES.PASSO_CRIPT))[0].id, 10);
     this.inicializarDatas();
   }
 
   public listar(): void {
-    this.feedbackUsuario = "Carregando pendências, aguarde..."
-    this.pedidoCartaoService.listarPendencia(this.data_inicio, this.data_fim, this.usr_id).toPromise().then((response: Response) => {
-      this.arrayOfPendencias = Object.values(response);
-      this.feedbackUsuario = undefined;
-    }).catch((erro: Response) => {
-      this.feedbackUsuario = undefined;
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-    })
+    this.feedbackUsuario = 'Carregando pendências, aguarde...';
+    this.pedidoCartaoService.listarPendencia(this.data_inicio, this.data_fim, this.usr_id)
+      .toPromise().then((response: Response) => {
+        this.arrayOfPendencias = Object.values(response);
+        this.feedbackUsuario = undefined;
+      }).catch((erro: Response) => {
+        this.feedbackUsuario = undefined;
+        // Mostra modal
+        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
+        // Caso token seja invalido, reenvia rota para login
+        Utils.tratarErro({ router: this.router, response: erro });
+      });
   }
 
   public detalharPedido(pec_id: number): void {
-    let navigationExtras: NavigationExtras = {
-      queryParams: { pec_id: JSON.stringify(pec_id), rota_origem: JSON.stringify("listar-pendencia-pedido-cartao-entidade") }
+    const navigationExtras: NavigationExtras = {
+      queryParams: {
+        pec_id: JSON.stringify(pec_id),
+        rota_origem: JSON.stringify('listar-pendencia-pedido-cartao-entidade'),
+      },
     };
     this.router.navigate([`${this.route.parent.routeConfig.path}/detalhar-pedido-cartao-entidade`], navigationExtras);
   }
 
   public verCartoesPedido(pec_id: number): void {
-    console.log(pec_id);
+    /* console.log(pec_id); */
   }
 
   public inicializarDatas() {
-    this.data_inicio = new Date().getFullYear().toString() + "-01-01";
+    this.data_inicio = new Date().getFullYear().toString() + '-01-01';
     this.data_fim =
       new Date().getFullYear().toString() +
-      "-" +
-      ("0" + (new Date().getMonth() + 1)).slice(-2).toString() +
-      "-" +
-      ("0" + new Date().getDate()).slice(-2).toString();
+      '-' +
+      ('0' + (new Date().getMonth() + 1)).slice(-2).toString() +
+      '-' +
+      ('0' + new Date().getDate()).slice(-2).toString();
   }
 
   public listarPedidos(): void {
@@ -96,21 +102,22 @@ export class ListarPendenciaPedidoCartaoEntidadeComponent implements OnInit {
   }
 
   public mudarStatusPendencia(pendencia: Object, event: Event): void {
-    let novo_status = parseInt((<HTMLInputElement>event.target).value);
-    let id = pendencia["id"];
-    this.feedbackUsuario = "Alterando status de pendência, aguarde...";
+    const novo_status = parseInt((<HTMLInputElement>event.target).value, 10);
+    const id = pendencia['id'];
+    this.feedbackUsuario = 'Alterando status de pendência, aguarde...';
     this.pedidoCartaoService.alterarStatusPendencia(id, novo_status).toPromise().then((response: Response) => {
       this.listar();
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
-    })
+    });
   }
 
   public listarPendencia(): void {
@@ -118,14 +125,14 @@ export class ListarPendenciaPedidoCartaoEntidadeComponent implements OnInit {
   }
 
   public gravarData(event: Event): void {
-    let name = (<HTMLInputElement>event.target).name;
-    let valor = (<HTMLInputElement>event.target).value;
+    const name = (<HTMLInputElement>event.target).name;
+    const valor = (<HTMLInputElement>event.target).value;
     switch (name) {
-      case "data_inicio": {
+      case 'data_inicio': {
         this.data_inicio = valor;
         break;
       }
-      case "data_fim": {
+      case 'data_fim': {
         this.data_fim = valor;
         break;
       }
@@ -140,7 +147,7 @@ export class ListarPendenciaPedidoCartaoEntidadeComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.arrayOfPendencias.sort(function (a, b) {
+    const retorno = this.arrayOfPendencias.sort(function (a, b) {
       if (a[campo] > b[campo]) {
         return 1;
       }
@@ -148,7 +155,7 @@ export class ListarPendenciaPedidoCartaoEntidadeComponent implements OnInit {
         return -1;
       }
       return 0;
-    })
+    });
     this.arrayOfPendencias = retorno;
   }
 

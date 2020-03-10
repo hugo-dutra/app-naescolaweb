@@ -13,28 +13,28 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./registrar-pendencia-pedido-cartao.component.scss'],
   providers: [PedidoCartaoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class RegistrarPendenciaPedidoCartaoComponent implements OnInit {
 
-  private valorFiltro: string = "";
+  private valorFiltro: string = '';
   public arrayOfPedidos = new Array<Object>();
-  private detalheProblema: string = "";
+  private detalheProblema: string = '';
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public esc_id: number;
@@ -44,13 +44,12 @@ export class RegistrarPendenciaPedidoCartaoComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.esc_id = parseInt(
-      Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT)
-    );
+      Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
   }
 
   public gravarDetalheProblema(event: Event): void {
@@ -62,7 +61,7 @@ export class RegistrarPendenciaPedidoCartaoComponent implements OnInit {
   }
 
   public filtrarPedidoCartao(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.pedidoCartaoService
       .filtrarPedidoNomeEstudante(this.valorFiltro, this.esc_id)
       .toPromise()
@@ -71,26 +70,27 @@ export class RegistrarPendenciaPedidoCartaoComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public filtrarEnter(event: KeyboardEvent) {
-    if (event.key == "Enter") {
+    if (event.key === 'Enter') {
       this.filtrarPedidoCartao();
     }
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.arrayOfPedidos.sort(function (a, b) {
+    const retorno = this.arrayOfPedidos.sort(function (a, b) {
       if (a[campo] > b[campo]) {
         return 1;
       }
@@ -111,26 +111,27 @@ export class RegistrarPendenciaPedidoCartaoComponent implements OnInit {
   }
 
   public registrarPendencia(pedido: Object): void {
-    this.feedbackUsuario = "Salvando registro de problema, aguarde...";
+    this.feedbackUsuario = 'Salvando registro de problema, aguarde...';
     this.pedidoCartaoService
       .inserirPendencia(
         this.detalheProblema,
-        pedido["est_id"],
-        pedido["usr_id"],
-        pedido["pec_id"]
+        pedido['est_id'],
+        pedido['usr_id'],
+        pedido['pec_id'],
       )
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });

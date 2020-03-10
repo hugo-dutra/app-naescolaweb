@@ -3,7 +3,7 @@ export class CartaoAcessoImpressao {
   public nome: string;
   public stringCodigoBarras: string;
   public etapa: string;
-  public serie: string
+  public serie: string;
   public turma: string;
   public turno: string;
   public foto: string;

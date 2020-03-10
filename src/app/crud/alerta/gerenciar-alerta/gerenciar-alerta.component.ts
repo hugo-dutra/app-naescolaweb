@@ -13,28 +13,30 @@ import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.se
   styleUrls: ['./gerenciar-alerta.component.scss'],
   providers: [HintService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class GerenciarAlertaComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public esc_id: number;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
-  constructor(private router: Router, private hintService: HintService, private acessoComumService: AcessoComumService, ) { }
+  constructor(private router: Router,
+    private hintService: HintService,
+    private acessoComumService: AcessoComumService) { }
 
   ngOnInit() {
     this.subscribeTour();
@@ -45,7 +47,7 @@ export class GerenciarAlertaComponent implements OnInit {
   public subscribeTour(): void {
     this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
       this.hintService.initialize({ elementsDisabled: false });
-    })
+    });
   }
 
 
@@ -64,7 +66,7 @@ export class GerenciarAlertaComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
-    //return true;
+    // return true;
   }
 
 }

@@ -7,8 +7,8 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Utils } from '../../../shared/utils.shared';
 
-import * as Excel from "exceljs/dist/exceljs.min.js";
-import * as ExcelProper from "exceljs";
+import * as Excel from 'exceljs/dist/exceljs.min.js';
+import * as ExcelProper from 'exceljs';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -18,51 +18,51 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./detalhar-pedido-cartao-entidade.component.scss'],
   providers: [PedidoCartaoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
 
   public pec_id: number;
   public arrayOfDetalhesPedido = new Array<Object>();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public dados_planilha: Object = null;
-  public path_planilha_pedidos: string = "";
-  public arquivo_planilha_pedidos: string = "";
-  public caminho_arquivo_pedidos: string = "";
-  public rotaOrigem = ""
+  public path_planilha_pedidos: string = '';
+  public arquivo_planilha_pedidos: string = '';
+  public caminho_arquivo_pedidos: string = '';
+  public rotaOrigem = '';
   constructor(
     private route: ActivatedRoute,
     private pedidoCartaoService: PedidoCartaoService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((pec_id: any) => {
-      this.pec_id = JSON.parse(pec_id["pec_id"]);
-      this.rotaOrigem = JSON.parse(pec_id["rota_origem"]);
+      this.pec_id = JSON.parse(pec_id['pec_id']);
+      this.rotaOrigem = JSON.parse(pec_id['rota_origem']);
     });
     this.detalharPedido();
   }
 
   public detalharPedido(): void {
-    this.feedbackUsuario = "Carregando detalhes, aguarde...";
+    this.feedbackUsuario = 'Carregando detalhes, aguarde...';
     this.pedidoCartaoService
       .detalharPecId(this.pec_id)
       .toPromise()
@@ -71,20 +71,21 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public listarPedidoCartaoEntidade(): void {
-    if (this.rotaOrigem == "") {
+    if (this.rotaOrigem === '') {
       this.router.navigate([`${this.route.parent.routeConfig.path}/listar-pedido-cartao-entidade`]);
     } else {
       this.router.navigate([`${this.route.parent.routeConfig.path}/${this.rotaOrigem}`]);
@@ -96,19 +97,22 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
   }
 
   public gerarPlanilhaEntidade(pedidos: Object[]): void {
-    this.feedbackUsuario = "Gerando planilha, aguarde...";
+    this.feedbackUsuario = 'Gerando planilha, aguarde...';
 
-    let modeloPlanilhaImportareEstudantes: ExcelProper.Workbook = new Excel.Workbook();
-    modeloPlanilhaImportareEstudantes.addWorksheet("Relação de estudantes");
+    const modeloPlanilhaImportareEstudantes: ExcelProper.Workbook = new Excel.Workbook();
+    modeloPlanilhaImportareEstudantes.addWorksheet('Relação de estudantes');
     const tipoBlobArquivo: string = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const nomeArquivoImportacao: string = 'Arquivo de importação';
 
-    modeloPlanilhaImportareEstudantes.worksheets[0].addRow(["DADOS PARA CONFECÃO DE CARTÕES"]);
+    modeloPlanilhaImportareEstudantes.worksheets[0].addRow(['DADOS PARA CONFECÃO DE CARTÕES']);
     modeloPlanilhaImportareEstudantes.worksheets[0].mergeCells(1, 8, 0, 0);
-    modeloPlanilhaImportareEstudantes.worksheets[0].getCell(1, 1).alignment = { vertical: 'middle', horizontal: 'center' };
+    modeloPlanilhaImportareEstudantes.worksheets[0].getCell(1, 1).alignment = {
+      vertical: 'middle', horizontal: 'center',
+    };
 
-    //Monta a estrutura para adicionar estudantes as turmas da escola para o ano atual
-    const dadosDoPedido = ['Validade', 'Escola', 'Municipio', 'UF', 'Etapa', 'Série', 'Turno', 'Código', 'Nome', 'Nascimento', 'Turma', 'Modelo', 'Foto', 'Pendência']
+    // Monta a estrutura para adicionar estudantes as turmas da escola para o ano atual
+    const dadosDoPedido = ['Validade', 'Escola', 'Municipio', 'UF', 'Etapa', 'Série',
+      'Turno', 'Código', 'Nome', 'Nascimento', 'Turma', 'Modelo', 'Foto', 'Pendência'];
     modeloPlanilhaImportareEstudantes.worksheets[0].addRows([dadosDoPedido]);
 
     pedidos.forEach(pedido => {
@@ -117,34 +121,34 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
         pedido['UF'], pedido['etapa'], pedido['serie'],
         pedido['turno'], pedido['est_id'], pedido['nome'],
         pedido['nascimento'], pedido['turma'], pedido['modelo'],
-        pedido['foto'], pedido['pendencia']
-      ]
+        pedido['foto'], pedido['pendencia'],
+      ];
       modeloPlanilhaImportareEstudantes.worksheets[0].addRows([dadosPreenchimento]);
-    })
+    });
 
-    //Preenchimento do background da planilha para facilitar a utilização feita pelo usuário
+    // Preenchimento do background da planilha para facilitar a utilização feita pelo usuário
     for (let i = 0; i < pedidos.length + 4; i++) {
-      if (i % 2 == 0) {
+      if (i % 2 === 0) {
         for (let j = 0; j < 13; j++) {
-          //Formada a entrada de dados para se comportarem como strings.
+          // Formada a entrada de dados para se comportarem como strings.
           modeloPlanilhaImportareEstudantes.worksheets[0].getRow(i).getCell(j + 1).numFmt = '';
           modeloPlanilhaImportareEstudantes.worksheets[0].getRow(i).getCell(j + 1).fill = {
             type: 'pattern',
-            pattern: "solid",
+            pattern: 'solid',
             fgColor: { argb: 'FFDDDDDD' },
-            bgColor: { argb: 'FFDDDDDD' }
+            bgColor: { argb: 'FFDDDDDD' },
           };
           modeloPlanilhaImportareEstudantes.worksheets[0].getRow(i).getCell(j + 1).border = {
             top: { style: 'thin', color: { argb: 'FFBBBBBB' } },
             left: { style: 'thin', color: { argb: 'FFBBBBBB' } },
             bottom: { style: 'thin', color: { argb: 'FFBBBBBB' } },
-            right: { style: 'thin', color: { argb: 'FFBBBBBB' } }
+            right: { style: 'thin', color: { argb: 'FFBBBBBB' } },
           };
         }
       }
     }
 
-    //Ajusta tamanho das colunas para preenchimento dos dados
+    // Ajusta tamanho das colunas para preenchimento dos dados
     modeloPlanilhaImportareEstudantes.worksheets[0].columns[0].width = 12;
     modeloPlanilhaImportareEstudantes.worksheets[0].columns[1].width = 50;
     modeloPlanilhaImportareEstudantes.worksheets[0].columns[2].width = 12;
@@ -159,7 +163,7 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
     modeloPlanilhaImportareEstudantes.worksheets[0].columns[11].width = 15;
     modeloPlanilhaImportareEstudantes.worksheets[0].columns[12].width = 300;
     modeloPlanilhaImportareEstudantes.worksheets[0].columns[13].width = 12;
-    //Gerar o arquivo e dispara o download
+    // Gerar o arquivo e dispara o download
     modeloPlanilhaImportareEstudantes.xlsx.writeBuffer().then((data: Blob) => {
       const blob = new Blob([data], { type: tipoBlobArquivo });
       FileSaver.saveAs(blob, `${nomeArquivoImportacao}_${Math.random().toString(36).substr(2, 9).toUpperCase()}.xlsx`);

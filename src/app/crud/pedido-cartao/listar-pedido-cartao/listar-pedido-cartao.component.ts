@@ -13,19 +13,19 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./listar-pedido-cartao.component.scss'],
   providers: [PedidoCartaoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class ListarPedidoCartaoComponent implements OnInit {
 
@@ -36,7 +36,7 @@ export class ListarPedidoCartaoComponent implements OnInit {
   public data_fim: string;
   public esc_id: number;
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public usr_id: number;
@@ -49,16 +49,16 @@ export class ListarPedidoCartaoComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.esc_id = parseInt(
-      Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT)
-    );
+      Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
     this.exibirComponentesEdicao();
     this.inicializarDatas();
-    this.usr_id = parseInt(JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id);
+    this.usr_id = parseInt(JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'),
+      CONSTANTES.PASSO_CRIPT))[0].id, 10);
   }
 
   public exibirComponentesEdicao(): void {
@@ -80,7 +80,7 @@ export class ListarPedidoCartaoComponent implements OnInit {
   }
 
   public ordenarColuna(campo: string): void {
-    let retorno = this.arrayOfPedidos.sort(function (a, b) {
+    const retorno = this.arrayOfPedidos.sort(function (a, b) {
       if (a[campo] > b[campo]) {
         return 1;
       }
@@ -88,12 +88,12 @@ export class ListarPedidoCartaoComponent implements OnInit {
         return -1;
       }
       return 0;
-    })
+    });
     this.arrayOfPedidos = retorno;
   }
 
   public listar(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.pedidoCartaoService
       .listarPeriodoEscId(this.data_inicio, this.data_fim, this.esc_id)
       .toPromise()
@@ -102,37 +102,38 @@ export class ListarPedidoCartaoComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public inicializarDatas() {
-    this.data_inicio = new Date().getFullYear().toString() + "-01-01";
+    this.data_inicio = new Date().getFullYear().toString() + '-01-01';
     this.data_fim =
       new Date().getFullYear().toString() +
-      "-" +
-      ("0" + (new Date().getMonth() + 1)).slice(-2).toString() +
-      "-" +
-      ("0" + new Date().getDate()).slice(-2).toString();
+      '-' +
+      ('0' + (new Date().getMonth() + 1)).slice(-2).toString() +
+      '-' +
+      ('0' + new Date().getDate()).slice(-2).toString();
   }
 
   public gravarData(event: Event): void {
-    let name = (<HTMLInputElement>event.target).name;
-    let valor = (<HTMLInputElement>event.target).value;
+    const name = (<HTMLInputElement>event.target).name;
+    const valor = (<HTMLInputElement>event.target).value;
     switch (name) {
-      case "data_inicio": {
+      case 'data_inicio': {
         this.data_inicio = valor;
         break;
       }
-      case "data_fim": {
+      case 'data_fim': {
         this.data_fim = valor;
         break;
       }
@@ -143,26 +144,27 @@ export class ListarPedidoCartaoComponent implements OnInit {
   }
 
   public cancelarPedido(pedido: Object): void {
-    this.feedbackUsuario = "Cancelando pedido, aguarde..."
-    this.pedidoCartaoService.cancelar(pedido["id"], this.usr_id).toPromise().then((response: Response) => {
+    this.feedbackUsuario = 'Cancelando pedido, aguarde...';
+    this.pedidoCartaoService.cancelar(pedido['id'], this.usr_id).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.listar();
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public detalharPedido(pec_id: number): void {
-    let navigationExtras: NavigationExtras = {
-      queryParams: { pec_id: JSON.stringify(pec_id) }
+    const navigationExtras: NavigationExtras = {
+      queryParams: { pec_id: JSON.stringify(pec_id) },
     };
 
     this.router.navigate([`${this.route.parent.routeConfig.path}/detalhar-pedido-cartao`], navigationExtras);

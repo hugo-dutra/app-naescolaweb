@@ -1,4 +1,4 @@
-import { ItemPedido } from "./item-pedido.model";
+import { ItemPedido } from './item-pedido.model';
 
 export class PedidoCartao {
   public usr_id: number;

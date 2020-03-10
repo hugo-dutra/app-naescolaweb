@@ -17,25 +17,25 @@ import { FirebaseUpload } from '../../../shared/firebase/firebase.upload.model';
   styleUrls: ['./alterar-escola.component.scss'],
   providers: [EscolaService, RegiaoEscolaService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class AlterarEscolaComponent implements OnInit {
 
   public regioesEscolas: Object;
   public escola = new Escola();
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
@@ -52,6 +52,7 @@ export class AlterarEscolaComponent implements OnInit {
     cep: new FormControl(null),
     cnpj: new FormControl(null),
     nome_abreviado: new FormControl(null),
+    assinatura_gestor: new FormControl(null),
 
   });
 
@@ -61,84 +62,93 @@ export class AlterarEscolaComponent implements OnInit {
     private activeroute: ActivatedRoute,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
     this.activeroute.queryParams.subscribe((escola: Escola) => {
-      this.escola = JSON.parse(escola["escola"]);
+      this.escola = JSON.parse(escola['escola']);
     });
     this.listarRegiaoEscola();
   }
   public alterar(): void {
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.escolaService
       .alterar(this.escola)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
-        this.router.navigateByUrl("listar-escola");
+        this.router.navigateByUrl('listar-escola');
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+        this.tratarErro(erro);
         this.exibirAlerta = true;
-        this.feedbackUsuario = undefined;
       });
   }
 
   public modificarInputs(event: Event): void {
-    let campo: string = (<HTMLInputElement>event.target).name;
-    let valor: string = (<HTMLInputElement>event.target).value;
+    const campo: string = (<HTMLInputElement>event.target).name;
+    const valor: string = (<HTMLInputElement>event.target).value;
     this.escola[campo] = valor;
     this.validar(event);
   }
 
+  public enviarArquivoAssinatura(event: Event): void {
+    const arquivos: FileList = (<HTMLInputElement>event.target).files;
+    const firebaseUpload = new FirebaseUpload(arquivos[0]);
+    firebaseUpload.name = Utils.gerarNomeUnico();
+    this.feedbackUsuario = 'Enviando assinatura, aguarde...';
+    const basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ESCOLA}`;
+    this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
+      this.feedbackUsuario = 'Carregando assinatura, aguarde...';
+      this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
+        this.escola.assinatura_gestor = url_download;
+        this.feedbackUsuario = undefined;
+      }).catch((erro: Response) => {
+        this.tratarErro(erro);
+      });
+    }).catch((erro: Response) => {
+      this.tratarErro(erro);
+    });
+  }
+
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
+  }
+
+
   public enviarArquivo(event: Event): void {
-    let arquivos: FileList = (<HTMLInputElement>event.target).files;
-    let firebaseUpload = new FirebaseUpload(arquivos[0]);
+    const arquivos: FileList = (<HTMLInputElement>event.target).files;
+    const firebaseUpload = new FirebaseUpload(arquivos[0]);
     firebaseUpload.name = Utils.gerarNomeUnico();
 
-    let basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_DIRETOR}`;
-    this.feedbackUsuario = "Enviando logo, aguarde...";
+    const basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_DIRETOR}`;
+    this.feedbackUsuario = 'Enviando logo, aguarde...';
     this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
-      this.feedbackUsuario = "Carregando logo, aguarde...";
+      this.feedbackUsuario = 'Carregando logo, aguarde...';
       this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
         this.escola.logo = url_download;
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
+        this.tratarErro(erro);
+      });
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+      this.tratarErro(erro);
+    });
 
   }
 
   public listar(): void {
-    this.router.navigateByUrl("listar-escola");
+    this.router.navigateByUrl('listar-escola');
   }
 
   public validar(event: Event) {
@@ -147,7 +157,7 @@ export class AlterarEscolaComponent implements OnInit {
   }
 
   public listarRegiaoEscola(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.regiaoEscolaService
       .listar()
       .toPromise()
@@ -156,15 +166,7 @@ export class AlterarEscolaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 

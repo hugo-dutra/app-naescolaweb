@@ -101,7 +101,7 @@ export class EstudanteService {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
 
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-observacao-estudante",
+      CONSTANTES.HOST_API + 'alterar-observacao-estudante',
       JSON.stringify({ id: id, usr_id: usr_id, observacao: observacao }),
       headers
     );

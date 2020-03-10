@@ -19,19 +19,19 @@ import { RedeEnsino } from '../../rede-ensino/rede-ensino.model';
   styleUrls: ['./inserir-escola.component.scss'],
   providers: [EscolaService, RegiaoEscolaService, RedeEnsinoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirEscolaComponent implements OnInit {
 
@@ -41,14 +41,14 @@ export class InserirEscolaComponent implements OnInit {
     private regiaoEscolaService: RegiaoEscolaService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private redeEnsinoService: RedeEnsinoService
+    private redeEnsinoService: RedeEnsinoService,
   ) { }
 
   public escola: Escola = new Escola();
   public regioesEscolas: Object;
   public no_logo_url: string = CONSTANTES.NO_AVATAR_URL;
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
@@ -66,7 +66,7 @@ export class InserirEscolaComponent implements OnInit {
     inep: new FormControl(null),
     cep: new FormControl(null),
     cnpj: new FormControl(null),
-    assinatura_gestor: new FormControl(null)
+    assinatura_gestor: new FormControl(null),
   });
 
   ngOnInit() {
@@ -75,7 +75,7 @@ export class InserirEscolaComponent implements OnInit {
   }
 
   public inserir(): void {
-    //Guarda os parametros do formulario nos atributos do objeto diretor
+    // Guarda os parametros do formulario nos atributos do objeto diretor
     this.escola.cep = this.formulario.value.cep;
     this.escola.email = this.formulario.value.email;
     this.escola.endereco = this.formulario.value.endereco;
@@ -83,24 +83,23 @@ export class InserirEscolaComponent implements OnInit {
     this.escola.nome = this.formulario.value.nome;
     this.escola.ree_id = this.formulario.value.ree_id;
     this.escola.telefone = this.formulario.value.telefone;
-    this.formulario.value.ren_id = localStorage.getItem("ren_id");
+    this.formulario.value.ren_id = localStorage.getItem('ren_id');
     this.escola.ren_id = this.formulario.value.ren_id;
     this.escola.cnpj = this.formulario.value.cnpj;
     this.escola.nome_abreviado = this.formulario.value.nome_abreviado;
-    //Pegar esse valor, passar para um serviço fazer um post http para o servidor laravel gravar no banco e retorna o ultimo objeto inserido
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.diretorService
       .inserir(this.escola)
       .toPromise()
       .then((response: Response) => {
-        if (Object.values(response).length == 0) {
-          this.feedbackUsuario = "Dados Salvos";
+        if (Object.values(response).length === 0) {
+          this.feedbackUsuario = 'Dados Salvos';
           this.formulario.reset();
           this.feedbackUsuario = undefined;
           this.escola.logo = undefined;
           this.exibirAlerta = false;
         } else {
-          this.alertModalService.showAlertWarning("Já existe uma escola com o INEP informado");
+          this.alertModalService.showAlertWarning('Já existe uma escola com o INEP informado');
           this.feedbackUsuario = undefined;
           this.exibirAlerta = false;
         }
@@ -114,45 +113,45 @@ export class InserirEscolaComponent implements OnInit {
   }
 
   public enviarArquivoAssinatura(event: Event): void {
-    let arquivos: FileList = (<HTMLInputElement>event.target).files;
-    let firebaseUpload = new FirebaseUpload(arquivos[0]);
+    const arquivos: FileList = (<HTMLInputElement>event.target).files;
+    const firebaseUpload = new FirebaseUpload(arquivos[0]);
     firebaseUpload.name = Utils.gerarNomeUnico();
-    this.feedbackUsuario = "Enviando assinatura, aguarde...";
-    let basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ESCOLA}`;
+    this.feedbackUsuario = 'Enviando assinatura, aguarde...';
+    const basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ESCOLA}`;
     this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
-      this.feedbackUsuario = "Carregando assinatura, aguarde...";
+      this.feedbackUsuario = 'Carregando assinatura, aguarde...';
       this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
         this.escola.assinatura_gestor = url_download;
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
         this.tratarErro(erro);
-      })
+      });
     }).catch((erro: Response) => {
       this.tratarErro(erro);
-    })
+    });
   }
 
   public enviarArquivo(event: Event): void {
-    let arquivos: FileList = (<HTMLInputElement>event.target).files;
-    let firebaseUpload = new FirebaseUpload(arquivos[0]);
+    const arquivos: FileList = (<HTMLInputElement>event.target).files;
+    const firebaseUpload = new FirebaseUpload(arquivos[0]);
     firebaseUpload.name = Utils.gerarNomeUnico();
-    this.feedbackUsuario = "Enviando logo, aguarde...";
-    let basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ESCOLA}`;
+    this.feedbackUsuario = 'Enviando logo, aguarde...';
+    const basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ESCOLA}`;
     this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
-      this.feedbackUsuario = "Carregando logo, aguarde...";
+      this.feedbackUsuario = 'Carregando logo, aguarde...';
       this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
         this.escola.logo = url_download;
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
         this.tratarErro(erro);
-      })
+      });
     }).catch((erro: Response) => {
       this.tratarErro(erro);
-    })
+    });
   }
 
   public listar(): void {
-    this.router.navigateByUrl("listar-escola");
+    this.router.navigateByUrl('listar-escola');
   }
 
   public validar(event: Event) {
@@ -165,7 +164,7 @@ export class InserirEscolaComponent implements OnInit {
     const cnpj = (<HTMLInputElement>event.target).value;
     const validadeCNPJ = Utils.validarCNPJ(cnpj);
     if (!validadeCNPJ) {
-      this.alertModalService.showAlertDanger("CNPJ Inválido");
+      this.alertModalService.showAlertDanger('CNPJ Inválido');
       this.formulario.get('cnpj').reset();
     }
   }
@@ -173,7 +172,7 @@ export class InserirEscolaComponent implements OnInit {
 
 
   public listarRegiaoEscola(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.regiaoEscolaService
       .listar()
       .toPromise()
@@ -187,7 +186,7 @@ export class InserirEscolaComponent implements OnInit {
   }
 
   public gravarRedeEnsino(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.redeEnsinoService
       .listar()
       .toPromise()
@@ -195,8 +194,8 @@ export class InserirEscolaComponent implements OnInit {
         this.feedbackUsuario = undefined;
         let escolaTemp: Object;
         escolaTemp = response[0];
-        let redeEnsino: RedeEnsino = <RedeEnsino>escolaTemp;
-        localStorage.setItem("ren_id", redeEnsino.id.toString());
+        const redeEnsino: RedeEnsino = <RedeEnsino>escolaTemp;
+        localStorage.setItem('ren_id', redeEnsino.id.toString());
       })
       .catch((erro: Response) => {
         this.tratarErro(erro);
@@ -204,13 +203,14 @@ export class InserirEscolaComponent implements OnInit {
   }
 
   public tratarErro(erro: Response): void {
-    //Mostra modal
+    // Mostra modal
     this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-    //registra log de erro no firebase usando serviço singlenton
-    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
     Utils.gravarErroAnalytics(JSON.stringify(erro));
-    //Caso token seja invalido, reenvia rota para login
+    // Caso token seja invalido, reenvia rota para login
     Utils.tratarErro({ router: this.router, response: erro });
     this.feedbackUsuario = undefined;
   }
