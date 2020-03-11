@@ -32,6 +32,10 @@
         <button *ngIf="id_layout_selecionado === 4"
           class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
           (click)="gerarCarteirinhaPVCResolvidos()">GerarDocumento</button>
+        <!--############# ETIQUETAS - id:5 #############-->
+        <button *ngIf="id_layout_selecionado === 5"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          (click)="gerarCarteirinhaPadraoSEDFFrenteVersoCanvasEPdf()">GerarDocumento</button>
       </div>
     </div>
     <div class="card-body">
@@ -406,15 +410,8 @@
                     <img src="../../../../assets/images/NomeNaEscolaSmall.png" alt="">
                   </div>
                 </div>
-
-
               </div>
             </div>
-
-
-
-
-
           </div>
           <!-- VERSO -->
           <div [id]="'verso_resolvidos_'+estudante.est_id" class="col-lg-6">
@@ -453,6 +450,130 @@
           </div>
         </div>
       </div>
+
+
+      <!--############# CARTÃO SIMPLES - PADRÃO SEDF FRENTE E VERSO id:5 #############-->
+      <div *ngIf="id_layout_selecionado === 5" class="mt-3">
+        <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="row"
+          [id]="'frente_verso_padrao_sedf'+estudante.est_id">
+          <!-- CARD FRENTE -->
+          <div class="col-sm-12 col-lg-6 mb-4" [id]="'frente_verso'+estudante.est_id">
+            <!-- TITULO -->
+            <div class="row sedf_border_all">
+              <!-- LOGO SEDF -->
+              <div class="col-4">
+                <img [src]="linkLogoGDF" alt="" style="width: 4vw; height: 11vh;">
+              </div>
+              <!-- DADOS DA REDE -->
+              <div class="col-8">
+                <p style="font-size: 11px; line-height: 135%;">REPÚBLICA FEDERATIVA DO BRASIL<br>
+                  GOVERNO DO DISTRITO FEDERAL<br>
+                  SECRETARIA DE ESTADO E EDUCAÇÃO DO DISTRITO FEDERAL<br>
+                  CRE-{{regiaoEscola}}<br>
+                  {{nomeEscola}}
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <!-- FOTO -->
+              <div class="col-4 sedf_border_foto">
+                <img class="img " style="width: 11vw; height: 30vh;"
+                  [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                  alt="foto do estudante">
+              </div>
+              <!-- DADOS -->
+              <div class="col-8 text-left">
+                <div class="row sedf_border_bottom">
+                  <p style="font-size: 11px;">Nome do Estudante:<br>
+                    <strong>{{estudante.nome}}</strong>
+                  </p>
+                </div>
+                <div class="row sedf_border_bottom">
+                  <div class="col-6">
+                    <p style="font-size: 11px;">Código/Ano:<br>
+                      <strong>{{estudante.est_id}} / {{anoAtual}}</strong>
+                    </p>
+                  </div>
+                  <div class="col-6">
+                    <p style="font-size: 11px;">Data de Nascimento:<br>
+                      <strong>{{estudante.data_nascimento}}</strong>
+                    </p>
+                  </div>
+                </div>
+                <div class="row sedf_border_bottom">
+                  <p style="font-size: 11px;">Etapa/Modalidade:<br>
+                    <strong>{{estudante.etapa}}</strong>
+                  </p>
+                </div>
+                <div class="row sedf_border_bottom pb-3">
+                  <div class="col-4">
+                    <p style="font-size: 11px;">Ano/Série:<br>
+                      <strong>{{estudante.serie}}</strong>
+                    </p>
+                  </div>
+                  <div class="col-4">
+                    <p style="font-size: 11px;">Turno:<br>
+                      <strong>{{estudante.turno}}</strong>
+                    </p>
+                  </div>
+                  <div class="col-4">
+                    <p style="font-size: 11px;">Turma:<br>
+                      <strong>{{estudante.turma}}</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- CARD VERSO -->
+          <div class="col-sm-12 col-lg-6 mb-4 text-dark sedf_border_all"
+            [id]="'verso_cartao_padrao_sedf'+estudante.est_id">
+            <div class="bg-white text-center">
+              <p style="font-size: 11px; line-height: 135%;">
+                CRE-{{regiaoEscola}}<br>
+                {{nomeEscola}}<br>
+                {{enderecoEscola}}<br>
+                Brasília-DF<br>
+                {{telefoneEscola}}
+              </p>
+            </div>
+            <div class="">
+              <br *ngIf="urlAssinaguraGestor==''"><br *ngIf="urlAssinaguraGestor==''"><br
+                *ngIf="urlAssinaguraGestor==''">
+              <div class="row">
+                <div class="col-sm-12 col-lg-12 text-center">
+                  <!-- IMAGEM ASSINATURA DIRETOR -->
+                  <div *ngIf="urlAssinaguraGestor!='' && urlAssinaguraGestor!=undefined && urlAssinaguraGestor!=null"
+                    class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                      <img [src]=urlAssinaguraGestor alt="" style="width: 10vw; height:10vh">
+                    </div>
+                    <div class="col-2"></div>
+                  </div>
+                  <div *ngIf="urlAssinaguraGestor==''" class="col-sm-12 col-lg-12">
+                    <label>assinatura do diretor</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white">
+              <ngx-barcode class="col-sm-12 col-lg-8" [id]="'ngx_Barcode_'+estudante.est_id"
+                [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75" [bc-width]="3">
+              </ngx-barcode>
+            </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
     </div>
     <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
       <div>

@@ -23,6 +23,7 @@ export class CONSTANTES {
   public static NOME_SISTEMA_RESOLVIDOS = 'SupervisorEscolar';
 
   public static CAMINHO_LOGO_SEDF = '../../../assets/images/sedf_login.png';
+  public static CAMINHO_LOGO_GDF = '../../assets/images/logo_gdf.png';
   public static CAMINHO_LOGO_RESOLVIDOS = '../../../assets/images/supervisor_escolar_login.png';
 
   public static HOST = 'http://localhost:8000'; // 2

@@ -123,3 +123,16 @@ a {
   background-size: contain;
   height: 100%;
 }
+
+.sedf_border_all {
+  border: solid 1px #000000;
+}
+
+.sedf_border_foto {
+  border: solid #000000;
+  border-width: 0px 1px 1px 1px;
+}
+
+.sedf_border_bottom {
+  border-bottom: solid 1px #000000;
+}

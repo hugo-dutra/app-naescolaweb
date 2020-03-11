@@ -67,8 +67,12 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   public cepEscola: string;
   public telefoneEscola: string;
   public urlAssinaguraGestor: string = '';
+  public regiaoEscola: string = '';
+  public linkLogoGDF = CONSTANTES.CAMINHO_LOGO_GDF;
 
   ngOnInit() {
+    this.regiaoEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'),
+      CONSTANTES.PASSO_CRIPT))[0].regiao_escola;
     this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
     this.usr_id = parseInt(JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'),
       CONSTANTES.PASSO_CRIPT))[0].id, 10);
@@ -99,12 +103,22 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
 
   public carregarLayouts(): void {
     if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILD_SEDF) {
-      this.layouts = [{ id: 0, name: 'Básico-frente' },
-      { id: 1, name: 'Básico-frente e verso' }, { id: 2, name: 'Etiqueta' }, { id: 3, name: 'Pvc-Sedf' }];
+      this.layouts = [
+        { id: 0, name: 'Básico-frente' },
+        { id: 1, name: 'Básico-frente e verso' },
+        { id: 2, name: 'Etiqueta' },
+        { id: 3, name: 'Pvc-Sedf' },
+        { id: 5, name: 'Padrão-Sedf' },
+      ];
     }
     if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILS_RESOLVIDOS) {
-      this.layouts = [{ id: 0, name: 'Básico-frente' },
-      { id: 1, name: 'Básico-frente e verso' }, { id: 2, name: 'Etiqueta' }, { id: 4, name: 'Pvc-Resolvidos' }];
+      this.layouts = [
+        { id: 0, name: 'Básico-frente' },
+        { id: 1, name: 'Básico-frente e verso' },
+        { id: 2, name: 'Etiqueta' },
+        { id: 4, name: 'Pvc-Resolvidos' },
+        { id: 5, name: 'Padrão-Sedf' },
+      ];
     }
   }
 
@@ -121,8 +135,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       this.mostrarErro(erro);
     });
   }
-
-
 
   public selecionarTurma(event: Event): void {
     this.trm_id_selecionada = parseInt((<HTMLInputElement>event.target).id, 10);
@@ -143,7 +155,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     this.estudanteService.listarTurmaId(this.trm_id_selecionada).toPromise().then((response: Response) => {
       this.arrayOfEstudantes = Object.values(response);
       this.arrayOfEstudantesCartaoConfeccionado = [];
-
       const serie = this.stringTurmaSelecionada.split('-')[0].replace(/ /g, '');
       const etapa = this.stringTurmaSelecionada.split('-')[1].replace(/ /g, '');
       const turma = this.stringTurmaSelecionada.split('-')[2].replace(/ /g, '');
@@ -376,6 +387,66 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
               resolve('ok');
             }
           });
+        });
+      });
+    }, 2000);
+  }
+
+
+  public gerarCarteirinhaPadraoSEDFFrenteVersoCanvasEPdf(): void {
+    this.feedbackUsuario = `Criando cartões, aguarde..`;
+    setTimeout(() => {
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compressPdf: true,
+      });
+      new Promise(resolve => {
+        const alturaPagina = doc.internal.pageSize.height;
+        const larguraPagina = doc.internal.pageSize.width;
+        const distanciaVertical = 4;
+        const distanciHorizontal = 0;
+        const alturaCartao = ((alturaPagina / 4) - distanciaVertical);
+        const larguraCartao = ((larguraPagina) - distanciHorizontal);
+        let yPos = 0;
+        let xPos = 0;
+        const margem = 2;
+        let contaCartao = 0;
+        const quantidadeColunas = 1;
+        const quantidadeCartoesPorPagina = 4;
+
+        this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
+          html2canvas(document.querySelector(`#frente_verso_padrao_sedf${elem['est_id']}`),
+            { useCORS: true }).then(canvas => {
+              this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
+
+              if (contaCartao % quantidadeColunas === 0 && contaCartao > 0) {
+                yPos += alturaCartao;
+                xPos = 0;
+              }
+              if (contaCartao % quantidadeCartoesPorPagina === 0 && contaCartao > 0) {
+                yPos = 0;
+                xPos = 0;
+                doc.addPage('portrait', 'a4');
+              }
+
+              if (xPos >= margem) {
+                xPos += larguraCartao + margem;
+              } else {
+                xPos = 0 + margem;
+              }
+
+              const imgData = canvas.toDataURL('image/jpeg');
+              doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['est_id']);
+
+              contaCartao += 1;
+              if (contaCartao === this.arrayOfEstudantesCartaoConfeccionado.length) {
+                this.feedbackUsuario = undefined;
+                doc.save(`cartoes.pdf`);
+                resolve('ok');
+              }
+            });
         });
       });
     }, 2000);
