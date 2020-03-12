@@ -16,7 +16,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    DiretorRoutingModule
-  ]
+    DiretorRoutingModule,
+  ],
 })
 export class DiretorModule { }

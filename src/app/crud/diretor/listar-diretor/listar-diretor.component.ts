@@ -14,19 +14,19 @@ import { Diretor } from '../diretor.model';
   styleUrls: ['./listar-diretor.component.scss'],
   providers: [DiretorService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class ListarDiretorComponent implements OnInit {
 
@@ -38,14 +38,14 @@ export class ListarDiretorComponent implements OnInit {
 
   public diretores = new Array<Object>();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public tableLimit: number = 10;
   public totalRegistros: number;
   public offsetRegistros: number = 0;
   public saltarQuantidade: number = 5;
   public navegacaoInicio: boolean = undefined;
   public navegacaoFim: boolean = undefined;
-  public valorFiltro: string = "";
+  public valorFiltro: string = '';
   public statusFiltro: boolean = false;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
@@ -78,17 +78,17 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public listar(limit: number = 5, offset: number = 0): void {
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+    if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
       this.saltarQuantidade = limit;
       this.feedbackUsuario = undefined;
-      this.feedbackUsuario = "Carregando dados, aguarde...";
+      this.feedbackUsuario = 'Carregando dados, aguarde...';
       this.diretorService
         .listar(limit, offset, false)
         .toPromise()
         .then((response: Response) => {
           this.diretores = Object.values(response);
           if (this.diretores.length > 0) {
-            this.totalRegistros = parseInt(this.diretores[0]["total"]);
+            this.totalRegistros = parseInt(this.diretores[0]['total'], 10);
           } else {
             this.totalRegistros = 0;
           }
@@ -96,30 +96,22 @@ export class ListarDiretorComponent implements OnInit {
           this.verificaLimitesNavegacao();
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+    if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
       this.saltarQuantidade = limit;
       this.feedbackUsuario = undefined;
-      this.feedbackUsuario = "Carregando dados, aguarde...";
-      let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+      this.feedbackUsuario = 'Carregando dados, aguarde...';
+      const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
       this.diretorService
         .listarRegional(limit, offset, false, esc_id)
         .toPromise()
         .then((response: Response) => {
           this.diretores = Object.values(response);
           if (this.diretores.length > 0) {
-            this.totalRegistros = parseInt(this.diretores[0]["total"]);
+            this.totalRegistros = parseInt(this.diretores[0]['total'], 10);
           } else {
             this.totalRegistros = 0;
           }
@@ -127,30 +119,22 @@ export class ListarDiretorComponent implements OnInit {
           this.verificaLimitesNavegacao();
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+    if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
       this.saltarQuantidade = limit;
       this.feedbackUsuario = undefined;
-      this.feedbackUsuario = "Carregando dados, aguarde...";
-      let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+      this.feedbackUsuario = 'Carregando dados, aguarde...';
+      const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
       this.diretorService
         .listarLocal(limit, offset, false, esc_id)
         .toPromise()
         .then((response: Response) => {
           this.diretores = Object.values(response);
           if (this.diretores.length > 0) {
-            this.totalRegistros = parseInt(this.diretores[0]["total"]);
+            this.totalRegistros = parseInt(this.diretores[0]['total'], 10);
           } else {
             this.totalRegistros = 0;
           }
@@ -158,15 +142,7 @@ export class ListarDiretorComponent implements OnInit {
           this.verificaLimitesNavegacao();
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
 
@@ -174,34 +150,34 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public alterar(diretor: Diretor): void {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
         id: diretor.id,
         nome: diretor.nome,
         matricula: diretor.matricula,
         telefone: diretor.telefone,
         email: diretor.email,
-        foto: diretor.foto
-      }
+        foto: diretor.foto,
+      },
     };
     this.router.navigate([`${this.route.parent.routeConfig.path}/alterar-diretor`], navigationExtras);
   }
 
   public excluir(diretor: Diretor): void {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: {
         id: diretor.id,
         nome: diretor.nome,
         matricula: diretor.matricula,
         telefone: diretor.telefone,
         email: diretor.email,
-        foto: diretor.foto
-      }
+        foto: diretor.foto,
+      },
     };
     this.router.navigate([`${this.route.parent.routeConfig.path}/excluir-diretor`], navigationExtras);
   }
 
-  //Método de navegação otimizado. Replicar para demais listagens.
+  // Método de navegação otimizado. Replicar para demais listagens.
   public navegarProximo() {
     if (!this.navegacaoFim) {
       this.offsetRegistros = this.offsetRegistros + this.saltarQuantidade;
@@ -210,7 +186,7 @@ export class ListarDiretorComponent implements OnInit {
     this.verificaLimitesNavegacao();
   }
 
-  //Método de navegação otimizado. Replicar para demais listagens.
+  // Método de navegação otimizado. Replicar para demais listagens.
   public navegarAnterior() {
     if (!this.navegacaoInicio) {
       this.offsetRegistros = this.offsetRegistros - this.saltarQuantidade;
@@ -220,22 +196,21 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public verificaLimitesNavegacao(): void {
-    //Verifica se deve desabilitar botao de registro Anterior.
+    // Verifica se deve desabilitar botao de registro Anterior.
     if (this.offsetRegistros + this.saltarQuantidade <= this.saltarQuantidade) {
       this.navegacaoInicio = true;
       this.navegacaoFim = false;
     } else {
       this.navegacaoInicio = false;
     }
-    //Verifica se deve desabilitar botao de registro seguinte.
+    // Verifica se deve desabilitar botao de registro seguinte.
     if (this.offsetRegistros + this.saltarQuantidade >= this.totalRegistros) {
       this.navegacaoFim = true;
       this.navegacaoInicio = false;
-    }
-    else {
+    } else {
       this.navegacaoFim = false;
     }
-    //Quantidade de registros é inferior ao tamanho do saltarQuantidade
+    // Quantidade de registros é inferior ao tamanho do saltarQuantidade
     if (this.totalRegistros <= this.saltarQuantidade) {
       this.navegacaoInicio = true;
       this.navegacaoFim = true;
@@ -252,14 +227,14 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public filtrarEnter(event: KeyboardEvent) {
-    if (event.key == "Enter") {
+    if (event.key === 'Enter') {
       this.filtrar();
     }
   }
 
   public ordenarColuna(campo: string): void {
     if (!this.decrescente) {
-      let retorno = this.diretores.sort(function (a, b) {
+      const retorno = this.diretores.sort(function (a, b) {
         if (a[campo] < b[campo]) {
           return 1;
         }
@@ -267,11 +242,11 @@ export class ListarDiretorComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.diretores = retorno;
 
     } else {
-      let retorno = this.diretores.sort(function (a, b) {
+      const retorno = this.diretores.sort(function (a, b) {
         if (a[campo] > b[campo]) {
           return 1;
         }
@@ -279,7 +254,7 @@ export class ListarDiretorComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.diretores = retorno;
     }
     this.decrescente = !this.decrescente;
@@ -287,19 +262,19 @@ export class ListarDiretorComponent implements OnInit {
 
   public filtrar(limit: number = 5, offset: number = 0): void {
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+    if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.offsetRegistros = 0;
         this.feedbackUsuario = undefined;
-        this.feedbackUsuario = "Carregando dados, aguarde...";
+        this.feedbackUsuario = 'Carregando dados, aguarde...';
         this.diretorService
           .filtrar(this.valorFiltro, limit, offset)
           .toPromise()
           .then((response: Response) => {
             this.diretores = Object.values(response);
             if (this.diretores.length > 0) {
-              this.totalRegistros = parseInt(this.diretores[0]["total"]);
+              this.totalRegistros = parseInt(this.diretores[0]['total'], 10);
             } else {
               this.totalRegistros = 0;
             }
@@ -307,35 +282,27 @@ export class ListarDiretorComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
       }
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+    if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.offsetRegistros = 0;
         this.feedbackUsuario = undefined;
-        this.feedbackUsuario = "Carregando dados, aguarde...";
-        let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+        this.feedbackUsuario = 'Carregando dados, aguarde...';
+        const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.diretorService
           .filtrarRegional(this.valorFiltro, limit, offset, esc_id)
           .toPromise()
           .then((response: Response) => {
             this.diretores = Object.values(response);
             if (this.diretores.length > 0) {
-              this.totalRegistros = parseInt(this.diretores[0]["total"]);
+              this.totalRegistros = parseInt(this.diretores[0]['total'], 10);
             } else {
               this.totalRegistros = 0;
             }
@@ -343,35 +310,27 @@ export class ListarDiretorComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
       }
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+    if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.offsetRegistros = 0;
         this.feedbackUsuario = undefined;
-        this.feedbackUsuario = "Carregando dados, aguarde...";
-        let esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+        this.feedbackUsuario = 'Carregando dados, aguarde...';
+        const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.diretorService
           .filtrarLocal(this.valorFiltro, limit, offset, esc_id)
           .toPromise()
           .then((response: Response) => {
             this.diretores = Object.values(response);
             if (this.diretores.length > 0) {
-              this.totalRegistros = parseInt(this.diretores[0]["total"]);
+              this.totalRegistros = parseInt(this.diretores[0]['total'], 10);
             } else {
               this.totalRegistros = 0;
             }
@@ -379,15 +338,7 @@ export class ListarDiretorComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
@@ -400,14 +351,14 @@ export class ListarDiretorComponent implements OnInit {
     if (this.statusFiltro) {
       this.saltarQuantidade = limit;
       this.feedbackUsuario = undefined;
-      this.feedbackUsuario = "Carregando dados, aguarde...";
+      this.feedbackUsuario = 'Carregando dados, aguarde...';
       this.diretorService
         .filtrar(this.valorFiltro, limit, offset)
         .toPromise()
         .then((response: Response) => {
           this.diretores = Object.values(response);
           if (this.diretores.length > 0) {
-            this.totalRegistros = parseInt(this.diretores[0]["total"]);
+            this.totalRegistros = parseInt(this.diretores[0]['total'], 10);
           } else {
             this.totalRegistros = 0;
           }
@@ -415,15 +366,7 @@ export class ListarDiretorComponent implements OnInit {
           this.verificaLimitesNavegacao();
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     } else {
       this.listar(limit, offset);
@@ -435,10 +378,10 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public inserirDiretorEscola(): void {
-    let navigationExtras: NavigationExtras = {
-      queryParams: { origem: "listar-diretor" }
+    const navigationExtras: NavigationExtras = {
+      queryParams: { origem: 'listar-diretor' },
     };
-    this.router.navigate(["inserir-diretor-escola"], navigationExtras);
+    this.router.navigate(['inserir-diretor-escola'], navigationExtras);
   }
 
   public exibirComponente(rota: string): boolean {
@@ -449,6 +392,19 @@ export class ListarDiretorComponent implements OnInit {
     this.exibirComponenteAlterar = Utils.exibirComponente('alterar-diretor');
     this.exibirComponenteExcluir = Utils.exibirComponente('excluir-diretor');
     this.exibirComponenteInserir = Utils.exibirComponente('inserir-diretor');
+  }
+
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 
 }

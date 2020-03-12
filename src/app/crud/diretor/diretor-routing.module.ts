@@ -7,14 +7,20 @@ import { AlterarDiretorComponent } from './alterar-diretor/alterar-diretor.compo
 import { AuthGuardService } from '../../guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: "", component: ListarDiretorComponent, canActivate: [AuthGuardService] },
-  { path: "inserir-diretor", component: InserirDiretorComponent, canActivate: [AuthGuardService] },
-  { path: "excluir-diretor", component: ExcluirDiretorComponent, data: { objeto: "objeto" }, canActivate: [AuthGuardService] },
-  { path: "alterar-diretor", component: AlterarDiretorComponent, data: { objeto: "objeto" }, canActivate: [AuthGuardService] },
+  { path: '', component: ListarDiretorComponent, canActivate: [AuthGuardService] },
+  { path: 'inserir-diretor', component: InserirDiretorComponent, canActivate: [AuthGuardService] },
+  {
+    path: 'excluir-diretor', component: ExcluirDiretorComponent,
+    data: { objeto: 'objeto' }, canActivate: [AuthGuardService],
+  },
+  {
+    path: 'alterar-diretor', component: AlterarDiretorComponent,
+    data: { objeto: 'objeto' }, canActivate: [AuthGuardService],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class DiretorRoutingModule { }

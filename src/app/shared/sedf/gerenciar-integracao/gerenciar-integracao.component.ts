@@ -162,6 +162,33 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return retorno;
   }
 
+
+
+  public identificarDesativarDesenturmarInativos(estudantesNovos: Object[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.feedbackUsuario = 'Desativando estudantes transferidos, aguarde...';
+        this.estudanteService.listar(100000, 0, true, this.esc_id).toPromise().then((response: Response) => {
+          const estudantesAntigos = Object.values(response);
+          const estudantesDesativados = estudantesAntigos.filter((valor) => {
+            return !estudantesNovos.some((valor2) => {
+              return valor['id'] === valor2['idpes'];
+            });
+          });
+          const arrayDeEstudanteId = estudantesDesativados.map(valor => {
+            return { est_id: valor['id'] };
+          });
+          this.estudanteService.desabilitarTurmaTransferido(arrayDeEstudanteId, this.esc_id).toPromise().then(() => {
+            resolve(null);
+          });
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+  }
+
   public sincronizarProfessoresDisciplinasTurmas(): void {
     this.feedbackUsuario = 'Listando professores, disciplinas e turmas. Aguarde...';
     this.sedfService.listarProfessoresDisciplinasTurmas(this.tokenIntegracao, this.inep)
@@ -232,22 +259,27 @@ export class GerenciarIntegracaoComponent implements OnInit {
       .toPromise().then((response: Response) => {
         this.feedbackUsuario = 'Iniciando carga, aguarde...';
         this.arrayOfEstudantesEscola = Utils.removerCaracteresEspeciaisArray(Object.values(response));
-        this.feedbackUsuario = undefined;
-        this.inserirEstudantesEmBlocos(
-          Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes'), this.esc_id)
-          .then(() => {
-            this.feedbackUsuario = undefined;
-            this.enturmarEstudantesEmBlocos(this.arrayOfEstudantesEscola).then(() => {
+        const estudantesSemNomesRepetidos = Utils.eliminaValoresRepetidos(this.arrayOfEstudantesEscola, 'idpes');
+        this.identificarDesativarDesenturmarInativos(estudantesSemNomesRepetidos).then(() => {
+          this.inserirEstudantesEmBlocos(estudantesSemNomesRepetidos, this.esc_id)
+            .then(() => {
               this.feedbackUsuario = undefined;
+              this.enturmarEstudantesEmBlocos(estudantesSemNomesRepetidos).then(() => {
+                this.feedbackUsuario = undefined;
+              }).catch((erro: Response) => {
+                this.gravarErroMostrarMensagem(erro);
+              });
             }).catch((erro: Response) => {
               this.gravarErroMostrarMensagem(erro);
             });
-          }).catch((erro: Response) => {
-            this.gravarErroMostrarMensagem(erro);
-          });
+        }).catch((erro: Response) => {
+          this.gravarErroMostrarMensagem(erro);
+        });
       }).catch((erro: Response) => {
         this.gravarErroMostrarMensagem(erro);
       });
+
+
   }
 
   public gerenciarIntegracao(): void {

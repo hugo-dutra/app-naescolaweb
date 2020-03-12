@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    DiretorEscolaRoutingModule
-  ]
+    DiretorEscolaRoutingModule,
+  ],
 })
 export class DiretorEscolaModule { }

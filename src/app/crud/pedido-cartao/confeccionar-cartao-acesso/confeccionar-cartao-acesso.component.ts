@@ -397,7 +397,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     }, 2000);
   }
 
-
   public gerarCarteirinhaPadraoSEDFFrenteVersoCanvasEPdf(): void {
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     setTimeout(() => {
@@ -456,51 +455,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       });
     }, 2000);
   }
-
-  /* public gerarCarteirinhaSEDFFrenteVersoPdf(): void {
-
-    this.feedbackUsuario = `Criando cartões, aguarde..`;
-    setTimeout(() => {
-      var doc = new jsPDF({
-        orientation: 'landscape',
-        unit: 'mm',
-        format: [86.0, 54.00],
-        compressPdf: true,
-      });
-      new Promise(resolve => {
-        let alturaPagina = doc.internal.pageSize.height;
-        let larguraPagina = doc.internal.pageSize.width;
-        let alturaCartao = alturaPagina;
-        let larguraCartao = larguraPagina;
-        let yPos = 0;
-        let xPos = 0;
-        this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
-          html2canvas(document.querySelector(`#frente_sedf_${elem["est_id"]}`), { useCORS: true }).then(canvas => {
-            this.feedbackUsuario = `Criando frente cartão do(a) estudante ${elem["nome"]}`;
-            yPos = 0;
-            xPos = 0;
-            var imgData = canvas.toDataURL('image/jpeg');
-            doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, `#frente_sedf_${elem["est_id"]}`);
-            doc.addPage();
-          });
-        })
-
-        const elemVerso = this.arrayOfEstudantesCartaoConfeccionado[0]
-        html2canvas(document.querySelector(`#verso_sedf_${elemVerso["est_id"]}`), { useCORS: true }).then(canvas => {
-          this.feedbackUsuario = `Criando verso cartão do(a) estudante ${elemVerso["nome"]}`;
-          yPos = 0;
-          xPos = 0;
-          var imgData = canvas.toDataURL('image/jpeg');
-          doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, `#verso_sedf_${elemVerso["est_id"]}`);
-          doc.addPage();
-          doc.save(`cartoes.pdf`);
-          this.feedbackUsuario = undefined;
-          resolve('ok')
-        });
-      })
-    }, 2000);
-  } */
-
 
   public gerarCarteirinhaSEDFFrenteVersoPdf(): void {
 

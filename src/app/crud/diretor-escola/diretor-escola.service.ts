@@ -10,20 +10,26 @@ export class DiretorEscolaService {
   constructor(private http: HttpClient) { }
 
   public inserir(diretores: number[], escolas: number[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-diretor-escola",
+      CONSTANTES.HOST_API + 'inserir-diretor-escola',
       JSON.stringify({ diretores: diretores, escolas: escolas }),
-      headers
+      headers,
     );
   }
 
   public listar(diretorEscola: DiretorEscola): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-diretor-escola",
+      CONSTANTES.HOST_API + 'listar-diretor-escola',
       JSON.stringify({ diretorEscola: DiretorEscola }),
-      headers
+      headers,
     );
   }
 

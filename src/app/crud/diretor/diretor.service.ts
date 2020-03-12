@@ -10,35 +10,35 @@ export class DiretorService {
   constructor(private http: HttpClient) { }
 
   public inserir(diretor: Diretor, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-diretor",
+      CONSTANTES.HOST_API + 'inserir-diretor',
       JSON.stringify({ diretor: diretor, esc_id: esc_id }),
-      headers
+      headers,
     );
 
   }
 
   public enviarArquivo(arquivo: FileList): Observable<any> {
-    let formData = new FormData();
+    const formData = new FormData();
     const options = {
       headers: new HttpHeaders().set(
-        "Authorization",
-        localStorage.getItem("token")
-      )
+        'Authorization',
+        localStorage.getItem('token'),
+      ),
     };
 
-    formData.append("image", arquivo[0], arquivo[0].name);
+    formData.append('image', arquivo[0], arquivo[0].name);
     return this.http.post(
-      CONSTANTES.HOST_API + "enviar-avatar",
+      CONSTANTES.HOST_API + 'enviar-avatar',
       formData,
-      options
+      options,
     );
   }
-
-
-
 
   /*
   limit: Quantidade de registros
@@ -46,73 +46,94 @@ export class DiretorService {
   asc: Se os registros virão em ordem ascendente ou decrescente
   */
   public listar(limit: number, offset: number, asc: boolean): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "diretores",
+      CONSTANTES.HOST_API + 'diretores',
       JSON.stringify({ limit: limit, offset: offset, asc: asc }),
-      headers
+      headers,
     );
   }
 
   public listarRegional(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "diretores-regional",
+      CONSTANTES.HOST_API + 'diretores-regional',
       JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public listarLocal(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "diretores-local",
+      CONSTANTES.HOST_API + 'diretores-local',
       JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public listarSemEscola(): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "diretores-sem-escola",
+      CONSTANTES.HOST_API + 'diretores-sem-escola',
       null,
-      headers
+      headers,
     );
   }
 
   public listarSemEscolaRegional(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "diretores-sem-escola-regional",
+      CONSTANTES.HOST_API + 'diretores-sem-escola-regional',
       JSON.stringify({ esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public listarSemEscolaLocal(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "diretores-sem-escola-local",
+      CONSTANTES.HOST_API + 'diretores-sem-escola-local',
       JSON.stringify({ esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public filtrar(
     valor: string,
     limit: number,
-    offset: number
+    offset: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-diretor",
+      CONSTANTES.HOST_API + 'filtrar-diretor',
       JSON.stringify({ valor: valor, limit: limit, offset: offset }),
-      headers
+      headers,
     );
   }
 
@@ -120,14 +141,17 @@ export class DiretorService {
     valor: string,
     limit: number,
     offset: number,
-    esc_id: number
+    esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-diretor-regional",
+      CONSTANTES.HOST_API + 'filtrar-diretor-regional',
       JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
@@ -135,34 +159,43 @@ export class DiretorService {
     valor: string,
     limit: number,
     offset: number,
-    esc_id: number
+    esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-diretor-local",
+      CONSTANTES.HOST_API + 'filtrar-diretor-local',
       JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public alterar(diretor: Diretor): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-diretor",
+      CONSTANTES.HOST_API + 'alterar-diretor',
       JSON.stringify(diretor),
-      headers
+      headers,
     );
   }
 
   public excluir(id: number, foto: string): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-diretor",
+      CONSTANTES.HOST_API + 'excluir-diretor',
       JSON.stringify({ id: id, foto: foto }),
-      headers
+      headers,
     );
   }
 

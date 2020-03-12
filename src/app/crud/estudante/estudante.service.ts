@@ -12,204 +12,271 @@ export class EstudanteService {
   constructor(private http: HttpClient) { }
 
   public inserir(estudante: Estudante): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-estudante",
+      CONSTANTES.HOST_API + 'inserir-estudante',
       JSON.stringify({ estudante: estudante }),
-      headers
+      headers,
+    );
+  }
+
+  public desabilitarTurmaTransferido(listaEstId: Object[], esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(
+      CONSTANTES.HOST_API + 'desabilitar-turma-estudante-transferido',
+      JSON.stringify({ listaEstId: listaEstId, esc_id: esc_id }),
+      headers,
     );
   }
 
   public inserirObservacao(
     usr_id: number,
     est_id: number,
-    observacao: string
+    observacao: string,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-observacao-estudante",
+      CONSTANTES.HOST_API + 'inserir-observacao-estudante',
       JSON.stringify({
         usr_id: usr_id,
         est_id: est_id,
-        observacao: observacao
+        observacao: observacao,
       }),
-      headers
+      headers,
     );
   }
 
   public listarObservacao(est_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-observacao-estudante-id",
+      CONSTANTES.HOST_API + 'listar-observacao-estudante-id',
       JSON.stringify({ est_id: est_id }),
-      headers
+      headers,
     );
   }
 
   public listarDadosTurma(est_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-dados-turma-estudante",
+      CONSTANTES.HOST_API + 'listar-dados-turma-estudante',
       JSON.stringify({ est_id: est_id }),
-      headers
+      headers,
     );
   }
 
   public listarDetalhesInformacoes(est_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-detalhar-informacao-estudante",
+      CONSTANTES.HOST_API + 'listar-detalhar-informacao-estudante',
       JSON.stringify({ est_id: est_id }),
-      headers
+      headers,
     );
   }
 
   public listarDetalhesNotificacoes(est_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-historico-entrega-notificacao-estudante",
+      CONSTANTES.HOST_API + 'listar-historico-entrega-notificacao-estudante',
       JSON.stringify({ est_id: est_id }),
-      headers
+      headers,
     );
   }
 
   public excluirObservacao(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-observacao-estudante",
+      CONSTANTES.HOST_API + 'excluir-observacao-estudante',
       JSON.stringify({ id: id }),
-      headers
+      headers,
     );
   }
 
   public validarMatricula(matricula: string): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "validar-matricula-estudante",
+      CONSTANTES.HOST_API + 'validar-matricula-estudante',
       JSON.stringify({ matricula: matricula }),
-      headers
+      headers,
     );
   }
 
   public alterarObservacao(
     id: number,
     usr_id: number,
-    observacao: string
+    observacao: string,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
       CONSTANTES.HOST_API + 'alterar-observacao-estudante',
       JSON.stringify({ id: id, usr_id: usr_id, observacao: observacao }),
-      headers
+      headers,
     );
   }
 
   public alterarTurma(
     estudantes: Object[],
-    trm_id: number
+    trm_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-turma-estudante",
+      CONSTANTES.HOST_API + 'alterar-turma-estudante',
       JSON.stringify({ estudantes: estudantes, trm_id: trm_id }),
-      headers
+      headers,
     );
   }
 
   public alterarEscola(
     estudantes: Object[],
-    esc_id: number
+    esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    console.log(estudantes, esc_id);
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-escola-estudante",
+      CONSTANTES.HOST_API + 'alterar-escola-estudante',
       JSON.stringify({ estudantes: estudantes, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   /** Método que atualiza a foto do estudante
    * @param matricula Matrícula do estudante
    * @param link Link para foto
-   * @param sobrescrever Se valor for 1, a foto anterior será reescrita. Se for zero, a foto existente não será reescrita.
+   * @param sobrescrever Se valor for 1, a foto anterior será reescrita. Se for zero,
+   * a foto existente não será reescrita.
    */
   public alterarFoto(
     matricula: string,
     link: number,
-    sobrescrever: number
+    sobrescrever: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-foto-estudantes",
+      CONSTANTES.HOST_API + 'alterar-foto-estudantes',
       JSON.stringify({ matricula: matricula, link: link, sobrescrever: sobrescrever }),
-      headers
+      headers,
     );
   }
 
-  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[], sobrescreverFoto: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[],
+    sobrescreverFoto: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-foto-estudantes-aplicativo-administrativo",
+      CONSTANTES.HOST_API + 'alterar-foto-estudantes-aplicativo-administrativo',
       JSON.stringify({ fotosEstudantes: fotosEstudantes, sobrescreverFoto: sobrescreverFoto }),
-      headers
+      headers,
     );
   }
 
 
   public inserirTelefones(telefones: Array<Telefone>): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-telefone-estudante",
+      CONSTANTES.HOST_API + 'inserir-telefone-estudante',
       JSON.stringify({ telefones: telefones }),
-      headers
+      headers,
     );
   }
 
   public alterar(estudante: Estudante): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-estudante",
+      CONSTANTES.HOST_API + 'alterar-estudante',
       JSON.stringify({ estudante: estudante }),
-      headers
+      headers,
     );
   }
 
   public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-estudante",
+      CONSTANTES.HOST_API + 'excluir-estudante',
       JSON.stringify({ id: id }),
-      headers
+      headers,
     );
   }
 
   public excluirTelefones(est_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-telefone-estudante",
+      CONSTANTES.HOST_API + 'excluir-telefone-estudante',
       JSON.stringify({ est_id: est_id }),
-      headers
+      headers,
     );
   }
 
 
   public listarEstudantesAplicativo(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-estudante-aplicativo",
+      CONSTANTES.HOST_API + 'listar-estudante-aplicativo',
       JSON.stringify({
-        esc_id: esc_id
+        esc_id: esc_id,
       }),
-      headers
+      headers,
     );
   }
 
@@ -217,205 +284,253 @@ export class EstudanteService {
     limit: number,
     offset: number,
     asc: boolean,
-    esc_id: number
+    esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "estudantes",
+      CONSTANTES.HOST_API + 'estudantes',
       JSON.stringify({
         limit: limit,
         offset: offset,
         asc: asc,
-        esc_id: esc_id
+        esc_id: esc_id,
       }),
-      headers
+      headers,
     );
   }
 
   public listarPorRegional(
     limit: number, offset: number,
-    asc: boolean, esc_id: number
+    asc: boolean, esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "estudantes-regional",
+      CONSTANTES.HOST_API + 'estudantes-regional',
       JSON.stringify({
         limit: limit,
         offset: offset,
         asc: asc,
-        esc_id: esc_id
+        esc_id: esc_id,
       }),
-      headers
+      headers,
     );
   }
 
   public listarGlobal(
     limit: number, offset: number,
-    asc: boolean
+    asc: boolean,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "estudantes-global",
+      CONSTANTES.HOST_API + 'estudantes-global',
       JSON.stringify({
         limit: limit,
         offset: offset,
-        asc: asc
+        asc: asc,
       }),
-      headers
+      headers,
     );
   }
 
   public listarSemFoto(
     esc_id: number,
-    ano: number
+    ano: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-estudantes-sem-foto",
+      CONSTANTES.HOST_API + 'listar-estudantes-sem-foto',
       JSON.stringify({
         esc_id: esc_id,
-        ano: ano
+        ano: ano,
       }),
-      headers
+      headers,
     );
   }
 
   public enviarArquivoExcel(arquivo: FileList): Observable<any> {
-    let formData = new FormData();
+    const formData = new FormData();
     const options = {
       headers: new HttpHeaders().set(
-        "Authorization",
-        localStorage.getItem("token")
-      )
+        'Authorization',
+        localStorage.getItem('token'),
+      ),
     };
 
-    formData.append("Content-Type", "multipart/form-dat");
+    formData.append('Content-Type', 'multipart/form-dat');
     formData.append(arquivo[0].name, arquivo[0]);
-    formData.append("esc_id", Utils.pegarDadosEscola()["id"]);
+    formData.append('esc_id', Utils.pegarDadosEscola()['id']);
     return this.http.post(
-      CONSTANTES.HOST_API + "enviar-arquivo-excel",
+      CONSTANTES.HOST_API + 'enviar-arquivo-excel',
       formData,
-      options
+      options,
     );
   }
 
   public inserirViaListagem(estudantes: any[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-estudante-via-listagem",
+      CONSTANTES.HOST_API + 'inserir-estudante-via-listagem',
       JSON.stringify({ estudantes: estudantes }),
-      headers
+      headers,
     );
   }
 
   public integracaoInserir(estudantes: Object[], esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "integracao-inserir-estudante",
+      CONSTANTES.HOST_API + 'integracao-inserir-estudante',
       JSON.stringify({ estudantes: estudantes, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public listarTurmaId(trm_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "estudantes-turma-id",
+      CONSTANTES.HOST_API + 'estudantes-turma-id',
       JSON.stringify({ trm_id: trm_id }),
-      headers
+      headers,
     );
   }
 
   public listarTurnoId(trn_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "estudantes-turno-id",
+      CONSTANTES.HOST_API + 'estudantes-turno-id',
       JSON.stringify({ trn_id: trn_id }),
-      headers
+      headers,
     );
   }
 
   public alterarManualNumeroChamada(est_id: number, trm_id: number, numero_chamada: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-manual-numero-chamada-estudante",
+      CONSTANTES.HOST_API + 'alterar-manual-numero-chamada-estudante',
       JSON.stringify({ est_id: est_id, trm_id: trm_id, numero_chamada: numero_chamada }),
-      headers
+      headers,
     );
   }
 
   public listarTurmaEscolaId(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "estudantes-turma-escola-id",
+      CONSTANTES.HOST_API + 'estudantes-turma-escola-id',
       JSON.stringify({ esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public listarSemFotoEscolaId(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-estudantes-sem-foto",
+      CONSTANTES.HOST_API + 'listar-estudantes-sem-foto',
       JSON.stringify({ esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
 
 
   public listarTelefones(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "telefones-estudante",
+      CONSTANTES.HOST_API + 'telefones-estudante',
       JSON.stringify({ id: id }),
-      headers
+      headers,
     );
   }
 
   public enturmar(estudantes: Array<number>, trm_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "enturmar",
+      CONSTANTES.HOST_API + 'enturmar',
       JSON.stringify({ estudantes: estudantes, trm_id: trm_id }),
-      headers
+      headers,
     );
   }
 
   public enturmarViaImportacao(estudantes: Array<any>): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "enturmar-estudante-via-importacao",
+      CONSTANTES.HOST_API + 'enturmar-estudante-via-importacao',
       JSON.stringify({ estudantes: estudantes }),
-      headers
+      headers,
     );
   }
 
   public integracaoEnturmar(estudantes: Object[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "integracao-enturmar",
+      CONSTANTES.HOST_API + 'integracao-enturmar',
       JSON.stringify({ estudantes: estudantes }),
-      headers
+      headers,
     );
   }
 
   public listarSemTurma(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-sem-turma",
+      CONSTANTES.HOST_API + 'listar-sem-turma',
       JSON.stringify({ esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
@@ -423,52 +538,61 @@ export class EstudanteService {
     valor: string,
     limit: number,
     offset: number,
-    esc_id: number
+    esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-estudante",
+      CONSTANTES.HOST_API + 'filtrar-estudante',
       JSON.stringify({
         valor: valor,
         limit: limit,
         offset: offset,
-        esc_id: esc_id
+        esc_id: esc_id,
       }),
-      headers
+      headers,
     );
   }
 
   public filtrarRegional(
     valor: string, limit: number,
-    offset: number, esc_id: number
+    offset: number, esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-estudante-regional",
+      CONSTANTES.HOST_API + 'filtrar-estudante-regional',
       JSON.stringify({
         valor: valor,
         limit: limit,
         offset: offset,
-        esc_id: esc_id
+        esc_id: esc_id,
       }),
-      headers
+      headers,
     );
   }
 
   public filtrarGlobal(
     valor: string,
     limit: number,
-    offset: number
+    offset: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-estudante-global",
+      CONSTANTES.HOST_API + 'filtrar-estudante-global',
       JSON.stringify({
         valor: valor,
         limit: limit,
-        offset: offset
+        offset: offset,
       }),
-      headers
+      headers,
     );
   }
 
@@ -476,19 +600,22 @@ export class EstudanteService {
     valor: string,
     limit: number,
     offset: number,
-    esc_id: number
+    esc_id: number,
   ): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-estudante-com-ocorrencia",
+      CONSTANTES.HOST_API + 'filtrar-estudante-com-ocorrencia',
       JSON.stringify({
         valor: valor,
         limit: limit,
         offset: offset,
-        esc_id: esc_id
+        esc_id: esc_id,
       }),
-      headers
+      headers,
     );
   }
 
