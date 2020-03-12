@@ -262,28 +262,30 @@ export class GerenciarIntegracaoComponent implements OnInit {
 
   public baixarNotasFaltasTurmaSelecionada(turma: Object): void {
     this.feedbackUsuario = `Baixando notas da turma ${turma['nome']}`;
-    this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']).toPromise().then((response: Response) => {
-      if (response != null && response !== undefined) {
-        const notasFaltas = Object.values(response);
-        this.atualizarDisciplinas(notasFaltas).then(() => {
-          this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
-          this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual)
-            .toPromise().then(() => {
-              this.marcarTurmaNotasBaixadas(turma);
-              this.feedbackUsuario = undefined;
-            }).catch((erro: Response) => {
-              this.gravarErroMostrarMensagem(erro);
-            });
-        }).catch((erro: Response) => {
-          this.gravarErroMostrarMensagem(erro);
-        });
-      } else {
-        this.alertModalService.showAlertWarning('Sem dados para turma informada.');
-        this.feedbackUsuario = undefined;
-      }
-    }).catch((erro: Response) => {
-      this.gravarErroMostrarMensagem(erro);
-    });
+    this.sedfService.listarNotasImportacao(this.tokenIntegracao, 325028/* turma['id'] */)
+      .toPromise().then((response: Response) => {
+        if (response != null && response !== undefined) {
+          const notasFaltas = Object.values(response);
+          this.atualizarDisciplinas(notasFaltas).then(() => {
+            this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
+            this.diarioRegistroService.integracaoGravarNotasImportacao(notasFaltas, this.ano_atual)
+              .toPromise().then(() => {
+                this.marcarTurmaNotasBaixadas(turma);
+                this.feedbackUsuario = undefined;
+              }).catch((erro: Response) => {
+                this.gravarErroMostrarMensagem(erro);
+              });
+          }).catch((erro: Response) => {
+            this.gravarErroMostrarMensagem(erro);
+          });
+
+        } else {
+          this.alertModalService.showAlertWarning('Sem dados para turma informada.');
+          this.feedbackUsuario = undefined;
+        }
+      }).catch((erro: Response) => {
+        this.gravarErroMostrarMensagem(erro);
+      });
   }
 
   public sincronizarNotasFaltas(): void {
@@ -423,33 +425,4 @@ export class GerenciarIntegracaoComponent implements OnInit {
     });
     return retorno;
   }
-
-
-  /* public inserirNotasFaltas(notasFaltas: Object[]): Promise<Object> {
-    const retorno = new Promise((resolve, reject) => {
-      this.feedbackUsuario = "Iniciando carga de notas, aguarde...";
-      const tamanhoBloco = 100;
-      let contaRegistroInserido = 0;
-      for (let i = 0; i < notasFaltas.length; i += tamanhoBloco) {
-        let blocoDeNotasFaltasEstudantes = notasFaltas.slice(i, i + tamanhoBloco);
-        this.feedbackUsuario = `Enviando ${i} registros de ${notasFaltas.length}, aguarde...`;
-        console.log(this.feedbackUsuario);
-        this.diarioRegistroService.integracaoGravarNotasImportacao(blocoDeNotasFaltasEstudantes,
-          this.ano_atual).toPromise().then(() => {
-          contaRegistroInserido += tamanhoBloco;
-          this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de ${notasFaltas.length} registros, aguarde...`;
-          if (contaRegistroInserido >= notasFaltas.length) {
-            this.feedbackUsuario = undefined;
-            resolve({ message: "Notas inseridas com sucesso." });
-          }
-        }).catch(() => {
-          this.feedbackUsuario = undefined;
-          reject({ message: "Erro ao inserir estudantes." });
-        })
-      }
-    })
-    return retorno;
-    return null;
-  } */
-
 }

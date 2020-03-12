@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { CONSTANTES } from '../../shared/constantes.shared';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DisciplinaService {
 
@@ -13,58 +13,76 @@ export class DisciplinaService {
   constructor(private http: HttpClient) { }
 
   public listar(): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "disciplinas",
+      CONSTANTES.HOST_API + 'disciplinas',
       null,
-      headers
+      headers,
     );
   }
 
   public integracaoListar(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "integracao-listar",
+      CONSTANTES.HOST_API + 'integracao-listar',
       JSON.stringify({ esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 
   public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-disciplina",
+      CONSTANTES.HOST_API + 'excluir-disciplina',
       { id: id },
-      headers
+      headers,
     );
   }
 
   public alterar(disciplina: Disciplina): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-disciplina",
+      CONSTANTES.HOST_API + 'alterar-disciplina',
       JSON.stringify(disciplina),
-      headers
+      headers,
     );
   }
 
   public inserir(disciplina: Disciplina): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-disciplina",
+      CONSTANTES.HOST_API + 'inserir-disciplina',
       JSON.stringify(disciplina),
-      headers
+      headers,
     );
   }
 
   public integracaoInserir(disciplinas: Object[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "integracao-inserir-disciplina",
+      CONSTANTES.HOST_API + 'integracao-inserir-disciplina',
       JSON.stringify({ disciplinas }),
-      headers
+      headers,
     );
   }
 }

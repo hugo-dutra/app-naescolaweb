@@ -13,22 +13,27 @@
     <form [formGroup]="formulario" (ngSubmit)="alterar()">
       <div class="card-body">
         <div class="row m-3 form-group">
+
           <input type="hidden" class="form-control">
-          <input autofocus type="text" placeholder="Nome..." class="form-control col-lg-5 col-sm-12 mt-2" name="nome"
+          <input autofocus type="text" placeholder="Nome..." class="form-control col-lg-3 col-sm-12 mt-2" name="nome"
             maxlength="45" required (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
             value="{{ disciplina.nome }}">
-          <div class="col-lg-1 col-sm-12 mt-2"></div>
           <input type="text" placeholder="Abreviatura..." class="form-control col-lg-3 col-sm-12 mt-2"
             name="abreviatura" maxlength="5" required (input)="modificarInputs($event)"
             (focusout)="modificarInputs($event)" value="{{ disciplina.abreviatura }}">
-          <div class="col-lg-3 col-sm-12 mt-2">
-            <select name="areasConhecimento" class="form-control" required name="arc_id"
-              (change)="modificarInputs($event)">
-              <option value="" disabled>Selecione uma área do conhecimento</option>
-              <option *ngFor="let area of areasConhecimento" [selected]="area.id === disciplina.arc_id ? true : false"
-                value="{{area.id}}">{{ area.nome }}</option>
-            </select>
-          </div>
+          <select name="areasConhecimento" class="form-control col-lg-3 col-sm-12 mt-2" required name="arc_id"
+            (change)="modificarInputs($event)">
+            <option value="" disabled>Selecione uma área do conhecimento</option>
+            <option *ngFor="let area of areasConhecimento" [selected]="area.id === disciplina.arc_id ? true : false"
+              value="{{area.id}}">{{ area.nome }}</option>
+          </select>
+          <select name="etapasEnsino" class="form-control col-lg-3 col-sm-12 mt-2" required name="arc_id"
+            (change)="modificarInputs($event)">
+            <option value="" disabled>Selecione uma etapa do ensino</option>
+            <option *ngFor="let etapa of etapasEnsino" [selected]="etapa.id === disciplina.ete_id ? true : false"
+              value="{{etapa.id}}">{{ etapa.nome }}</option>
+          </select>
+
         </div>
         <div class="row m-3 form-group">
           <div class="col-lg-10 col-sm-12 mt-2"></div>

@@ -1,3 +1,4 @@
+import { EtapaEnsinoService } from './../../etapa-ensino/etapa-ensino.service';
 import { Component, OnInit } from '@angular/core';
 import { DisciplinaService } from '../disciplina.service';
 import { AreaConhecimentoService } from '../../area-conhecimento/area-conhecimento.service';
@@ -15,38 +16,40 @@ import { Utils } from '../../../shared/utils.shared';
   selector: 'ngx-alterar-disciplina',
   templateUrl: './alterar-disciplina.component.html',
   styleUrls: ['./alterar-disciplina.component.scss'],
-  providers: [DisciplinaService, AreaConhecimentoService],
+  providers: [DisciplinaService, AreaConhecimentoService, EtapaEnsinoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class AlterarDisciplinaComponent implements OnInit {
 
   public disciplina = new Disciplina();
   public areaConhecimento = new AreaConhecimento();
-  public areasConhecimento: Object;
+  public areasConhecimento = new Array<Object>();
+  public etapasEnsino = new Array<Object>();
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
 
   public formulario = new FormGroup({
     id: new FormControl(null),
     nome: new FormControl(null),
     abreviatura: new FormControl(null),
-    arc_id: new FormControl(null)
+    arc_id: new FormControl(null),
+    ete_id: new FormControl(null),
   });
 
   constructor(
@@ -55,65 +58,64 @@ export class AlterarDisciplinaComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private route: ActivatedRoute,
-    private areaConhecimentoService: AreaConhecimentoService
+    private etapaEnsinoService: EtapaEnsinoService,
+    private areaConhecimentoService: AreaConhecimentoService,
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((disciplina: Disciplina) => {
-      this.disciplina = JSON.parse(disciplina["disciplina"]);
+      this.disciplina = JSON.parse(disciplina['disciplina']);
     });
+    this.carregarDados();
+  }
+
+  public carregarDados(): void {
     this.listarAreaConhecimento();
   }
 
   public listarAreaConhecimento(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando areas do conhecimento, aguarde...';
     this.areaConhecimentoService
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.areasConhecimento = response;
-        this.feedbackUsuario = undefined;
+        this.areasConhecimento = Object.values(response);
+        this.listarEtapaEnsino();
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
+  public listarEtapaEnsino(): void {
+    this.feedbackUsuario = 'Carregando etapas do ensino, aguarde...';
+    this.etapaEnsinoService.listar().toPromise().then((response: Response) => {
+      this.etapasEnsino = Object.values(response);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      this.tratarErro(erro);
+    });
+  }
+
   public alterar(): void {
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.disciplinaService
       .alterar(this.disciplina)
       .toPromise()
-      .then((response: Response) => {
+      .then(() => {
         this.feedbackUsuario = undefined;
         this.formulario.reset();
-        this.router.navigateByUrl("listar-disciplina");
+        this.router.navigateByUrl('listar-disciplina');
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
         this.exibirAlerta = true;
       });
   }
 
   public modificarInputs(event: Event) {
-    let campo: string = (<HTMLInputElement>event.target).name;
-    let valor: string = (<HTMLInputElement>event.target).value;
+    const campo: string = (<HTMLInputElement>event.target).name;
+    const valor: string = (<HTMLInputElement>event.target).value;
     this.disciplina[campo] = valor;
     this.validar(event);
   }
@@ -124,8 +126,20 @@ export class AlterarDisciplinaComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigateByUrl("listar-disciplina");
+    this.router.navigateByUrl('listar-disciplina');
   }
 
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
+  }
 
 }

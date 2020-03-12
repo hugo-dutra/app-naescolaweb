@@ -3,4 +3,5 @@ export class Disciplina {
   public nome: string;
   public abreviatura: string;
   public arc_id: number;
+  public ete_id: number;
 }

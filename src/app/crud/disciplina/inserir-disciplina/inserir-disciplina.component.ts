@@ -1,3 +1,4 @@
+import { EtapaEnsinoService } from './../../etapa-ensino/etapa-ensino.service';
 import { Component, OnInit } from '@angular/core';
 import { DisciplinaService } from '../disciplina.service';
 import { AreaConhecimentoService } from '../../area-conhecimento/area-conhecimento.service';
@@ -15,27 +16,28 @@ import { Utils } from '../../../shared/utils.shared';
   selector: 'ngx-inserir-disciplina',
   templateUrl: './inserir-disciplina.component.html',
   styleUrls: ['./inserir-disciplina.component.scss'],
-  providers: [DisciplinaService, AreaConhecimentoService],
+  providers: [DisciplinaService, AreaConhecimentoService, EtapaEnsinoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirDisciplinaComponent implements OnInit {
 
   public disciplina = new Disciplina();
   public areaConhecimento = new AreaConhecimento();
-  public areasConhecimento: Object;
+  public areasConhecimento = new Array<Object>();
+  public etapasEnsino = new Array<Object>();
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
@@ -45,7 +47,8 @@ export class InserirDisciplinaComponent implements OnInit {
     id: new FormControl(null),
     nome: new FormControl(null),
     abreviatura: new FormControl(null),
-    arc_id: new FormControl(null)
+    arc_id: new FormControl(null),
+    ete_id: new FormControl(null),
   });
 
   constructor(
@@ -53,34 +56,39 @@ export class InserirDisciplinaComponent implements OnInit {
     private areaConhecimentoService: AreaConhecimentoService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-
-    private router: Router
+    private etapaEnsinoService: EtapaEnsinoService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
+    this.listarDados();
+  }
+
+  public listarDados(): void {
     this.listarAreaConhecimento();
   }
 
   public listarAreaConhecimento(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando áreas do conhecimento, aguarde...';
     this.areaConhecimentoService
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.areasConhecimento = response;
-        this.feedbackUsuario = undefined;
-      })
-      .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.areasConhecimento = Object.values(response);
+        this.listarEtapaEnsino();
+      }).catch((erro: Response) => {
+        this.tratarErro(erro);
       });
+  }
+
+  public listarEtapaEnsino(): void {
+    this.feedbackUsuario = 'Carregando etapas do ensino, aguarde...';
+    this.etapaEnsinoService.listar().toPromise().then((response: Response) => {
+      this.etapasEnsino = Object.values(response);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      this.tratarErro(erro);
+    });
   }
 
   public validar(event: Event) {
@@ -92,28 +100,32 @@ export class InserirDisciplinaComponent implements OnInit {
     this.disciplina.nome = this.formulario.value.nome;
     this.disciplina.abreviatura = this.formulario.value.abreviatura;
     this.disciplina.arc_id = this.formulario.value.arc_id;
-    this.feedbackUsuario = "Salvando dados, aguarde...";
-
+    this.disciplina.ete_id = this.formulario.value.ete_id;
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.disciplinaService
       .inserir(this.disciplina)
       .toPromise()
-      .then((response: Response) => {
+      .then(() => {
         this.feedbackUsuario = undefined;
         this.formulario.reset();
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
         this.exibirAlerta = true;
-
       });
+  }
+
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 
   public listar(): void {

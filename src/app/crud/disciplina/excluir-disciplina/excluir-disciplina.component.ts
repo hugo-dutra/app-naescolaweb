@@ -14,25 +14,25 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./excluir-disciplina.component.scss'],
   providers: [DisciplinaService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class ExcluirDisciplinaComponent implements OnInit {
 
   public disciplina = new Disciplina();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
 
@@ -41,12 +41,12 @@ export class ExcluirDisciplinaComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((disciplina: any) => {
-      this.disciplina = JSON.parse(disciplina["disciplina"]);
+      this.disciplina = JSON.parse(disciplina['disciplina']);
     });
   }
 
@@ -55,22 +55,23 @@ export class ExcluirDisciplinaComponent implements OnInit {
   }
 
   public excluir(): void {
-    this.feedbackUsuario = "Excluindo dados, aguarde...";
+    this.feedbackUsuario = 'Excluindo dados, aguarde...';
     this.disciplinaService
       .excluir(this.disciplina.id)
       .toPromise()
       .then((response: Response) => {
-        this.router.navigateByUrl("listar-disciplina");
+        this.router.navigateByUrl('listar-disciplina');
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });

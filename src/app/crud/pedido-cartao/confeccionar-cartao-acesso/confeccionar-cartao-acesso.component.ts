@@ -68,9 +68,14 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   public telefoneEscola: string;
   public urlAssinaguraGestor: string = '';
   public regiaoEscola: string = '';
+  public nomeUsuario: string = '';
   public linkLogoGDF = CONSTANTES.CAMINHO_LOGO_GDF;
+  public dataHoraAtual: string = '';
 
   ngOnInit() {
+    this.dataHoraAtual = Utils.now();
+    this.nomeUsuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'),
+      CONSTANTES.PASSO_CRIPT))[0].nome;
     this.regiaoEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'),
       CONSTANTES.PASSO_CRIPT))[0].regiao_escola;
     this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);

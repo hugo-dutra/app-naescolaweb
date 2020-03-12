@@ -505,7 +505,7 @@
                     <strong>{{estudante.etapa}}</strong>
                   </p>
                 </div>
-                <div class="row sedf_border_bottom pb-3">
+                <div class="row sedf_border_bottom pb-5">
                   <div class="col-4">
                     <p style="font-size: 11px;">Ano/Série:<br>
                       <strong>{{estudante.serie}}</strong>
@@ -558,9 +558,16 @@
               </div>
             </div>
             <div class="bg-white">
+              <p><strong>Válido em todo território nacional</strong></p>
               <ngx-barcode class="col-sm-12 col-lg-8" [id]="'ngx_Barcode_'+estudante.est_id"
                 [bc-value]="estudante.stringCodigoBarras" [bc-display-value]="false" [bc-height]="75" [bc-width]="3">
               </ngx-barcode>
+            </div>
+            <div class="row text-left">
+              <p>
+                Impresso por: {{nomeUsuario}}<br>
+                Data da impressão: {{dataHoraAtual | date:'dd/mm/yyyy HH:mm:ss'}}
+              </p>
             </div>
 
 

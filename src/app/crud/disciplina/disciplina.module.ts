@@ -10,11 +10,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AlterarDisciplinaComponent, ExcluirDisciplinaComponent, InserirDisciplinaComponent, ListarDisciplinaComponent],
+  declarations: [
+    AlterarDisciplinaComponent,
+    ExcluirDisciplinaComponent,
+    InserirDisciplinaComponent,
+    ListarDisciplinaComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DisciplinaRoutingModule
-  ]
+    DisciplinaRoutingModule,
+  ],
 })
 export class DisciplinaModule { }

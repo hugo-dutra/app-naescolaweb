@@ -14,18 +14,21 @@
       <div class="card-body">
         <div class="row m-3 form-group">
           <input type="hidden" class="form-control" formControlName="id">
-          <input autofocus type="text" placeholder="Nome..." class="form-control col-lg-5 col-sm-12 mt-2"
+          <input autofocus type="text" placeholder="Nome..." class="form-control col-lg-3 col-sm-12 mt-2"
             formControlName="nome" maxlength="45" required (input)="validar($event)" (focusout)="validar($event)">
-          <div class="col-lg-1 div-sm-12 mt-2"></div>
           <input type="text" placeholder="Abreviatura..." class="form-control col-lg-3 col-sm-12 mt-2"
             formControlName="abreviatura" maxlength="5" required (input)="validar($event)" (focusout)="validar($event)">
-          <div class="col-lg-3 col-sm-12 mt-2">
-            <select name="areasConhecimento" required class="form-control" formControlName="arc_id">
-              <option value="" disabled>Selecione uma área do conhecimento</option>
-              <option *ngFor="let areaConhecimento of areasConhecimento" value="{{ areaConhecimento.id }}">
-                {{ areaConhecimento.nome}}</option>
-            </select>
-          </div>
+          <select name="areasConhecimento" required class="form-control col-lg-3 col-sm-12 mt-2"
+            formControlName="arc_id">
+            <option value="" disabled>Selecione uma área do conhecimento</option>
+            <option *ngFor="let areaConhecimento of areasConhecimento" value="{{ areaConhecimento.id }}">
+              {{ areaConhecimento.nome}}</option>
+          </select>
+          <select name="etapasEnsino" required class="form-control col-lg-3 col-sm-12 mt-2" formControlName="ete_id">
+            <option value="" disabled>Selecione uma etapa do ensino</option>
+            <option *ngFor="let etapa of etapasEnsino" value="{{ etapa.id }}">
+              {{ etapa.nome}}</option>
+          </select>
         </div>
         <div class="row m-3 form-group">
           <div class="col-lg-10"></div>
