@@ -262,7 +262,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
 
   public baixarNotasFaltasTurmaSelecionada(turma: Object): void {
     this.feedbackUsuario = `Baixando notas da turma ${turma['nome']}`;
-    this.sedfService.listarNotasImportacao(this.tokenIntegracao, 325028/* turma['id'] */)
+    this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']/* 325028 */)
       .toPromise().then((response: Response) => {
         if (response != null && response !== undefined) {
           const notasFaltas = Object.values(response);
