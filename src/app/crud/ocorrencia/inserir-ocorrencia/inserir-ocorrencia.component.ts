@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { OcorrenciaService } from '../ocorrencia.service';
 import { EstudanteService } from '../../estudante/estudante.service';
-import { TipoOcorrenciaDisciplinarService } from '../../tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.service';
+import {
+  TipoOcorrenciaDisciplinarService,
+} from '../../tipo-ocorrencia-disciplinar/tipo-ocorrencia-disciplinar.service';
 import { TurmaService } from '../../turma/turma.service';
 import { ComunicadoDiversoService } from '../../comunicado-diverso/comunicado-diverso.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -15,7 +17,7 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
 import { Utils } from '../../../shared/utils.shared';
-import * as moment from "moment";
+import * as moment from 'moment';
 import { HintService } from 'angular-custom-tour';
 import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.service';
 
@@ -32,19 +34,19 @@ import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.se
     HintService,
   ],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirOcorrenciaComponent implements OnInit {
 
@@ -54,7 +56,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public arrayOfEstudantesMultiplo = new Array<MessageFirebase>();
   public arrayOfResumoOcorrencias = new Array<Object>();
   public arrayOfMensagens = new Array<MessageFirebase>();
-  public arrayDeMensagensSimples = new Array<MessageFirebase>()
+  public arrayDeMensagensSimples = new Array<MessageFirebase>();
 
   public estudantes: Array<Object>;
   public resumoOcorrencias: Object;
@@ -66,7 +68,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public nomeEstudanteOcorrenciaProcurado: string;
 
   public tiposOcorrenciasDisciplinares: Object;
-  public tipoOcorrenciaSimples: string = "";
+  public tipoOcorrenciaSimples: string = '';
   public tipoOcorrenciaMultiplo: string;
   public trm_id: number;
   public esc_id: number;
@@ -78,14 +80,14 @@ export class InserirOcorrenciaComponent implements OnInit {
   public statusBotaoSalvarOcorrenciaMultipla: boolean = true;
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public tableLimit: number = 10;
   public totalRegistros: number;
   public offsetRegistros: number = 0;
   public saltarQuantidade: number = 5;
   public navegacaoInicio: boolean = undefined;
   public navegacaoFim: boolean = undefined;
-  public valorFiltro: string = "";
+  public valorFiltro: string = '';
   public statusFiltro: boolean = false;
   public exibeBotaoImprimirOcorrenciasEstudante: boolean = false;
 
@@ -94,10 +96,10 @@ export class InserirOcorrenciaComponent implements OnInit {
 
   public decrescente: boolean = true;
 
-  public dataOcorrencia: string = "";
-  public horaOcorrencia: string = "";
-  public dataOcorrenciaMultipla: string = "";
-  public horaOcorrenciaMultipla: string = "";
+  public dataOcorrencia: string = '';
+  public horaOcorrencia: string = '';
+  public dataOcorrenciaMultipla: string = '';
+  public horaOcorrenciaMultipla: string = '';
   public guiaAtivaId: number = 1;
   private relatorioPDFOcorrenciasEstudante: jsPDF;
 
@@ -115,7 +117,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
     this.listarTipoOcorrenciaDisciplinar();
     this.listarTurmas();
     this.dataOcorrencia = moment().format('YYYY-MM-DD');
@@ -126,10 +128,10 @@ export class InserirOcorrenciaComponent implements OnInit {
 
   public subscribeTour(): void {
     this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
-      if (this.guiaAtivaId == 1) {
+      if (this.guiaAtivaId === 1) {
         this.hintService.initialize({ elementsDisabled: false });
       }
-    })
+    });
   }
 
   public setarGuiaAtiva(guiaId: number): void {
@@ -145,10 +147,11 @@ export class InserirOcorrenciaComponent implements OnInit {
     }, 60000);
   }
 
+  // tslint:disable-next-line: max-line-length
   //#region ######################################### OCORRENCIA SIMPLES #################################################
   public ordenarColunaSimples(campo: string): void {
     if (!this.decrescente) {
-      let retorno = this.estudantes.sort(function (a, b) {
+      const retorno = this.estudantes.sort(function (a, b) {
         if (a[campo] < b[campo]) {
           return 1;
         }
@@ -156,11 +159,11 @@ export class InserirOcorrenciaComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.estudantes = retorno;
 
     } else {
-      let retorno = this.estudantes.sort(function (a, b) {
+      const retorno = this.estudantes.sort(function (a, b) {
         if (a[campo] > b[campo]) {
           return 1;
         }
@@ -168,108 +171,102 @@ export class InserirOcorrenciaComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.estudantes = retorno;
     }
     this.decrescente = !this.decrescente;
   }
 
   public montarMensagemComunicado(event: Event): void {
-    let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
-    let inep = dados_escola[0]["inep"];
-    let telefone = dados_escola[0]["telefone"];
-    let est_id: number = parseInt((<HTMLInputElement>event.target).value);
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
+    const inep = dados_escola[0]['inep'];
+    const telefone = dados_escola[0]['telefone'];
+    const est_id: number = parseInt((<HTMLInputElement>event.target).value, 10);
     this.comunicadoDiverso.est_id = est_id;
 
-    this.feedbackUsuario = "Gravando comunicado, aguarde...";
+    this.feedbackUsuario = 'Gravando comunicado, aguarde...';
     this.tipoOcorrenciaDisciplinarService
       .listarEstId(est_id)
       .toPromise()
       .then((response: Response) => {
-        let resumo_ocorrencias: Object = response;
-        let quantidade_resumo_ocorrencias = Object.keys(resumo_ocorrencias).map(
-          i => resumo_ocorrencias
+        const resumo_ocorrencias: Object = response;
+        const quantidade_resumo_ocorrencias = Object.keys(resumo_ocorrencias).map(
+          i => resumo_ocorrencias,
         ).length;
-        let nome: string = resumo_ocorrencias[0]["nome"];
-        let matricula = resumo_ocorrencias[0]["matricula"];
-        let message = `O(a) Estudante ${nome.toUpperCase()} já possui ${quantidade_resumo_ocorrencias} ocorrências disciplinares. Solicitamos que o(a) Sr.(a) responsável entre em contato com a escola para tratarmos desse assunto.`;
+        const nome: string = resumo_ocorrencias[0]['nome'];
+        const matricula = resumo_ocorrencias[0]['matricula'];
+        const message = `O(a) Estudante ${nome.toUpperCase()} já possui ${quantidade_resumo_ocorrencias}
+        ocorrências disciplinares.
+        Solicitamos que o(a) Sr.(a) responsável entre em contato com a escola para tratarmos desse assunto.`;
         this.arrayDeMensagensSimples = [];
-        let messageFirebase = new MessageFirebase();
+        const messageFirebase = new MessageFirebase();
         messageFirebase.cod_inep = inep;
-        messageFirebase.data = this.dataOcorrencia; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+        messageFirebase.data = this.dataOcorrencia;
         messageFirebase.data_versao = Utils.now();
-        messageFirebase.firebase_dbkey = "";
-        messageFirebase.hora = this.horaOcorrencia;  //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+        messageFirebase.firebase_dbkey = '';
+        messageFirebase.hora = this.horaOcorrencia;
         messageFirebase.est_id = est_id.toString();
-        //messageFirebase.est_id = est_id.toString();
         messageFirebase.msg = `${message}`;
-        messageFirebase.msg_tag = "0";
+        messageFirebase.msg_tag = '0';
         messageFirebase.nome_estudante = nome;
-        messageFirebase.tipo_msg = "Comunicado"//CONSTANTES.FIREBASE_MSG_COMUNICADO;
-        messageFirebase.titulo = "Comunicado";
+        messageFirebase.tipo_msg = 'Comunicado'; // CONSTANTES.FIREBASE_MSG_COMUNICADO;
+        messageFirebase.titulo = 'Comunicado';
         messageFirebase.to = `${inep}_${matricula}`;
-        this.arrayDeMensagensSimples.push(messageFirebase)
+        this.arrayDeMensagensSimples.push(messageFirebase);
         this.gravarComunicadoDirecao(this.arrayDeMensagensSimples);
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public gravarComunicadoDirecao(messagesFirebase: Array<MessageFirebase>): void {
-    this.feedbackUsuario = "Gravando comunicado, aguarde...";
+    this.feedbackUsuario = 'Gravando comunicado, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
-      let messageFirebase = messagesFirebase[i];
+      const messageFirebase = messagesFirebase[i];
       this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase).then((response: Response) => {
-        messageFirebase.firebase_dbkey = response["id"];
+        messageFirebase.firebase_dbkey = response['id'];
       }).then(() => {
         this.feedbackUsuario = undefined;
         const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
-        const tituloPush = "Comunicado";
-        this.EnviarPushComunicadoSimples(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i, messageFirebase);
+        const tituloPush = 'Comunicado';
+        this.EnviarPushComunicadoSimples(topicoPush, tituloPush, messageFirebase.firebase_dbkey,
+          messagesFirebase.length, i, messageFirebase);
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
+        this.tratarErro(erro);
+      });
     }
   }
 
   public montarMensagensNovasOcorrencias(): void {
-    let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
-    let inep = dados_escola[0]["inep"];
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
+    const inep = dados_escola[0]['inep'];
     this.arrayDeMensagensSimples = [];
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
-      //let matricula = this.arrayOfMatriculasEstudantes[i];
-      let nome = this.arrayOfNomesEstudantes[i];
-      let message = `${this.tipoOcorrenciaSimples}.`;
-      let messageFirebase = new MessageFirebase();
+      // let matricula = this.arrayOfMatriculasEstudantes[i];
+      const nome = this.arrayOfNomesEstudantes[i];
+      const message = `${this.tipoOcorrenciaSimples}.`;
+      const messageFirebase = new MessageFirebase();
       messageFirebase.cod_inep = inep;
-      messageFirebase.data = this.dataOcorrencia; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+      messageFirebase.data = this.dataOcorrencia;
       messageFirebase.data_versao = Utils.now();
-      messageFirebase.firebase_dbkey = "";
-      messageFirebase.hora = this.horaOcorrencia //("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+      messageFirebase.firebase_dbkey = '';
+      messageFirebase.hora = this.horaOcorrencia;
       messageFirebase.est_id = this.arrayOfEstudantes[i].toString();
-      //messageFirebase.matricula = matricula;
       messageFirebase.msg = `Assunto: Ocorrência disciplinar Ocorrência: ${message}`;
-      messageFirebase.msg_tag = "0";
+      messageFirebase.msg_tag = '0';
       messageFirebase.nome_estudante = nome;
       messageFirebase.tipo_msg = message;
-      messageFirebase.titulo = "Ocorrência disciplinar";
+      messageFirebase.titulo = 'Ocorrência disciplinar';
       messageFirebase.to = `${inep}_${messageFirebase.est_id}`;
       this.arrayDeMensagensSimples.push(messageFirebase);
     }
@@ -277,214 +274,164 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public gravarOcorrenciaDisciplinarSimples(messagesFirebase: Array<MessageFirebase>): void {
-    this.feedbackUsuario = "Gravando ocorrências, aguarde...";
+    this.feedbackUsuario = 'Gravando ocorrências, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
-      let messageFirebase = messagesFirebase[i];
+      const messageFirebase = messagesFirebase[i];
       this.firebaseService.gravarOcorrenciaDisciplinarFirebaseFirestore(messageFirebase).then((response: Response) => {
-        messageFirebase.firebase_dbkey = response["id"];
+        messageFirebase.firebase_dbkey = response['id'];
       }).then(() => {
         this.feedbackUsuario = undefined;
         const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id.toString()}`;
-        const tituloPush = "Ocorrência disciplinar";
-        this.EnviarPushOcorrenciaSimples(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i);
+        const tituloPush = 'Ocorrência disciplinar';
+        this.EnviarPushOcorrenciaSimples(topicoPush, tituloPush,
+          messageFirebase.firebase_dbkey, messagesFirebase.length, i);
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
+        this.tratarErro(erro);
+      });
     }
   }
 
   public montarMensagemSuspender(event: Event): void {
-    let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
-    let inep = dados_escola[0]["inep"];
-    let telefone = dados_escola[0]["telefone"];
-    let est_id: number = parseInt((<HTMLInputElement>event.target).value);
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
+    const inep = dados_escola[0]['inep'];
+    const telefone = dados_escola[0]['telefone'];
+    const est_id: number = parseInt((<HTMLInputElement>event.target).value, 10);
     this.comunicadoDiverso.est_id = est_id;
-    this.feedbackUsuario = "Gravando comunicado, aguarde...";
+    this.feedbackUsuario = 'Gravando comunicado, aguarde...';
     this.tipoOcorrenciaDisciplinarService
       .listarEstId(est_id)
       .toPromise()
       .then((response: Response) => {
-        let resumo_ocorrencias: Object = response;
-        let quantidade_resumo_ocorrencias = Object.keys(resumo_ocorrencias).map(
-          i => resumo_ocorrencias
+        const resumo_ocorrencias: Object = response;
+        const quantidade_resumo_ocorrencias = Object.keys(resumo_ocorrencias).map(
+          i => resumo_ocorrencias,
         ).length;
-        let nome: string = resumo_ocorrencias[0]["nome"];
-        //let matricula = resumo_ocorrencias[0]["matricula"];
-        let message = `O(a) Estudante ${nome.toUpperCase()} já possui ${quantidade_resumo_ocorrencias} ocorrências disciplinares e está sendo SUSPENSO(a). Solicitamos que o(a) Sr.(a) responsável entre em contato com a escola para tratarmos desse assunto.`;
+        const nome: string = resumo_ocorrencias[0]['nome'];
+        const message = `O(a) Estudante ${nome.toUpperCase()} já possui
+         ${quantidade_resumo_ocorrencias} ocorrências disciplinares e está sendo SUSPENSO(a).
+         Solicitamos que o(a) Sr.(a) responsável entre em contato com a escola para tratarmos desse assunto.`;
         this.arrayDeMensagensSimples = [];
-        let messageFirebase = new MessageFirebase();
+        const messageFirebase = new MessageFirebase();
         messageFirebase.cod_inep = inep;
-        messageFirebase.data = this.dataOcorrencia; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+        messageFirebase.data = this.dataOcorrencia;
         messageFirebase.data_versao = Utils.now();
-        messageFirebase.firebase_dbkey = "";
-        messageFirebase.hora = this.horaOcorrencia;// ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+        messageFirebase.firebase_dbkey = '';
+        messageFirebase.hora = this.horaOcorrencia;
         messageFirebase.est_id = est_id.toString();
-        //messageFirebase.matricula = matricula;
         messageFirebase.msg = `${message}`;
-        messageFirebase.msg_tag = "0";
+        messageFirebase.msg_tag = '0';
         messageFirebase.nome_estudante = nome;
-        messageFirebase.tipo_msg = "Comunicado importante";
-        messageFirebase.titulo = "Comunicado importante";
+        messageFirebase.tipo_msg = 'Comunicado importante';
+        messageFirebase.titulo = 'Comunicado importante';
         messageFirebase.to = `${inep}_${messageFirebase.est_id}`;
-        this.arrayDeMensagensSimples.push(messageFirebase)
+        this.arrayDeMensagensSimples.push(messageFirebase);
         this.gravarComunicadoSuspender(this.arrayDeMensagensSimples);
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
 
       });
   }
 
   public gravarComunicadoSuspender(messagesFirebase: Array<MessageFirebase>): void {
-    this.feedbackUsuario = "Gravando comunicado, aguarde...";
+    this.feedbackUsuario = 'Gravando comunicado, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
-      let messageFirebase = messagesFirebase[i];
+      const messageFirebase = messagesFirebase[i];
       this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase).then((response: Response) => {
-        messageFirebase.firebase_dbkey = response["id"];
+        messageFirebase.firebase_dbkey = response['id'];
       }).then(() => {
         this.feedbackUsuario = undefined;
         const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
-        const tituloPush = "Comunicado importante";
-        this.EnviarPushOcorrenciaSuspender(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i, messagesFirebase);
+        const tituloPush = 'Comunicado importante';
+        this.EnviarPushOcorrenciaSuspender(topicoPush, tituloPush,
+          messageFirebase.firebase_dbkey, messagesFirebase.length, i, messagesFirebase);
 
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
+        this.tratarErro(erro);
+      });
     }
   }
 
-  public EnviarPushOcorrenciaSuspender(topico: string, titulo: string, firebase_dbkey: string, total: number, atual: number, messagesFirebase: MessageFirebase[]): void {
-    this.feedbackUsuario = "Enviando notificação, aguarde...";
-    if (firebase_dbkey != "") {
+  public EnviarPushOcorrenciaSuspender(topico: string, titulo: string, firebase_dbkey: string,
+    total: number, atual: number, messagesFirebase: MessageFirebase[]): void {
+    this.feedbackUsuario = 'Enviando notificação, aguarde...';
+    if (firebase_dbkey !== '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 == atual) {
+          if (total - 1 === atual) {
             this.gravarComunicadoDiverso(messagesFirebase[0]);
           }
         }).
         catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
   }
 
-  public EnviarPushOcorrenciaSimples(topico: string, titulo: string, firebase_dbkey: string, total: number, atual: number): void {
-    this.feedbackUsuario = "Enviando notificação, aguarde...";
-    if (firebase_dbkey != "") {
+  public EnviarPushOcorrenciaSimples(topico: string, titulo: string,
+    firebase_dbkey: string, total: number, atual: number): void {
+    this.feedbackUsuario = 'Enviando notificação, aguarde...';
+    if (firebase_dbkey !== '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 == atual) {
+          if (total - 1 === atual) {
             this.inserir();
           }
         }).
         catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
   }
 
-  public EnviarPushComunicadoSimples(topico: string, titulo: string, firebase_dbkey: string, total: number, atual: number, messageFirebase: MessageFirebase): void {
-    this.feedbackUsuario = "Enviando notificação, aguarde...";
-    if (firebase_dbkey != "") {
+  public EnviarPushComunicadoSimples(topico: string, titulo: string, firebase_dbkey: string,
+    total: number, atual: number, messageFirebase: MessageFirebase): void {
+    this.feedbackUsuario = 'Enviando notificação, aguarde...';
+    if (firebase_dbkey !== '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 == atual) {
+          if (total - 1 === atual) {
             this.gravarComunicadoDiverso(messageFirebase);
           }
         }).
         catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
   }
 
   public gravarComunicadoDiverso(messageFirebase: MessageFirebase): void {
-    this.feedbackUsuario = "Finalizando comunicado, aguarde...";
+    this.feedbackUsuario = 'Finalizando comunicado, aguarde...';
     this.comunicadoDiverso.assunto = messageFirebase.titulo;
-    this.comunicadoDiverso.data_comunicado = messageFirebase.data;//new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();//Ajuste no formato da data.
+    this.comunicadoDiverso.data_comunicado = messageFirebase.data;
     this.comunicadoDiverso.fbdbkey = messageFirebase.firebase_dbkey;
     this.comunicadoDiverso.hora = messageFirebase.hora;
     this.comunicadoDiverso.mensagem = messageFirebase.msg;
     this.comunicadoDiverso.status_comunicado = 0;
-    this.comunicadoDiverso.usr_id = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id;
+    this.comunicadoDiverso.usr_id = JSON.parse(Utils.decriptAtoB(
+      localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0].id;
     this.comunicadoDiversoService.inserir(this.comunicadoDiverso).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+      this.tratarErro(erro);
+    });
   }
 
   public limparDadosOcorrencia(): void {
     this.ocorrencia.id = -1;
     this.ocorrencia.array_msg = [];
-    this.ocorrencia.data_hora = "";
+    this.ocorrencia.data_hora = '';
     this.ocorrencia.est_id = -1;
-    this.ocorrencia.ocorrencia = "";
+    this.ocorrencia.ocorrencia = '';
     this.ocorrencia.tod_id = -1;
     this.ocorrencia.usr_id = -1;
-    this.tipoOcorrenciaSimples = "";
+    this.tipoOcorrenciaSimples = '';
 
     this.estudantes = [];
     this.arrayDeMensagensSimples = [];
@@ -494,14 +441,14 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.arrayOfMensagens = [];
     this.arrayOfNomesEstudantes = [];
     this.arrayOfResumoOcorrencias = [];
-    (<HTMLInputElement>document.getElementById("input_descricao")).value = "";
-    (<HTMLInputElement>document.getElementById("input_tipo_ocorrencia")).value = "";
-    (<HTMLInputElement>document.getElementById("input_consulta")).value = "";
+    (<HTMLInputElement>document.getElementById('input_descricao')).value = '';
+    (<HTMLInputElement>document.getElementById('input_tipo_ocorrencia')).value = '';
+    (<HTMLInputElement>document.getElementById('input_consulta')).value = '';
     this.validarSalvarOcorrenciaSimples();
   }
 
   public listarTipoOcorrenciaDisciplinar(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.tipoOcorrenciaDisciplinarService
       .listar(1000, 0, true, this.esc_id)
       .toPromise()
@@ -510,15 +457,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
@@ -537,10 +476,10 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public gravarTipoOcorrencia(event: Event): void {
-    let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
-    let telefone = dados_escola[0]["telefone"];
-    this.ocorrencia.tod_id = parseInt((<HTMLInputElement>event.target).value.toString().split('|')[0]);
-    this.tipoOcorrenciaSimples = (<HTMLInputElement>event.target).value.toString().split('|')[1]
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
+    const telefone = dados_escola[0]['telefone'];
+    this.ocorrencia.tod_id = parseInt((<HTMLInputElement>event.target).value.toString().split('|')[0], 10);
+    this.tipoOcorrenciaSimples = (<HTMLInputElement>event.target).value.toString().split('|')[1];
     for (let i = 0; i < this.arrayDeMensagensSimples.length; i++) {
       this.arrayDeMensagensSimples[i].msg = `${this.tipoOcorrenciaSimples}`;
     }
@@ -548,8 +487,9 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public validarSalvarOcorrenciaSimples(): void {
-    let descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao')).value;
-    if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantes.length > 0 && this.arrayOfNomesEstudantes.length > 0 && this.ocorrencia.tod_id != undefined) {
+    const descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao')).value;
+    if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantes.length > 0 &&
+      this.arrayOfNomesEstudantes.length > 0 && this.ocorrencia.tod_id !== undefined) {
       this.statusBotaoSalvarOcorrenciaSimples = false;
     } else {
       this.statusBotaoSalvarOcorrenciaSimples = true;
@@ -557,10 +497,10 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public inserir(): void {
-    this.feedbackUsuario = "Salvando dados, aguarde...";
-    this.ocorrencia.data_hora = `${this.dataOcorrencia} ${this.horaOcorrencia}`;//Utils.now();
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
+    this.ocorrencia.data_hora = `${this.dataOcorrencia} ${this.horaOcorrencia}`;
     this.ocorrencia.usr_id = JSON.parse(
-      Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT)
+      Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT),
     )[0].id;
     this.ocorrencia.array_msg = this.arrayDeMensagensSimples;
     this.ocorrenciaService
@@ -568,19 +508,11 @@ export class InserirOcorrenciaComponent implements OnInit {
       .toPromise()
       .then(() => {
         this.feedbackUsuario = undefined;
-        this.alertModalService.showAlertSuccess("Ocorrência inserida com sucesso!");
+        this.alertModalService.showAlertSuccess('Ocorrência inserida com sucesso!');
         this.limparDadosOcorrencia();
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
         this.limparDadosOcorrencia();
       });
   }
@@ -588,34 +520,34 @@ export class InserirOcorrenciaComponent implements OnInit {
   public gravaDescricao(event: Event): void {
     this.ocorrencia.ocorrencia = (<HTMLInputElement>event.target).value;
     this.caracteresDisponiveis =
-      "Restando " + (300 - this.ocorrencia.ocorrencia.length).toString();
+      'Restando ' + (300 - this.ocorrencia.ocorrencia.length).toString();
 
-    if (this.ocorrencia.ocorrencia.length == 0) {
-      this.caracteresDisponiveis = "";
+    if (this.ocorrencia.ocorrencia.length === 0) {
+      this.caracteresDisponiveis = '';
     }
     this.validarSalvarOcorrenciaSimples();
   }
 
   public gravaStatusEstudantes(event: Event): void {
-    let est_id_matricula_nome: string = (<HTMLInputElement>event.target).value;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const est_id_matricula_nome: string = (<HTMLInputElement>event.target).value;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
 
     if (status) {
-      this.arrayOfEstudantes.push(parseInt(est_id_matricula_nome.split('|')[0]));
-      this.arrayOfMatriculasEstudantes.push(est_id_matricula_nome.split('|')[1])
-      this.arrayOfNomesEstudantes.push(est_id_matricula_nome.split('|')[2])
+      this.arrayOfEstudantes.push(parseInt(est_id_matricula_nome.split('|')[0], 10));
+      this.arrayOfMatriculasEstudantes.push(est_id_matricula_nome.split('|')[1]);
+      this.arrayOfNomesEstudantes.push(est_id_matricula_nome.split('|')[2]);
     } else {
       this.arrayOfEstudantes.splice(
-        this.arrayOfEstudantes.indexOf(parseInt(est_id_matricula_nome.split('|')[0]), 0),
-        1
+        this.arrayOfEstudantes.indexOf(parseInt(est_id_matricula_nome.split('|')[0], 10), 0),
+        1,
       );
       this.arrayOfMatriculasEstudantes.splice(
         this.arrayOfMatriculasEstudantes.indexOf((est_id_matricula_nome.split('|')[1]), 0),
-        1
+        1,
       );
       this.arrayOfNomesEstudantes.splice(
         this.arrayOfNomesEstudantes.indexOf((est_id_matricula_nome.split('|')[2]), 0),
-        1
+        1,
       );
     }
 
@@ -624,7 +556,7 @@ export class InserirOcorrenciaComponent implements OnInit {
 
 
   public filtrarEnter(event: KeyboardEvent) {
-    if (event.key == "Enter") {
+    if (event.key === 'Enter') {
       this.filtrar();
     }
   }
@@ -633,53 +565,45 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.statusBotaoSalvarOcorrenciaSimples = true;
     this.saltarQuantidade = limit;
     this.feedbackUsuario = undefined;
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.arrayOfResumoOcorrencias = [];
     this.estudanteService
       .filtrarContaOcorrencia(
         this.nomeEstudanteProcurado,
         limit,
         offset,
-        this.esc_id
+        this.esc_id,
       )
       .toPromise()
       .then((response: Response) => {
         this.estudantes = Object.values(response);
-        console.log(this.estudantes);
-        if (this.estudantes != undefined) {
+        if (this.estudantes !== undefined) {
           if (this.estudantes.length > 0) {
-            this.totalRegistros = parseInt(this.estudantes[0]["total"]);
+            this.totalRegistros = parseInt(this.estudantes[0]['total'], 10);
           }
         }
         this.feedbackUsuario = undefined;
       })
       .then(() => {
-        this.feedbackUsuario = "Carregando resumos, aguarde...";
-        let estudantesArray: Array<Object> = Object.keys(this.estudantes).map(
-          i => this.estudantes[i]
+        this.feedbackUsuario = 'Carregando resumos, aguarde...';
+        const estudantesArray: Array<Object> = Object.keys(this.estudantes).map(
+          i => this.estudantes[i],
         );
 
-        this.tipoOcorrenciaDisciplinarService.listarNomeEstudante(this.nomeEstudanteProcurado, this.esc_id).toPromise().then((response: Response) => {
-          this.arrayOfResumoOcorrencias.push(response);
-          this.feedbackUsuario = undefined;
-        }).catch((erro: Response) => {
-          this.feedbackUsuario = undefined;
-        })
+        this.tipoOcorrenciaDisciplinarService.listarNomeEstudante(this.nomeEstudanteProcurado, this.esc_id)
+          .toPromise().then((response: Response) => {
+            this.arrayOfResumoOcorrencias.push(response);
+            this.feedbackUsuario = undefined;
+          }).catch((erro: Response) => {
+            this.feedbackUsuario = undefined;
+          });
 
-        if (estudantesArray.length == 0) {
+        if (estudantesArray.length === 0) {
           this.feedbackUsuario = undefined;
         }
       })
       .catch((erro: Response) => {
-        this.feedbackUsuario = undefined;
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+        this.tratarErro(erro);
       });
   }
 
@@ -715,13 +639,14 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
   //#endregion
 
+  // tslint:disable-next-line: max-line-length
   //#region ######################################## OCORRENCIA MULTIPLA #################################################
   public limparDadosOcorrenciaMultipla(): void {
     this.ocorrencia.id = -1;
     this.ocorrencia.array_msg = [];
-    this.ocorrencia.data_hora = "";
+    this.ocorrencia.data_hora = '';
     this.ocorrencia.est_id = -1;
-    this.ocorrencia.ocorrencia = "";
+    this.ocorrencia.ocorrencia = '';
     this.ocorrencia.tod_id = -1;
     this.ocorrencia.usr_id = -1;
     this.estudantes = [];
@@ -729,21 +654,21 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.arrayOfEstudantesMultiplo = [];
     this.estudantesTurma = [];
 
-    (<HTMLInputElement>document.getElementById("input_turmas")).value = "";
+    (<HTMLInputElement>document.getElementById('input_turmas')).value = '';
     (<HTMLInputElement>(
-      document.getElementById("input_descricao_multipla")
-    )).value = "";
+      document.getElementById('input_descricao_multipla')
+    )).value = '';
     (<HTMLInputElement>(
-      document.getElementById("input_tipo_ocorrencia_multipla")
-    )).value = "";
+      document.getElementById('input_tipo_ocorrencia_multipla')
+    )).value = '';
     (<HTMLInputElement>(
-      document.getElementById("selecionarTodos")
+      document.getElementById('selecionarTodos')
     )).checked = false;
     this.validarSalvarOcorrenciaMultipla();
   }
 
   public listarTurmas(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.turmaService
       .listarTodasAno(new Date().getFullYear(), this.esc_id)
       .toPromise()
@@ -752,38 +677,30 @@ export class InserirOcorrenciaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        this.feedbackUsuario = undefined;
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+        this.tratarErro(erro);
       });
   }
 
   public gravaDescricaoMultiplo(event: Event): void {
     this.ocorrencia.ocorrencia = (<HTMLInputElement>event.target).value;
     this.caracteresDisponiveis =
-      "Restando " + (300 - this.ocorrencia.ocorrencia.length).toString();
+      'Restando ' + (300 - this.ocorrencia.ocorrencia.length).toString();
 
-    if (this.ocorrencia.ocorrencia.length == 0) {
-      this.caracteresDisponiveis = "";
+    if (this.ocorrencia.ocorrencia.length === 0) {
+      this.caracteresDisponiveis = '';
     }
     this.validarSalvarOcorrenciaMultipla();
   }
 
   public gravarTipoOcorrenciaMultiplo(event: Event): void {
-    this.ocorrencia.tod_id = parseInt((<HTMLInputElement>event.target).value.toString().split('|')[0]);
+    this.ocorrencia.tod_id = parseInt((<HTMLInputElement>event.target).value.toString().split('|')[0], 10);
     this.tipoOcorrenciaMultiplo = ((<HTMLInputElement>event.target).value.toString().split('|')[1]);
     this.validarSalvarOcorrenciaMultipla();
   }
 
   public selecionarEstudantePorTurma(event: Event): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
-    this.trm_id = parseInt((<HTMLInputElement>event.target).value);
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
+    this.trm_id = parseInt((<HTMLInputElement>event.target).value, 10);
     this.estudanteService
       .listarTurmaId(this.trm_id)
       .toPromise()
@@ -792,33 +709,24 @@ export class InserirOcorrenciaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        this.feedbackUsuario = undefined;
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+        this.tratarErro(erro);
       });
   }
 
   public gravaStatusEstudantesMultiplo(event: Event): void {
 
-    let dados_estudante_selecionado: string = (<HTMLInputElement>event.target).value;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const dados_estudante_selecionado: string = (<HTMLInputElement>event.target).value;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
 
-    let firebaseMessage = new MessageFirebase();
-    firebaseMessage.est_id = dados_estudante_selecionado.split("|")[0];
-    //firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
-    firebaseMessage.nome_estudante = dados_estudante_selecionado.split("|")[2];
+    const firebaseMessage = new MessageFirebase();
+    firebaseMessage.est_id = dados_estudante_selecionado.split('|')[0];
+    firebaseMessage.nome_estudante = dados_estudante_selecionado.split('|')[2];
 
     if (status) {
       this.arrayOfEstudantesMultiplo.push(firebaseMessage);
     } else {
       for (let i = 0; i < this.arrayOfEstudantesMultiplo.length; i++) {
-        if (firebaseMessage.est_id == this.arrayOfEstudantesMultiplo[i].est_id) {
+        if (firebaseMessage.est_id === this.arrayOfEstudantesMultiplo[i].est_id) {
           this.arrayOfEstudantesMultiplo.splice(i, 1);
         }
       }
@@ -827,15 +735,14 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public selecionarTodos(event: Event) {
-    let checkBoxes = (<HTMLInputElement>event.target).form;
+    const checkBoxes = (<HTMLInputElement>event.target).form;
     for (let i = 0; i < checkBoxes.length; i++) {
       if ((<HTMLInputElement>event.target).checked) {
-        if (!isNaN(parseInt((<HTMLInputElement>checkBoxes[i]).name))) {
-          let dados_estudante_selecionado: string = (<HTMLInputElement>checkBoxes[i]).value;
-          let firebaseMessage = new MessageFirebase();
-          firebaseMessage.est_id = dados_estudante_selecionado.split("|")[0];
-          //firebaseMessage.matricula = dados_estudante_selecionado.split("|")[1];
-          firebaseMessage.nome_estudante = dados_estudante_selecionado.split("|")[2];
+        if (!isNaN(parseInt((<HTMLInputElement>checkBoxes[i]).name, 10))) {
+          const dados_estudante_selecionado: string = (<HTMLInputElement>checkBoxes[i]).value;
+          const firebaseMessage = new MessageFirebase();
+          firebaseMessage.est_id = dados_estudante_selecionado.split('|')[0];
+          firebaseMessage.nome_estudante = dados_estudante_selecionado.split('|')[2];
           this.arrayOfEstudantesMultiplo.push(firebaseMessage);
           (<HTMLInputElement>checkBoxes[i]).checked = (<HTMLInputElement>(event.target)).checked;
         }
@@ -849,8 +756,9 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public validarSalvarOcorrenciaMultipla(): void {
-    let descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao_multipla')).value;
-    if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantesMultiplo.length > 0 && this.tipoOcorrenciaMultiplo != undefined) {
+    const descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao_multipla')).value;
+    if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantesMultiplo.length > 0 &&
+      this.tipoOcorrenciaMultiplo !== undefined) {
       this.statusBotaoSalvarOcorrenciaMultipla = false;
     } else {
       this.statusBotaoSalvarOcorrenciaMultipla = true;
@@ -858,82 +766,67 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public montarMensagensNovasOcorrenciasMultiplas(): void {
-    let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
-    let inep = dados_escola[0]["inep"];
-    let telefone = dados_escola[0]["telefone"];
-    let message = `${this.tipoOcorrenciaMultiplo}.`;
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
+    const inep = dados_escola[0]['inep'];
+    const telefone = dados_escola[0]['telefone'];
+    const message = `${this.tipoOcorrenciaMultiplo}.`;
     for (let i = 0; i < this.arrayOfEstudantesMultiplo.length; i++) {
       this.arrayOfEstudantesMultiplo[i].cod_inep = inep;
-      this.arrayOfEstudantesMultiplo[i].data = this.dataOcorrenciaMultipla; //new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+      this.arrayOfEstudantesMultiplo[i].data = this.dataOcorrenciaMultipla;
       this.arrayOfEstudantesMultiplo[i].data_versao = Utils.now();
-      this.arrayOfEstudantesMultiplo[i].firebase_dbkey = "";
-      this.arrayOfEstudantesMultiplo[i].hora = this.horaOcorrenciaMultipla;//("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+      this.arrayOfEstudantesMultiplo[i].firebase_dbkey = '';
+      this.arrayOfEstudantesMultiplo[i].hora = this.horaOcorrenciaMultipla;
       this.arrayOfEstudantesMultiplo[i].est_id = this.arrayOfEstudantesMultiplo[i].est_id;
-      //this.arrayOfEstudantesMultiplo[i].matricula = this.arrayOfEstudantesMultiplo[i].matricula;
       this.arrayOfEstudantesMultiplo[i].msg = `${message}`;
-      this.arrayOfEstudantesMultiplo[i].msg_tag = "0";
+      this.arrayOfEstudantesMultiplo[i].msg_tag = '0';
       this.arrayOfEstudantesMultiplo[i].nome_estudante = this.arrayOfEstudantesMultiplo[i].nome_estudante;
-      this.arrayOfEstudantesMultiplo[i].tipo_msg = message;//CONSTANTES.FIREBASE_MSG_OCORRENCIA;
-      this.arrayOfEstudantesMultiplo[i].titulo = "Ocorrência disciplinar";
+      this.arrayOfEstudantesMultiplo[i].tipo_msg = message;
+      this.arrayOfEstudantesMultiplo[i].titulo = 'Ocorrência disciplinar';
       this.arrayOfEstudantesMultiplo[i].to = `${inep}_${this.arrayOfEstudantesMultiplo[i].est_id}`;
     }
     this.gravarOcorrenciaDisciplinarMultiplaFirebase(this.arrayOfEstudantesMultiplo);
   }
 
   public gravarOcorrenciaDisciplinarMultiplaFirebase(messagesFirebase: Array<MessageFirebase>): void {
-    this.feedbackUsuario = "Gravando ocorrências, aguarde...";
+    this.feedbackUsuario = 'Gravando ocorrências, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
-      let messageFirebase = messagesFirebase[i];
+      const messageFirebase = messagesFirebase[i];
       this.firebaseService.gravarOcorrenciaDisciplinarFirebaseFirestore(messageFirebase).then((response: Response) => {
-        messagesFirebase[i].firebase_dbkey = response["id"];
+        messagesFirebase[i].firebase_dbkey = response['id'];
         this.arrayOfEstudantesMultiplo[i] = messagesFirebase[i];
       }).then(() => {
         const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
-        const tituloPush = "Ocorrência disciplinar";
-        this.EnviarPushOcorrenciaMultipla(topicoPush, tituloPush, messagesFirebase[i].firebase_dbkey, messagesFirebase.length, i)
+        const tituloPush = 'Ocorrência disciplinar';
+        this.EnviarPushOcorrenciaMultipla(topicoPush, tituloPush,
+          messagesFirebase[i].firebase_dbkey, messagesFirebase.length, i);
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
+        this.tratarErro(erro);
+      });
     }
   }
 
-  public EnviarPushOcorrenciaMultipla(topico: string, titulo: string, firebase_dbkey: string, total: number, atual: number): void {
-    this.feedbackUsuario = "Enviando notificação, aguarde...";
-    if (firebase_dbkey != "") {
+  public EnviarPushOcorrenciaMultipla(topico: string, titulo: string,
+    firebase_dbkey: string, total: number, atual: number): void {
+    this.feedbackUsuario = 'Enviando notificação, aguarde...';
+    if (firebase_dbkey !== '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 == atual) {
+          if (total - 1 === atual) {
             this.inserirMultipla();
           }
         }).
         catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
   }
 
   public inserirMultipla(): void {
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.ocorrencia.data_hora = Utils.now();
-    this.ocorrencia.usr_id = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id;
+    this.ocorrencia.usr_id = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0].id;
     this.ocorrencia.array_msg = this.arrayOfEstudantesMultiplo;
     this.ocorrenciaService
       .inserir(this.ocorrencia)
@@ -941,24 +834,17 @@ export class InserirOcorrenciaComponent implements OnInit {
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
         this.limparDadosOcorrenciaMultipla();
-        this.alertModalService.showAlertSuccess("Ocorrências inseridas com sucesso!");
+        this.alertModalService.showAlertSuccess('Ocorrências inseridas com sucesso!');
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
         this.limparDadosOcorrenciaMultipla();
       });
 
   }
   //#endregion
 
+  // tslint:disable-next-line: max-line-length
   //#region ######################################### CONSULTAR OCORRENCIAS #################################################
   public gravarNomeOcorrencia(event: Event): void {
     this.nomeEstudanteOcorrenciaProcurado = (<HTMLInputElement>(
@@ -971,13 +857,13 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public filtrarOcorrenciaEnter(event: KeyboardEvent) {
-    if (event.key == "Enter") {
+    if (event.key === 'Enter') {
       this.filtrarOcorrencia();
     }
   }
 
   public filtrarOcorrencia(limit: number = 5, offset: number = 0): void {
-    this.feedbackUsuario = "Procurando ocorrências, aguarde...";
+    this.feedbackUsuario = 'Procurando ocorrências, aguarde...';
     this.ocorrenciaService
       .filtrar(this.nomeEstudanteOcorrenciaProcurado, 5000, offset, this.esc_id)
       .toPromise()
@@ -987,15 +873,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        this.feedbackUsuario = undefined;
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+        this.tratarErro(erro);
       });
   }
 
@@ -1009,8 +887,8 @@ export class InserirOcorrenciaComponent implements OnInit {
       compressPdf: true,
     });
 
-    this.feedbackUsuario = "Gerando relatório, aguarde...";
-    if (ocorrencias != undefined && ocorrencias.length > 0) {
+    this.feedbackUsuario = 'Gerando relatório, aguarde...';
+    if (ocorrencias !== undefined && ocorrencias.length > 0) {
 
       let paginaAtual: number = 1;
       const xInicialLinha: number = 10;
@@ -1019,9 +897,8 @@ export class InserirOcorrenciaComponent implements OnInit {
       const larguraTextoSegundaColuna: number = 130;
       const larguraTextoTerceiraColuna: number = 20;
 
-      //const larguraLinha: number = 10;
       let alturaInicialOcorrenciasPrimeiraPagina: number = 45;
-      let alturaInicialOcorrenciasDemaisPaginas: number = 20;
+      const alturaInicialOcorrenciasDemaisPaginas: number = 20;
       let contaLinhaOcorrenciaDisciplinar = 0;
       const distanciaLinhaSeparadoraLinhas = 5;
       const larguraLinhaRegistrosOcorrencia: number = 18;
@@ -1032,82 +909,94 @@ export class InserirOcorrenciaComponent implements OnInit {
       const inicioTerceiraColuna: number = inicioPrimeiraColuna + inicioSegundaColuna + 125;
 
       /*ADICIONAR IMAGEM ESTUDANTE*/
-      html2canvas((<HTMLInputElement>document.getElementById(`img_${ocorrencias[0]["nome"]}`)), { useCORS: true }).then(canvas => {
-        var imgData = canvas.toDataURL('image/jpeg');
-        this.relatorioPDFOcorrenciasEstudante.addImage(imgData, 'JPEG', xInicialLinha, 20, 25, 25, ocorrencias[0]["nome"]);
-        this.construirBordaNaPagina();
+      html2canvas((<HTMLInputElement>document.getElementById(`img_${ocorrencias[0]['nome']}`)),
+        { useCORS: true }).then(canvas => {
+          const imgData = canvas.toDataURL('image/jpeg');
+          this.relatorioPDFOcorrenciasEstudante.addImage(imgData, 'JPEG',
+            xInicialLinha, 20, 25, 25, ocorrencias[0]['nome']);
+          this.construirBordaNaPagina();
 
-        /*ORDENANDO REGISTROS POR DATA E HORA*/
-        ocorrencias.sort((a, b) => (a['data_hora'] > b['data_hora']) ? 1 : -1);
+          /*ORDENANDO REGISTROS POR DATA E HORA*/
+          ocorrencias.sort((a, b) => (a['data_hora'] > b['data_hora']) ? 1 : -1);
 
-        /*CONSTRUTOR DO CABECALHO*/
-        this.criarCabecalhoPDFOcorrenciasEstudante(xInicialLinha, xFinalLinha, ocorrencias);
-        let paginaNova: boolean = true;
+          /*CONSTRUTOR DO CABECALHO*/
+          this.criarCabecalhoPDFOcorrenciasEstudante(xInicialLinha, xFinalLinha, ocorrencias);
+          let paginaNova: boolean = true;
 
-        /*OCORRÊNCIAS DISCIPLINARES*/
-        for (let idxRegistroOcorrencia = 0; idxRegistroOcorrencia < ocorrencias.length; idxRegistroOcorrencia++) {
+          /*OCORRÊNCIAS DISCIPLINARES*/
+          for (let idxRegistroOcorrencia = 0; idxRegistroOcorrencia < ocorrencias.length; idxRegistroOcorrencia++) {
 
-          /*ATUALIZA CAMPOS PARA ESCREVER PRÓXIMA PÁGINA DO RELATÓRIO*/
-          if (idxRegistroOcorrencia % 11 == 0 && idxRegistroOcorrencia > 0) {
-            this.relatorioPDFOcorrenciasEstudante.addPage();
-            paginaAtual++;
-            paginaNova = true;
-            this.criarCabecalhoPDFOcorrenciasEstudantesPaginasSeguintes(xInicialLinha, xFinalLinha, ocorrencias, paginaAtual);
-            contaLinhaOcorrenciaDisciplinar = 0;
-            this.construirBordaNaPagina();
-            alturaInicialOcorrenciasPrimeiraPagina = alturaInicialOcorrenciasDemaisPaginas;
+            /*ATUALIZA CAMPOS PARA ESCREVER PRÓXIMA PÁGINA DO RELATÓRIO*/
+            if (idxRegistroOcorrencia % 11 === 0 && idxRegistroOcorrencia > 0) {
+              this.relatorioPDFOcorrenciasEstudante.addPage();
+              paginaAtual++;
+              paginaNova = true;
+              this.criarCabecalhoPDFOcorrenciasEstudantesPaginasSeguintes(xInicialLinha, xFinalLinha,
+                ocorrencias, paginaAtual);
+              contaLinhaOcorrenciaDisciplinar = 0;
+              this.construirBordaNaPagina();
+              alturaInicialOcorrenciasPrimeiraPagina = alturaInicialOcorrenciasDemaisPaginas;
+            }
+            const ocorr = ocorrencias[idxRegistroOcorrencia];
+            const tipo = ocorr['tipo'];
+            const ocorrencia = ocorr['ocorrencia'];
+            const data_hora = ocorr['data_hora'];
+
+            /*LINHA SEPARADORA DE OCORRENCIAS*/
+            this.relatorioPDFOcorrenciasEstudante.line(
+              xInicialLinha,
+              alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha + (
+                larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1)
+              ) - distanciaLinhaSeparadoraLinhas,
+              xFinalLinha,
+              alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha + (
+                larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1)
+              ) - distanciaLinhaSeparadoraLinhas,
+            );
+
+            /*TIPO*/
+            this.relatorioPDFOcorrenciasEstudante.setFontSize(8);
+            const textoTipo = this.relatorioPDFOcorrenciasEstudante.splitTextToSize(tipo, larguraTextoPrimeiraColuna);
+            this.relatorioPDFOcorrenciasEstudante.text(
+              inicioPrimeiraColuna,
+              alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha +
+              larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1),
+              textoTipo,
+            );
+
+            /*OCORRÊNCIA*/
+            this.relatorioPDFOcorrenciasEstudante.setFontSize(8);
+            const textoOcorrencia = this.relatorioPDFOcorrenciasEstudante.splitTextToSize(
+              ocorrencia, larguraTextoSegundaColuna);
+            this.relatorioPDFOcorrenciasEstudante.text(
+              inicioSegundaColuna,
+              alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha +
+              larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1),
+              textoOcorrencia,
+            );
+
+            /*DATA E HORA*/
+            this.relatorioPDFOcorrenciasEstudante.setFontSize(8);
+            const textoDataHora = this.relatorioPDFOcorrenciasEstudante.splitTextToSize(
+              data_hora, larguraTextoTerceiraColuna);
+            this.relatorioPDFOcorrenciasEstudante.text(
+              inicioTerceiraColuna,
+              alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha +
+              larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1),
+              textoDataHora,
+            );
+            contaLinhaOcorrenciaDisciplinar++;
+            if (paginaNova) {
+              /*RODAPÉ*/
+              this.criarRodapePDFOcorrenciasEstudante(xInicialLinha, xFinalLinha, paginaAtual);
+              /*ESPAÇO PARA ASSINATURA DO RESPONSÁVEL*/
+              this.criarLocalAssinaturaResponsável(xInicialLinha, xFinalLinha);
+            }
+            paginaNova = false;
           }
-          const ocorr = ocorrencias[idxRegistroOcorrencia];
-          const tipo = ocorr['tipo'];
-          const ocorrencia = ocorr['ocorrencia'];
-          const data_hora = ocorr['data_hora'];
-
-          /*LINHA SEPARADORA DE OCORRENCIAS*/
-          this.relatorioPDFOcorrenciasEstudante.line(
-            xInicialLinha,
-            alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha + (larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1)) - distanciaLinhaSeparadoraLinhas,
-            xFinalLinha,
-            alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha + (larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1)) - distanciaLinhaSeparadoraLinhas
-          );
-
-          /*TIPO*/
-          this.relatorioPDFOcorrenciasEstudante.setFontSize(8);
-          const textoTipo = this.relatorioPDFOcorrenciasEstudante.splitTextToSize(tipo, larguraTextoPrimeiraColuna);
-          this.relatorioPDFOcorrenciasEstudante.text(
-            inicioPrimeiraColuna,
-            alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha + larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1),
-            textoTipo
-          );
-
-          /*OCORRÊNCIA*/
-          this.relatorioPDFOcorrenciasEstudante.setFontSize(8);
-          const textoOcorrencia = this.relatorioPDFOcorrenciasEstudante.splitTextToSize(ocorrencia, larguraTextoSegundaColuna);
-          this.relatorioPDFOcorrenciasEstudante.text(
-            inicioSegundaColuna,
-            alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha + larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1),
-            textoOcorrencia
-          );
-
-          /*DATA E HORA*/
-          this.relatorioPDFOcorrenciasEstudante.setFontSize(8);
-          const textoDataHora = this.relatorioPDFOcorrenciasEstudante.splitTextToSize(data_hora, larguraTextoTerceiraColuna);
-          this.relatorioPDFOcorrenciasEstudante.text(
-            inicioTerceiraColuna,
-            alturaInicialOcorrenciasPrimeiraPagina - ajusteAlturaPrimeiraLinha + larguraLinhaRegistrosOcorrencia * (contaLinhaOcorrenciaDisciplinar + 1),
-            textoDataHora
-          );
-          contaLinhaOcorrenciaDisciplinar++;
-          if (paginaNova) {
-            /*RODAPÉ*/
-            this.criarRodapePDFOcorrenciasEstudante(xInicialLinha, xFinalLinha, paginaAtual);
-            /*ESPAÇO PARA ASSINATURA DO RESPONSÁVEL*/
-            this.criarLocalAssinaturaResponsável(xInicialLinha, xFinalLinha);
-          }
-          paginaNova = false;
-        }
-        this.relatorioPDFOcorrenciasEstudante.save(`Relatorio_ocorrencias_${ocorrencias[0]['nome']}.pdf`);
-        this.feedbackUsuario = undefined;
-      });
+          this.relatorioPDFOcorrenciasEstudante.save(`Relatorio_ocorrencias_${ocorrencias[0]['nome']}.pdf`);
+          this.feedbackUsuario = undefined;
+        });
     }
 
   }
@@ -1119,9 +1008,11 @@ export class InserirOcorrenciaComponent implements OnInit {
       'S');
   }
 
-  public criarCabecalhoPDFOcorrenciasEstudantesPaginasSeguintes(inicioLinha: number, fimLinha: number, ocorrencias: Array<Object>, pagina: number): void {
-    let nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
-    let nomeSistema = CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
+  public criarCabecalhoPDFOcorrenciasEstudantesPaginasSeguintes(
+    inicioLinha: number, fimLinha: number, ocorrencias: Array<Object>, pagina: number): void {
+    const nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
+    const nomeSistema = CONSTANTES.BUILD_DESTINO ===
+      CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
     /*CABEÇALHO PAGINAS SUBSEQUENTES*/
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(10);
@@ -1129,16 +1020,19 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.relatorioPDFOcorrenciasEstudante.line(inicioLinha, 10, fimLinha, 10);
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(10);
-    this.relatorioPDFOcorrenciasEstudante.text(`Relatório de ocorrências disciplinares - pagina ${pagina}`, inicioLinha, 15);
+    this.relatorioPDFOcorrenciasEstudante.text(
+      `Relatório de ocorrências disciplinares - pagina ${pagina}`, inicioLinha, 15);
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(10);
     this.relatorioPDFOcorrenciasEstudante.text(ocorrencias[0]['nome'], inicioLinha, 22);
     /*-------------------------------------------------------------------------*/
   }
 
-  public criarCabecalhoPDFOcorrenciasEstudante(inicioLinha: number, fimLinha: number, ocorrencias: Array<Object>): void {
-    let nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
-    let nomeSistema = CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
+  public criarCabecalhoPDFOcorrenciasEstudante(inicioLinha: number,
+    fimLinha: number, ocorrencias: Array<Object>): void {
+    const nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
+    const nomeSistema = CONSTANTES.BUILD_DESTINO ===
+      CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
     /*CABEÇALHO*/
     /*-------------------------------------------------------------------------*/
     this.relatorioPDFOcorrenciasEstudante.setFontSize(10);
@@ -1180,9 +1074,9 @@ export class InserirOcorrenciaComponent implements OnInit {
 
   public exibirBotaoImprimir(ocorrencias: Array<Object>): boolean {
     if (ocorrencias.length > 0) {
-      let nomeEstudante = ocorrencias[0]['nome'];
+      const nomeEstudante = ocorrencias[0]['nome'];
       for (let i = 0; i < ocorrencias.length; i++) {
-        if (ocorrencias[i]['nome'] != nomeEstudante) {
+        if (ocorrencias[i]['nome'] !== nomeEstudante) {
           return false;
         }
       }
@@ -1190,6 +1084,19 @@ export class InserirOcorrenciaComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  public tratarErro(erro: Response): void {
+    this.feedbackUsuario = undefined;
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
   }
 
 

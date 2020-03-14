@@ -119,9 +119,11 @@ a {
 }
 
 .card-resolvidos-frente {
-  background: url("../../../../assets/images/NaEscolaBackgroundCardSmall_2.png") no-repeat;
+  background: url("../../../../assets/images/NaEscolaBackgroundCardSmall_3.png") no-repeat;
   background-size: contain;
   height: 100%;
+  width: 80%;
+  padding: 10px;
 }
 
 .sedf_border_all {
@@ -135,4 +137,11 @@ a {
 
 .sedf_border_bottom {
   border-bottom: solid 1px #000000;
+}
+
+.resolvidos_border_botton {
+  border-bottom: solid 1px #000000;
+}
+.resolvidos_border_right {
+  border-right: solid 1px #000000;
 }

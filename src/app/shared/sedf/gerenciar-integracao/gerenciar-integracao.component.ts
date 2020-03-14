@@ -226,9 +226,14 @@ export class GerenciarIntegracaoComponent implements OnInit {
         }).catch((erro: Response) => {
           this.gravarErroMostrarMensagem(erro);
         });
+
+
       }).catch((erro: Response) => {
         this.gravarErroMostrarMensagem(erro);
       });
+
+
+
   }
 
   public enturmarEstudantesEmBlocos(arrayComEstudantes: Object[]): Promise<Object> {
