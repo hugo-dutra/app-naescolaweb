@@ -603,8 +603,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     }, 2000);
   }
 
-
-
   public desenharPDF(arrayOfCanvas: any[], doc: jsPDF): void {
     const alturaPagina = doc.internal.pageSize.height;
     const larguraPagina = doc.internal.pageSize.width;
@@ -646,7 +644,6 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     doc.save(`cartoes.pdf`);
     this.feedbackUsuario = undefined;
   }
-
 
   public mostrarErro(erro: Response) {
     // Mostra modal

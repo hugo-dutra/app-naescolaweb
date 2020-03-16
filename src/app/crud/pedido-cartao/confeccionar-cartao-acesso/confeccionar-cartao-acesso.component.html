@@ -293,13 +293,13 @@
 
                 <div class="row">
                   <div class="col-lg-2"></div>
-                  <div class="col-lg-7" style="margin-left: -15px;">
+                  <div class="col-lg-6" style="margin-left: -15px;">
                     <label class="float-left texto-rotulo-sedf col-12">Unidade Escolar</label>
-                    <label class="float-left texto-conteudo-sedf col-12">Centro Educacional Teste - Piloto</label>
+                    <label class="float-left texto-conteudo-sedf">{{nomeEscola}}</label>
                   </div>
-                  <div class="col-lg-2">
+                  <div class="col-lg-3">
                     <label class="float-left texto-rotulo-sedf col-12">Turma</label>
-                    <label class="float-left texto-conteudo-sedf col-12">{{estudante.turma}}</label>
+                    <label class="float-left texto-conteudo-sedf">{{estudante.turma}}</label>
                   </div>
                 </div>
 
@@ -477,7 +477,7 @@
             <div class="row">
               <!-- FOTO -->
               <div class="col-4 sedf_border_foto">
-                <img class="img " style="width: 11vw; height: 30vh;"
+                <img class="img pt-3" style="width: 11vw; height: 25vh;"
                   [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                   alt="foto do estudante">
               </div>

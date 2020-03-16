@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from "chart.js";
+import { Chart } from 'chart.js';
 import { ProfessorDisciplinaService } from '../../../crud/professor-disciplina/professor-disciplina.service';
 import { RendimentoService } from '../rendimento.service';
 import { PeriodoLetivoService } from '../../../crud/periodo-letivo/periodo-letivo.service';
@@ -16,19 +16,19 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./aproveitamento-professor-disciplina-periodo.component.scss'],
   providers: [ProfessorDisciplinaService, RendimentoService, PeriodoLetivoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit {
 
@@ -37,7 +37,7 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
   public arrayOfDadosReprovados: Array<Object>;
   public arrayOfPeriodosLetivos: Array<Object>;
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public esc_id: number;
@@ -66,7 +66,7 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
   ) { }
 
   ngOnInit() {
-    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT));
+    this.esc_id = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
     this.anoAtual = (new Date()).getFullYear();
     this.listarPeriodosLetivos();
   }
@@ -74,15 +74,15 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
   public verificarValorMaximoGraficos(): void {
     this.valorMaximoGraficos = 0;
     this.arrayOfDadosAprovados.forEach(valor => {
-      if (parseInt(valor["quantidade"]) > this.valorMaximoGraficos) {
-        this.valorMaximoGraficos = parseInt(valor["quantidade"]);
+      if (parseInt(valor['quantidade'], 10) > this.valorMaximoGraficos) {
+        this.valorMaximoGraficos = parseInt(valor['quantidade'], 10);
       }
-    })
+    });
     this.arrayOfDadosReprovados.forEach(valor => {
-      if (parseInt(valor["quantidade"]) > this.valorMaximoGraficos) {
-        this.valorMaximoGraficos = parseInt(valor["quantidade"]);
+      if (parseInt(valor['quantidade'], 10) > this.valorMaximoGraficos) {
+        this.valorMaximoGraficos = parseInt(valor['quantidade'], 10);
       }
-    })
+    });
     this.carregarArraysDadosGraficos();
   }
 
@@ -92,77 +92,50 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
       this.arrayOfPeriodosLetivos = Object.values(response);
       this.listarProfessoresDisciplinas();
     }).catch((erro: Response) => {
-      this.feedbackUsuario = undefined;
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-    })
+      this.tratarErro(erro);
+    });
   }
 
   public listarProfessoresDisciplinas(): void {
     this.feedbackUsuario = 'Listando professores e disciplinas, aguarde...';
     this.professorDisciplinaService.listarDisciplina(this.esc_id, true).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
-      this.arrayOfProfessoresDisciplinas = Object.values(response)
+      this.arrayOfProfessoresDisciplinas = Object.values(response);
     }).catch((erro: Response) => {
-      this.feedbackUsuario = undefined;
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-    })
+      this.tratarErro(erro);
+    });
   }
 
   public selecionarProfessorDisciplina(event: Event): void {
-    this.prd_id = parseInt((<HTMLInputElement>event.target).value);
+    this.prd_id = parseInt((<HTMLInputElement>event.target).value, 10);
   }
 
   public selecionarPeriodoLetivo(event: Event): void {
-    this.prl_id = parseInt((<HTMLInputElement>event.target).value);
+    this.prl_id = parseInt((<HTMLInputElement>event.target).value, 10);
   }
 
   public gerarGraficoAproveitamento(): void {
     this.feedbackUsuario = 'Carregando dados dos estudantes acima da média...';
-    this.rendimentoService.listarAproveitamentoProfessorDisciplinaPeriodo(5, this.prd_id, this.prl_id, 'a').toPromise().then((response: Response) => {
-      this.arrayOfDadosAprovados = Object.values(response);
-      this.feedbackUsuario = 'Carregando dados dos estudantes abaixo da média...';
-      this.rendimentoService.listarAproveitamentoProfessorDisciplinaPeriodo(5, this.prd_id, this.prl_id, 'r').toPromise().then((response: Response) => {
-        this.arrayOfDadosReprovados = Object.values(response);
-        this.feedbackUsuario = undefined;
-        this.carregarArraysDadosGraficos();
-        this.verificarValorMaximoGraficos();
-      }).catch((erro: Response) => {
-        this.feedbackUsuario = undefined;
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-      }).catch((erro: Response) => {
-        this.feedbackUsuario = undefined;
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-      })
-    })
+    this.rendimentoService.listarAproveitamentoProfessorDisciplinaPeriodo(5, this.prd_id, this.prl_id, 'a')
+      .toPromise().then((response: Response) => {
+        this.arrayOfDadosAprovados = Object.values(response);
+        this.feedbackUsuario = 'Carregando dados dos estudantes abaixo da média...';
+        this.rendimentoService.listarAproveitamentoProfessorDisciplinaPeriodo(5, this.prd_id, this.prl_id, 'r')
+          // tslint:disable-next-line: no-shadowed-variable
+          .toPromise().then((response: Response) => {
+            this.arrayOfDadosReprovados = Object.values(response);
+            this.feedbackUsuario = undefined;
+            this.carregarArraysDadosGraficos();
+            this.verificarValorMaximoGraficos();
+          }).catch((erro: Response) => {
+            this.tratarErro(erro);
+          }).catch((erro: Response) => {
+            this.tratarErro(erro);
+          });
+      });
   }
+
+
 
   public carregarArraysDadosGraficos(): void {
     this.feedbackUsuario = 'Construíndo gráfico...';
@@ -173,8 +146,8 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
     this.arrayOfDadosAprovados.forEach((dado: Object) => {
       this.arrayOfQuantidadeAprovados.push(dado['quantidade']);
       this.arrayOfLabelDisciplinasAprovados.push(`${dado['serie']}-${dado['turma']}`);
-      this.arrayOfAprovadosColors.push("rgba(72, 133, 237, 0.75)");
-    })
+      this.arrayOfAprovadosColors.push('rgba(72, 133, 237, 0.75)');
+    });
 
     this.arrayOfQuantidadeReprovados = [];
     this.arrayOfLabelDisciplinasReprovados = [];
@@ -183,8 +156,8 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
     this.arrayOfDadosReprovados.forEach((dado: Object) => {
       this.arrayOfQuantidadeReprovados.push(dado['quantidade']);
       this.arrayOfLabelDisciplinasReprovados.push(`${dado['serie']}-${dado['turma']}`);
-      this.arrayOfReprovadosColors.push("rgba(219,68,55, 0.75)");
-    })
+      this.arrayOfReprovadosColors.push('rgba(219,68,55, 0.75)');
+    });
 
     this.feedbackUsuario = undefined;
     this.atualizarChartAproveitamentoAcimaDaMedia();
@@ -192,27 +165,28 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
   }
 
   public atualizarChartAproveitamentoAcimaDaMedia(): void {
-    let context = (<HTMLCanvasElement>document.getElementById('barChartAproveitamentoProfessorDisciplinaPeriodo')).getContext('2d');
-    if (this.barChartAproveitamentoProfessorDisciplinaPeriodo != undefined)
+    const context = (<HTMLCanvasElement>document.getElementById('barChartAproveitamentoProfessorDisciplinaPeriodo'))
+      .getContext('2d');
+    if (this.barChartAproveitamentoProfessorDisciplinaPeriodo !== undefined)
       this.barChartAproveitamentoProfessorDisciplinaPeriodo.destroy();
 
     this.barChartAproveitamentoProfessorDisciplinaPeriodo = new Chart(context, {
-      type: "bar",
+      type: 'bar',
       data: {
         labels: this.arrayOfLabelDisciplinasAprovados,
         datasets: [
           {
-            label: "",
+            label: '',
             data: this.arrayOfQuantidadeAprovados,
             lineTension: 0.2,
             backgroundColor: this.arrayOfAprovadosColors,
-            borderWidth: 2
+            borderWidth: 2,
           },
-        ]
+        ],
       },
       options: {
         legend: { display: false },
-        title: { text: "Estudantes acima da média", fontSize: 20, position: "top", display: true },
+        title: { text: 'Estudantes acima da média', fontSize: 20, position: 'top', display: true },
         responsive: true,
         scales: {
           yAxes: [
@@ -220,52 +194,53 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
               ticks: {
                 min: 0,
                 max: this.valorMaximoGraficos,
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         maintainAspectRatio: false,
         animation: {
           duration: 500,
-          easing: "easeInQuart",
+          easing: 'easeInQuart',
         },
         tooltips: {
-          backgroundColor: "rgba(72, 133, 237, 0.75)",
-          borderColor: "rgb(255,255,255)",
+          backgroundColor: 'rgba(72, 133, 237, 0.75)',
+          borderColor: 'rgb(255,255,255)',
           borderWidth: 2,
           bodyFontSize: 30,
           callbacks: {
             labelTextColor: function (tooltipItem, chart) {
-              return "rgb(255,255, 255)";
+              return 'rgb(255,255, 255)';
             },
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
   public atualizarChartAproveitamentoAbaixoDaMedia(): void {
-    let context = (<HTMLCanvasElement>document.getElementById('barChartSemAproveitamentoProfessorDisciplinaPeriodo')).getContext('2d');
-    if (this.barChartReprovadosProfessorDisciplinaPeriodo != undefined)
+    const context = (<HTMLCanvasElement>document.getElementById('barChartSemAproveitamentoProfessorDisciplinaPeriodo'))
+      .getContext('2d');
+    if (this.barChartReprovadosProfessorDisciplinaPeriodo !== undefined)
       this.barChartReprovadosProfessorDisciplinaPeriodo.destroy();
 
     this.barChartReprovadosProfessorDisciplinaPeriodo = new Chart(context, {
-      type: "bar",
+      type: 'bar',
       data: {
 
         labels: this.arrayOfLabelDisciplinasReprovados,
         datasets: [
           {
-            label: "",
+            label: '',
             data: this.arrayOfQuantidadeReprovados,
             lineTension: 0.2,
             backgroundColor: this.arrayOfReprovadosColors,
-            borderWidth: 2
+            borderWidth: 2,
           },
-        ]
+        ],
       },
       options: {
-        title: { text: "Estudantes abaixo da média", fontSize: 20, position: "bottom", display: true },
+        title: { text: 'Estudantes abaixo da média', fontSize: 20, position: 'bottom', display: true },
         legend: { display: false },
         responsive: true,
         scales: {
@@ -275,29 +250,41 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
                 min: 0,
                 reverse: true,
                 max: this.valorMaximoGraficos,
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         maintainAspectRatio: false,
         animation: {
           duration: 500,
-          easing: "easeInQuart",
+          easing: 'easeInQuart',
         },
         tooltips: {
-          backgroundColor: "rgba(72, 133, 237, 0.75)",
-          borderColor: "rgb(255,255,255)",
+          backgroundColor: 'rgba(72, 133, 237, 0.75)',
+          borderColor: 'rgb(255,255,255)',
           borderWidth: 2,
           bodyFontSize: 30,
           callbacks: {
             labelTextColor: function (tooltipItem, chart) {
-              return "rgb(255,255, 255)";
+              return 'rgb(255,255, 255)';
             },
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
 
+  public tratarErro(erro: Response): void {
+    this.feedbackUsuario = undefined;
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+  }
 
 }

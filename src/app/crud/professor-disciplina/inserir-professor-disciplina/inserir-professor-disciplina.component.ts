@@ -17,25 +17,25 @@ import { ProfessorDisciplina } from '../professor-disciplina.model';
   styleUrls: ['./inserir-professor-disciplina.component.scss'],
   providers: [ProfessorDisciplinaService, DisciplinaService, ProfessorService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirProfessorDisciplinaComponent implements OnInit {
   public disciplinas: Object;
   public professores: Array<Object>;
   public matrizReferencia: Array<Object>;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
 
   public professorDisciplina = new ProfessorDisciplina();
   public statusCheck: boolean;
@@ -53,7 +53,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
 
   public formulario = new FormGroup({
     check_professor: new FormControl(null),
-    check_disciplina: new FormControl(null)
+    check_disciplina: new FormControl(null),
   });
 
   constructor(
@@ -62,17 +62,17 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private disciplinaService: DisciplinaService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
     this.dados_escola = JSON.parse(
       Utils.decriptAtoB(
-        localStorage.getItem("dados_escola"),
-        CONSTANTES.PASSO_CRIPT
-      )
+        localStorage.getItem('dados_escola'),
+        CONSTANTES.PASSO_CRIPT,
+      ),
     )[0];
-    this.esc_id = parseInt(this.dados_escola["id"]);
+    this.esc_id = parseInt(this.dados_escola['id'], 10);
     this.usr_id = Utils.verificarDados()[0]['id'];
     this.listarDados();
   }
@@ -95,7 +95,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   }
 
   public listarProfessoresSemDisciplina(): void {
-    this.feedbackUsuario = "Carregando, aguarde...";
+    this.feedbackUsuario = 'Carregando, aguarde...';
     this.professorService
       .listarSemDisciplina(50000, 0, true, this.usr_id, this.esc_id)
       .toPromise()
@@ -105,7 +105,6 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       })
       .then(() => {
         if (this.primeiraExecucao) {
-          //this.listarDisciplinasSEDF();
           this.listarDisciplinas();
           this.primeiraExecucao = false;
         } else {
@@ -113,24 +112,16 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
         }
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
   public filtrarProfessor(event: Event): void {
-    let valorFiltro = (<HTMLInputElement>event.target).value;
+    const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.professores.filter((elemento) => {
-      return elemento["nome"].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
-    })
+      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+    });
     if (valorFiltro.length > 0) {
       this.professores = matrizRetorno;
     } else {
@@ -139,18 +130,18 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key == 'Backspace' || event.key == 'Delete') {
-      this.feedbackUsuario = "Filtrando, aguarde...";
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      this.feedbackUsuario = 'Filtrando, aguarde...';
       setTimeout(() => {
-        this.professores = this.matrizReferencia
+        this.professores = this.matrizReferencia;
         this.feedbackUsuario = undefined;
         this.filtrarProfessor(event);
-      }, 50)
+      }, 50);
     }
   }
 
   public listarTodosProfessores(): void {
-    this.feedbackUsuario = "Carregando, aguarde...";
+    this.feedbackUsuario = 'Carregando, aguarde...';
     this.professorService
       .listar(50000, 0, true, this.usr_id, this.esc_id)
       .toPromise()
@@ -160,7 +151,6 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       })
       .then(() => {
         if (this.primeiraExecucao) {
-          //this.listarDisciplinasSEDF();
           this.listarDisciplinas();
           this.primeiraExecucao = false;
         } else {
@@ -168,42 +158,34 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
         }
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
   public gravaStatusProfessores(event: Event): void {
-    let nome: string = (<HTMLInputElement>event.target).name;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const nome: string = (<HTMLInputElement>event.target).name;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
 
     if (status) {
-      this.arrayOfProfessores.push(parseInt(nome));
+      this.arrayOfProfessores.push(parseInt(nome, 10));
     } else {
       this.arrayOfProfessores.splice(
-        this.arrayOfProfessores.indexOf(parseInt(nome), 0),
-        1
+        this.arrayOfProfessores.indexOf(parseInt(nome, 10), 0),
+        1,
       );
     }
     this.alertarChecksVazios();
   }
 
   public gravaStatusDisciplinas(event: Event): void {
-    let nome: string = (<HTMLInputElement>event.target).name;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const nome: string = (<HTMLInputElement>event.target).name;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
     if (status) {
-      this.arrayOfDisciplinas.push(parseInt(nome));
+      this.arrayOfDisciplinas.push(parseInt(nome, 10));
     } else {
       this.arrayOfDisciplinas.splice(
-        this.arrayOfDisciplinas.indexOf(parseInt(nome), 0),
-        1
+        this.arrayOfDisciplinas.indexOf(parseInt(nome, 10), 0),
+        1,
       );
     }
     this.alertarChecksVazios();
@@ -218,7 +200,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
     para associação correta */
 
   public listarDisciplinasSEDF(): void {
-    this.feedbackUsuario = "Carregando, aguarde...";
+    this.feedbackUsuario = 'Carregando, aguarde...';
     this.disciplinaService
       .integracaoListar(this.esc_id)
       .toPromise()
@@ -226,37 +208,34 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
         this.disciplinas = response;
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
   public listarDisciplinas(): void {
-    this.feedbackUsuario = "Carregando, aguarde...";
+    this.feedbackUsuario = 'Carregando, aguarde...';
     this.disciplinaService
-      .listar()
+      .listar(this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.disciplinas = response;
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
+  }
+
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 
   public inserir(event: Event): void {
@@ -265,7 +244,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       this.arrayOfProfessores.length > 0
     ) {
       this.exibirAlerta = false;
-      this.feedbackUsuario = "Salvando, aguarde...";
+      this.feedbackUsuario = 'Salvando, aguarde...';
       this.professorDisciplinaService
         .inserir(this.arrayOfProfessores, this.arrayOfDisciplinas)
         .toPromise()
@@ -274,13 +253,14 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
           this.limparTodosChecks();
         })
         .catch((erro: Response) => {
-          //Mostra modal
+          // Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
+          // registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+            JSON.stringify(erro));
+          // Gravar erros no analytics
           Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
+          // Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
           this.limparTodosChecks();
@@ -291,7 +271,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigateByUrl("listar-professor");
+    this.router.navigateByUrl('listar-professor');
   }
 
   public limparTodosChecks() {
@@ -302,15 +282,15 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
 
   public alertarChecksVazios() {
     if (
-      this.arrayOfDisciplinas.length != 0 &&
-      this.arrayOfProfessores.length != 0
+      this.arrayOfDisciplinas.length !== 0 &&
+      this.arrayOfProfessores.length !== 0
     ) {
       this.exibirAlerta = false;
     }
 
     if (
-      this.arrayOfDisciplinas.length == 0 ||
-      this.arrayOfProfessores.length == 0
+      this.arrayOfDisciplinas.length === 0 ||
+      this.arrayOfProfessores.length === 0
     ) {
       this.exibirAlerta = true;
     }

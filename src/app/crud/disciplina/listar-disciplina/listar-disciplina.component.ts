@@ -60,12 +60,10 @@ export class ListarDisciplinaComponent implements OnInit {
 
   }
 
-
   public listar(): void {
     this.feedbackUsuario = 'Carregando dados, aguarde...';
-    this.disciplinaService
-      .listar()
-      .toPromise()
+    const esc_id = Utils.pegarDadosEscolaDetalhado().id;
+    this.disciplinaService.listar(esc_id).toPromise()
       .then((response: Response) => {
         this.disciplinas = Object.values(response);
         this.feedbackUsuario = undefined;

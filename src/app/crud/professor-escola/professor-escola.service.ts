@@ -5,27 +5,33 @@ import { CONSTANTES } from '../../shared/constantes.shared';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfessorEscolaService {
 
   constructor(private http: HttpClient) { }
 
   public inserir(professoresEscolas: Array<ProfessorEscola>): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-professor-escola",
+      CONSTANTES.HOST_API + 'inserir-professor-escola',
       JSON.stringify({ professoresEscolas: professoresEscolas }),
-      headers
+      headers,
     );
   }
 
   public integracaoInserir(professoresEscolas: Array<Object>, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "integracao-inserir-professor-escola",
+      CONSTANTES.HOST_API + 'integracao-inserir-professor-escola',
       JSON.stringify({ professoresEscolas: professoresEscolas, esc_id: esc_id }),
-      headers
+      headers,
     );
   }
 

@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    ProfessorTurmaRoutingModule
-  ]
+    ProfessorTurmaRoutingModule,
+  ],
 })
 export class ProfessorTurmaModule { }

@@ -17,24 +17,24 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./inserir-professor-turma.component.scss'],
   providers: [ProfessorTurmaService, TurmaService, ProfessorDisciplinaService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirProfessorTurmaComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
@@ -59,17 +59,17 @@ export class InserirProfessorTurmaComponent implements OnInit {
     private firebaseService: FirebaseService,
 
     private professorDisciplinaService: ProfessorDisciplinaService,
-    private router: Router
+    private router: Router,
   ) { }
 
   public formulario = new FormGroup({
     check_professor: new FormControl(null),
-    check_turma: new FormControl(null)
+    check_turma: new FormControl(null),
   });
 
   ngOnInit() {
-    this.dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT))[0];
-    this.esc_id = parseInt(this.dados_escola["id"]);
+    this.dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+    this.esc_id = parseInt(this.dados_escola['id'], 10);
     this.anoAtual = (new Date()).getFullYear();
     this.listarProfessoresTurmas();
   }
@@ -80,85 +80,63 @@ export class InserirProfessorTurmaComponent implements OnInit {
   }
 
   public listarSomenteProfessores(): void {
-    this.feedbackUsuario = "Carregando professores, aguarde...";
-    this.professorDisciplinaService.listarDisciplina(this.esc_id, this.exibeTodos).toPromise().then((response: Response) => {
-      this.professores = Object.values(response);
-      this.matrizReferencia = this.professores;
-      this.feedbackUsuario = undefined;
-    }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+    this.feedbackUsuario = 'Carregando professores, aguarde...';
+    this.professorDisciplinaService.listarDisciplina(this.esc_id, this.exibeTodos)
+      .toPromise().then((response: Response) => {
+        this.professores = Object.values(response);
+        this.matrizReferencia = this.professores;
+        this.feedbackUsuario = undefined;
+      }).catch((erro: Response) => {
+        this.tratarErro(erro);
+      });
   }
 
   public listarProfessoresTurmas(): void {
-    this.feedbackUsuario = "Carregando professores, aguarde...";
-    this.professorDisciplinaService.listarDisciplina(this.esc_id, this.exibeTodos).toPromise().then((response: Response) => {
-      this.professores = Object.values(response);
-      this.matrizReferencia = this.professores;
-      this.listarTurmas();
-    }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+    this.feedbackUsuario = 'Carregando professores, aguarde...';
+    this.professorDisciplinaService.listarDisciplina(this.esc_id, this.exibeTodos)
+      .toPromise().then((response: Response) => {
+        this.professores = Object.values(response);
+        this.matrizReferencia = this.professores;
+        this.listarTurmas();
+      }).catch((erro: Response) => {
+        this.tratarErro(erro);
+      });
   }
 
   public listarTurmas(): void {
-    this.feedbackUsuario = "Carregando turmas, aguarde...";
+    this.feedbackUsuario = 'Carregando turmas, aguarde...';
     this.turmaService.listarTodasAno(this.anoAtual, this.esc_id).toPromise().then((response: Response) => {
       this.turmas = Object.values(response);
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+      this.tratarErro(erro);
+    });
   }
 
   public gravaStatusProfessores(event: Event): void {
-    let nome: string = (<HTMLInputElement>event.target).name;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const nome: string = (<HTMLInputElement>event.target).name;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
 
     if (status) {
-      this.arrayOfProfessores.push(parseInt(nome));
+      this.arrayOfProfessores.push(parseInt(nome, 10));
     } else {
       this.arrayOfProfessores.splice(
-        this.arrayOfProfessores.indexOf(parseInt(nome), 0),
-        1
+        this.arrayOfProfessores.indexOf(parseInt(nome, 10), 0),
+        1,
       );
     }
     this.alertarChecksVazios();
   }
 
   public gravaStatusTurmas(event: Event): void {
-    let nome: string = (<HTMLInputElement>event.target).name;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const nome: string = (<HTMLInputElement>event.target).name;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
     if (status) {
-      this.arrayOfTurmas.push(parseInt(nome));
+      this.arrayOfTurmas.push(parseInt(nome, 10));
     } else {
       this.arrayOfTurmas.splice(
-        this.arrayOfTurmas.indexOf(parseInt(nome), 0),
-        1
+        this.arrayOfTurmas.indexOf(parseInt(nome, 10), 0),
+        1,
       );
     }
     this.alertarChecksVazios();
@@ -168,11 +146,11 @@ export class InserirProfessorTurmaComponent implements OnInit {
     this.arrayOfProfessoresTurmas = [];
     for (let i = 0; i < this.arrayOfTurmas.length; i++) {
       for (let j = 0; j < this.arrayOfProfessores.length; j++) {
-        let professorTurma = new ProfessorTurma();
+        const professorTurma = new ProfessorTurma();
         professorTurma.esc_id = this.esc_id;
         professorTurma.trm_id = this.arrayOfTurmas[i];
         professorTurma.prd_id = this.arrayOfProfessores[j];
-        professorTurma.conselheiro = 0; //Depois pensar em mecanismo para definição de professor conselheiro.
+        professorTurma.conselheiro = 0;
         this.arrayOfProfessoresTurmas.push(professorTurma);
       }
     }
@@ -180,21 +158,26 @@ export class InserirProfessorTurmaComponent implements OnInit {
 
   public inserir(): void {
     this.carregarProfessorTurma();
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.professorTurmaService.inserir(this.arrayOfProfessoresTurmas).toPromise().then((response: Response) => {
       this.limparDados();
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
-      this.feedbackUsuario = undefined;
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-    })
+      this.tratarErro(erro);
+    });
+  }
+
+  public tratarErro(erro: Response): void {
+    this.feedbackUsuario = undefined;
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
   }
 
   public limparDados(): void {
@@ -205,31 +188,31 @@ export class InserirProfessorTurmaComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigate(["listar-professor"]);
+    this.router.navigate(['listar-professor']);
   }
 
   public alertarChecksVazios() {
     if (
-      this.arrayOfProfessores.length != 0 &&
-      this.arrayOfTurmas.length != 0
+      this.arrayOfProfessores.length !== 0 &&
+      this.arrayOfTurmas.length !== 0
     ) {
       this.exibirAlerta = false;
     }
 
     if (
-      this.arrayOfProfessores.length == 0 ||
-      this.arrayOfTurmas.length == 0
+      this.arrayOfProfessores.length === 0 ||
+      this.arrayOfTurmas.length === 0
     ) {
       this.exibirAlerta = true;
     }
   }
 
   public filtrarProfessor(event: Event): void {
-    let valorFiltro = (<HTMLInputElement>event.target).value;
+    const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.professores.filter((elemento) => {
-      return elemento["professor"].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
-    })
+      return elemento['professor'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+    });
     if (valorFiltro.length > 0) {
       this.professores = matrizRetorno;
     } else {
@@ -238,15 +221,15 @@ export class InserirProfessorTurmaComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key == 'Backspace' || event.key == 'Delete') {
+    if (event.key === 'Backspace' || event.key === 'Delete') {
       setTimeout(() => {
-        this.professores = this.matrizReferencia
+        this.professores = this.matrizReferencia;
         this.feedbackUsuario = undefined;
         this.formulario.reset();
         this.arrayOfProfessores.length = 0;
         this.arrayOfTurmas.length = 0;
         this.filtrarProfessor(event);
-      }, 50)
+      }, 50);
     }
   }
 

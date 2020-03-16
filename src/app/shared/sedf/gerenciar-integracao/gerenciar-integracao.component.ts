@@ -14,16 +14,13 @@ import { Turma } from '../../../crud/turma/turma.model';
 import { EstudanteService } from '../../../crud/estudante/estudante.service';
 import { TurnoService } from '../../../crud/turno/turno.service';
 import { Turno } from '../../../crud/turno/turno.model';
-import { Disciplina } from '../../../crud/disciplina/disciplina.model';
 import { DisciplinaService } from '../../../crud/disciplina/disciplina.service';
 import { DiarioRegistroService } from '../../../crud/diario-registro/diario-registro.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { ProfessorDisciplina } from '../../../crud/professor-disciplina/professor-disciplina.model';
 import { ProfessorService } from '../../../crud/professor/professor.service';
 import { ProfessorEscolaService } from '../../../crud/professor-escola/professor-escola.service';
 import { ProfessorDisciplinaService } from '../../../crud/professor-disciplina/professor-disciplina.service';
 import { ProfessorTurmaService } from '../../../crud/professor-turma/professor-turma.service';
-import { utf8Encode } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -162,8 +159,6 @@ export class GerenciarIntegracaoComponent implements OnInit {
     return retorno;
   }
 
-
-
   public identificarDesativarDesenturmarInativos(estudantesNovos: Object[]): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
@@ -198,22 +193,30 @@ export class GerenciarIntegracaoComponent implements OnInit {
           .eliminaValoresRepetidos(professoresDisciplinasTurmas, 'emp_cd_matricula');
         this.feedbackUsuario = 'Gravando professores, aguarde...';
         this.professorService.integracaoInserir(arrayDeProfessores).toPromise().then(() => {
-          this.feedbackUsuario = 'Vinculando professores a escola, aguarde...';
-          this.professorEscolaService.integracaoInserir(arrayDeProfessores, this.esc_id).toPromise().then(() => {
-            this.feedbackUsuario = 'Vinculando professores a disciplinas, aguarde...';
-            this.professorDisciplinaService.integracaoInserir(professoresDisciplinasTurmas).toPromise().then(() => {
-              this.feedbackUsuario = 'Vinculando professores e turmas, finalizando...';
-              const professoresTurmas = new Array<Object>();
-              professoresDisciplinasTurmas.forEach(professorDisciplinaturma => {
-                professoresTurmas.push({
-                  dsp_id: professorDisciplinaturma['cod_disciplina'],
-                  matricula: professorDisciplinaturma['emp_cd_matricula'],
-                  trm_id: professorDisciplinaturma['cod_turma'],
-                  esc_id: this.esc_id,
+          const arrayDeDisciplinas = Utils
+            .eliminaValoresRepetidos(professoresDisciplinasTurmas, 'cod_disciplina');
+          this.feedbackUsuario = 'Atualizando disciplinas, aguarde...';
+          this.disciplinaService.integracaoInserir(arrayDeDisciplinas).toPromise().then(() => {
+            this.feedbackUsuario = 'Vinculando professores a escola, aguarde...';
+            this.professorEscolaService.integracaoInserir(arrayDeProfessores, this.esc_id).toPromise().then(() => {
+              this.feedbackUsuario = 'Vinculando professores a disciplinas, aguarde...';
+              this.professorDisciplinaService.integracaoInserir(professoresDisciplinasTurmas).toPromise().then(() => {
+                this.feedbackUsuario = 'Vinculando professores e turmas, finalizando...';
+                const professoresTurmas = new Array<Object>();
+                professoresDisciplinasTurmas.forEach(professorDisciplinaturma => {
+                  professoresTurmas.push({
+                    dsp_id: professorDisciplinaturma['cod_disciplina'],
+                    matricula: professorDisciplinaturma['emp_cd_matricula'],
+                    trm_id: professorDisciplinaturma['cod_turma'],
+                    esc_id: this.esc_id,
+                  });
                 });
-              });
-              this.professorTurmaService.integracaoInserir(professoresTurmas).toPromise().then(() => {
-                this.feedbackUsuario = undefined;
+                this.professorTurmaService.integracaoInserir(professoresTurmas).toPromise().then(() => {
+                  this.feedbackUsuario = undefined;
+                  this.alertModalService.showAlertSuccess('Dados sincronizados com sucesso');
+                }).catch((erro: Response) => {
+                  this.gravarErroMostrarMensagem(erro);
+                });
               }).catch((erro: Response) => {
                 this.gravarErroMostrarMensagem(erro);
               });
@@ -226,14 +229,9 @@ export class GerenciarIntegracaoComponent implements OnInit {
         }).catch((erro: Response) => {
           this.gravarErroMostrarMensagem(erro);
         });
-
-
       }).catch((erro: Response) => {
         this.gravarErroMostrarMensagem(erro);
       });
-
-
-
   }
 
   public enturmarEstudantesEmBlocos(arrayComEstudantes: Object[]): Promise<Object> {
@@ -271,6 +269,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
               this.feedbackUsuario = undefined;
               this.enturmarEstudantesEmBlocos(estudantesSemNomesRepetidos).then(() => {
                 this.feedbackUsuario = undefined;
+                this.alertModalService.showAlertSuccess('Estudantes sincronizados com sucesso');
               }).catch((erro: Response) => {
                 this.gravarErroMostrarMensagem(erro);
               });
@@ -309,13 +308,13 @@ export class GerenciarIntegracaoComponent implements OnInit {
               .toPromise().then(() => {
                 this.marcarTurmaNotasBaixadas(turma);
                 this.feedbackUsuario = undefined;
+                this.alertModalService.showAlertSuccess('Notas e faltas sincronizadas com sucesso');
               }).catch((erro: Response) => {
                 this.gravarErroMostrarMensagem(erro);
               });
           }).catch((erro: Response) => {
             this.gravarErroMostrarMensagem(erro);
           });
-
         } else {
           this.alertModalService.showAlertWarning('Sem dados para turma informada.');
           this.feedbackUsuario = undefined;
@@ -377,6 +376,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
             this.turmaService.integracaoInserir(turmas, this.esc_id, this.ano_atual)
               .toPromise().then(() => {
                 this.feedbackUsuario = undefined;
+                this.alertModalService.showAlertSuccess('Turmas sincronizadas com sucesso');
               }).catch((erro: Response) => {
                 this.gravarErroMostrarMensagem(erro);
               });

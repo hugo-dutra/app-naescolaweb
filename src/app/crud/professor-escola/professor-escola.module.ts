@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     HttpClientModule,
     ReactiveFormsModule,
-    ProfessorEscolaRoutingModule
-  ]
+    ProfessorEscolaRoutingModule,
+  ],
 })
 export class ProfessorEscolaModule { }

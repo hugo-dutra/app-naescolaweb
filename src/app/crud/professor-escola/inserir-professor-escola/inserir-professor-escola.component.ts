@@ -17,24 +17,24 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./inserir-professor-escola.component.scss'],
   providers: [ProfessorEscolaService, EscolaService, ProfessorService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirProfessorEscolaComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
@@ -57,12 +57,12 @@ export class InserirProfessorEscolaComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private professorService: ProfessorService,
-    private router: Router
+    private router: Router,
   ) { }
 
   public formulario = new FormGroup({
     check_professor: new FormControl(null),
-    check_escola: new FormControl(null)
+    check_escola: new FormControl(null),
   });
 
   ngOnInit() {
@@ -77,11 +77,11 @@ export class InserirProfessorEscolaComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigate(["listar-professor"]);
+    this.router.navigate(['listar-professor']);
   }
 
   private carregarEscolas(): void {
-    this.feedbackUsuario = "Carregando escolas...";
+    this.feedbackUsuario = 'Carregando escolas...';
     this.escolaService
       .listar(5000, 0, true)
       .toPromise()
@@ -90,15 +90,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
@@ -109,8 +101,8 @@ export class InserirProfessorEscolaComponent implements OnInit {
 
   private carregarProfessores(todos: boolean): void {
     this.limparProfessores();
-    if (todos == true) {
-      this.feedbackUsuario = "Carregando professores...";
+    if (todos === true) {
+      this.feedbackUsuario = 'Carregando professores...';
       this.professorService
         .listar(50000, 0, true, this.usr_id, this.esc_id)
         .toPromise()
@@ -123,18 +115,10 @@ export class InserirProfessorEscolaComponent implements OnInit {
             this.carregarEscolas();
           }
         }).catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     } else {
-      this.feedbackUsuario = "Carregando professores sem escola...";
+      this.feedbackUsuario = 'Carregando professores sem escola...';
       this.professorService
         .listarSemEscola()
         .toPromise()
@@ -144,43 +128,35 @@ export class InserirProfessorEscolaComponent implements OnInit {
           this.feedbackUsuario = undefined;
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
   }
 
   public gravaStatusProfessores(event: Event): void {
-    let nome: string = (<HTMLInputElement>event.target).name;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const nome: string = (<HTMLInputElement>event.target).name;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
 
     if (status) {
-      this.arrayOfProfessores.push(parseInt(nome));
+      this.arrayOfProfessores.push(parseInt(nome, 10));
     } else {
       this.arrayOfProfessores.splice(
-        this.arrayOfProfessores.indexOf(parseInt(nome), 0),
-        1
+        this.arrayOfProfessores.indexOf(parseInt(nome, 10), 0),
+        1,
       );
     }
     this.alertarChecksVazios();
   }
 
   public gravaStatusEscolas(event: Event): void {
-    let nome: string = (<HTMLInputElement>event.target).name;
-    let status: boolean = (<HTMLInputElement>event.target).checked;
+    const nome: string = (<HTMLInputElement>event.target).name;
+    const status: boolean = (<HTMLInputElement>event.target).checked;
     if (status) {
-      this.arrayOfEscolas.push(parseInt(nome));
+      this.arrayOfEscolas.push(parseInt(nome, 10));
     } else {
       this.arrayOfEscolas.splice(
-        this.arrayOfEscolas.indexOf(parseInt(nome), 0),
-        1
+        this.arrayOfEscolas.indexOf(parseInt(nome, 10), 0),
+        1,
       );
     }
     this.alertarChecksVazios();
@@ -190,7 +166,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
     this.arrayOfProfessoresEscolas = [];
     for (let i = 0; i < this.arrayOfEscolas.length; i++) {
       for (let j = 0; j < this.arrayOfProfessores.length; j++) {
-        let professorEscola = new ProfessorEscola();
+        const professorEscola = new ProfessorEscola();
         professorEscola.esc_id = this.arrayOfEscolas[i];
         professorEscola.prf_id = this.arrayOfProfessores[j];
         this.arrayOfProfessoresEscolas.push(professorEscola);
@@ -200,7 +176,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
 
   public inserir(): void {
     this.carregarProfessorEscola();
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.professorEscolaService
       .inserir(this.arrayOfProfessoresEscolas)
       .toPromise()
@@ -210,15 +186,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
         this.carregarProfessores(this.exibeTodos);
       })
       .catch((erro: Response) => {
-        this.feedbackUsuario = undefined;
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
+        this.tratarErro(erro);
       });
   }
 
@@ -234,26 +202,26 @@ export class InserirProfessorEscolaComponent implements OnInit {
 
   public alertarChecksVazios() {
     if (
-      this.arrayOfProfessores.length != 0 &&
-      this.arrayOfEscolas.length != 0
+      this.arrayOfProfessores.length !== 0 &&
+      this.arrayOfEscolas.length !== 0
     ) {
       this.exibirAlerta = false;
     }
 
     if (
-      this.arrayOfProfessores.length == 0 ||
-      this.arrayOfEscolas.length == 0
+      this.arrayOfProfessores.length === 0 ||
+      this.arrayOfEscolas.length === 0
     ) {
       this.exibirAlerta = true;
     }
   }
 
   public filtrarProfessor(event: Event): void {
-    let valorFiltro = (<HTMLInputElement>event.target).value;
+    const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.professores.filter((elemento) => {
-      return elemento["nome"].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
-    })
+      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+    });
     if (valorFiltro.length > 0) {
       this.professores = matrizRetorno;
     } else {
@@ -262,15 +230,28 @@ export class InserirProfessorEscolaComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key == 'Backspace' || event.key == 'Delete') {
+    if (event.key === 'Backspace' || event.key === 'Delete') {
       setTimeout(() => {
-        this.professores = this.matrizReferencia
+        this.professores = this.matrizReferencia;
         this.formulario.reset();
         this.arrayOfProfessores.length = 0;
         this.arrayOfEscolas.length = 0;
         this.feedbackUsuario = undefined;
         this.filtrarProfessor(event);
-      }, 50)
+      }, 50);
     }
+  }
+
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 }

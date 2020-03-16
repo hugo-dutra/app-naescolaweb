@@ -4,11 +4,11 @@ import { InserirProfessorTurmaComponent } from './inserir-professor-turma/inseri
 import { AuthGuardService } from '../../guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: "", component: InserirProfessorTurmaComponent, canActivate: [AuthGuardService] },
+  { path: '', component: InserirProfessorTurmaComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class ProfessorTurmaRoutingModule { }

@@ -12,14 +12,14 @@ export class DisciplinaService {
   public disciplina = new Disciplina();
   constructor(private http: HttpClient) { }
 
-  public listar(): Observable<any> {
+  public listar(esc_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.post(
       CONSTANTES.HOST_API + 'disciplinas',
-      null,
+      JSON.stringify({ esc_id: esc_id }),
       headers,
     );
   }
@@ -30,7 +30,7 @@ export class DisciplinaService {
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.post(
-      CONSTANTES.HOST_API + 'integracao-listar',
+      CONSTANTES.HOST_API + 'integracao-listar-disciplinas',
       JSON.stringify({ esc_id: esc_id }),
       headers,
     );
