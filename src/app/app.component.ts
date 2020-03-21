@@ -73,15 +73,30 @@ export class AppComponent implements OnInit {
   }
 
   public inicialiarFirebase(): void {
+    let config;
+    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILS_RESOLVIDOS) {
+      config = {
+        apiKey: 'AIzaSyAfgiA5ogBvZXkZISWNWGOlPD8iID2KGzo',
+        authDomain: 'naescolaweb-af337.firebaseapp.com',
+        databaseURL: 'https://naescolaweb-af337.firebaseio.com',
+        projectId: 'naescolaweb-af337',
+        storageBucket: 'naescolaweb-af337.appspot.com',
+        messagingSenderId: '134371598864',
+      };
+    }
 
-    const config = {
-      apiKey: 'AIzaSyAfgiA5ogBvZXkZISWNWGOlPD8iID2KGzo',
-      authDomain: 'naescolaweb-af337.firebaseapp.com',
-      databaseURL: 'https://naescolaweb-af337.firebaseio.com',
-      projectId: 'naescolaweb-af337',
-      storageBucket: 'naescolaweb-af337.appspot.com',
-      messagingSenderId: '134371598864',
-    };
+    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILD_SEDF) {
+      config = {
+        apiKey: 'AIzaSyB6oUQiVRmUPrzZO0sU2GVdr3GaojAv_AA',
+        authDomain: 'educadf-92b0b.firebaseapp.com',
+        databaseURL: 'https://educadf-92b0b.firebaseio.com',
+        projectId: 'educadf-92b0b',
+        storageBucket: 'educadf-92b0b.appspot.com',
+        messagingSenderId: '75446017878',
+        appId: '1:75446017878:web:5e016a17cd554796ee00f7',
+      };
+    }
+
     firebase.initializeApp(config);
     this.logarUsuarioAnonimamenteFirebase();
   }

@@ -140,6 +140,14 @@ export class Utils {
     return CryptoJS.AES.decrypt(entrada, CONSTANTES.CK).toString(CryptoJS.enc.Utf8);
   }
 
+  public static cypherQRCode(entrada: string): CryptoJS.WordArray {
+    return CryptoJS.AES.encrypt(entrada, CONSTANTES.CKQRC);
+  }
+
+  public static decypherQRCode(entrada: string): string {
+    return CryptoJS.AES.decrypt(entrada, CONSTANTES.CKQRC).toString(CryptoJS.enc.Utf8);
+  }
+
   public static abreviarNome(nome: string): string {
     const arrayDePalavras = nome.split(' ');
     let stringRetorno = '';

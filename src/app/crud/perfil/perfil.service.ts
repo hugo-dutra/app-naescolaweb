@@ -9,48 +9,63 @@ export class PerfilService {
 
   constructor(private http: HttpClient) { }
 
-  public listar(nivel: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+  public listar(nivel: number, esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "perfis",
-      JSON.stringify({ nivel: nivel }),
-      headers
+      CONSTANTES.HOST_API + 'perfis',
+      JSON.stringify({ nivel: nivel, esc_id: esc_id }),
+      headers,
     );
   }
 
   public listarEscopoPerfil(): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "listar-escopo-perfil",
+      CONSTANTES.HOST_API + 'listar-escopo-perfil',
       null,
-      headers
+      headers,
     );
   }
 
   public inserir(perfil: Perfil): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-perfil",
+      CONSTANTES.HOST_API + 'inserir-perfil',
       JSON.stringify(perfil),
-      headers
+      headers,
     );
   }
 
   public alterar(perfil: Perfil): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-perfil",
+      CONSTANTES.HOST_API + 'alterar-perfil',
       JSON.stringify(perfil),
-      headers
+      headers,
     );
   }
 
   public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-perfil",
+      CONSTANTES.HOST_API + 'excluir-perfil',
       JSON.stringify({ id: id }),
-      headers
+      headers,
     );
   }
 

@@ -13,38 +13,38 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./alterar-senha-usuario.component.scss'],
   providers: [UsuarioService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class AlterarSenhaUsuarioComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public esc_id: number;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public usr_id: number;
   public dados_usuario = new Array<Object>();
 
-  public senha1: string = "";
-  public senha2: string = "";
+  public senha1: string = '';
+  public senha2: string = '';
 
   constructor(
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private router: Router,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
   ) { }
 
   ngOnInit() {
@@ -54,27 +54,28 @@ export class AlterarSenhaUsuarioComponent implements OnInit {
 
   public alterarSenha(): void {
     if (this.validarEntradaSenha()) {
-      this.feedbackUsuario = "Modificando senha, aguarde...";
+      this.feedbackUsuario = 'Modificando senha, aguarde...';
       this.usuarioService.modificarSenha(this.usr_id, this.senha1).toPromise().then(() => {
         this.feedbackUsuario = undefined;
         this.alertModalService.showAlertSuccess('Senha modificada com sucesso!!!');
       }).catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
-      })
+      });
     }
   }
 
   public validarEntradaSenha(): boolean {
     if (this.senha1 === this.senha2) {
-      if (this.senha1 != "" && this.senha2 != "") {
+      if (this.senha1 !== '' && this.senha2 !== '') {
         return true;
       } else {
         this.alertModalService.showAlertDanger('As senha não podem ser vazias!');
@@ -94,17 +95,17 @@ export class AlterarSenhaUsuarioComponent implements OnInit {
   public limparCampos(): void {
     this.senha1 = '';
     this.senha2 = '';
-    document.getElementById("senha1").focus();
+    document.getElementById('senha1').focus();
   }
 
   public gravarStringSenha(event: Event): void {
     switch ((<HTMLInputElement>event.target).id) {
-      case "senha1": {
+      case 'senha1': {
         this.senha1 = (<HTMLInputElement>event.target).value;
         break;
       }
 
-      case "senha2": {
+      case 'senha2': {
         this.senha2 = (<HTMLInputElement>event.target).value;
         break;
       }

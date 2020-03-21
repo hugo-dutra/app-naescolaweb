@@ -5,30 +5,30 @@ import { AcessoComumService } from '../shared/acesso-comum/acesso-comum.service'
 
 let localStorageGrupos: Array<Object>;
 let localStorageMenus: Array<Object>;
-let gruposCadastro = new Array<NbMenuItem>();
-let gruposRelatorio = new Array<NbMenuItem>();
+const gruposCadastro = new Array<NbMenuItem>();
+const gruposRelatorio = new Array<NbMenuItem>();
 
 const acessoComumService = new AcessoComumService();
 
 const adicionarLinkAcessado = (link: any) => {
-  let linkAcessado = new LinkAcessado();
-  linkAcessado.link = link["link"];
-  linkAcessado.descricao = link["texto"];
-  linkAcessado.fontAwesome = link["imagem"];
-  linkAcessado.corFontAwesome = link["cor"];
+  const linkAcessado = new LinkAcessado();
+  linkAcessado.link = link['link'];
+  linkAcessado.descricao = link['texto'];
+  linkAcessado.fontAwesome = link['imagem'];
+  linkAcessado.corFontAwesome = link['cor'];
   acessoComumService.adicionarLinkAcessado(linkAcessado);
-}
+};
 
 const verificarPermissaoAcesso = (link: any): boolean => {
-  let permissoes: Object = Utils.verificarPermissoes();
-  let rota: string = link["link"].toString().split(",")[0];
-  for (let key in permissoes) {
-    if (permissoes[key]["rota"] == rota) {
+  const permissoes: Object = Utils.verificarPermissoes();
+  const rota: string = link['link'].toString().split(',')[0];
+  for (const key in permissoes) {
+    if (permissoes[key]['rota'] === rota) {
       return true;
     }
   }
   return false;
-}
+};
 
 try {
   localStorageGrupos = Object.values(Utils.verificarGrupos());
@@ -40,13 +40,13 @@ try {
   }
 
   for (let idxGrupo = 0; idxGrupo < localStorageGrupos.length; idxGrupo++) {
-    if (localStorageGrupos[idxGrupo]['modulo'] == 'cadastro') {
-      let menuItem = new NbMenuItem();
+    if (localStorageGrupos[idxGrupo]['modulo'] === 'cadastro') {
+      const menuItem = new NbMenuItem();
       menuItem.title = localStorageGrupos[idxGrupo]['texto'];
       menuItem.icon = 'layout-outline';
-      let menus = new Array<NbMenuItem>();
+      const menus = new Array<NbMenuItem>();
       for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
-        if (localStorageGrupos[idxGrupo]['nome'] == localStorageMenus[idxMenu]['grupo']) {
+        if (localStorageGrupos[idxGrupo]['nome'] === localStorageMenus[idxMenu]['grupo']) {
           const menu = new NbMenuItem;
           menu.title = localStorageMenus[idxMenu]['texto'];
           menu.link = `/${localStorageMenus[idxMenu]['link']}`;
@@ -57,14 +57,14 @@ try {
       gruposCadastro.push(menuItem);
     }
 
-    if (localStorageGrupos[idxGrupo]['modulo'] == 'relatorio') {
-      let menuItem = new NbMenuItem();
+    if (localStorageGrupos[idxGrupo]['modulo'] === 'relatorio') {
+      const menuItem = new NbMenuItem();
       menuItem.title = localStorageGrupos[idxGrupo]['texto'];
       menuItem.icon = 'layout-outline';
 
-      let menus = new Array<NbMenuItem>();
+      const menus = new Array<NbMenuItem>();
       for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
-        if (localStorageGrupos[idxGrupo]['nome'] == localStorageMenus[idxMenu]['grupo']) {
+        if (localStorageGrupos[idxGrupo]['nome'] === localStorageMenus[idxMenu]['grupo']) {
           const menu = new NbMenuItem;
           menu.title = localStorageMenus[idxMenu]['texto'];
           menu.link = `/${localStorageMenus[idxMenu]['link']}`;
@@ -77,6 +77,7 @@ try {
   }
 
 } catch (erro) {
+  // tslint:disable-next-line: no-console
   console.log('Falha ao carregar dados de perfil!');
 }
 
@@ -99,8 +100,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Sugestões',
     icon: 'bell',
-    link: '/listar-usuario/enviar-sugestao-usuario'
-  }
+    link: '/listar-usuario/enviar-sugestao-usuario',
+  },
 ];
 
 

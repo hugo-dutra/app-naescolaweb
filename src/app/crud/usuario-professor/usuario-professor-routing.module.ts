@@ -4,11 +4,11 @@ import { InserirUsuarioProfessorComponent } from './inserir-usuario-professor/in
 import { AuthGuardService } from '../../guards/auth.guard.service';
 
 const routes: Routes = [
-  { path: "", component: InserirUsuarioProfessorComponent, canActivate: [AuthGuardService] },
+  { path: '', component: InserirUsuarioProfessorComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class UsuarioProfessorRoutingModule { }

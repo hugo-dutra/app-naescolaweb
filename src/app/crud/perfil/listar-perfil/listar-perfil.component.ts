@@ -7,7 +7,7 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
-import { PerfilPermissaoService } from '../../perfil-permissao/perfil-permissao.service'
+import { PerfilPermissaoService } from '../../perfil-permissao/perfil-permissao.service';
 
 @Component({
   selector: 'ngx-listar-perfil',
@@ -15,19 +15,19 @@ import { PerfilPermissaoService } from '../../perfil-permissao/perfil-permissao.
   styleUrls: ['./listar-perfil.component.scss'],
   providers: [PerfilService, PerfilPermissaoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 
 export class ListarPerfilComponent implements OnInit {
@@ -37,7 +37,7 @@ export class ListarPerfilComponent implements OnInit {
   public perfil = new Perfil();
   public permissoesPerfil = new Array<Object>();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
@@ -46,6 +46,7 @@ export class ListarPerfilComponent implements OnInit {
   public exibirComponenteExcluir: Boolean = false;
   public exibirComponenteDetalhar: Boolean = false;
   public decrescente: boolean = true;
+  public esc_id: number;
 
   constructor(
     private perfilService: PerfilService,
@@ -56,40 +57,40 @@ export class ListarPerfilComponent implements OnInit {
 
   ngOnInit() {
     this.perfis = undefined;
+    this.esc_id = Utils.pegarDadosEscolaDetalhado().id;
     this.exibirComponentesEdicao();
     this.listar();
   }
 
   public listar(): void {
 
-    this.feedbackUsuario = "Carregando dados, aguarde...";
-    let nivelPerfil = Utils.pegarDadosEscopo().nivel;
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
+    const nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
-      .listar(nivelPerfil)
+      .listar(nivelPerfil, this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.perfis = Object.values(response);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
 
   }
 
-
-
   public ordenarColuna(campo: string): void {
     if (!this.decrescente) {
-      let retorno = this.perfis.sort(function (a, b) {
+      const retorno = this.perfis.sort(function (a, b) {
         if (a[campo] < b[campo]) {
           return 1;
         }
@@ -97,11 +98,11 @@ export class ListarPerfilComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.perfis = retorno;
 
     } else {
-      let retorno = this.perfis.sort(function (a, b) {
+      const retorno = this.perfis.sort(function (a, b) {
         if (a[campo] > b[campo]) {
           return 1;
         }
@@ -109,7 +110,7 @@ export class ListarPerfilComponent implements OnInit {
           return -1;
         }
         return 0;
-      })
+      });
       this.perfis = retorno;
     }
     this.decrescente = !this.decrescente;
@@ -120,34 +121,33 @@ export class ListarPerfilComponent implements OnInit {
   }
 
   public alterar(perfil: Perfil): void {
-    let navigationExtras: NavigationExtras = {
-      queryParams: { perfil: JSON.stringify(perfil) }
+    const navigationExtras: NavigationExtras = {
+      queryParams: { perfil: JSON.stringify(perfil) },
     };
     this.router.navigate([`${this.router.url}/alterar-perfil`], navigationExtras);
   }
 
   public excluir(perfil: Perfil): void {
-    let navigationExtras: NavigationExtras = {
-      queryParams: { perfil: JSON.stringify(perfil) }
+    const navigationExtras: NavigationExtras = {
+      queryParams: { perfil: JSON.stringify(perfil) },
     };
     this.router.navigate([`${this.router.url}/excluir-perfil`], navigationExtras);
   }
 
   public detalharPerfil(perfil: Perfil): void {
     this.permissoesPerfil = [];
-    this.feedbackUsuario = "Carregando detalhes, aguarde...";
+    this.feedbackUsuario = 'Carregando detalhes, aguarde...';
     this.perfilPermissaoService.listarPermissaoAcesso(perfil.id).toPromise().then((response: Response) => {
-      let listadePerfils = Object.values(response);
+      const listadePerfils = Object.values(response);
       this.permissoesPerfil = listadePerfils.sort((a, b) => {
         if (a['nome'] > b['nome']) {
           return 1;
         } else {
           return -1;
         }
-      })
+      });
       this.feedbackUsuario = undefined;
-      console.log(this.permissoesPerfil);
-    })
+    });
 
   }
 

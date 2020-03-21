@@ -9,24 +9,24 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   templateUrl: './gerenciar-usuario.component.html',
   styleUrls: ['./gerenciar-usuario.component.scss'],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class GerenciarUsuarioComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public esc_id: number;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;

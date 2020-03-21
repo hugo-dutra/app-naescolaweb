@@ -94,7 +94,20 @@ export class GerarQrcodeAplicativoEstudanteComponent implements OnInit {
     this.feedbackUsuario = 'Listando estudantes, aguarde...';
     this.arrayOfEstudantes = [];
     this.estudanteService.listarTurmaId(this.turmaSelecionada).toPromise().then((response: Response) => {
-      this.arrayOfEstudantes = Object.values(response);
+      this.arrayOfEstudantes = Object.values(response).map((valor) => {
+        return {
+          id: valor['id'],
+          nome: valor['nome'],
+          matricula: valor['matricula'],
+          foto: valor['foto'],
+          trm_id: valor['trm_id'],
+          numero_chamada: valor['numero_chamada'],
+          data_nascimento: valor['data_nascimento'],
+          qrCodeString: Utils.cypherQRCode(JSON.stringify({
+            nome: valor['nome'], est_id: valor['id'], plano: '0', inep: this.inep,
+          })).toString(),
+        };
+      });
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
       this.tratarErro(erro);
@@ -134,9 +147,10 @@ export class GerarQrcodeAplicativoEstudanteComponent implements OnInit {
       new Promise(resolve => {
         const alturaPagina = doc.internal.pageSize.height;
         const larguraPagina = doc.internal.pageSize.width;
-        const distanciaVertical = 10;
+        const distanciaVertical = 5;
         const distanciHorizontal = 0;
-        const alturaCartao = ((alturaPagina / 4) - distanciaVertical);
+        const quantidadeDePaginas = 5;
+        const alturaCartao = ((alturaPagina / quantidadeDePaginas) - distanciaVertical);
         const larguraCartao = ((larguraPagina / 2) - distanciHorizontal);
         let yPos = 0;
         let xPos = -1;
@@ -148,9 +162,9 @@ export class GerarQrcodeAplicativoEstudanteComponent implements OnInit {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
 
             if (contaCartao % 2 === 0 && contaCartao > 0) {
-              yPos += (alturaPagina / 4);
+              yPos += (alturaPagina / quantidadeDePaginas);
             }
-            if (contaCartao % 8 === 0 && contaCartao > 0) {
+            if (contaCartao % (2 * quantidadeDePaginas) === 0 && contaCartao > 0) {
               yPos = 0;
               xPos = -1 + margem;
               doc.addPage('portrait', 'a4');
@@ -167,7 +181,7 @@ export class GerarQrcodeAplicativoEstudanteComponent implements OnInit {
             contaCartao += 1;
             if (contaCartao === this.arrayOfEstudantes.length) {
               this.feedbackUsuario = undefined;
-              doc.save(`QRCodePDF.pdf`);
+              doc.save(`QRCodePDF_${this.turmaSelecionada}.pdf`);
               resolve('ok');
             }
           });

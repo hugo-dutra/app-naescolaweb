@@ -15,19 +15,19 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
   styleUrls: ['./alterar-perfil.component.scss'],
   providers: [PerfilService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 
 export class AlterarPerfilComponent implements OnInit {
@@ -35,16 +35,17 @@ export class AlterarPerfilComponent implements OnInit {
   public perfil = new Perfil();
   public feedbackUsuario: string;
   public escoposPerfil = new Array<Object>();
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
   public escopoSelecionado: Object;
-  public stringEscopoSelecionado: string = "Selecione o escopo";
+  public stringEscopoSelecionado: string = 'Selecione o escopo';
+  public escopoUsuario: Object;
 
   public formulario = new FormGroup({
     id: new FormControl(null),
-    nome: new FormControl(null)
+    nome: new FormControl(null),
   });
 
   constructor(
@@ -52,35 +53,38 @@ export class AlterarPerfilComponent implements OnInit {
     private perfilService: PerfilService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((perfil: Perfil) => {
-      this.perfil = JSON.parse(perfil["perfil"]);
+      this.perfil = JSON.parse(perfil['perfil']);
     });
+    this.escopoUsuario = Utils.pegarDadosEscopo();
     this.listarEscopoPerfil();
 
   }
 
   public listarEscopoPerfil(): void {
-    this.feedbackUsuario = "Carregando escopos de acesso, acesso...";
+    this.feedbackUsuario = 'Carregando escopos de acesso, acesso...';
     this.perfilService.listarEscopoPerfil().toPromise().then((response: Response) => {
-      this.escoposPerfil = Object.values(response);
+      this.escoposPerfil = Object.values(response).filter((escopo) => {
+        return escopo['nivel'] <= this.escopoUsuario['nivel'];
+      });
       this.feedbackUsuario = undefined;
       this.stringEscopoSelecionado = this.perfil.escopo;
-    })
+    });
   }
 
   public selecionarEscopo(escopo: Object): void {
     this.escopoSelecionado = escopo;
     this.stringEscopoSelecionado = this.escopoSelecionado['nome'];
-    this.perfil.epu_id = parseInt(this.escopoSelecionado['epu_id']);
+    this.perfil.epu_id = parseInt(this.escopoSelecionado['epu_id'], 10);
   }
 
 
   public alterar(): void {
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     if (this.validarEntrada()) {
       this.perfilService
         .alterar(this.perfil)
@@ -90,13 +94,14 @@ export class AlterarPerfilComponent implements OnInit {
           this.listar();
         })
         .catch((erro: Response) => {
-          //Mostra modal
+          // Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
+          // registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+            JSON.stringify(erro));
+          // Gravar erros no analytics
           Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
+          // Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;
         });
@@ -104,12 +109,12 @@ export class AlterarPerfilComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigateByUrl("listar-perfil");
+    this.router.navigateByUrl('listar-perfil');
   }
 
   public validarEntrada(): boolean {
     if (this.perfil != null && this.perfil.nome != null) {
-      if (this.perfil.nome.trim() != "" && this.perfil.epu_id > 0) {
+      if (this.perfil.nome.trim() !== '' && this.perfil.epu_id > 0) {
         return true;
       } else {
         return false;
@@ -118,8 +123,8 @@ export class AlterarPerfilComponent implements OnInit {
   }
 
   public modificarInputs(event: Event) {
-    let campo: string = (<HTMLInputElement>event.target).name;
-    let valor: string = (<HTMLInputElement>event.target).value;
+    const campo: string = (<HTMLInputElement>event.target).name;
+    const valor: string = (<HTMLInputElement>event.target).value;
     this.perfil[campo] = valor;
     this.validar(event);
   }

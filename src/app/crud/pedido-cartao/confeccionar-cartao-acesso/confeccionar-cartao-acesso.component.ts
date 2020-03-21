@@ -163,10 +163,10 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     this.estudanteService.listarTurmaId(this.trm_id_selecionada).toPromise().then((response: Response) => {
       this.arrayOfEstudantes = Object.values(response);
       this.arrayOfEstudantesCartaoConfeccionado = [];
-      const serie = this.stringTurmaSelecionada.split('-')[0].replace(/ /g, '');
-      const etapa = this.stringTurmaSelecionada.split('-')[1].replace(/ /g, '');
-      const turma = this.stringTurmaSelecionada.split('-')[2].replace(/ /g, '');
-      const turno = this.stringTurmaSelecionada.split('-')[3].replace(/ /g, '');
+      const serie = this.stringTurmaSelecionada.split('-')[0].replace(/ /g, ' ');
+      const etapa = this.stringTurmaSelecionada.split('-')[1].replace(/ /g, ' ');
+      const turma = this.stringTurmaSelecionada.split('-')[2].replace(/ /g, ' ');
+      const turno = this.stringTurmaSelecionada.split('-')[3].replace(/ /g, ' ');
 
       this.arrayOfEstudantes.forEach(elem => {
         const cartaoAcessoImpressao = new CartaoAcessoImpressao();

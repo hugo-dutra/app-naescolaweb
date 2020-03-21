@@ -18,24 +18,24 @@ import { FirebaseUpload } from '../../../shared/firebase/firebase.upload.model';
   styleUrls: ['./alterar-usuario.component.scss'],
   providers: [UsuarioService, UsuarioProfessorService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class AlterarUsuarioComponent implements OnInit {
 
   public usuario = new Usuario();
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public perfis: Object;
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -57,27 +57,24 @@ export class AlterarUsuarioComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((usuario: Usuario) => {
-      this.usuario = JSON.parse(usuario["usuario"]);
+      this.usuario = JSON.parse(usuario['usuario']);
     });
     this.carregarDados();
     this.listarPerfis();
   }
 
-
-
-
   public carregarDados(): void {
     const dados_escola = localStorage.getItem('dados_escola');
-    if (dados_escola != undefined && dados_escola != null && dados_escola != "") {
+    if (dados_escola !== undefined && dados_escola != null && dados_escola !== '') {
       this.dados_escola = JSON.parse(Utils.decriptAtoB(dados_escola, CONSTANTES.PASSO_CRIPT))[0];
-      this.esc_id = parseInt(this.dados_escola['id']);
+      this.esc_id = parseInt(this.dados_escola['id'], 10);
     }
     const dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
     this.usr_id_solicitante = (dados_usuario['id']);
   }
 
   public listarPerfis(): void {
-    this.feedbackUsuario = "Carregando perfis..."
+    this.feedbackUsuario = 'Carregando perfis...';
     this.usuarioService
       .listarEscolaPerfilStatus(this.usuario.id, this.esc_id, this.usr_id_solicitante)
       .toPromise()
@@ -86,13 +83,14 @@ export class AlterarUsuarioComponent implements OnInit {
         this.perfis = response;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
@@ -100,40 +98,42 @@ export class AlterarUsuarioComponent implements OnInit {
 
   public alterarStatusUsuario(use_id: number, event: Event): void {
     const use_id_local = use_id;
-    const status_checked = (<HTMLInputElement>event.target).checked == true ? 1 : 0;
-    this.feedbackUsuario = "Alterando status do usuário...";
+    const status_checked = (<HTMLInputElement>event.target).checked === true ? 1 : 0;
+    this.feedbackUsuario = 'Alterando status do usuário...';
     this.usuarioService.alterarStatusUsuario(use_id_local, status_checked).toPromise().then(() => {
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public alterar(): void {
-    this.feedbackUsuario = "Salvando dados, aguarde...";
+    this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.usuarioService
       .alterar(this.usuario)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
-        this.router.navigateByUrl("listar-usuario");
+        this.router.navigateByUrl('listar-usuario');
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.exibirAlerta = true;
         this.feedbackUsuario = undefined;
@@ -146,57 +146,60 @@ export class AlterarUsuarioComponent implements OnInit {
       this.feedbackUsuario = undefined;
       this.alertModalService.showAlertSuccess('Desvinculação concluída.');
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public enviarArquivo(event: Event): void {
-    let arquivos: FileList = (<HTMLInputElement>event.target).files;
-    let firebaseUpload = new FirebaseUpload(arquivos[0]);
+    const arquivos: FileList = (<HTMLInputElement>event.target).files;
+    const firebaseUpload = new FirebaseUpload(arquivos[0]);
     firebaseUpload.name = Utils.gerarNomeUnico();
 
-    let basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_USUARIO}`;
-    this.feedbackUsuario = "Enviando foto, aguarde...";
+    const basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_USUARIO}`;
+    this.feedbackUsuario = 'Enviando foto, aguarde...';
     this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
       this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
-        this.feedbackUsuario = "Carregando foto, aguarde...";
+        this.feedbackUsuario = 'Carregando foto, aguarde...';
         this.usuario.foto = url_download;
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
-      })
+      });
     }).catch((erro: Response) => {
-      //Mostra modal
+      // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
+      // registra log de erro no firebase usando serviço singlenton
+      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+        JSON.stringify(erro));
+      // Gravar erros no analytics
       Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
+      // Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public modificarInputs(event: Event): void {
-    let campo: string = (<HTMLInputElement>event.target).name;
-    let valor: string = (<HTMLInputElement>event.target).value;
+    const campo: string = (<HTMLInputElement>event.target).name;
+    const valor: string = (<HTMLInputElement>event.target).value;
     this.usuario[campo] = valor;
     this.validar(event);
   }
@@ -207,7 +210,7 @@ export class AlterarUsuarioComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigateByUrl("listar-usuario");
+    this.router.navigateByUrl('listar-usuario');
   }
 
 }

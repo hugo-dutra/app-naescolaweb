@@ -14,25 +14,25 @@ import { FirebaseService } from '../../../shared/firebase/firebase.service';
   styleUrls: ['./excluir-perfil.component.scss'],
   providers: [PerfilService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class ExcluirPerfilComponent implements OnInit {
 
   public perfil = new Perfil();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
@@ -42,17 +42,17 @@ export class ExcluirPerfilComponent implements OnInit {
     private perfilService: PerfilService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((perfil: Perfil) => {
-      this.perfil = JSON.parse(perfil["perfil"]);
+      this.perfil = JSON.parse(perfil['perfil']);
     });
   }
 
   public excluir(): void {
-    this.feedbackUsuario = "Excluindo dados, aguarde...";
+    this.feedbackUsuario = 'Excluindo dados, aguarde...';
     this.perfilService
       .excluir(this.perfil.id)
       .toPromise()
@@ -61,20 +61,21 @@ export class ExcluirPerfilComponent implements OnInit {
         this.listar();
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public listar(): void {
-    this.router.navigate(["listar-perfil"]);
+    this.router.navigate(['listar-perfil']);
   }
 
 }

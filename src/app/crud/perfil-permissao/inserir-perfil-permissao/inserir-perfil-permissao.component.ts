@@ -17,36 +17,37 @@ import { Utils } from '../../../shared/utils.shared';
   styleUrls: ['./inserir-perfil-permissao.component.scss'],
   providers: [PerfilPermissaoService, PerfilService, PermissaoAcessoService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirPerfilPermissaoComponent implements OnInit {
 
-  public perfis: Object;
-  public permissoesExistentes: Object;
+  public perfis = new Array<Object>();
+  public permissoesExistentes = new Array<Object>();
   public pru_id: number;
   public permissoesPerfilSelecionado: Object;
   public permissoesSelecionadas = new Array<PerfilPermissao>();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
+  public esc_id: number;
 
   public formulario = new FormGroup({
     pru_id: new FormControl(null),
-    pac_id: new FormControl(null)
+    pac_id: new FormControl(null),
   });
 
   constructor(
@@ -55,30 +56,31 @@ export class InserirPerfilPermissaoComponent implements OnInit {
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private permissaoAcessoService: PermissaoAcessoService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
+    this.esc_id = Utils.pegarDadosEscolaDetalhado().id;
     this.listarPerfisEPermissoes();
   }
 
   public listarPermissaoAcessoPerfilUsuario(event: Event): void {
     this.limparChecks(event);
-
     this.pru_id = this.formulario.value.pru_id;
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.perfilPermissaoService
       .listarPermissaoAcesso(this.pru_id)
       .toPromise()
       .then((response: Response) => {
         this.permissoesPerfilSelecionado = response;
-        let checkedItems = (<HTMLInputElement>event.target).form;
+        const checkedItems = (<HTMLInputElement>event.target).form;
         for (let item = 0; item < checkedItems.length; item++) {
-          for (let pSelecionado in this.permissoesPerfilSelecionado) {
-            let pac_id: number = this.permissoesPerfilSelecionado[pSelecionado][
-              "pac_id"
+          // tslint:disable-next-line: forin
+          for (const pSelecionado in this.permissoesPerfilSelecionado) {
+            const pac_id: number = this.permissoesPerfilSelecionado[pSelecionado][
+              'pac_id'
             ];
-            let id: number = parseInt((<HTMLInputElement>checkedItems[item]).name);
+            const id: number = parseInt((<HTMLInputElement>checkedItems[item]).name, 10);
             if (pac_id === id) {
               (<HTMLInputElement>checkedItems[item]).checked = true;
             }
@@ -87,20 +89,21 @@ export class InserirPerfilPermissaoComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public limparChecks(event: Event) {
-    let checkedItems = (<HTMLInputElement>event.target).form;
+    const checkedItems = (<HTMLInputElement>event.target).form;
     for (let item = 0; item < checkedItems.length; item++) {
       (<HTMLInputElement>checkedItems[item]).checked = false;
     }
@@ -108,25 +111,26 @@ export class InserirPerfilPermissaoComponent implements OnInit {
 
   public listarPerfis(): void {
     this.formulario.reset();
-    this.feedbackUsuario = "Carregando dados, aguarde...";
-    let nivelPerfil = Utils.pegarDadosEscopo().nivel;
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
+    const nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
-      .listar(nivelPerfil)
+      .listar(nivelPerfil, this.esc_id)
       .toPromise()
       .then((response: Response) => {
-        this.perfis = response;
+        this.perfis = Object.values(response);
       })
       .then(() => {
         this.listarPermissoes();
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
@@ -137,17 +141,22 @@ export class InserirPerfilPermissaoComponent implements OnInit {
       .listar()
       .toPromise()
       .then((response: Response) => {
-        this.permissoesExistentes = response;
+        const permissoesUsuario = Object.values(Utils.verificarPermissoes());
+        const permissoesTotais = Object.values(response);
+        this.permissoesExistentes = permissoesTotais.filter(
+          (set => a => true === set.has(a['rota']))(new Set(permissoesUsuario.map(b => b['rota']))),
+        );
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
@@ -155,7 +164,7 @@ export class InserirPerfilPermissaoComponent implements OnInit {
 
   public findIndex(
     objetos: PerfilPermissao[],
-    objeto: PerfilPermissao
+    objeto: PerfilPermissao,
   ): number {
     for (let i = 0; i < objetos.length; i++) {
       if (objetos[i].pac_id === objeto.pac_id) {
@@ -167,13 +176,13 @@ export class InserirPerfilPermissaoComponent implements OnInit {
   public inserir(event: Event): void {
     this.exibirAlerta = false;
     this.permissoesSelecionadas = [];
-    this.feedbackUsuario = "Gravando dados, aguarde...";
-    let checkedItems = (<HTMLInputElement>event.target).form;
+    this.feedbackUsuario = 'Gravando dados, aguarde...';
+    const checkedItems = (<HTMLInputElement>event.target).form;
     for (let item = 0; item < checkedItems.length; item++) {
       if ((<HTMLInputElement>checkedItems[item]).checked) {
-        let perfilPermissao = new PerfilPermissao();
-        if (!isNaN(parseInt((<HTMLInputElement>checkedItems[item]).name))) {
-          perfilPermissao.pac_id = parseInt((<HTMLInputElement>checkedItems[item]).name);
+        const perfilPermissao = new PerfilPermissao();
+        if (!isNaN(parseInt((<HTMLInputElement>checkedItems[item]).name, 10))) {
+          perfilPermissao.pac_id = parseInt((<HTMLInputElement>checkedItems[item]).name, 10);
           this.permissoesSelecionadas.push(perfilPermissao);
         }
       }
@@ -188,13 +197,14 @@ export class InserirPerfilPermissaoComponent implements OnInit {
         this.formulario.reset();
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.exibirAlerta = true;
         this.feedbackUsuario = undefined;
@@ -202,11 +212,11 @@ export class InserirPerfilPermissaoComponent implements OnInit {
   }
 
   public selecionarTodos(event: Event) {
-    let checkBoxes = (<HTMLInputElement>event.target).form;
+    const checkBoxes = (<HTMLInputElement>event.target).form;
     for (let i = 0; i < checkBoxes.length; i++) {
       if ((<HTMLInputElement>event.target).checked) {
-        let perfilPermissao = new PerfilPermissao();
-        if (!isNaN(parseInt((<HTMLInputElement>checkBoxes[i]).name))) {
+        const perfilPermissao = new PerfilPermissao();
+        if (!isNaN(parseInt((<HTMLInputElement>checkBoxes[i]).name, 10))) {
           (<HTMLInputElement>checkBoxes[i]).checked = (<HTMLInputElement>event.target).checked;
         }
       } else {

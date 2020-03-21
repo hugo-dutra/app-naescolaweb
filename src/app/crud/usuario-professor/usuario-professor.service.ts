@@ -5,25 +5,31 @@ import { Observable } from 'rxjs';
 import { CONSTANTES } from '../../shared/constantes.shared';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioProfessorService {
   constructor(private http: HttpClient) { }
   public inserir(usuarioProfessor: UsuarioProfessor): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-usuario-professor",
+      CONSTANTES.HOST_API + 'inserir-usuario-professor',
       JSON.stringify({ usuarioProfessor: usuarioProfessor }),
-      headers
+      headers,
     );
   }
 
   public desvincular(usr_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "desvincular-usuario-professor",
+      CONSTANTES.HOST_API + 'desvincular-usuario-professor',
       JSON.stringify({ usr_id: usr_id }),
-      headers
+      headers,
     );
   }
 

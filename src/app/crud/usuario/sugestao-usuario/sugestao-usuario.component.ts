@@ -14,31 +14,31 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   styleUrls: ['./sugestao-usuario.component.scss'],
   providers: [UsuarioService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class SugestaoUsuarioComponent implements OnInit {
 
-  public tipoMensagemSelecionada: string = "";
-  public tituloMensagem: string = "";
-  public textoMensagem: string = ""
-  public arrayTipoMensagem: Object[] = [{ tipo: 'Crítica' }, { tipo: 'Sugestão' }]
+  public tipoMensagemSelecionada: string = '';
+  public tituloMensagem: string = '';
+  public textoMensagem: string = '';
+  public arrayTipoMensagem: Object[] = [{ tipo: 'Crítica' }, { tipo: 'Sugestão' }];
   public sugestaoUsuario = new Object();
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   constructor(
     private usuarioService: UsuarioService,
     private alertModalService: AlertModalService,
@@ -50,31 +50,32 @@ export class SugestaoUsuarioComponent implements OnInit {
 
   public enviarMensagem(): void {
     if (this.validarEnvioMensagem()) {
-      this.feedbackUsuario = "Enviando sugestão, aguarde...";
+      this.feedbackUsuario = 'Enviando sugestão, aguarde...';
       this.usuarioService.inserirSugestaoUsuario(this.sugestaoUsuario).toPromise().then((response: Response) => {
-        this.feedbackUsuario = "Finalizando, aguarde...";
+        this.feedbackUsuario = 'Finalizando, aguarde...';
         const detalhesSugestao = {
           mensagem: this.sugestaoUsuario['mensagem'],
           tipoSugestao: this.sugestaoUsuario['tipoSugestao'],
-          titulo: this.sugestaoUsuario['titulo']
-        }
+          titulo: this.sugestaoUsuario['titulo'],
+        };
         this.firebaseService.gravarSugestaoInformacaoBug(this.router.url, detalhesSugestao).then(() => {
           this.feedbackUsuario = undefined;
           this.reiniciarValores();
         });
       }).catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
-      })
+      });
     } else {
-      this.alertModalService.showAlertWarning("Preencha todos os campos");
+      this.alertModalService.showAlertWarning('Preencha todos os campos');
     }
   }
 
@@ -85,20 +86,20 @@ export class SugestaoUsuarioComponent implements OnInit {
     this.sugestaoUsuario['esc_id'] = Utils.pegarDadosEscolaDetalhado().id;
     const dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
     this.sugestaoUsuario['usr_id'] = parseInt(dados_usuario['id'], 10);
-    if (this.sugestaoUsuario['titulo'].trim() != "" &&
-      this.sugestaoUsuario['mensagem'].trim() != "" &&
-      this.sugestaoUsuario['tipoSugestao'].trim() != "") {
+    if (this.sugestaoUsuario['titulo'].trim() !== '' &&
+      this.sugestaoUsuario['mensagem'].trim() !== '' &&
+      this.sugestaoUsuario['tipoSugestao'].trim() !== '') {
       return true;
     }
     return false;
   }
 
   public reiniciarValores(): void {
-    this.sugestaoUsuario['mensagem'] = "";
-    this.sugestaoUsuario['tipoSugestao'] = "";
-    this.sugestaoUsuario['titulo'] = "";
-    this.tituloMensagem = "";
-    this.textoMensagem = "";
-    this.tipoMensagemSelecionada = "";
+    this.sugestaoUsuario['mensagem'] = '';
+    this.sugestaoUsuario['tipoSugestao'] = '';
+    this.sugestaoUsuario['titulo'] = '';
+    this.tituloMensagem = '';
+    this.textoMensagem = '';
+    this.tipoMensagemSelecionada = '';
   }
 }

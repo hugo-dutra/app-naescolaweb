@@ -15,19 +15,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./inserir-perfil.component.scss'],
   providers: [PerfilService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirPerfilComponent implements OnInit {
 
@@ -35,16 +35,18 @@ export class InserirPerfilComponent implements OnInit {
   public perfil = new Perfil();
   public escoposPerfil = new Array<Object>();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   public exibirAlerta: boolean = false;
   public escopoSelecionado: Object;
-  public stringEscopoSelecionado: string = "Selecione o escopo";
+  public stringEscopoSelecionado: string = 'Selecione o escopo';
+  public escId: number;
+  public escopoUsuario: Object;
 
   public formulario = new FormGroup({
     id: new FormControl(null),
-    nome: new FormControl(null)
+    nome: new FormControl(null),
   });
 
   constructor(private perfilService: PerfilService,
@@ -53,27 +55,36 @@ export class InserirPerfilComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.carregarDados();
     this.listarEscopoPerfil();
   }
 
+  public carregarDados(): void {
+    this.escopoUsuario = Utils.pegarDadosEscopo();
+    this.escId = Utils.pegarDadosEscolaDetalhado().id;
+  }
+
   public listarEscopoPerfil(): void {
-    this.feedbackUsuario = "Carregando escopos de acesso, acesso...";
+    this.feedbackUsuario = 'Carregando escopos de acesso, acesso...';
     this.perfilService.listarEscopoPerfil().toPromise().then((response: Response) => {
-      this.escoposPerfil = Object.values(response);
+      this.escoposPerfil = Object.values(response).filter((escopo) => {
+        return escopo['nivel'] <= this.escopoUsuario['nivel'];
+      });
       this.feedbackUsuario = undefined;
-    })
+    });
   }
 
   public selecionarEscopo(escopo: Object): void {
     this.escopoSelecionado = escopo;
     this.stringEscopoSelecionado = this.escopoSelecionado['nome'];
-    this.perfil.epu_id = parseInt(this.escopoSelecionado['epu_id']);
+    this.perfil.epu_id = parseInt(this.escopoSelecionado['epu_id'], 10);
   }
 
   public inserir(): void {
     this.perfil.nome = this.formulario.value.nome;
+    this.perfil.esc_id = this.escId;
     if (this.validarEntrada()) {
-      this.feedbackUsuario = "Gravando dados, aguarde...";
+      this.feedbackUsuario = 'Gravando dados, aguarde...';
       this.perfilService
         .inserir(this.perfil)
         .toPromise()
@@ -84,25 +95,26 @@ export class InserirPerfilComponent implements OnInit {
           this.alertModalService.showAlertSuccess('Registro inserido com sucesso!');
         })
         .catch((erro: Response) => {
-          //Mostra modal
+          // Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
+          // registra log de erro no firebase usando serviço singlenton
+          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+            JSON.stringify(erro));
+          // Gravar erros no analytics
           Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
+          // Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.exibirAlerta = true;
           this.feedbackUsuario = undefined;
         });
     } else {
-      this.alertModalService.showAlertWarning("Preencha todos os campos.");
+      this.alertModalService.showAlertWarning('Preencha todos os campos.');
     }
   }
 
   public validarEntrada(): boolean {
     if (this.perfil != null && this.perfil.nome != null) {
-      if (this.perfil.nome.trim() != "" && this.perfil.epu_id > 0) {
+      if (this.perfil.nome.trim() !== '' && this.perfil.epu_id > 0) {
         return true;
       } else {
         return false;
@@ -111,7 +123,7 @@ export class InserirPerfilComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigate(["listar-perfil"]);
+    this.router.navigate(['listar-perfil']);
   }
 
   public validar(event: Event) {

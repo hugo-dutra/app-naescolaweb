@@ -15,7 +15,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     AlterarPerfilComponent,
     ExcluirPerfilComponent,
     InserirPerfilComponent,
-    ListarPerfilComponent
+    ListarPerfilComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +24,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     HttpClientModule,
     PerfilRoutingModule,
     NgbPopoverModule,
-  ]
+  ],
 })
 export class PerfilModule { }

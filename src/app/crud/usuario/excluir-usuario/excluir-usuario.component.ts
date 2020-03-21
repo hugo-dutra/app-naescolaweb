@@ -15,19 +15,19 @@ import { Usuario } from '../usuario.model';
   styleUrls: ['./excluir-usuario.component.scss'],
   providers: [UsuarioService, PerfilService],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class ExcluirUsuarioComponent implements OnInit {
 
@@ -35,9 +35,10 @@ export class ExcluirUsuarioComponent implements OnInit {
   public lst_perfil: Object[];
   public usuario = new Usuario();
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public esc_id: number;
 
   constructor(
     private router: Router,
@@ -50,58 +51,61 @@ export class ExcluirUsuarioComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((usuario: Usuario) => {
-      this.usuario = JSON.parse(usuario["usuario"]);
+      this.usuario = JSON.parse(usuario['usuario']);
     });
+    this.esc_id = Utils.pegarDadosEscolaDetalhado().id;
     this.listarPerfis();
   }
 
   public listarPerfis(): void {
-    this.feedbackUsuario = "Carregando perfis..."
-    let nivelPerfil = Utils.pegarDadosEscopo().nivel;
+    this.feedbackUsuario = 'Carregando perfis...';
+    const nivelPerfil = Utils.pegarDadosEscopo().nivel;
     this.perfilService
-      .listar(nivelPerfil)
+      .listar(nivelPerfil, this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
         this.perfis = response;
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public excluir(): void {
-    this.feedbackUsuario = "Excluindo dados, aguarde...";
+    this.feedbackUsuario = 'Excluindo dados, aguarde...';
     this.usuarioService
       .excluir(this.usuario.id)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
-        this.router.navigate(["listar-usuario"]);
+        this.router.navigate(['listar-usuario']);
       })
       .catch((erro: Response) => {
-        //Mostra modal
+        // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
+        // registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+          JSON.stringify(erro));
+        // Gravar erros no analytics
         Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
+        // Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
       });
   }
 
   public listar(): void {
-    this.router.navigate(["listar-usuario"]);
+    this.router.navigate(['listar-usuario']);
   }
 
 }
