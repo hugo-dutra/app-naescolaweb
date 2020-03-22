@@ -442,15 +442,16 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     Array.from(arquivosSelecionados).forEach(arquivo => {
       const firebaseUpload = new FirebaseUpload(arquivo);
       firebaseUpload.name = Utils.gerarNomeUnico();
-      this.feedbackUsuario = 'Enviando anexos, aguarde...';
+      this.feedbackUsuario = 'Anexando, aguarde...';
       const basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ANEXOS}`;
       this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
-        this.feedbackUsuario = `Enviado ${contadorArquivosEnviados + 1} de ${arquivosSelecionados.length}, aguarde... `;
+        this.feedbackUsuario = `Anexando ${contadorArquivosEnviados + 1} de
+        ${arquivosSelecionados.length}, aguarde... `;
         this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
           const anexo = new Object();
           anexo['nome'] = arquivo.name;
           anexo['tamanho'] = arquivo.size;
-          anexo['tipo'] = arquivo.type;
+          anexo['tipo'] = arquivo.name.split('.')[arquivo.name.split('.').length - 1];
           anexo['url'] = url_download;
           this.arrayDeDadosDosAnexos.push(anexo);
           contadorArquivosEnviados++;

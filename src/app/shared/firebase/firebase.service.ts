@@ -593,7 +593,7 @@ export class FirebaseService {
           assunto: messageFirebase.titulo,
           msg: messageFirebase.msg,
           leitura: 0,
-          anexo: anexos,
+          anexos: anexos,
         }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {
