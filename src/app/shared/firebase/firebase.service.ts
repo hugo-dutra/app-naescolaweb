@@ -61,6 +61,12 @@ export class FirebaseService {
     });
   }
 
+  public enviarArquivoFirebaseComProgresso(firebaseUpload: FirebaseUpload,
+    basePath: string): firebase.storage.UploadTask {
+    const storageRef = firebase.storage().ref();
+    return storageRef.child(`${basePath}/${firebaseUpload.name}`).put(firebaseUpload.file);
+  }
+
   public pegarUrlArquivoUpload(firebaseUpload: FirebaseUpload, basePath: string): Promise<any> {
     const storageRef = firebase.storage().ref();
     return storageRef.child(`${basePath}/${firebaseUpload.name}`).getDownloadURL();
@@ -573,7 +579,7 @@ export class FirebaseService {
    *
    * @memberof FirebaseService
    */
-  public gravarComunicadoDirecaoFirebaseFirestore = async (messageFirebase: MessageFirebase) => {
+  public gravarComunicadoDirecaoFirebaseFirestore = async (messageFirebase: MessageFirebase, anexos) => {
     return new Promise(resolve => {
       this.firestore
         .collection('naescolaApp')
@@ -587,10 +593,7 @@ export class FirebaseService {
           assunto: messageFirebase.titulo,
           msg: messageFirebase.msg,
           leitura: 0,
-          anexo: [
-            { nome: 'anexo1', tamanho: '20kb', anexo: 'http://linkparaoarquivo', tipo: 'pdf' },
-            { nome: 'anexo2', tamanho: '40kb', anexo: 'http://linkparaoarquivo', tipo: 'pdf' },
-          ],
+          anexo: anexos,
         }).then((retorno) => {
           resolve(retorno);
         }).catch((error: Response) => {

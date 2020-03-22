@@ -9,7 +9,7 @@ import { ListarComunicadoDiversoComponent } from './listar-comunicado-diverso/li
   declarations: [InserirComunicadoDiversoComponent, ListarComunicadoDiversoComponent],
   imports: [
     CommonModule,
-    ComunicadoDiversoRoutingModule
-  ]
+    ComunicadoDiversoRoutingModule,
+  ],
 })
 export class ComunicadoDiversoModule { }

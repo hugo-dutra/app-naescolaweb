@@ -44,8 +44,13 @@
                 maxlength="50" (input)="gravarAssunto($event)">
             </div>
             <div class="col-sm-12 col-lg-12 mt-2">
-              <textarea name="textarea-conteudo" id="textarea-conteudo" cols="30" rows="20" class="form-control"
+              <textarea name="textarea-conteudo" id="textarea-conteudo" cols="30" rows="10" class="form-control"
                 placeholder="Mensagem..." maxlength="1000" (input)="gravarMensagem($event)"></textarea>
+
+              <label for="files" class="btn btn btn-dark border-light col-sm-12 col-lg-4 mt-2">Selecionar
+                anexos</label>
+              <input type="file" multiple="multiple" accept=".*" (change)="selecionarArquivos($event)" id="files"
+                style="visibility: hidden;" class="form-control col-sm-12 col-lg-1 mb-2">
             </div>
           </div>
           <div class="estudantes col-sm-12 col-lg-7 mt-2">

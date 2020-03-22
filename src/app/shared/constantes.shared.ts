@@ -90,6 +90,7 @@ export class CONSTANTES {
   public static FIREBASE_STORAGE_ESTUDANTE: string = 'estudante';
   public static FIREBASE_STORAGE_DIRETOR: string = 'diretor';
   public static FIREBASE_STORAGE_USUARIO: string = 'usuario';
+  public static FIREBASE_STORAGE_ANEXOS: string = 'anexos';
   // tslint:disable-next-line: max-line-length
   public static FIREBASE_MODELO_PLANILHA_IMPORTACAO: string = 'https://firebasestorage.googleapis.com/v0/b/naescola2018.appspot.com/o/naescolaweb%2Fmodelos%2Falunos.xlsx?alt=media&token=2e5c1870-6424-4055-ace3-4b74f3189bf3';
 

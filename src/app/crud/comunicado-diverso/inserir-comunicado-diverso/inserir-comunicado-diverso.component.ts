@@ -14,6 +14,7 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import { FirebaseUpload } from '../../../shared/firebase/firebase.upload.model';
 
 @Component({
   selector: 'ngx-inserir-comunicado-diverso',
@@ -23,47 +24,48 @@ import { Utils } from '../../../shared/utils.shared';
     TurnoService,
     TurmaService,
     EstudanteService,
-    ComunicadoDiversoService
+    ComunicadoDiversoService,
   ],
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class InserirComunicadoDiversoComponent implements OnInit {
 
   public feedbackUsuario: string;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
-  public mensagemSelecionados: string = ""
+  public mensagemSelecionados: string = '';
   public comunicadoDiverso = new ComunicadoDiverso();
 
   public arrayOfTurnos = new Array<Turno>();
   public arrayOfTurmas = new Array<Turma>();
   public arrayOfEstudantes = new Array<Estudante>();
   public arrayOfComunicados = new Array<ComunicadoDiverso>();
-  public arrayDeMensagens = new Array<MessageFirebase>()
+  public arrayDeMensagens = new Array<MessageFirebase>();
 
   public esc_id: number;
   public usr_id: number;
   public inep: string;
   public dados_escola = new Object();
-  public assunto: string = "";
-  public mensagem: string = "";
+  public assunto: string = '';
+  public mensagem: string = '';
   public trm_id: number;
   public anoAtual: number = new Date().getFullYear();
-  public turnoSelecionado: number = -1; //Inicialmente, seleciona as turmas de todos os turnos.
+  public turnoSelecionado: number = -1; // Inicialmente, seleciona as turmas de todos os turnos.
+  public arrayDeDadosDosAnexos = new Array<Object>();
 
   constructor(
     private turnoService: TurnoService,
@@ -72,30 +74,43 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     private comunicadoDiversoService: ComunicadoDiversoService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
 
   ) { }
 
   ngOnInit() {
     this.esc_id = parseInt(
-      Utils.decriptAtoB(localStorage.getItem("esc_id"), CONSTANTES.PASSO_CRIPT)
-    );
+      Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
     this.usr_id = JSON.parse(
-      Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT)
+      Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT),
     )[0].id;
 
     this.listarTurnos();
     this.listarTurmas();
-    this.inep = Utils.pegarDadosEscola()["inep"];
+    this.inep = Utils.pegarDadosEscola()['inep'];
+    this.arrayDeDadosDosAnexos = [];
   }
 
   public selecionarTurno(event: Event): void {
-    this.turnoSelecionado = parseInt((<HTMLInputElement>event.target).value);
+    this.turnoSelecionado = parseInt((<HTMLInputElement>event.target).value, 10);
     this.listarTurmas();
   }
 
+  public tratarErro(erro: Response): void {
+    // Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    // registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`,
+      JSON.stringify(erro));
+    // Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    // Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
+  }
+
   public listarTurnos(): void {
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.turnoService
       .listar(this.esc_id)
       .toPromise()
@@ -104,25 +119,17 @@ export class InserirComunicadoDiversoComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
   public selecionarTurma(event: Event): void {
-    this.trm_id = parseInt((<HTMLInputElement>event.target).value);
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    this.trm_id = parseInt((<HTMLInputElement>event.target).value, 10);
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     /* Para todos os turnos */
-    if (this.turnoSelecionado == -1) {
+    if (this.turnoSelecionado === -1) {
       if (this.trm_id < 0) {
-        //Seleciona todos os estudantes da escola
+        // Seleciona todos os estudantes da escola
         this.estudanteService
           .listar(50000, 0, true, this.esc_id)
           .toPromise()
@@ -131,19 +138,11 @@ export class InserirComunicadoDiversoComponent implements OnInit {
             this.feedbackUsuario = undefined;
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
-        //Seleciona todos os estudantes da turma selecionada
-        this.feedbackUsuario = "Carregando dados, aguarde...";
+        // Seleciona todos os estudantes da turma selecionada
+        this.feedbackUsuario = 'Carregando dados, aguarde...';
         this.estudanteService
           .listarTurmaId(this.trm_id)
           .toPromise()
@@ -152,26 +151,18 @@ export class InserirComunicadoDiversoComponent implements OnInit {
             this.feedbackUsuario = undefined;
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       }
     } else {
       /* Para um turno específico */
-      if (this.trm_id == -1) {
+      if (this.trm_id === -1) {
         this.estudanteService.listarTurnoId(this.turnoSelecionado).toPromise().then((response: Response) => {
           this.arrayOfEstudantes = Object.values(response);
           this.feedbackUsuario = undefined;
-        })
+        });
       } else {
-        this.feedbackUsuario = "Carregando dados, aguarde...";
+        this.feedbackUsuario = 'Carregando dados, aguarde...';
         this.estudanteService
           .listarTurmaId(this.trm_id)
           .toPromise()
@@ -180,15 +171,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
             this.feedbackUsuario = undefined;
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       }
 
@@ -197,8 +180,8 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   }
 
   public listarTurmas(): void {
-    (<HTMLInputElement>document.getElementById('select-turma')).value = "Selecione uma turma";
-    this.feedbackUsuario = "Carregando dados, aguarde...";
+    (<HTMLInputElement>document.getElementById('select-turma')).value = 'Selecione uma turma';
+    this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.turmaService
       .listarTurnoId(this.turnoSelecionado, this.esc_id, this.anoAtual)
       .toPromise()
@@ -207,15 +190,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
+        this.tratarErro(erro);
       });
   }
 
@@ -224,7 +199,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   }
 
   public listar(): void {
-    this.router.navigate(["listar-comunicado-diverso"]);
+    this.router.navigate(['listar-comunicado-diverso']);
   }
 
   public gravarAssunto(event: Event): void {
@@ -236,37 +211,41 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   }
 
   public adicionarComunicado(event: Event): void {
-    let est_id = parseInt((<HTMLInputElement>event.target).id);
-    let comunicado = new ComunicadoDiverso();
-    let status_check = (<HTMLInputElement>event.target).checked;
+    const est_id = parseInt((<HTMLInputElement>event.target).id, 10);
+    const comunicado = new ComunicadoDiverso();
+    const status_check = (<HTMLInputElement>event.target).checked;
     comunicado.assunto = this.assunto;
-    comunicado.data_comunicado = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+    comunicado.data_comunicado = new Date().getFullYear().toString() + '-' +
+      ('0' + (new Date().getMonth() + 1)).slice(-2).toString() + '-' +
+      ('0' + new Date().getDate()).slice(-2).toString();
     comunicado.est_id = est_id;
-    comunicado.fbdbkey = "";
-    comunicado.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+    comunicado.fbdbkey = '';
+    comunicado.hora = ('0' + new Date().getHours()).slice(-2).toString() +
+      ':' + ('0' + new Date().getMinutes()).slice(-2).toString() + ':00';
     comunicado.mensagem = this.mensagem;
     comunicado.status_comunicado = 0;
     comunicado.usr_id = this.usr_id;
 
-    if (status_check == true) {
+    if (status_check === true) {
       if (!this.verificarComunicadoExistente(comunicado)) {
         this.arrayOfComunicados.push(comunicado);
       }
     } else {
-      let idx_comunicado: number = this.removerComunicadoExistente(comunicado);
+      const idx_comunicado: number = this.removerComunicadoExistente(comunicado);
       this.arrayOfComunicados.splice(idx_comunicado, 1);
     }
     if (this.arrayOfComunicados.length > 0) {
-      this.mensagemSelecionados = this.arrayOfComunicados.length.toString() + " de " + this.arrayOfEstudantes.length.toString();
+      this.mensagemSelecionados = this.arrayOfComunicados.length.toString() +
+        ' de ' + this.arrayOfEstudantes.length.toString();
     } else {
-      this.mensagemSelecionados = ""
+      this.mensagemSelecionados = '';
     }
   }
 
   public verificarComunicadoExistente(comunicado: ComunicadoDiverso): boolean {
     let retorno: boolean = false;
     for (let i = 0; i < this.arrayOfComunicados.length; i++) {
-      if (comunicado.est_id != this.arrayOfComunicados[i].est_id) {
+      if (comunicado.est_id !== this.arrayOfComunicados[i].est_id) {
         retorno = false;
       } else {
         retorno = true;
@@ -276,9 +255,9 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   }
 
   public removerComunicadoExistente(comunicado: ComunicadoDiverso): number {
-    let retorno: number = -1;
+    const retorno: number = -1;
     for (let i = 0; i < this.arrayOfComunicados.length; i++) {
-      if (comunicado.est_id == this.arrayOfComunicados[i].est_id) {
+      if (comunicado.est_id === this.arrayOfComunicados[i].est_id) {
         return i;
       }
     }
@@ -287,12 +266,13 @@ export class InserirComunicadoDiversoComponent implements OnInit {
 
   public enviarComunicado(): void {
     this.atualizarAssuntoMensagem();
-    this.feedbackUsuario = "Montando mensagens, aguarde...";
-    if (this.assunto.trim() != "" && this.mensagem.trim() != "" && this.arrayOfComunicados.length > 0) {
+    this.feedbackUsuario = 'Montando mensagens, aguarde...';
+    if (this.assunto.trim() !== '' && this.mensagem.trim() !== '' && this.arrayOfComunicados.length > 0) {
       this.montarMensagem();
     } else {
       this.feedbackUsuario = undefined;
-      this.alertModalService.showAlertWarning("Informe o assunto e o conteúdo da mensagem e selecione ao menos um destinatário.");
+      this.alertModalService.
+        showAlertWarning('Informe o assunto e o conteúdo da mensagem e selecione ao menos um destinatário.');
     }
   }
 
@@ -304,57 +284,66 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   }
 
   public selecionarTodosEstudantes(event: Event): void {
-    let checkEstudantes = document.getElementsByClassName("checkbox");
-    this.arrayOfComunicados = []
+    const checkEstudantes = document.getElementsByClassName('checkbox');
+    this.arrayOfComunicados = [];
     for (let i = 0; i < checkEstudantes.length; i++) {
-      if (!isNaN(parseInt(checkEstudantes[i].id))) {
-        if ((<HTMLInputElement>event.target).checked == true) {
-          (<HTMLInputElement>document.getElementsByClassName("checkbox")[i]).checked = (<HTMLInputElement>event.target).checked;
-          let comunicado = new ComunicadoDiverso();
+      if (!isNaN(parseInt(checkEstudantes[i].id, 10))) {
+        if ((<HTMLInputElement>event.target).checked === true) {
+          (<HTMLInputElement>document.getElementsByClassName('checkbox')[i])
+            .checked = (<HTMLInputElement>event.target).checked;
+          const comunicado = new ComunicadoDiverso();
           comunicado.assunto = this.assunto;
-          comunicado.data_comunicado = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
-          comunicado.est_id = parseInt(checkEstudantes[i].id);
-          comunicado.fbdbkey = "";
-          comunicado.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+          comunicado.data_comunicado = new Date().getFullYear().toString()
+            + '-' + ('0' + (new Date().getMonth() + 1)).slice(-2).toString() +
+            '-' + ('0' + new Date().getDate()).slice(-2).toString();
+          comunicado.est_id = parseInt(checkEstudantes[i].id, 10);
+          comunicado.fbdbkey = '';
+          comunicado.hora = ('0' + new Date().getHours()).slice(-2).toString() +
+            ':' + ('0' + new Date().getMinutes()).slice(-2).toString() + ':00';
           comunicado.mensagem = this.mensagem;
           comunicado.status_comunicado = 0;
           comunicado.usr_id = this.usr_id;
           this.arrayOfComunicados.push(comunicado);
         } else {
-          (<HTMLInputElement>document.getElementsByClassName("checkbox")[i]).checked = (<HTMLInputElement>event.target).checked;
+          (<HTMLInputElement>document.getElementsByClassName('checkbox')[i])
+            .checked = (<HTMLInputElement>event.target).checked;
         }
       }
     }
     if (this.arrayOfComunicados.length > 0) {
-      this.mensagemSelecionados = this.arrayOfComunicados.length.toString() + " de " + this.arrayOfEstudantes.length.toString();
+      this.mensagemSelecionados = this.arrayOfComunicados.length.toString() +
+        ' de ' + this.arrayOfEstudantes.length.toString();
     } else {
-      this.mensagemSelecionados = ""
+      this.mensagemSelecionados = '';
     }
   }
 
   public montarMensagem(): void {
-    let dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados_escola"), CONSTANTES.PASSO_CRIPT));
-    let inep = dados_escola[0]["inep"];
-    let telefone = dados_escola[0]["telefone"];
+    const dados_escola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
+    const inep = dados_escola[0]['inep'];
+    const telefone = dados_escola[0]['telefone'];
 
     this.arrayDeMensagens = [];
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
       for (let j = 0; j < this.arrayOfComunicados.length; j++) {
-        if (this.arrayOfEstudantes[i].id == this.arrayOfComunicados[j].est_id) {
-          let matricula = this.arrayOfEstudantes[i].matricula;
-          let nome = this.arrayOfEstudantes[i].nome;
-          let messageFirebase = new MessageFirebase();
+        if (this.arrayOfEstudantes[i].id === this.arrayOfComunicados[j].est_id) {
+          const matricula = this.arrayOfEstudantes[i].matricula;
+          const nome = this.arrayOfEstudantes[i].nome;
+          const messageFirebase = new MessageFirebase();
           messageFirebase.cod_inep = inep;
-          messageFirebase.data = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
+          messageFirebase.data = new Date().getFullYear().toString() + '-' +
+            ('0' + (new Date().getMonth() + 1)).slice(-2).toString() + '-' +
+            ('0' + new Date().getDate()).slice(-2).toString();
           messageFirebase.data_versao = Utils.now();
-          messageFirebase.firebase_dbkey = "";
-          messageFirebase.hora = ("0" + new Date().getHours()).slice(-2).toString() + ":" + ("0" + new Date().getMinutes()).slice(-2).toString() + ":00";
+          messageFirebase.firebase_dbkey = '';
+          messageFirebase.hora = ('0' + new Date().getHours()).slice(-2).toString() +
+            ':' + ('0' + new Date().getMinutes()).slice(-2).toString() + ':00';
           messageFirebase.est_id = this.arrayOfEstudantes[i].id.toString();
           messageFirebase.est_id = this.arrayOfEstudantes[i].id.toString();
           messageFirebase.msg = `${this.mensagem}`;
-          messageFirebase.msg_tag = "0";
+          messageFirebase.msg_tag = '0';
           messageFirebase.nome_estudante = nome;
-          messageFirebase.tipo_msg = "Comunicado escolar";
+          messageFirebase.tipo_msg = 'Comunicado escolar';
           messageFirebase.titulo = this.assunto;
           messageFirebase.to = `${inep}_${matricula}`;
           this.arrayDeMensagens.push(messageFirebase);
@@ -365,88 +354,72 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   }
 
   public gravarComunicadoDirecao(messagesFirebase: Array<MessageFirebase>): void {
-    this.feedbackUsuario = "Gravando comunicado, aguarde...";
+    this.feedbackUsuario = 'Gravando comunicado, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
-      let messageFirebase = messagesFirebase[i];
-      this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase).then((response: Response) => {
-        messageFirebase.firebase_dbkey = response["id"];
-      }).then(() => {
-        this.feedbackUsuario = undefined;
-        const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
-        const tituloPush = "Comunicado da direção";
-        this.EnviarPushComunicadoSimples(topicoPush, tituloPush, messageFirebase.firebase_dbkey, messagesFirebase.length, i, messageFirebase);
-      }).catch((erro: Response) => {
-        //Mostra modal
-        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-        //registra log de erro no firebase usando serviço singlenton
-        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-        //Gravar erros no analytics
-        Utils.gravarErroAnalytics(JSON.stringify(erro));
-        //Caso token seja invalido, reenvia rota para login
-        Utils.tratarErro({ router: this.router, response: erro });
-        this.feedbackUsuario = undefined;
-      })
+      const messageFirebase = messagesFirebase[i];
+      this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase, this.arrayDeDadosDosAnexos)
+        .then((response: Response) => {
+          messageFirebase.firebase_dbkey = response['id'];
+        }).then(() => {
+          this.feedbackUsuario = undefined;
+          const topicoPush = `${messageFirebase.cod_inep}_${messageFirebase.est_id}`;
+          const tituloPush = 'Comunicado da direção';
+          this.EnviarPushComunicadoSimples(topicoPush, tituloPush,
+            messageFirebase.firebase_dbkey, messagesFirebase.length, i, messageFirebase);
+        }).catch((erro: Response) => {
+          this.tratarErro(erro);
+        });
     }
   }
 
-  public EnviarPushComunicadoSimples(topico: string, titulo: string, firebase_dbkey: string, total: number, atual: number, messageFirebase: MessageFirebase): void {
+  public EnviarPushComunicadoSimples(topico: string, titulo: string,
+    firebase_dbkey: string, total: number, atual: number, messageFirebase: MessageFirebase): void {
     this.feedbackUsuario = `Enviando notificação ${atual} de ${total}, aguarde...`;
-    if (firebase_dbkey != "") {
+    if (firebase_dbkey !== '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 == atual) {
+          if (total - 1 === atual) {
             this.inserir();
           }
         }).
         catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
   }
 
   public gravarComunicadoDiverso(messageFirebase: MessageFirebase): void {
-    this.feedbackUsuario = "Finalizando comunicado, aguarde...";
+    this.feedbackUsuario = 'Finalizando comunicado, aguarde...';
     this.comunicadoDiverso.assunto = messageFirebase.titulo;
-    this.comunicadoDiverso.data_comunicado = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();//Ajuste no formato da data.
+    this.comunicadoDiverso.data_comunicado = new Date().getFullYear().toString() +
+      '-' + ('0' + (new Date().getMonth() + 1)).slice(-2).toString() + '-' +
+      ('0' + new Date().getDate()).slice(-2).toString(); // Ajuste no formato da data.
     this.comunicadoDiverso.fbdbkey = messageFirebase.firebase_dbkey;
     this.comunicadoDiverso.hora = messageFirebase.hora;
     this.comunicadoDiverso.mensagem = messageFirebase.msg;
     this.comunicadoDiverso.status_comunicado = 0;
-    this.comunicadoDiverso.est_id = parseInt(messageFirebase.est_id);
-    this.comunicadoDiverso.usr_id = JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT))[0].id;
+    this.comunicadoDiverso.est_id = parseInt(messageFirebase.est_id, 10);
+    this.comunicadoDiverso.usr_id = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'),
+      CONSTANTES.PASSO_CRIPT))[0].id;
     this.comunicadoDiversoService.inserir(this.comunicadoDiverso).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+      this.tratarErro(erro);
+    });
   }
 
   public inserir(): void {
-    this.feedbackUsuario = "Finalizando, aguarde...";
-    let comunicadosDiversos = new Array<ComunicadoDiverso>();
+    this.feedbackUsuario = 'Finalizando, aguarde...';
+    const comunicadosDiversos = new Array<ComunicadoDiverso>();
     for (let i = 0; i < this.arrayDeMensagens.length; i++) {
-      let comunicadoDiverso = new ComunicadoDiverso();
+      const comunicadoDiverso = new ComunicadoDiverso();
       comunicadoDiverso.assunto = this.arrayDeMensagens[i].titulo;
-      comunicadoDiverso.data_comunicado = new Date().getFullYear().toString() + "-" + ("0" + (new Date().getMonth() + 1)).slice(-2).toString() + "-" + ("0" + new Date().getDate()).slice(-2).toString();
-      comunicadoDiverso.est_id = parseInt(this.arrayDeMensagens[i].est_id);
+      comunicadoDiverso.data_comunicado = new Date().getFullYear().toString() +
+        '-' + ('0' + (new Date().getMonth() + 1)).slice(-2).toString() + '-' +
+        ('0' + new Date().getDate()).slice(-2).toString();
+      comunicadoDiverso.est_id = parseInt(this.arrayDeMensagens[i].est_id, 10);
       comunicadoDiverso.fbdbkey = this.arrayDeMensagens[i].firebase_dbkey;
       comunicadoDiverso.hora = this.arrayDeMensagens[i].hora;
       comunicadoDiverso.mensagem = this.arrayDeMensagens[i].msg;
@@ -459,16 +432,38 @@ export class InserirComunicadoDiversoComponent implements OnInit {
       this.feedbackUsuario = undefined;
       this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
     }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+      this.tratarErro(erro);
+    });
   }
 
+  public selecionarArquivos(event: Event): void {
+    const arquivosSelecionados: FileList = (<HTMLInputElement>event.target).files;
+    let contadorArquivosEnviados = 0;
+    Array.from(arquivosSelecionados).forEach(arquivo => {
+      const firebaseUpload = new FirebaseUpload(arquivo);
+      firebaseUpload.name = Utils.gerarNomeUnico();
+      this.feedbackUsuario = 'Enviando anexos, aguarde...';
+      const basePath: string = `${CONSTANTES.FIREBASE_STORAGE_BASE_PATH}/${CONSTANTES.FIREBASE_STORAGE_ANEXOS}`;
+      this.firebaseService.enviarArquivoFirebase(firebaseUpload, basePath).then(() => {
+        this.feedbackUsuario = `Enviado ${contadorArquivosEnviados + 1} de ${arquivosSelecionados.length}, aguarde... `;
+        this.firebaseService.pegarUrlArquivoUpload(firebaseUpload, basePath).then((url_download) => {
+          const anexo = new Object();
+          anexo['nome'] = arquivo.name;
+          anexo['tamanho'] = arquivo.size;
+          anexo['tipo'] = arquivo.type;
+          anexo['url'] = url_download;
+          this.arrayDeDadosDosAnexos.push(anexo);
+          contadorArquivosEnviados++;
+          if (contadorArquivosEnviados === arquivosSelecionados.length) {
+            this.feedbackUsuario = undefined;
+            this.alertModalService.showAlertSuccess('Anexos enviados com sucesso');
+          }
+        }).catch((erro: Response) => {
+          this.tratarErro(erro);
+        });
+      }).catch((erro: Response) => {
+        this.tratarErro(erro);
+      });
+    });
+  }
 }

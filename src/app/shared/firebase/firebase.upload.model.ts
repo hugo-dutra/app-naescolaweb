@@ -10,3 +10,4 @@ export class FirebaseUpload {
     this.file = file;
   }
 }
+

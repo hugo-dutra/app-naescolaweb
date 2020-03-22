@@ -233,7 +233,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.feedbackUsuario = 'Gravando comunicado, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
       const messageFirebase = messagesFirebase[i];
-      this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase).then((response: Response) => {
+      this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase, []).then((response: Response) => {
         messageFirebase.firebase_dbkey = response['id'];
       }).then(() => {
         this.feedbackUsuario = undefined;
@@ -337,7 +337,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.feedbackUsuario = 'Gravando comunicado, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
       const messageFirebase = messagesFirebase[i];
-      this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase).then((response: Response) => {
+      this.firebaseService.gravarComunicadoDirecaoFirebaseFirestore(messageFirebase, []).then((response: Response) => {
         messageFirebase.firebase_dbkey = response['id'];
       }).then(() => {
         this.feedbackUsuario = undefined;

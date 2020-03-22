@@ -10,41 +10,57 @@ export class ComunicadoDiversoService {
   constructor(private http: HttpClient) { }
 
   public inserir(comunicadoDiverso: ComunicadoDiverso): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-comunicado-diverso",
+      CONSTANTES.HOST_API + 'inserir-comunicado-diverso',
       JSON.stringify(comunicadoDiverso),
-      headers
+      headers,
     );
   }
 
   public inserirMuitos(comunicadosDiversos: ComunicadoDiverso[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "inserir-multiplo-comunicado-diverso",
+      CONSTANTES.HOST_API + 'inserir-multiplo-comunicado-diverso',
       JSON.stringify({ comunicadosDiversos: comunicadosDiversos }),
-      headers
+      headers,
     );
   }
 
   public alterarStatusMensagemEntrega(arrayDeComunicadosVerificados: Object[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-comunicado-diverso",
+      CONSTANTES.HOST_API + 'alterar-status-entrega-mensagem-comunicado-diverso',
       JSON.stringify({ arrayDeComunicadosVerificados: arrayDeComunicadosVerificados }),
-      headers
+      headers,
     );
   }
 
 
-  public filtrar(status: number, data_inicio: string, data_fim: string, limit: number, offset: number, esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+  public filtrar(status: number, data_inicio: string, data_fim: string,
+    limit: number, offset: number, esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
 
     return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-comunicado-diverso",
-      JSON.stringify({ status: status, data_inicio: data_inicio, data_fim: data_fim, limit: limit, offset: offset, esc_id: esc_id }),
-      headers
+      CONSTANTES.HOST_API + 'filtrar-comunicado-diverso',
+      JSON.stringify({
+        status: status, data_inicio: data_inicio,
+        data_fim: data_fim, limit: limit, offset: offset, esc_id: esc_id,
+      }),
+      headers,
     );
   }
 
