@@ -32,6 +32,11 @@ const routes: Routes = [{
       loadChildren: () => import('./atestado-medico/atestado-medico.module').then(m => m.AtestadoMedicoModule),
     },
     {
+      path: 'gerenciar-atividade-extra-classe',
+      loadChildren: () => import('./atividade-extra-classe/atividade-extra-classe.module')
+        .then(m => m.AtividadeExtraClasseModule),
+    },
+    {
       path: 'enviar-nota-boletim',
       loadChildren: () => import('./boletim-estudante/boletim-estudante.module').then(m => m.BoletimEstudanteModule),
     },

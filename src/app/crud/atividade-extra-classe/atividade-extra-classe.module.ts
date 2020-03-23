@@ -5,13 +5,15 @@ import { AtividadeExtraClasseRoutingModule } from './atividade-extra-classe-rout
 import { GerenciarAtividadeComponent } from './gerenciar-atividade/gerenciar-atividade.component';
 import { ListarAtividadeComponent } from './listar-atividade/listar-atividade.component';
 import { InserirAtividadeComponent } from './inserir-atividade/inserir-atividade.component';
-import { AtividadeExtraClasseComponent } from './atividade-extra-classe/atividade-extra-classe.component';
+import { NbCardModule } from '@nebular/theme';
+
 
 @NgModule({
-  declarations: [GerenciarAtividadeComponent, ListarAtividadeComponent, InserirAtividadeComponent, AtividadeExtraClasseComponent],
+  declarations: [GerenciarAtividadeComponent, ListarAtividadeComponent, InserirAtividadeComponent],
   imports: [
     CommonModule,
-    AtividadeExtraClasseRoutingModule
-  ]
+    AtividadeExtraClasseRoutingModule,
+    NbCardModule,
+  ],
 })
 export class AtividadeExtraClasseModule { }
