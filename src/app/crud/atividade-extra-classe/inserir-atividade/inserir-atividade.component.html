@@ -1,3 +1,112 @@
-<p>
-  inserir-atividade works!
-</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header bg-dark">
+      <div class="card-title text-light text-center">
+        <i class="fa fa-lg fa-pencil text-light"> Atividades extra classe</i>
+        <button class="btn btn-sm btn-dark border-light text-light float-right">Voltar</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row mb-2">
+        <div class="col-sm-12 col-md-2 col-lg-3">
+          <select class="form-control" (change)="selecionarTurno()" [(ngModel)]="trnId">
+            <option value="-1">Todos os turnos</option>
+            <option *ngFor="let turno of arrayDeTurnos" [value]="turno.id">{{turno.nome}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="turmas col-md-12 col-sm-12 col-lg-3">
+          <div class="row mb-3  border-bottom">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <div class="form-check form-check-inline">
+                <label class="form-check-label text-dark">
+                  <input (click)="selecionarTodasTurmas($event)" class="form-check-input" type="checkbox" name=""
+                    id="selecionar_todas_turmas" value="selecionar_todas_turmas"> Selecionar todas as
+                  turmas
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-1" *ngFor="let turma of arrayDeTurmas">
+            <div class="form-check form-check-inline col-lg-12 col-md-12 col-sm-12" [@chamado]="estado">
+              <label class="form-check-label text-dark" [for]="'turma_'+turma.id">
+                <input class="form-check-input" type="checkbox" name="" class="turmas_disponiveis"
+                  [id]="'turma_'+turma.id" [value]="turma.id" (change)="listarEstudantesTurmaSelecionada($event)">
+                {{turma.serie}}
+                {{turma.turma}}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="estudantes col-md-12 col-sm-12 col-lg-4">
+          <div class="row mb-3  border-bottom">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <div class="form-check form-check-inline">
+                <label class="form-check-label text-dark">
+                  <input (click)="selecionarTodosEstudantes($event)" class="form-check-input" type="checkbox" name=""
+                    id="selecionar_todos_estudantes" value="selecionar_todos_estudantes"> Selecionar todos os estudantes
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-1" *ngFor="let estudante of arrayDeEstudantes">
+            <div class="form-check form-check-inline col-lg-12 col-md-12 col-sm-12" [@chamado]="estado">
+              <label class="form-check-label text-dark" [for]="'estudante_'+estudante.id">
+                <input class="form-check-input" type="checkbox" name="" class="estudantes_disponiveis"
+                  [id]="'estudante_'+estudante.id" [value]="estudante.id" (change)="adicionarEstudantes($event)">
+                {{estudante.nome}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-12 col-sm-12">
+          <div class="row">
+            <input class="form-control" type="text" name="" value="" maxlength="200" [(ngModel)]="tituloAtividade"
+              placeholder="título...">
+          </div>
+          <div class="row">
+            <textarea style="resize: none" rows="10" class="form-control col-12" maxlength="1000"
+              placeholder="instruções..." [(ngModel)]="instrucoesAtividade"></textarea>
+          </div>
+          <div class="row">
+            <button class="btn btn-sm form-control btn-warning text-light">Adicionar anexos...</button>
+          </div>
+          <div class="row">
+            <div class="anexos col-12">
+
+
+
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn btn-sm form-control btn-primary text-light">Enviar atividade</button>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

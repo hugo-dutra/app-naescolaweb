@@ -6,6 +6,7 @@ import { GerenciarAtividadeComponent } from './gerenciar-atividade/gerenciar-ati
 import { ListarAtividadeComponent } from './listar-atividade/listar-atividade.component';
 import { InserirAtividadeComponent } from './inserir-atividade/inserir-atividade.component';
 import { NbCardModule } from '@nebular/theme';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { NbCardModule } from '@nebular/theme';
     CommonModule,
     AtividadeExtraClasseRoutingModule,
     NbCardModule,
+    FormsModule,
   ],
 })
 export class AtividadeExtraClasseModule { }
