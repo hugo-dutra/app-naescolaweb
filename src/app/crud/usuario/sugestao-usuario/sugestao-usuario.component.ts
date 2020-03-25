@@ -33,7 +33,7 @@ export class SugestaoUsuarioComponent implements OnInit {
   public tipoMensagemSelecionada: string = '';
   public tituloMensagem: string = '';
   public textoMensagem: string = '';
-  public arrayTipoMensagem: Object[] = [{ tipo: 'Crítica' }, { tipo: 'Sugestão' }];
+  public arrayTipoMensagem: Object[] = [{ tipo: 'Crítica' }, { tipo: 'Sugestão' }, { tipo: 'Problema' }];
   public sugestaoUsuario = new Object();
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
@@ -50,7 +50,7 @@ export class SugestaoUsuarioComponent implements OnInit {
 
   public enviarMensagem(): void {
     if (this.validarEnvioMensagem()) {
-      this.feedbackUsuario = 'Enviando sugestão, aguarde...';
+      this.feedbackUsuario = `Enviando ${this.tipoMensagemSelecionada}, aguarde...'`;
       this.usuarioService.inserirSugestaoUsuario(this.sugestaoUsuario).toPromise().then((response: Response) => {
         this.feedbackUsuario = 'Finalizando, aguarde...';
         const detalhesSugestao = {

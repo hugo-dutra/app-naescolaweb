@@ -6,4 +6,8 @@ export class AtividadeExtraClasse {
   public aec_data_entrega: string;
   public usr_id: number;
   public prd_id: number;
+  public remetende: string;
+  public professor: string;
+  public disciplina: string;
+  public hora: string;
 }

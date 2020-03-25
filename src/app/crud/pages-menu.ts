@@ -98,7 +98,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [...gruposRelatorio],
   },
   {
-    title: 'Sugestões',
+    title: 'Atendimento',
     icon: 'bell',
     link: '/listar-usuario/enviar-sugestao-usuario',
   },

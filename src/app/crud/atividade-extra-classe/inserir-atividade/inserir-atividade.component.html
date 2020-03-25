@@ -9,15 +9,28 @@
     <div class="card-body">
       <div class="row mb-2">
         <div class="col-sm-12 col-md-2 col-lg-3">
+          <label for="">Selecione o turno</label>
           <select class="form-control" (change)="selecionarTurno()" [(ngModel)]="trnId">
             <option value="-1">Todos os turnos</option>
             <option *ngFor="let turno of arrayDeTurnos" [value]="turno.id">{{turno.nome}}</option>
           </select>
         </div>
+        <div class="col-sm-12 col-md-2 col-lg-3">
+          <label for="">Selecione o professor</label>
+          <select class="form-control" [(ngModel)]="prdId" (change)="pegarNomeProfessor()">
+            <option value="-1" selected>Selecione um professor</option>
+            <option *ngFor="let professorDisciplina of arrayDeProfessorDisciplina"
+              [id]="professorDisciplina.professor+' - '+professorDisciplina.disciplina_abreviada"
+              [value]="professorDisciplina.prd_id">
+              {{professorDisciplina.professor}} - {{professorDisciplina.disciplina_abreviada}}</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-2 col-lg-3">
+          <label for="">Informe a data de entrega</label>
+          <input class="form-control" type="date" [(ngModel)]="dataEntrega">
+        </div>
       </div>
-
       <div class="row">
-
         <div class="turmas col-md-12 col-sm-12 col-lg-3">
           <div class="row mb-3  border-bottom">
             <div class="col-sm-12 col-md-12 col-lg-12">
@@ -70,21 +83,34 @@
               placeholder="título...">
           </div>
           <div class="row">
-            <textarea style="resize: none" rows="10" class="form-control col-12" maxlength="1000"
+            <textarea style="resize: none" rows="8" class="form-control col-12" maxlength="1000"
               placeholder="instruções..." [(ngModel)]="instrucoesAtividade"></textarea>
           </div>
           <div class="row">
-            <button class="btn btn-sm form-control btn-warning text-light">Adicionar anexos...</button>
+
+            <label for="files" class="btn btn-sm form-control btn-dark text-light border-light">Adicionar
+              anexos...</label>
+            <input type="file" multiple="multiple" accept=".*" value="Teste" (change)="selecionarArquivos($event)"
+              id="files" style="visibility: hidden;" class="form-control">
           </div>
           <div class="row">
+
             <div class="anexos col-12">
-
-
-
+              <div class="input-group" *ngFor="let anexo of arrayDeDadosDosAnexos">
+                <input type="text" class="form-control" readonly aria-label="Input group example"
+                  aria-describedby="btnGroupAddon" [value]="anexo.nome+'.'+anexo.tipo">
+                <div class="input-group-append">
+                  <div class="input-group-text bg-danger text-light" id="btnGroupAddon"
+                    (click)="excluirArquivoAnexado(anexo.nome)"><i class="fa fa-sm fa-remove text-light"></i></div>
+                </div>
+              </div>
             </div>
+
           </div>
           <div class="row">
-            <button class="btn btn-sm form-control btn-primary text-light">Enviar atividade</button>
+            <button class="btn btn-sm form-control btn-dark text-light border-light" (click)="enviarAtividade()"><i
+                class="fa fa-sm fa-send"> Enviar
+                atividade</i></button>
           </div>
         </div>
 

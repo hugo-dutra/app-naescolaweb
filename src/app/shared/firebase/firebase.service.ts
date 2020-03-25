@@ -14,6 +14,7 @@ import { Portaria } from '../../crud/portaria/portaria.model';
 import { CronogramaPortaria } from '../../crud/portaria/cronograma-portaria.model';
 import { PortariaFirebase } from '../../crud/portaria/portaria.firebase.model';
 import { reject } from 'q';
+import { AtividadeExtraClasse } from '../../crud/atividade-extra-classe/atividade-extra-classe.model';
 
 @Injectable()
 export class FirebaseService {
@@ -579,7 +580,7 @@ export class FirebaseService {
    *
    * @memberof FirebaseService
    */
-  public gravarComunicadoDirecaoFirebaseFirestore = async (messageFirebase: MessageFirebase, anexos) => {
+  public gravarComunicadoDirecaoFirebaseFirestore = async (messageFirebase: MessageFirebase, anexos: Object[]) => {
     return new Promise(resolve => {
       this.firestore
         .collection('naescolaApp')
@@ -592,6 +593,36 @@ export class FirebaseService {
           hora: messageFirebase.hora,
           assunto: messageFirebase.titulo,
           msg: messageFirebase.msg,
+          leitura: 0,
+          anexos: anexos,
+        }).then((retorno) => {
+          resolve(retorno);
+        }).catch((error: Response) => {
+          resolve(error);
+        });
+    });
+  }
+
+  public gravarAtividadeExtraClasseFirebaseFirestore = async (
+    messageFirebase: MessageFirebase,
+    anexos: Object,
+    atividadeExtraClasse: AtividadeExtraClasse) => {
+    return new Promise(resolve => {
+      this.firestore
+        .collection('naescolaApp')
+        .doc(messageFirebase.cod_inep)
+        .collection('matriculados')
+        .doc(messageFirebase.est_id)
+        .collection('tarefas')
+        .add({
+          dataEntrega: atividadeExtraClasse.aec_data_entrega,
+          data: atividadeExtraClasse.aec_data_envio,
+          descricao: atividadeExtraClasse.aec_descricao,
+          titulo: atividadeExtraClasse.aec_titulo,
+          professor: atividadeExtraClasse.professor,
+          disciplina: atividadeExtraClasse.disciplina,
+          remetente: atividadeExtraClasse.remetende,
+          hora: atividadeExtraClasse.hora,
           leitura: 0,
           anexos: anexos,
         }).then((retorno) => {

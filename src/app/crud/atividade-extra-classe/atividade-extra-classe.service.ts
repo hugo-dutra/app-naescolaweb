@@ -14,7 +14,7 @@ export class AtividadeExtraClasseService {
 
   constructor(private http: HttpClient) { }
 
-  public inserirAtividadeExtraClasse(atividadeExtraClasse: AtividadeExtraClasse[]): Observable<any> {
+  public inserirAtividadeExtraClasse(atividadeExtraClasse: AtividadeExtraClasse): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
