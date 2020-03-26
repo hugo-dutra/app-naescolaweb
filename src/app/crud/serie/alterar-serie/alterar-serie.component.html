@@ -23,7 +23,7 @@
           <div class="mt-2 col-sm-12 col-lg-5">
             <select name="etapasEnsino" class="form-control" required name="ete_id" (change)="modificarInputs($event)">
               <option value="" disabled selected>Selecione uma etapa do ensino</option>
-              <option *ngFor="let etapa of etapasEnsino" [selected]="etapa.id === serie.ete_id ? true : false"
+              <option *ngFor="let etapa of etapasEnsino" [selected]="etapa.id == serie.ete_id ? true : false"
                 [value]="etapa.id">{{ etapa.abreviatura }} - {{ etapa.nome }}</option>
             </select>
           </div>
@@ -44,9 +44,9 @@
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

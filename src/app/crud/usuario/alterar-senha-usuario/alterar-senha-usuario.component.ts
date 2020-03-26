@@ -74,8 +74,8 @@ export class AlterarSenhaUsuarioComponent implements OnInit {
   }
 
   public validarEntradaSenha(): boolean {
-    if (this.senha1 === this.senha2) {
-      if (this.senha1 !== '' && this.senha2 !== '') {
+    if (this.senha1 == this.senha2) {
+      if (this.senha1 != '' && this.senha2 != '') {
         return true;
       } else {
         this.alertModalService.showAlertDanger('As senha não podem ser vazias!');

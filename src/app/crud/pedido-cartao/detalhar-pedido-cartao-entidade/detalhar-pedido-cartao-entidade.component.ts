@@ -85,7 +85,7 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
   }
 
   public listarPedidoCartaoEntidade(): void {
-    if (this.rotaOrigem === '') {
+    if (this.rotaOrigem == '') {
       this.router.navigate([`${this.route.parent.routeConfig.path}/listar-pedido-cartao-entidade`]);
     } else {
       this.router.navigate([`${this.route.parent.routeConfig.path}/${this.rotaOrigem}`]);
@@ -128,7 +128,7 @@ export class DetalharPedidoCartaoEntidadeComponent implements OnInit {
 
     // Preenchimento do background da planilha para facilitar a utilização feita pelo usuário
     for (let i = 0; i < pedidos.length + 4; i++) {
-      if (i % 2 === 0) {
+      if (i % 2 == 0) {
         for (let j = 0; j < 13; j++) {
           // Formada a entrada de dados para se comportarem como strings.
           modeloPlanilhaImportareEstudantes.worksheets[0].getRow(i).getCell(j + 1).numFmt = '';

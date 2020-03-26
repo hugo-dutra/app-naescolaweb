@@ -44,7 +44,7 @@ export class Utils {
       'Ã', 'Ç', 'È', 'É', 'Ê', 'Ì', 'Í', 'Î', 'Ò', 'Ó', 'Ô', 'Õ', 'Ù',
       'Ú', 'à', 'á', 'â', 'ã', 'ç', 'è', 'é', 'ê',
       'ì', 'í', 'ò', 'ó', 'ô', 'õ', '÷', 'ù', 'ú'];
-    if (originalString != null && originalString !== undefined) {
+    if (originalString != null && originalString != undefined) {
       for (let i = 0; i < originalString.length; i++) {
         const caractereAvaliado = originalString[i];
         const indiceObjeto = arrayDeCaracteresValidos.indexOf(caractereAvaliado);
@@ -82,7 +82,7 @@ export class Utils {
 
       // Preenchimento do background da planilha para facilitar a utilização feita pelo usuário
       for (let i = 0; i < listagem.length + 4; i++) {
-        if (i % 2 === 0) {
+        if (i % 2 == 0) {
           for (let j = 0; j < colunas; j++) {
             // Formada a entrada de dados para se comportarem como strings.
             modeloPlanilhaListagem.worksheets[0].getRow(i).getCell(j + 1).numFmt = '';
@@ -128,7 +128,7 @@ export class Utils {
   public static eliminaValoresRepetidos(arrayAlvo: Object[], campo: string): Object[] {
     return Array.from(new Set(arrayAlvo.map(a => a[campo])))
       .map(id => {
-        return arrayAlvo.find(a => a[campo] === id);
+        return arrayAlvo.find(a => a[campo] == id);
       });
   }
 
@@ -161,7 +161,7 @@ export class Utils {
   public static abreviarNomeDisciplina(nome: string): string {
     const arrayDePalavras = nome.split(' ');
     let stringRetorno = '';
-    if (arrayDePalavras.length === 1) {
+    if (arrayDePalavras.length == 1) {
       stringRetorno = arrayDePalavras[0].substr(0, 3);
     } else {
       arrayDePalavras.forEach((palavra: string) => {
@@ -227,8 +227,8 @@ export class Utils {
   public static tratarErro(rota: { router: Router; response: Response }): void {
     try {
       if (
-        rota.response.json['error'] === 'token_expired' ||
-        rota.response.json['error'] === 'token_not_provided'
+        rota.response.json['error'] == 'token_expired' ||
+        rota.response.json['error'] == 'token_not_provided'
       ) {
         rota.router.navigate(['']);
         localStorage.setItem('ne_token', 'null');
@@ -241,7 +241,7 @@ export class Utils {
 
   public static encriptBtoA(string: string, profundidade: number): string {
     let retorno = string;
-    if (string != null && string !== undefined && string !== '') {
+    if (string != null && string != undefined && string != '') {
       for (let i = 0; i < profundidade; i++) {
         retorno = btoa(unescape(encodeURIComponent(retorno)));
       }
@@ -251,7 +251,7 @@ export class Utils {
 
   public static decriptAtoB(string: string, profundidade: number): string {
     let retorno = string;
-    if (string != null && string !== undefined && string !== '') {
+    if (string != null && string != undefined && string != '') {
       for (let i = 0; i < profundidade; i++) {
         retorno = decodeURIComponent(escape(window.atob(retorno)));
       }
@@ -323,22 +323,22 @@ export class Utils {
   public static validarCNPJ(cnpj) {
     cnpj = cnpj.replace(/[^\d]+/g, '');
 
-    if (cnpj === '') return false;
+    if (cnpj == '') return false;
 
-    if (cnpj.length !== 14)
+    if (cnpj.length != 14)
       return false;
 
     // Elimina CNPJs invalidos conhecidos
-    if (cnpj === '00000000000000' ||
-      cnpj === '11111111111111' ||
-      cnpj === '22222222222222' ||
-      cnpj === '33333333333333' ||
-      cnpj === '44444444444444' ||
-      cnpj === '55555555555555' ||
-      cnpj === '66666666666666' ||
-      cnpj === '77777777777777' ||
-      cnpj === '88888888888888' ||
-      cnpj === '99999999999999')
+    if (cnpj == '00000000000000' ||
+      cnpj == '11111111111111' ||
+      cnpj == '22222222222222' ||
+      cnpj == '33333333333333' ||
+      cnpj == '44444444444444' ||
+      cnpj == '55555555555555' ||
+      cnpj == '66666666666666' ||
+      cnpj == '77777777777777' ||
+      cnpj == '88888888888888' ||
+      cnpj == '99999999999999')
       return false;
 
     // Valida DVs
@@ -353,7 +353,7 @@ export class Utils {
         pos = 9;
     }
     let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-    if (resultado !== digitos.charAt(0))
+    if (resultado != digitos.charAt(0))
       return false;
 
     tamanho = tamanho + 1;
@@ -366,7 +366,7 @@ export class Utils {
         pos = 9;
     }
     resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-    if (resultado !== digitos.charAt(1))
+    if (resultado != digitos.charAt(1))
       return false;
 
     return true;
@@ -375,7 +375,7 @@ export class Utils {
   public static exibirComponente(rota: string): boolean {
     const permissoes: Object = Utils.verificarPermissoes();
     for (const key in permissoes) {
-      if (permissoes[key]['rota'] === rota) {
+      if (permissoes[key]['rota'] == rota) {
         return true;
       }
     }

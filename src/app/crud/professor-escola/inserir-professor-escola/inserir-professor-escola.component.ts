@@ -101,7 +101,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
 
   private carregarProfessores(todos: boolean): void {
     this.limparProfessores();
-    if (todos === true) {
+    if (todos == true) {
       this.feedbackUsuario = 'Carregando professores...';
       this.professorService
         .listar(50000, 0, true, this.usr_id, this.esc_id)
@@ -202,15 +202,15 @@ export class InserirProfessorEscolaComponent implements OnInit {
 
   public alertarChecksVazios() {
     if (
-      this.arrayOfProfessores.length !== 0 &&
-      this.arrayOfEscolas.length !== 0
+      this.arrayOfProfessores.length != 0 &&
+      this.arrayOfEscolas.length != 0
     ) {
       this.exibirAlerta = false;
     }
 
     if (
-      this.arrayOfProfessores.length === 0 ||
-      this.arrayOfEscolas.length === 0
+      this.arrayOfProfessores.length == 0 ||
+      this.arrayOfEscolas.length == 0
     ) {
       this.exibirAlerta = true;
     }
@@ -220,7 +220,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
     const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.professores.filter((elemento) => {
-      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
     });
     if (valorFiltro.length > 0) {
       this.professores = matrizRetorno;
@@ -230,7 +230,7 @@ export class InserirProfessorEscolaComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (event.key == 'Backspace' || event.key == 'Delete') {
       setTimeout(() => {
         this.professores = this.matrizReferencia;
         this.formulario.reset();

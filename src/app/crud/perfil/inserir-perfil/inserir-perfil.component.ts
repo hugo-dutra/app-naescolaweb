@@ -114,7 +114,7 @@ export class InserirPerfilComponent implements OnInit {
 
   public validarEntrada(): boolean {
     if (this.perfil != null && this.perfil.nome != null) {
-      if (this.perfil.nome.trim() !== '' && this.perfil.epu_id > 0) {
+      if (this.perfil.nome.trim() != '' && this.perfil.epu_id > 0) {
         return true;
       } else {
         return false;

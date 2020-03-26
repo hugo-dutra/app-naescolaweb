@@ -167,7 +167,7 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
   public atualizarChartAproveitamentoAcimaDaMedia(): void {
     const context = (<HTMLCanvasElement>document.getElementById('barChartAproveitamentoProfessorDisciplinaPeriodo'))
       .getContext('2d');
-    if (this.barChartAproveitamentoProfessorDisciplinaPeriodo !== undefined)
+    if (this.barChartAproveitamentoProfessorDisciplinaPeriodo != undefined)
       this.barChartAproveitamentoProfessorDisciplinaPeriodo.destroy();
 
     this.barChartAproveitamentoProfessorDisciplinaPeriodo = new Chart(context, {
@@ -221,7 +221,7 @@ export class AproveitamentoProfessorDisciplinaPeriodoComponent implements OnInit
   public atualizarChartAproveitamentoAbaixoDaMedia(): void {
     const context = (<HTMLCanvasElement>document.getElementById('barChartSemAproveitamentoProfessorDisciplinaPeriodo'))
       .getContext('2d');
-    if (this.barChartReprovadosProfessorDisciplinaPeriodo !== undefined)
+    if (this.barChartReprovadosProfessorDisciplinaPeriodo != undefined)
       this.barChartReprovadosProfessorDisciplinaPeriodo.destroy();
 
     this.barChartReprovadosProfessorDisciplinaPeriodo = new Chart(context, {

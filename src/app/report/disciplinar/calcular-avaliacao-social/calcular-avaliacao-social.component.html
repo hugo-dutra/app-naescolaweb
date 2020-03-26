@@ -89,13 +89,13 @@
               <th class="col-sm-12 col-lg-1 text-center" scope="col">Detalhes</th>
             </tr>
           </thead>
-          <tbody *ngIf="arrayOfEstudantesAvaliacaoSocial !== null">
+          <tbody *ngIf="arrayOfEstudantesAvaliacaoSocial != null">
             <tr class="row" *ngFor="let estudante of arrayOfEstudantesAvaliacaoSocial" [@chamado]="estado">
               <td class="col-sm-12 col-lg-1 text-center">
                 <!-- Botão -->
                 <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.est_id"><img
                     class="img rounded-circle ml-2" width="60" height="60"
-                    [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                    [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                     alt="foto do estudante"></a>
                 <!-- Modal -->
                 <div class="modal fade large" id="modelEstudante{{ estudante.est_id }}" tabindex="-1" role="dialog"
@@ -116,12 +116,12 @@
                         <div
                           *ngIf="estudante.foto != '' && estudante.foto != null && estudante.foto != undefined; else semfoto"
                           class="row">
-                          <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                          <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                             class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
                         </div>
                         <ng-template #semfoto>
                           <div class="col-sm-12 col-lg-9">
-                            <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                            <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                               class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
                           </div>
                         </ng-template>
@@ -160,9 +160,9 @@
                       </div>
                       <div class="modal-body text-justify">
 
-                        <div *ngIf="feedbackPopup !== undefined" [@chamado]="estado">
+                        <div *ngIf="feedbackPopup != undefined" [@chamado]="estado">
                           <div>
-                            <div class="row mt-2" *ngIf="feedbackPopup !== undefined">
+                            <div class="row mt-2" *ngIf="feedbackPopup != undefined">
                               <div class="col-sm-12 col-lg-2">
                                 <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}"
                                   alt="">
@@ -176,7 +176,7 @@
                           </div>
                         </div>
 
-                        <div *ngIf="feedbackPopup === undefined" [@chamado]="estado">
+                        <div *ngIf="feedbackPopup == undefined" [@chamado]="estado">
                           <div class="detalhes">
                             <table class="table table-striped table-hover" [@chamado]="estado">
                               <thead class="thead-light">
@@ -215,9 +215,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

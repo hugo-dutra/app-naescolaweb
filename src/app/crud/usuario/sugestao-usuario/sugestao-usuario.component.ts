@@ -86,9 +86,9 @@ export class SugestaoUsuarioComponent implements OnInit {
     this.sugestaoUsuario['esc_id'] = Utils.pegarDadosEscolaDetalhado().id;
     const dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
     this.sugestaoUsuario['usr_id'] = parseInt(dados_usuario['id'], 10);
-    if (this.sugestaoUsuario['titulo'].trim() !== '' &&
-      this.sugestaoUsuario['mensagem'].trim() !== '' &&
-      this.sugestaoUsuario['tipoSugestao'].trim() !== '') {
+    if (this.sugestaoUsuario['titulo'].trim() != '' &&
+      this.sugestaoUsuario['mensagem'].trim() != '' &&
+      this.sugestaoUsuario['tipoSugestao'].trim() != '') {
       return true;
     }
     return false;

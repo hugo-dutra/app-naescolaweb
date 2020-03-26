@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
       <form [formGroup]="formulario" (ngSubmit)="inserir()">
-        <div class="col-sm-12 col-lg-2  mt-2 bg-dark m-2 p-2 rounded" *ngIf="usuario.foto !== undefined">
+        <div class="col-sm-12 col-lg-2  mt-2 bg-dark m-2 p-2 rounded" *ngIf="usuario.foto != undefined">
           <img [src]="usuario.foto" class="rounded-circle" width="80" height="80" alt="">
         </div>
         <div class="row m-3 form-group">
@@ -46,9 +46,9 @@
       <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Todos os campos devem ser preenchidos</div>
     </div>
 
-    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
       <div>
-        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
           <div class="col-2">
             <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
           </div>

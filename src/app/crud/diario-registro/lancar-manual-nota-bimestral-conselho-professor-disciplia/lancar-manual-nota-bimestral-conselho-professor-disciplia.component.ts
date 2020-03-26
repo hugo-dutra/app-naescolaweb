@@ -79,7 +79,7 @@ export class LancarManualNotaBimestralConselhoProfessorDiscipliaComponent implem
   }
 
   public retirarVirgula(event: KeyboardEvent): boolean {
-    if (event.key === ".") {
+    if (event.key == ".") {
       return false;
     }
     return true;

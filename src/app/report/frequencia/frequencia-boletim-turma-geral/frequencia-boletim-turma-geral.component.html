@@ -46,7 +46,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-lg-4 col-md-4 col-sm-4">
-                <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                   class="img-fluid rounded-circle ml-1 mt-1" width="60" height="75" alt="">
               </div>
               <div class="col-lg-4 col-md-4 col-sm-4">
@@ -96,9 +96,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

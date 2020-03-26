@@ -127,7 +127,7 @@ export class GerenciarAplicativoComponent implements OnInit {
             const dados = documento.data();
             const registrarEntradaManual = dados['registrarEntradaManual'];
             /* Ocorrência disciplinar */
-            if (registrarEntradaManual === false) {
+            if (registrarEntradaManual == false) {
               const data = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('YYYY-MM-DD');
               const hora = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('HH:mm');
               const est_id = dados['est_id'];
@@ -137,7 +137,7 @@ export class GerenciarAplicativoComponent implements OnInit {
               Array.from(ocorrenciasRegistradas).forEach((ocorrencias) => {
                 const tod_id = ocorrencias['categoriaId'];
                 const tipoOcorrencia = ocorrencias['categoria'];
-                const ocorrencia = dados['descricao'] === '' ? 'Não especificado' : dados['descricao'];
+                const ocorrencia = dados['descricao'] == '' ? 'Não especificado' : dados['descricao'];
                 this.arrayDeOcorrenciasDoAplicativo.push({
                   est_id: est_id, data: data, hora: hora,
                   tod_id: tod_id, usr_id: usr_id, firebase_dbkey_admin: firebase_dbkey_admin,
@@ -204,12 +204,12 @@ export class GerenciarAplicativoComponent implements OnInit {
   public EnviarPushOcorrenciaSimples(topico: string, titulo: string, firebase_dbkey: string,
     total: number, atual: number): void {
     this.feedbackUsuario = `Enviando notificação ${atual} de ${total}, aguarde...`;
-    if (firebase_dbkey !== '') {
+    if (firebase_dbkey != '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 === atual) {
+          if (total - 1 == atual) {
             this.inserirOcorrenciasDisciplinaresDoAplicativo();
           }
         }).
@@ -250,7 +250,7 @@ export class GerenciarAplicativoComponent implements OnInit {
             const dados = documento.data();
             const registrarEntradaManual = dados['registrarEntradaManual'];
             /* entrada manual */
-            if (registrarEntradaManual === true) {
+            if (registrarEntradaManual == true) {
               const data = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('YYYY-MM-DD');
               const hora = moment(new Date(dados['dataOcorrencia']['seconds'] * 1000)).format('HH:mm');
               const est_id = dados['est_id'];
@@ -317,12 +317,12 @@ export class GerenciarAplicativoComponent implements OnInit {
   public EnviarPushEntradaManual(topico: string, titulo: string, firebase_dbkey: string,
     total: number, atual: number): void {
     this.feedbackUsuario = `Enviando notificação ${atual} de ${total}, aguarde...`;
-    if (firebase_dbkey !== '') {
+    if (firebase_dbkey != '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 === atual) {
+          if (total - 1 == atual) {
             this.inserirEntradaManualDoAplicativo();
           }
         }).

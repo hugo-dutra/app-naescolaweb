@@ -161,15 +161,15 @@ export class GerarQrcodeAplicativoEstudanteComponent implements OnInit {
           html2canvas(document.querySelector(`#qrcode_${elem['id']}`), { useCORS: true }).then(canvas => {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
 
-            if (contaCartao % 2 === 0 && contaCartao > 0) {
+            if (contaCartao % 2 == 0 && contaCartao > 0) {
               yPos += (alturaPagina / quantidadeDePaginas);
             }
-            if (contaCartao % (2 * quantidadeDePaginas) === 0 && contaCartao > 0) {
+            if (contaCartao % (2 * quantidadeDePaginas) == 0 && contaCartao > 0) {
               yPos = 0;
               xPos = -1 + margem;
               doc.addPage('portrait', 'a4');
             }
-            if (xPos === 0 + margem) {
+            if (xPos == 0 + margem) {
               xPos = (larguraPagina / 2) + margem;
             } else {
               xPos = 0 + margem;
@@ -179,7 +179,7 @@ export class GerarQrcodeAplicativoEstudanteComponent implements OnInit {
             doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['id']);
 
             contaCartao += 1;
-            if (contaCartao === this.arrayOfEstudantes.length) {
+            if (contaCartao == this.arrayOfEstudantes.length) {
               this.feedbackUsuario = undefined;
               doc.save(`QRCodePDF_${this.turmaSelecionada}.pdf`);
               resolve('ok');

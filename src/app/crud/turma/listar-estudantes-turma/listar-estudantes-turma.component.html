@@ -21,13 +21,13 @@
                 <th class="col-lg-1 col-sm-12" scope="col"><span>Número</span></th>
               </tr>
             </thead>
-            <tbody *ngIf="arrayOfEstudantes !== null">
+            <tbody *ngIf="arrayOfEstudantes != null">
               <tr class="row" *ngFor="let estudante of arrayOfEstudantes">
                 <td class="col-lg-2 col-sm-12">
                   <!-- Botão -->
                   <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.id"><img
                       class="img rounded-circle ml-2" width="60" height="60"
-                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                       alt="foto do estudante"></a>
                   <!-- Modal -->
                   <div class="modal fade large" id="modelEstudante{{ estudante.id }}" tabindex="-1" role="dialog"
@@ -48,13 +48,12 @@
                           <div
                             *ngIf="estudante.foto != '' && estudante.foto != null && estudante.foto != undefined; else semfoto"
                             class="row">
-                            <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                            <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                               class="rounded-circle col-lg-12 col-sm-12" width="150" height="300" alt="">
                           </div>
                           <ng-template #semfoto>
                             <div class="col-lg-9">
-                              <img
-                                [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                              <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                                 class="rounded-circle col-lg-12 col-sm-12" width="150" height="300" alt="">
                             </div>
                           </ng-template>
@@ -80,9 +79,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

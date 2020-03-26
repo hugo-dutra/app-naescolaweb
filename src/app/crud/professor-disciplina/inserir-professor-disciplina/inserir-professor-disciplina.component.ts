@@ -120,7 +120,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
     const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.professores.filter((elemento) => {
-      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
     });
     if (valorFiltro.length > 0) {
       this.professores = matrizRetorno;
@@ -130,7 +130,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (event.key == 'Backspace' || event.key == 'Delete') {
       this.feedbackUsuario = 'Filtrando, aguarde...';
       setTimeout(() => {
         this.professores = this.matrizReferencia;
@@ -282,15 +282,15 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
 
   public alertarChecksVazios() {
     if (
-      this.arrayOfDisciplinas.length !== 0 &&
-      this.arrayOfProfessores.length !== 0
+      this.arrayOfDisciplinas.length != 0 &&
+      this.arrayOfProfessores.length != 0
     ) {
       this.exibirAlerta = false;
     }
 
     if (
-      this.arrayOfDisciplinas.length === 0 ||
-      this.arrayOfProfessores.length === 0
+      this.arrayOfDisciplinas.length == 0 ||
+      this.arrayOfProfessores.length == 0
     ) {
       this.exibirAlerta = true;
     }

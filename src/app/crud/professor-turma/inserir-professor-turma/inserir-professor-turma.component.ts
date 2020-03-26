@@ -193,15 +193,15 @@ export class InserirProfessorTurmaComponent implements OnInit {
 
   public alertarChecksVazios() {
     if (
-      this.arrayOfProfessores.length !== 0 &&
-      this.arrayOfTurmas.length !== 0
+      this.arrayOfProfessores.length != 0 &&
+      this.arrayOfTurmas.length != 0
     ) {
       this.exibirAlerta = false;
     }
 
     if (
-      this.arrayOfProfessores.length === 0 ||
-      this.arrayOfTurmas.length === 0
+      this.arrayOfProfessores.length == 0 ||
+      this.arrayOfTurmas.length == 0
     ) {
       this.exibirAlerta = true;
     }
@@ -211,7 +211,7 @@ export class InserirProfessorTurmaComponent implements OnInit {
     const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.professores.filter((elemento) => {
-      return elemento['professor'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+      return elemento['professor'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
     });
     if (valorFiltro.length > 0) {
       this.professores = matrizRetorno;
@@ -221,7 +221,7 @@ export class InserirProfessorTurmaComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (event.key == 'Backspace' || event.key == 'Delete') {
       setTimeout(() => {
         this.professores = this.matrizReferencia;
         this.feedbackUsuario = undefined;

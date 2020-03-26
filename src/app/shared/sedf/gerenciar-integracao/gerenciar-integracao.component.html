@@ -89,7 +89,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody *ngIf="usuarios !== null">
+            <tbody *ngIf="usuarios != null">
               <tr class="row" *ngFor="let turma of listaDeTurmas">
                 <td class="col-lg-3 col-sm-12 text-left">{{ turma.nome }}</td>
                 <td class="col-lg-3 col-sm-12 text-left">{{ turma.etapa }}</td>
@@ -115,9 +115,9 @@
 
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

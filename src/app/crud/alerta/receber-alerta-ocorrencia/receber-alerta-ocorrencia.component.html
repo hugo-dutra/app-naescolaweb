@@ -27,10 +27,10 @@
               <th class="col-sm-12 col-lg-1 text-center" scope="col">Finalizar</th>
             </tr>
           </thead>
-          <tbody *ngIf="arrayOfOcorrenciasSelecionadas !== null" class="alertas">
+          <tbody *ngIf="arrayOfOcorrenciasSelecionadas != null" class="alertas">
             <tr class="row" *ngFor="let alertaOcorrencia of arrayOfOcorrenciasSelecionadas">
               <td class="col-sm-12 col-lg-1 text-center"><img class="img rounded-circle" width="60" height="60"
-                  src="{{ alertaOcorrencia.foto !== undefined && alertaOcorrencia.foto || 'assets/images/noavatar.jpg' }}"
+                  src="{{ alertaOcorrencia.foto != undefined && alertaOcorrencia.foto || 'assets/images/noavatar.jpg' }}"
                   alt="">
               </td>
               <td class="col-sm-12 col-lg-3 text-left">{{ alertaOcorrencia.nome}}</td>
@@ -80,9 +80,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

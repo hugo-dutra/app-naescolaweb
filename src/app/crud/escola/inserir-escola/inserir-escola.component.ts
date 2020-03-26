@@ -92,7 +92,7 @@ export class InserirEscolaComponent implements OnInit {
       .inserir(this.escola)
       .toPromise()
       .then((response: Response) => {
-        if (Object.values(response).length === 0) {
+        if (Object.values(response).length == 0) {
           this.feedbackUsuario = 'Dados Salvos';
           this.formulario.reset();
           this.feedbackUsuario = undefined;

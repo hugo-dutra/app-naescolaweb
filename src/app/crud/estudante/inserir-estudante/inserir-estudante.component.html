@@ -97,7 +97,7 @@
           <div class="col-sm-12 col-md-4 col-lg-4">
             <div class="row">
               <div class="col-sm-12 col-md-4 col-lg-4">
-                <div class="col-sm-12 col-md-4 col-lg-4 rounded" *ngIf="estudante.foto !== undefined">
+                <div class="col-sm-12 col-md-4 col-lg-4 rounded" *ngIf="estudante.foto != undefined">
                   <img [src]="estudante.foto" class="rounded-circle" width="80" height="80" alt="">
                 </div>
               </div>
@@ -133,9 +133,9 @@
 </div>
 
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

@@ -99,7 +99,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
     const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.usuarios.filter((elemento) => {
-      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
     });
     if (valorFiltro.length > 0) {
       this.usuarios = matrizRetorno;
@@ -112,7 +112,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
     const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<Object>();
     matrizRetorno = this.escolas.filter((elemento) => {
-      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+      return elemento['nome'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
     });
     if (valorFiltro.length > 0) {
       this.escolas = matrizRetorno;
@@ -122,7 +122,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (event.key == 'Backspace' || event.key == 'Delete') {
       this.feedbackUsuario = 'Filtrando, aguarde...';
       setTimeout(() => {
         this.usuarios = this.matrizReferencia;
@@ -166,7 +166,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
   }
 
   public listarTodosUsuarios(): void {
-    if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
+    if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
       this.feedbackUsuario = 'Carregando, aguarde...';
       this.usuarioService
         .listar(50000, 0, true)
@@ -197,7 +197,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
         });
     }
 
-    if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
+    if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
       this.feedbackUsuario = 'Carregando, aguarde...';
       const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
       this.usuarioService
@@ -229,7 +229,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
         });
     }
 
-    if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
+    if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
       this.feedbackUsuario = 'Carregando, aguarde...';
       const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
       this.usuarioService
@@ -308,7 +308,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
 
   public listarEscolas(): void {
 
-    if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
+    if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
       this.feedbackUsuario = 'Carregando, aguarde...';
       this.escolaService
         .listar(50000, 0, true)
@@ -332,7 +332,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
         });
     }
 
-    if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
+    if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
       this.feedbackUsuario = 'Carregando, aguarde...';
       const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
       this.escolaService
@@ -357,7 +357,7 @@ export class InserirUsuarioEscolaComponent implements OnInit {
         });
     }
 
-    if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
+    if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
       this.feedbackUsuario = 'Carregando, aguarde...';
       const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
       this.escolaService
@@ -451,11 +451,11 @@ export class InserirUsuarioEscolaComponent implements OnInit {
   }
 
   public alertarChecksVazios() {
-    if (this.arrayOfUsuarios.length !== 0 && this.arrayOfEscolas.length !== 0) {
+    if (this.arrayOfUsuarios.length != 0 && this.arrayOfEscolas.length != 0) {
       this.exibirAlerta = false;
     }
 
-    if (this.arrayOfUsuarios.length === 0 || this.arrayOfEscolas.length === 0) {
+    if (this.arrayOfUsuarios.length == 0 || this.arrayOfEscolas.length == 0) {
       this.exibirAlerta = true;
     }
   }

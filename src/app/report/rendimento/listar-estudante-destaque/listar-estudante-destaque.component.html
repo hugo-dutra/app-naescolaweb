@@ -67,7 +67,7 @@
                   <!-- Botão -->
                   <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.est_id"><img
                       class="img rounded-circle ml-2" width="60" height="60"
-                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                       alt="foto do estudante"></a>
 
                   <!-- Modal -->
@@ -89,13 +89,12 @@
                           <div
                             *ngIf="estudante.foto != '' && estudante.foto != null && estudante.foto != undefined; else semfoto"
                             class="row">
-                            <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                            <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                               class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
                           </div>
                           <ng-template #semfoto>
                             <div class="col-sm-12 col-lg-9">
-                              <img
-                                [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                              <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                                 class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
                             </div>
                           </ng-template>
@@ -125,9 +124,9 @@
 
 
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

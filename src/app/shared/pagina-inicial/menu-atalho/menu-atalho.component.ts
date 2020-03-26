@@ -55,7 +55,7 @@ export class MenuAtalhoComponent implements OnInit {
     const valorFiltro = (<HTMLInputElement>event.target).value;
     let matrizRetorno = new Array<LinkAcessado>();
     matrizRetorno = this.arrayOfLinkAcessado.filter((elemento) => {
-      return elemento['descricao'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) !== -1;
+      return elemento['descricao'].toLowerCase().indexOf(valorFiltro.toLocaleLowerCase()) != -1;
     });
     if (valorFiltro.length > 0) {
       this.arrayOfLinkAcessado = matrizRetorno;
@@ -65,7 +65,7 @@ export class MenuAtalhoComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
-    if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (event.key == 'Backspace' || event.key == 'Delete') {
       setTimeout(() => {
         this.arrayOfLinkAcessado = this.matrizReferencia;
         this.filtrarAtalho(event);

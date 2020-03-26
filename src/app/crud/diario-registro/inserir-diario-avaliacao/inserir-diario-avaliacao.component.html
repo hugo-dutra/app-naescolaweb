@@ -53,7 +53,6 @@
         </div>
         <div class="col-lg-1 col-sm-12 mt-2"><button *ngIf="exibirComponente('inserir-diario-avaliacao')"
             class="btn btn-success text-light btn-sm form-control"
-            
             (click)="salvarRegistroDiarioAvaliacao()">Salvar</button>
         </div>
       </div>
@@ -165,9 +164,9 @@
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

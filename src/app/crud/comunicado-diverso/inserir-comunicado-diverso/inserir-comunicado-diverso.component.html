@@ -66,7 +66,7 @@
                       mensagemSelecionados }} </small></th>
                   </tr>
                 </thead>
-                <tbody *ngIf="arrayOfEstudantes !== null">
+                <tbody *ngIf="arrayOfEstudantes != null">
                   <tr class="row" *ngFor="let estudante of arrayOfEstudantes">
                     <td class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox" [value]="estudante.id"
                         [name]="estudante.id" [id]="estudante.id" (click)="adicionarComunicado($event)"></td>
@@ -86,9 +86,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

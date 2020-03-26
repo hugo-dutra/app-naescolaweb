@@ -32,7 +32,7 @@
                 <th class="col-sm-12 col-lg-1 text-center" scope="col">Detalhes</th>
               </tr>
             </thead>
-            <tbody *ngIf="ocorrencias !== null">
+            <tbody *ngIf="ocorrencias != null">
               <tr class="row" *ngFor="let ocorrencia of ocorrencias">
                 <td class="col-sm-12 col-lg-3 text-center">{{ ocorrencia.nome }}</td>
                 <td class="col-sm-12 col-lg-2 text-center">{{ ocorrencia.serie }}</td>
@@ -70,9 +70,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

@@ -128,7 +128,7 @@ export class InserirOcorrenciaComponent implements OnInit {
 
   public subscribeTour(): void {
     this.acessoComumService.emitirAlertaInicioTour.subscribe(() => {
-      if (this.guiaAtivaId === 1) {
+      if (this.guiaAtivaId == 1) {
         this.hintService.initialize({ elementsDisabled: false });
       }
     });
@@ -355,12 +355,12 @@ export class InserirOcorrenciaComponent implements OnInit {
   public EnviarPushOcorrenciaSuspender(topico: string, titulo: string, firebase_dbkey: string,
     total: number, atual: number, messagesFirebase: MessageFirebase[]): void {
     this.feedbackUsuario = 'Enviando notificação, aguarde...';
-    if (firebase_dbkey !== '') {
+    if (firebase_dbkey != '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 === atual) {
+          if (total - 1 == atual) {
             this.gravarComunicadoDiverso(messagesFirebase[0]);
           }
         }).
@@ -373,12 +373,12 @@ export class InserirOcorrenciaComponent implements OnInit {
   public EnviarPushOcorrenciaSimples(topico: string, titulo: string,
     firebase_dbkey: string, total: number, atual: number): void {
     this.feedbackUsuario = 'Enviando notificação, aguarde...';
-    if (firebase_dbkey !== '') {
+    if (firebase_dbkey != '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 === atual) {
+          if (total - 1 == atual) {
             this.inserir();
           }
         }).
@@ -391,12 +391,12 @@ export class InserirOcorrenciaComponent implements OnInit {
   public EnviarPushComunicadoSimples(topico: string, titulo: string, firebase_dbkey: string,
     total: number, atual: number, messageFirebase: MessageFirebase): void {
     this.feedbackUsuario = 'Enviando notificação, aguarde...';
-    if (firebase_dbkey !== '') {
+    if (firebase_dbkey != '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 === atual) {
+          if (total - 1 == atual) {
             this.gravarComunicadoDiverso(messageFirebase);
           }
         }).
@@ -489,7 +489,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public validarSalvarOcorrenciaSimples(): void {
     const descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao')).value;
     if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantes.length > 0 &&
-      this.arrayOfNomesEstudantes.length > 0 && this.ocorrencia.tod_id !== undefined) {
+      this.arrayOfNomesEstudantes.length > 0 && this.ocorrencia.tod_id != undefined) {
       this.statusBotaoSalvarOcorrenciaSimples = false;
     } else {
       this.statusBotaoSalvarOcorrenciaSimples = true;
@@ -522,7 +522,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.caracteresDisponiveis =
       'Restando ' + (300 - this.ocorrencia.ocorrencia.length).toString();
 
-    if (this.ocorrencia.ocorrencia.length === 0) {
+    if (this.ocorrencia.ocorrencia.length == 0) {
       this.caracteresDisponiveis = '';
     }
     this.validarSalvarOcorrenciaSimples();
@@ -556,7 +556,7 @@ export class InserirOcorrenciaComponent implements OnInit {
 
 
   public filtrarEnter(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key == 'Enter') {
       this.filtrar();
     }
   }
@@ -577,7 +577,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.estudantes = Object.values(response);
-        if (this.estudantes !== undefined) {
+        if (this.estudantes != undefined) {
           if (this.estudantes.length > 0) {
             this.totalRegistros = parseInt(this.estudantes[0]['total'], 10);
           }
@@ -598,7 +598,7 @@ export class InserirOcorrenciaComponent implements OnInit {
             this.feedbackUsuario = undefined;
           });
 
-        if (estudantesArray.length === 0) {
+        if (estudantesArray.length == 0) {
           this.feedbackUsuario = undefined;
         }
       })
@@ -621,7 +621,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public navegarAnterior() {
-    if (this.navegacaoInicio === false || this.navegacaoInicio === undefined) {
+    if (this.navegacaoInicio == false || this.navegacaoInicio == undefined) {
       this.filtrar(this.saltarQuantidade, this.offsetRegistros);
       this.offsetRegistros = this.offsetRegistros - this.saltarQuantidade;
     } else {
@@ -686,7 +686,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.caracteresDisponiveis =
       'Restando ' + (300 - this.ocorrencia.ocorrencia.length).toString();
 
-    if (this.ocorrencia.ocorrencia.length === 0) {
+    if (this.ocorrencia.ocorrencia.length == 0) {
       this.caracteresDisponiveis = '';
     }
     this.validarSalvarOcorrenciaMultipla();
@@ -726,7 +726,7 @@ export class InserirOcorrenciaComponent implements OnInit {
       this.arrayOfEstudantesMultiplo.push(firebaseMessage);
     } else {
       for (let i = 0; i < this.arrayOfEstudantesMultiplo.length; i++) {
-        if (firebaseMessage.est_id === this.arrayOfEstudantesMultiplo[i].est_id) {
+        if (firebaseMessage.est_id == this.arrayOfEstudantesMultiplo[i].est_id) {
           this.arrayOfEstudantesMultiplo.splice(i, 1);
         }
       }
@@ -758,7 +758,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public validarSalvarOcorrenciaMultipla(): void {
     const descricaoOcorrencia = (<HTMLInputElement>document.getElementById('input_descricao_multipla')).value;
     if (descricaoOcorrencia.length > 0 && this.arrayOfEstudantesMultiplo.length > 0 &&
-      this.tipoOcorrenciaMultiplo !== undefined) {
+      this.tipoOcorrenciaMultiplo != undefined) {
       this.statusBotaoSalvarOcorrenciaMultipla = false;
     } else {
       this.statusBotaoSalvarOcorrenciaMultipla = true;
@@ -808,12 +808,12 @@ export class InserirOcorrenciaComponent implements OnInit {
   public EnviarPushOcorrenciaMultipla(topico: string, titulo: string,
     firebase_dbkey: string, total: number, atual: number): void {
     this.feedbackUsuario = 'Enviando notificação, aguarde...';
-    if (firebase_dbkey !== '') {
+    if (firebase_dbkey != '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 === atual) {
+          if (total - 1 == atual) {
             this.inserirMultipla();
           }
         }).
@@ -857,7 +857,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public filtrarOcorrenciaEnter(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key == 'Enter') {
       this.filtrarOcorrencia();
     }
   }
@@ -888,7 +888,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     });
 
     this.feedbackUsuario = 'Gerando relatório, aguarde...';
-    if (ocorrencias !== undefined && ocorrencias.length > 0) {
+    if (ocorrencias != undefined && ocorrencias.length > 0) {
 
       let paginaAtual: number = 1;
       const xInicialLinha: number = 10;
@@ -927,7 +927,7 @@ export class InserirOcorrenciaComponent implements OnInit {
           for (let idxRegistroOcorrencia = 0; idxRegistroOcorrencia < ocorrencias.length; idxRegistroOcorrencia++) {
 
             /*ATUALIZA CAMPOS PARA ESCREVER PRÓXIMA PÁGINA DO RELATÓRIO*/
-            if (idxRegistroOcorrencia % 11 === 0 && idxRegistroOcorrencia > 0) {
+            if (idxRegistroOcorrencia % 11 == 0 && idxRegistroOcorrencia > 0) {
               this.relatorioPDFOcorrenciasEstudante.addPage();
               paginaAtual++;
               paginaNova = true;
@@ -1011,7 +1011,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public criarCabecalhoPDFOcorrenciasEstudantesPaginasSeguintes(
     inicioLinha: number, fimLinha: number, ocorrencias: Array<Object>, pagina: number): void {
     const nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
-    const nomeSistema = CONSTANTES.BUILD_DESTINO ===
+    const nomeSistema = CONSTANTES.BUILD_DESTINO ==
       CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
     /*CABEÇALHO PAGINAS SUBSEQUENTES*/
     /*-------------------------------------------------------------------------*/
@@ -1031,7 +1031,7 @@ export class InserirOcorrenciaComponent implements OnInit {
   public criarCabecalhoPDFOcorrenciasEstudante(inicioLinha: number,
     fimLinha: number, ocorrencias: Array<Object>): void {
     const nomeEscola = Utils.pegarDadosEscolaDetalhado().nome;
-    const nomeSistema = CONSTANTES.BUILD_DESTINO ===
+    const nomeSistema = CONSTANTES.BUILD_DESTINO ==
       CONSTANTES.BUILD_SEDF ? CONSTANTES.NOME_SISTEMA_SEDF : CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
     /*CABEÇALHO*/
     /*-------------------------------------------------------------------------*/
@@ -1076,7 +1076,7 @@ export class InserirOcorrenciaComponent implements OnInit {
     if (ocorrencias.length > 0) {
       const nomeEstudante = ocorrencias[0]['nome'];
       for (let i = 0; i < ocorrencias.length; i++) {
-        if (ocorrencias[i]['nome'] !== nomeEstudante) {
+        if (ocorrencias[i]['nome'] != nomeEstudante) {
           return false;
         }
       }

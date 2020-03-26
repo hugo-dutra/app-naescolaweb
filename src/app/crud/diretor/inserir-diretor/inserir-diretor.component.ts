@@ -68,7 +68,7 @@ export class InserirDiretorComponent implements OnInit {
 
   public inserir(): void {
     // Guarda os parametros do formulario nos atributos do objeto diretor
-    if (this.diretor.foto === undefined) this.diretor.foto = '';
+    if (this.diretor.foto == undefined) this.diretor.foto = '';
     this.diretor.nome = this.formulario.value.nome;
     this.diretor.telefone = this.formulario.value.telefone;
     this.diretor.matricula = this.formulario.value.matricula;
@@ -80,7 +80,7 @@ export class InserirDiretorComponent implements OnInit {
       .inserir(this.diretor, this.esc_id)
       .toPromise()
       .then((resposta: Response) => {
-        if (this.testarDiretorCadastrado(resposta) === 'error') {
+        if (this.testarDiretorCadastrado(resposta) == 'error') {
           this.alertModalService.showAlertWarning(`Diretor '${this.diretor.email}' já cadastrado.`);
           this.feedbackUsuario = undefined;
         } else {

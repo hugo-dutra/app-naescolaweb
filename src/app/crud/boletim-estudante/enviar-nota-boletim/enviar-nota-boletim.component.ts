@@ -194,7 +194,7 @@ export class EnviarNotaBoletimComponent implements OnInit {
 
   public validarEnvioNotas(): boolean {
     let retorno = true;
-    if (this.idPeriodoLetivoSelecionado === -1 || this.tipoConsolicacao === -1 || this.diarioSelecionado == null) {
+    if (this.idPeriodoLetivoSelecionado == -1 || this.tipoConsolicacao == -1 || this.diarioSelecionado == null) {
       retorno = false;
     }
     return retorno;

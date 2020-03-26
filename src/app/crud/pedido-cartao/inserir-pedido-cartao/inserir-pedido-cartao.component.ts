@@ -256,9 +256,9 @@ export class InserirPedidoCartaoComponent implements OnInit {
   public verificarTemFoto(id: number): boolean {
     let retorno = false;
     for (let i = 0; i < this.estudantes.length; i++) {
-      if (this.estudantes[i]['id'] === id) {
-        if (this.estudantes[i]['foto'] !== '' && this.estudantes[i]['foto'] != null &&
-          this.estudantes[i]['foto'] !== undefined) {
+      if (this.estudantes[i]['id'] == id) {
+        if (this.estudantes[i]['foto'] != '' && this.estudantes[i]['foto'] != null &&
+          this.estudantes[i]['foto'] != undefined) {
           retorno = true;
           break;
         }
@@ -271,7 +271,7 @@ export class InserirPedidoCartaoComponent implements OnInit {
     const est_id = itemPedido.Estudante.id;
     for (let i = 0; i < this.arrayOfItensPedido.length; i++) {
       const estudante_adicionado = this.arrayOfItensPedido[i].Estudante.id;
-      if (estudante_adicionado === est_id) {
+      if (estudante_adicionado == est_id) {
         this.arrayOfItensPedido[i].Modelo = itemPedido.Modelo;
         return false;
       }
@@ -300,7 +300,7 @@ export class InserirPedidoCartaoComponent implements OnInit {
     const est_id: number = parseInt((<HTMLInputElement>event.target).id, 10);
     let index_array: number;
     for (let i = 0; i < this.arrayOfItensPedido.length; i++) {
-      if (est_id === this.arrayOfItensPedido[i].Estudante.id) {
+      if (est_id == this.arrayOfItensPedido[i].Estudante.id) {
         index_array = i;
       }
     }

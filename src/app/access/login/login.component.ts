@@ -92,18 +92,18 @@ export class LoginComponent implements OnInit {
   }
 
   public definirDadosDoSistema(): void {
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILD_SEDF) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
       this.nomeDoSistema = CONSTANTES.NOME_SISTEMA_SEDF;
       this.caminhoImagemLogo = CONSTANTES.CAMINHO_LOGO_SEDF;
     }
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILS_RESOLVIDOS) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
       this.nomeDoSistema = CONSTANTES.NOME_SISTEMA_RESOLVIDOS;
       this.caminhoImagemLogo = CONSTANTES.CAMINHO_LOGO_RESOLVIDOS;
     }
   }
 
   public mostrarSenha(): void {
-    if (this.mostraSenha === false) {
+    if (this.mostraSenha == false) {
       document.getElementById('senha').setAttribute('type', 'text');
       this.mostraSenha = true;
     } else {
@@ -114,16 +114,16 @@ export class LoginComponent implements OnInit {
 
   public carregarValor(event: Event) {
     this.mensagemAlerta = '';
-    if ((<HTMLInputElement>event.target).name === 'email') {
+    if ((<HTMLInputElement>event.target).name == 'email') {
       this.email = (<HTMLInputElement>event.target).value;
     }
-    if ((<HTMLInputElement>event.target).name === 'senha') {
+    if ((<HTMLInputElement>event.target).name == 'senha') {
       this.senha = (<HTMLInputElement>event.target).value;
     }
   }
 
   public chamarLogin(event: KeyboardEvent): void {
-    if (event.keyCode === 13) {
+    if (event.keyCode == 13) {
       this.logar();
     }
   }
@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit {
       i => this.escolas[i],
     );
     for (let i = 0; i < escolasArray.length; i++) {
-      if (this.esc_id === escolasArray[i]['id']) {
+      if (this.esc_id == escolasArray[i]['id']) {
         const nomeEscola = escolasArray[i]['nome'];
         localStorage.setItem('escola', Utils.encriptBtoA(nomeEscola, CONSTANTES.PASSO_CRIPT));
       }
@@ -171,7 +171,7 @@ export class LoginComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.escolas = Object.values(response);
-        if (this.escolas.length === 0) {
+        if (this.escolas.length == 0) {
           this.mensagemAlerta = 'Usuário não identificado';
         } else {
           this.mensagemAlerta = '';
@@ -213,7 +213,7 @@ export class LoginComponent implements OnInit {
             this.status_ativo_usuario = (response['status_ativo_usuario'])[0]['status_ativo_usuario'];
 
 
-            if (this.status_ativo_usuario === 1) {
+            if (this.status_ativo_usuario == 1) {
               const str_permissoes = JSON.stringify(this.permissoes);
               const str_dados = JSON.stringify(this.dados);
               const str_grupos = JSON.stringify(this.grupos);
@@ -275,7 +275,7 @@ export class LoginComponent implements OnInit {
     const permissoes: Object = Utils.verificarPermissoes();
     const rota: string = link['link'].toString().split(',')[0];
     for (const key in permissoes) {
-      if (permissoes[key]['rota'] === rota) {
+      if (permissoes[key]['rota'] == rota) {
         return true;
       }
     }

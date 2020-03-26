@@ -156,15 +156,15 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
         this.arrayOfUsuarios.forEach(elem => {
           html2canvas(document.querySelector(`#qrcode_${elem['usr_id']}`), { useCORS: true }).then(canvas => {
             this.feedbackUsuario = `Criando cartão do(a) usuário ${elem['usuario']}`;
-            if (contaCartao % 2 === 0 && contaCartao > 0) {
+            if (contaCartao % 2 == 0 && contaCartao > 0) {
               yPos += (alturaPagina / (quantidadeDocumentosPorPagina / 2));
             }
-            if (contaCartao % quantidadeDocumentosPorPagina === 0 && contaCartao > 0) {
+            if (contaCartao % quantidadeDocumentosPorPagina == 0 && contaCartao > 0) {
               yPos = 0;
               xPos = -1 + margem;
               doc.addPage('portrait', 'a4');
             }
-            if (xPos === 0 + margem) {
+            if (xPos == 0 + margem) {
               xPos = (larguraPagina / 2) + margem;
             } else {
               xPos = 0 + margem;
@@ -174,7 +174,7 @@ export class GerarQrcodeAplicativoAdministrativoComponent implements OnInit {
             doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['usr_id']);
 
             contaCartao += 1;
-            if (contaCartao === this.arrayOfUsuarios.length) {
+            if (contaCartao == this.arrayOfUsuarios.length) {
               this.feedbackUsuario = undefined;
               doc.save(`QRCodeAdministrativoPDF.pdf`);
               resolve('ok');

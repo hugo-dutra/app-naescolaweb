@@ -109,7 +109,7 @@ export class ListarAtestadoMedicoComponent implements OnInit {
   }
 
   public listarAtestadosMedicosKeyDown(key: KeyboardEvent): void {
-    if (key.keyCode === 13) {
+    if (key.keyCode == 13) {
       this.listarAtestadosMedicos();
     }
   }

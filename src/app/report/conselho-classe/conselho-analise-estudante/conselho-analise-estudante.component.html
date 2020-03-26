@@ -29,7 +29,7 @@
               (click)="gravarOcorrenciasEstudanteSelecionado(resultadoEstudante)"
               (click)="gravarFrequenciaPortariaEstudanteSelecionado()"
               (click)="gravarMediasAreaConhecimentoEstudanteSelecionado()"
-              [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+              [src]="resultadoEstudante.foto != undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
               class="img-fluid rounded-circle ml-1 mt-1" width="135" height="150" alt="">
           </div>
           <div class="col-lg-12 col-sm-12 text-center"><small> {{resultadoEstudante.estudante}}</small></div>
@@ -125,7 +125,7 @@
                               <th class="col-sm-12 col-lg-5 text-left" scope="col">Detalhe</th>
                             </tr>
                           </thead>
-                          <tbody *ngIf="ocorrencias !== null">
+                          <tbody *ngIf="ocorrencias != null">
                             <tr class="row" *ngFor="let ocorrencia of arrayOfOcorrenciasEstudante">
                               <td class="col-sm-12 col-lg-3 text-left">{{ ocorrencia.data_hora | date:'dd/MM/yyyy' }}
                               </td>
@@ -169,13 +169,13 @@
                       *ngIf="resultadoEstudante.foto != '' && resultadoEstudante.foto != null && resultadoEstudante.foto != undefined; else semfoto"
                       class="row">
                       <img
-                        [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+                        [src]="resultadoEstudante.foto != undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
                         class="rounded-circle col-sm-12 col-lg-12" width="200" height="400" alt="">
                     </div>
                     <ng-template #semfoto>
                       <div class="col-sm-12 col-lg-9">
                         <img
-                          [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+                          [src]="resultadoEstudante.foto != undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
                           class="rounded-circle col-sm-12 col-lg-12" width="200" height="400" alt="">
                       </div>
                     </ng-template>
@@ -346,9 +346,9 @@
 
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

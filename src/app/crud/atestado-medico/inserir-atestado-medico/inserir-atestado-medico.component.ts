@@ -68,7 +68,7 @@ export class InserirAtestadoMedicoComponent implements OnInit {
   }
 
   public gravarNomeEstudante(event: KeyboardEvent): void {
-    if (event.keyCode === 13) {
+    if (event.keyCode == 13) {
       this.est_id = 0;
       this.arrayDeEstudantes = [];
       this.filtrarEstudante();
@@ -90,7 +90,7 @@ export class InserirAtestadoMedicoComponent implements OnInit {
 
   public filtrarCID(event: Event): void {
     this.codigoCid = (<HTMLInputElement>event.target).value.toString().toUpperCase();
-    if (this.codigoCid !== '') {
+    if (this.codigoCid != '') {
       this.atestadoMedicoService.consultarCid(this.codigoCid).then((response: Object) => {
         this.cid = response['nome'];
       });
@@ -128,13 +128,13 @@ export class InserirAtestadoMedicoComponent implements OnInit {
   }
 
   public validarSalvarAtestadoMedico(): boolean {
-    if (this.atestadoMedico.atm_codigo_cid !== '' &&
-      this.atestadoMedico.atm_data_fim !== '' &&
-      this.atestadoMedico.atm_data_inicio !== '' &&
-      this.atestadoMedico.atm_descricao_cid !== '' &&
-      this.atestadoMedico.atm_quantidade_dias_letivos !== 0 &&
-      this.atestadoMedico.est_id !== 0 &&
-      this.atestadoMedico.usr_id !== 0) {
+    if (this.atestadoMedico.atm_codigo_cid != '' &&
+      this.atestadoMedico.atm_data_fim != '' &&
+      this.atestadoMedico.atm_data_inicio != '' &&
+      this.atestadoMedico.atm_descricao_cid != '' &&
+      this.atestadoMedico.atm_quantidade_dias_letivos != 0 &&
+      this.atestadoMedico.est_id != 0 &&
+      this.atestadoMedico.usr_id != 0) {
       return true;
     }
     return false;

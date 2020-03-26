@@ -17,7 +17,7 @@
           <div class="row">
             <div class="mt-2 col-sm-12 col-md-4 col-lg-12 text-center">
               <img class="img rounded-circle m-3" width="150" height="150" [@chamado]="estado"
-                src="{{ estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg' }}" alt="">
+                src="{{ estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg' }}" alt="">
             </div>
           </div>
         </div>
@@ -97,9 +97,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

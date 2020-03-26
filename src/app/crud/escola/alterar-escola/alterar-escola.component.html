@@ -12,7 +12,7 @@
     </div>
     <form [formGroup]="formulario" (ngSubmit)="alterar()">
       <div class="card-body">
-        <div class="col-sm-12 col-lg-1 bg-dark m-2 p-2 rounded" *ngIf="escola.logo !== undefined">
+        <div class="col-sm-12 col-lg-1 bg-dark m-2 p-2 rounded" *ngIf="escola.logo != undefined">
           <img [src]="escola.logo" class="rounded-circle" width="80" height="80" alt="">
         </div>
         <div class="row m-3 form-group">
@@ -49,7 +49,7 @@
           <select name="regioesEscolas" class="form-control col-sm-12 col-lg-3" required name="ree_id"
             (change)="modificarInputs($event)">
             <option value="" disabled>Selecione a região</option>
-            <option *ngFor="let regiao of regioesEscolas" [selected]="regiao.id === escola.ree_id ? true : false"
+            <option *ngFor="let regiao of regioesEscolas" [selected]="regiao.id == escola.ree_id ? true : false"
               value="{{ regiao.id}}">{{
               regiao.nome }}</option>
           </select>
@@ -85,9 +85,9 @@
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

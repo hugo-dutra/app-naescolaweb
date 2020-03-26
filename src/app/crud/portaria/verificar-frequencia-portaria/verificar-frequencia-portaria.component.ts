@@ -174,7 +174,7 @@ export class VerificarFrequenciaPortariaComponent implements OnInit {
         const est_id_turma = elem.id;
         this.estatisticasFrequenciaEstudantesTurma.forEach(elem2 => {
           const est_id_estatistica = elem2["est_id"];
-          if (est_id_turma === est_id_estatistica) {
+          if (est_id_turma == est_id_estatistica) {
             this.estudantesTurmaSelecionada[this.estudantesTurmaSelecionada.indexOf(elem)].presencas = elem2["presencas"];
             this.estudantesTurmaSelecionada[this.estudantesTurmaSelecionada.indexOf(elem)].faltas = elem2["faltas"];
           }
@@ -202,7 +202,7 @@ export class VerificarFrequenciaPortariaComponent implements OnInit {
           const est_id_turma = elem.id;
           this.estudantesPresentesDataTurmaSelecionada.forEach(elem2 => {
             const est_id_presente = elem2["est_id"];
-            if (est_id_turma === est_id_presente) {
+            if (est_id_turma == est_id_presente) {
               this.estudantesTurmaSelecionada[this.estudantesTurmaSelecionada.indexOf(elem)].presente = true;
             }
           })

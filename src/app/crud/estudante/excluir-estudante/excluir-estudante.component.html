@@ -46,7 +46,7 @@
           <select name="tipo_sanguineo" class="form-control mt-2 col-sm-12 col-lg-4" disabled>
             <option value="" disabled>Selecione um tipo sanguíneo</option>
             <option *ngFor="let tipo_sanguineo of tipos_sanguineos"
-              [selected]="tipo_sanguineo === estudante.tipo_sanguineo ? true : false" value="{{ tipo_sanguineo }}">
+              [selected]="tipo_sanguineo == estudante.tipo_sanguineo ? true : false" value="{{ tipo_sanguineo }}">
               {{ tipo_sanguineo }}</option>
           </select>
           <div class="mt-2 col-sm-12 col-lg-1"></div>
@@ -77,9 +77,9 @@
       <div *ngIf="exibirAlerta" class="text-warning" [@chamado]="estado">* Todos os campos devem ser preenchidos</div>
     </div>
   </div>
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

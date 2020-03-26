@@ -27,7 +27,7 @@
                   pela liberação</span></th>
             </tr>
           </thead>
-          <tbody *ngIf="saidasAntecipadasEventuais !== null">
+          <tbody *ngIf="saidasAntecipadasEventuais != null">
             <tr class="row" *ngFor="let saidaAntecipadaEventual of saidasAntecipadasEventuais">
               <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.data }}</td>
               <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.hora }}</td>
@@ -41,9 +41,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

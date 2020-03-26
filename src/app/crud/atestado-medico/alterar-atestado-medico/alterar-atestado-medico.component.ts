@@ -114,14 +114,14 @@ export class AlterarAtestadoMedicoComponent implements OnInit {
   }
 
   public validarSalvarAtestadoMedico(): boolean {
-    if (this.nomeEstudante !== '' &&
-      this.codigoCid !== '' &&
-      this.nomeCID !== '' &&
-      this.data_inicio !== '' &&
-      this.data_fim !== '' &&
-      this.dias_diferenca !== 0 &&
-      this.usr_id !== 0 &&
-      this.est_id !== 0) {
+    if (this.nomeEstudante != '' &&
+      this.codigoCid != '' &&
+      this.nomeCID != '' &&
+      this.data_inicio != '' &&
+      this.data_fim != '' &&
+      this.dias_diferenca != 0 &&
+      this.usr_id != 0 &&
+      this.est_id != 0) {
       return true;
     }
     return false;
@@ -130,7 +130,7 @@ export class AlterarAtestadoMedicoComponent implements OnInit {
   public filtrarCID(event: Event): void {
     this.feedbackUsuario = 'Procurando, aguarde CID...';
     this.codigoCid = (<HTMLInputElement>event.target).value.toString().toUpperCase();
-    if (this.codigoCid !== '') {
+    if (this.codigoCid != '') {
       this.atestadoMedicoService.consultarCid(this.codigoCid).then((response: Object) => {
         this.feedbackUsuario = undefined;
         this.nomeCID = response['nome'];

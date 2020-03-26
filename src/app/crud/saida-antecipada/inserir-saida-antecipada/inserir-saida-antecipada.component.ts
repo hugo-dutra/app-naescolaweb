@@ -367,7 +367,7 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
     let arrayOfMatriculasParaExcluir = new Array<string>();
     let arrayOfIdsParaExcluir = new Array<string>();
     this.estudantesSaidaAutorizada.forEach(elem => {
-      if (trm_id === parseInt(elem['trm_id'])) {
+      if (trm_id == parseInt(elem['trm_id'])) {
         arrayOfIndices.push(this.estudantesSaidaAutorizada.indexOf(elem));
         arrayOfMatriculasParaExcluir.push(elem['matricula']);
         arrayOfIdsParaExcluir.push(elem['id']);

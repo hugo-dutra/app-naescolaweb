@@ -22,7 +22,7 @@
             <th class="col-lg-1 text-left" scope="col">Turno</th>
           </tr>
         </thead>
-        <tbody *ngIf="arrayEstudantesSemfoto !== null" class="diretores">
+        <tbody *ngIf="arrayEstudantesSemfoto != null" class="diretores">
           <tr class="row" *ngFor="let estudanteSemFoto of arrayEstudantesSemfoto">
             <td class="col-lg-6 text-left">{{ estudanteSemFoto.nome}}</td>
             <td class="col-lg-2 text-left">{{ estudanteSemFoto.serie }}</td>
@@ -39,9 +39,9 @@
 
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

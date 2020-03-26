@@ -17,7 +17,7 @@
           <div class="mt-2 col-sm-12 col-lg-3">
             <select name="serie" class="form-control" required name="sre_id" (change)="modificarInputs($event)">
               <option value="" disabled selected>Selecione uma série</option>
-              <option *ngFor="let serie of series" [selected]="serie.id === turma.sre_id ? true : false"
+              <option *ngFor="let serie of series" [selected]="serie.id == turma.sre_id ? true : false"
                 [value]="serie.id">{{
                   serie.nome }} - {{ serie.ete_abreviatura }}</option>
             </select>
@@ -25,7 +25,7 @@
           <div class="mt-2 col-sm-12 col-lg-3">
             <select name="turma" class="form-control" required name="nome" (change)="modificarInputs($event)">
               <option value="" disabled selected>Selecione uma turma</option>
-              <option *ngFor="let trm of turmas" [selected]="trm.nome === turma.nome ? true : false" [value]="trm.nome">{{
+              <option *ngFor="let trm of turmas" [selected]="trm.nome == turma.nome ? true : false" [value]="trm.nome">{{
                   trm.nome }}</option>
             </select>
           </div>
@@ -33,7 +33,7 @@
           <div class="mt-2 col-sm-12 col-lg-2">
             <select name="etapasEnsino" class="form-control" required name="trn_id" (change)="modificarInputs($event)">
               <option value="" disabled selected>Selecione um turno</option>
-              <option *ngFor="let turno of turnos" [selected]="turno.id === turma.trn_id ? true : false"
+              <option *ngFor="let turno of turnos" [selected]="turno.id == turma.trn_id ? true : false"
                 [value]="turno.id">{{
                   turno.nome }}</option>
             </select>
@@ -43,7 +43,7 @@
             <select hidden="true" name="escola" class="form-control" required name="esc_id"
               (change)="modificarInputs($event)">
               <option value="" disabled selected>Selecione uma escola</option>
-              <option *ngFor="let escola of escolas" [selected]="escola.id === turma.esc_id ? true : false"
+              <option *ngFor="let escola of escolas" [selected]="escola.id == turma.esc_id ? true : false"
                 [value]="escola.id">{{
                   escola.nome }}</option>
             </select>
@@ -65,9 +65,9 @@
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

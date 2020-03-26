@@ -28,7 +28,7 @@
                 <th *ngIf="exibirComponenteDetalhar" class="col-lg-1 col-sm-12" scope="col">Detalhar</th>
               </tr>
             </thead>
-            <tbody *ngIf="perfis !== null">
+            <tbody *ngIf="perfis != null">
               <tr class="row" *ngFor="let perfil of perfis">
                 <td class="col-lg-5 col-sm-12 text-left">{{ perfil.nome }}</td>
                 <td class="col-lg-4 col-sm-12 text-left">{{ perfil.escopo }}</td>
@@ -80,9 +80,9 @@
       </div>
     </div>
   </div>
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

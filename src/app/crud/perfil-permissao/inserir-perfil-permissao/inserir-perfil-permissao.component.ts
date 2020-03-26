@@ -81,7 +81,7 @@ export class InserirPerfilPermissaoComponent implements OnInit {
               'pac_id'
             ];
             const id: number = parseInt((<HTMLInputElement>checkedItems[item]).name, 10);
-            if (pac_id === id) {
+            if (pac_id == id) {
               (<HTMLInputElement>checkedItems[item]).checked = true;
             }
           }
@@ -144,7 +144,7 @@ export class InserirPerfilPermissaoComponent implements OnInit {
         const permissoesUsuario = Object.values(Utils.verificarPermissoes());
         const permissoesTotais = Object.values(response);
         this.permissoesExistentes = permissoesTotais.filter(
-          (set => a => true === set.has(a['rota']))(new Set(permissoesUsuario.map(b => b['rota']))),
+          (set => a => true == set.has(a['rota']))(new Set(permissoesUsuario.map(b => b['rota']))),
         );
         this.feedbackUsuario = undefined;
       })
@@ -167,7 +167,7 @@ export class InserirPerfilPermissaoComponent implements OnInit {
     objeto: PerfilPermissao,
   ): number {
     for (let i = 0; i < objetos.length; i++) {
-      if (objetos[i].pac_id === objeto.pac_id) {
+      if (objetos[i].pac_id == objeto.pac_id) {
         return i;
       }
     }

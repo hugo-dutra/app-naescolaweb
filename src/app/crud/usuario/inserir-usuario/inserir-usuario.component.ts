@@ -76,7 +76,7 @@ export class InserirUsuarioComponent implements OnInit {
   }
 
   public inserir(): void {
-    if (this.formulario.value.confirmarSenha === this.formulario.value.senha) {
+    if (this.formulario.value.confirmarSenha == this.formulario.value.senha) {
       this.carregarObjeto();
       this.feedbackUsuario = 'Salvando dados, aguarde...';
       this.usuarioService

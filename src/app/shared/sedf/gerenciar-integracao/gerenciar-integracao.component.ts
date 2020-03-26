@@ -167,7 +167,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
           const estudantesAntigos = Object.values(response);
           const estudantesDesativados = estudantesAntigos.filter((valor) => {
             return !estudantesNovos.some((valor2) => {
-              return valor['id'] === valor2['idpes'];
+              return valor['id'] == valor2['idpes'];
             });
           });
           const arrayDeEstudanteId = estudantesDesativados.map(valor => {
@@ -300,7 +300,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
     this.feedbackUsuario = `Baixando notas da turma ${turma['nome']}`;
     this.sedfService.listarNotasImportacao(this.tokenIntegracao, turma['id']/* 325028 */)
       .toPromise().then((response: Response) => {
-        if (response != null && response !== undefined) {
+        if (response != null && response != undefined) {
           const notasFaltas = Object.values(response);
           this.atualizarDisciplinas(notasFaltas).then(() => {
             this.feedbackUsuario = `Importando notas da turma ${turma['nome']}, aguarde...`;
@@ -351,7 +351,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
   }
 
   public filtrarEtapaEnsinoEJA(objeto: Object) {
-    return objeto['nm_curso'] !== 'Educação de Jovens e Adultos';
+    return objeto['nm_curso'] != 'Educação de Jovens e Adultos';
   }
 
   public eliminarTapaEnsinoEJA(turmas: Object[]): Object[] {
@@ -449,7 +449,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public atualizarDisciplinas(notasFaltas: Object[]): Promise<Object> {
     const disciplinasSemRepeticao = new Array<Object>();
     const retorno = new Promise((resolve, reject) => {
-      if (notasFaltas != null && notasFaltas !== undefined) {
+      if (notasFaltas != null && notasFaltas != undefined) {
         disciplinasSemRepeticao.push(...Utils.eliminaValoresRepetidos(notasFaltas, 'cod_disciplina'));
         this.feedbackUsuario = 'Atualizando disciplinas, aguarde...';
         this.inserirDisciplinas(disciplinasSemRepeticao).then(() => {

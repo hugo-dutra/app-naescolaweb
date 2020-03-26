@@ -268,7 +268,7 @@ export class FirebaseService {
             reject('Erro ao gravar autorizações');
           });
         contaUsuariosCadastrados++;
-        if (contaUsuariosCadastrados === totalUsuariosCadastrados) {
+        if (contaUsuariosCadastrados == totalUsuariosCadastrados) {
           resolve('usuarios cadastrados');
         }
       });
@@ -291,7 +291,7 @@ export class FirebaseService {
             reject('Erro ao gravar autorizações');
           });
         contaUsuariosCadastrados++;
-        if (contaUsuariosCadastrados === totalUsuariosCadastrados) {
+        if (contaUsuariosCadastrados == totalUsuariosCadastrados) {
           resolve('usuarios cadastrados');
         }
       });
@@ -410,7 +410,7 @@ export class FirebaseService {
         const status = true;
         const id = documento.id;
         const dados = documento.data();
-        if (dados['registrarEntradaManual'] === false) {
+        if (dados['registrarEntradaManual'] == false) {
           this.firestore.collection('naescolaApp')
             .doc(inep)
             .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status });
@@ -428,7 +428,7 @@ export class FirebaseService {
         const status = true;
         const id = documento.id;
         const dados = documento.data();
-        if (dados['registrarEntradaManual'] === true) {
+        if (dados['registrarEntradaManual'] == true) {
           this.firestore.collection('naescolaApp')
             .doc(inep)
             .collection('sincronizarOcorrencias').doc(id).update({ sincronizada: status });
@@ -865,7 +865,7 @@ export class FirebaseService {
             const est_id = matriculado.id;
             this.apagarMatriculadoFirebaseFirestorePortaria(codigo_portaria, est_id).then(() => {
               contaExcluiMatriculados += 1;
-              if (contaExcluiMatriculados === matriculados.length) {
+              if (contaExcluiMatriculados == matriculados.length) {
                 resolve('ok');
               }
             });
@@ -892,7 +892,7 @@ export class FirebaseService {
           cronogramaPortaria['crp_id'] = parseInt(cronograma.id, 10);
           this.apagarCronogramaFirebaseFirestorePortaria(cronogramaPortaria).then(() => {
             contaExcluiCronogramas += 1;
-            if (contaExcluiCronogramas === cronogramas.length) {
+            if (contaExcluiCronogramas == cronogramas.length) {
               resolve('ok');
             }
           });

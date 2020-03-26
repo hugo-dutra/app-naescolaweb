@@ -75,7 +75,7 @@
                 <div class="card-body">
                   <h5 class="card-title">
                     <div class="row">
-                      <img src="{{ usuario.foto !== undefined && usuario.foto || 'assets/images/noavatar.jpg' }}"
+                      <img src="{{ usuario.foto != undefined && usuario.foto || 'assets/images/noavatar.jpg' }}"
                         class="img rounded-circle ml-1 mt-1 col-12 center-block" width="135" height="135">
                     </div>
                   </h5>
@@ -109,9 +109,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

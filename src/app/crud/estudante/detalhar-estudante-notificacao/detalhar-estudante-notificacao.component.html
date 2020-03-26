@@ -32,7 +32,7 @@
               </th>
             </tr>
           </thead>
-          <tbody *ngIf="notificacoesDiversas !== null">
+          <tbody *ngIf="notificacoesDiversas != null">
             <tr class="row" *ngFor="let notificacao of notificacoesDiversas">
               <td class="col-sm-12 col-md-4 col-lg-3 text-center">{{ notificacao.data_registro }}</td>
               <td class="col-sm-12 col-md-4 col-lg-2 text-center">{{ notificacao.hora_registro }}</td>
@@ -97,9 +97,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

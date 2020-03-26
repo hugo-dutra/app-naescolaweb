@@ -65,7 +65,7 @@ export class AlterarUsuarioComponent implements OnInit {
 
   public carregarDados(): void {
     const dados_escola = localStorage.getItem('dados_escola');
-    if (dados_escola !== undefined && dados_escola != null && dados_escola !== '') {
+    if (dados_escola != undefined && dados_escola != null && dados_escola != '') {
       this.dados_escola = JSON.parse(Utils.decriptAtoB(dados_escola, CONSTANTES.PASSO_CRIPT))[0];
       this.esc_id = parseInt(this.dados_escola['id'], 10);
     }
@@ -98,7 +98,7 @@ export class AlterarUsuarioComponent implements OnInit {
 
   public alterarStatusUsuario(use_id: number, event: Event): void {
     const use_id_local = use_id;
-    const status_checked = (<HTMLInputElement>event.target).checked === true ? 1 : 0;
+    const status_checked = (<HTMLInputElement>event.target).checked == true ? 1 : 0;
     this.feedbackUsuario = 'Alterando status do usuário...';
     this.usuarioService.alterarStatusUsuario(use_id_local, status_checked).toPromise().then(() => {
       this.feedbackUsuario = undefined;

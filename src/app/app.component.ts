@@ -56,10 +56,10 @@ export class AppComponent implements OnInit {
   }
 
   public setTitle(): void {
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILD_SEDF) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
       this.titleService.setTitle(CONSTANTES.NOME_SISTEMA_SEDF);
     }
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILS_RESOLVIDOS) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
       this.titleService.setTitle(CONSTANTES.NOME_SISTEMA_RESOLVIDOS);
     }
   }
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
 
   public inicialiarFirebase(): void {
     let config;
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILS_RESOLVIDOS) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
       config = {
         apiKey: 'AIzaSyAfgiA5ogBvZXkZISWNWGOlPD8iID2KGzo',
         authDomain: 'naescolaweb-af337.firebaseapp.com',
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
       };
     }
 
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILD_SEDF) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
       config = {
         apiKey: 'AIzaSyB6oUQiVRmUPrzZO0sU2GVdr3GaojAv_AA',
         authDomain: 'educadf-92b0b.firebaseapp.com',
@@ -131,8 +131,8 @@ export class AppComponent implements OnInit {
     const tempDadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT));
     const tempDadosUsuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT));
 
-    if (tempDadosEscola != null && tempDadosEscola !== undefined &&
-      tempDadosUsuario != null && tempDadosUsuario !== undefined) {
+    if (tempDadosEscola != null && tempDadosEscola != undefined &&
+      tempDadosUsuario != null && tempDadosUsuario != undefined) {
       this.dados_escola = tempDadosEscola[0];
       this.dados_usuario = tempDadosUsuario[0];
       this.esc_id = parseInt(this.dados_escola['id'], 10);
@@ -143,7 +143,7 @@ export class AppComponent implements OnInit {
   }
 
   public listarRegrasAlertasUsuario(): void {
-    if (this.usr_id != null && this.usr_id !== undefined && this.esc_id != null && this.esc_id !== undefined) {
+    if (this.usr_id != null && this.usr_id != undefined && this.esc_id != null && this.esc_id != undefined) {
       this.alertaService.listarRegraAlertaUsuario(this.usr_id, this.esc_id).toPromise().then((response: Response) => {
         this.arrayOfRegrasAlertasUsuario = Object.values(response);
         this.listarAlertasOcorrencia();
@@ -179,7 +179,7 @@ export class AppComponent implements OnInit {
         .then((response: Response) => {
           contaRequisicoes++;
           this.arrayOfOcorrenciasPeriodoConsiderado.push(...Object.values(response));
-          if (contaRequisicoes === this.arrayOfRegrasAlertasUsuario.length) {
+          if (contaRequisicoes == this.arrayOfRegrasAlertasUsuario.length) {
             this.avaliarOcorrenciasDentroRegrasAlertas();
           }
         }).catch((erro: Response) => {
@@ -204,42 +204,42 @@ export class AppComponent implements OnInit {
         const quantidadeOcorrenciasDeTipo = parseInt(ocorrencia['quantidade'], 10);
         switch (operador) {
           case 'menor': {
-            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
           case 'menor ou igual': {
-            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
           case 'igual': {
-            if (quantidadeOcorrenciasDeTipo === valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo == valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
           case 'maior ou igual': {
-            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
           case 'maior': {
-            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }
             break;
           }
           case 'diferente': {
-            if (quantidadeOcorrenciasDeTipo !== valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo != valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(this.arrayOfOcorrenciasSelecionadas);
             }

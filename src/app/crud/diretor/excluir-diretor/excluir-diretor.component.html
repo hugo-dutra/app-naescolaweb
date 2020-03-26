@@ -14,7 +14,7 @@
     <div class="card-body">
       <p class="text-danger"><b>Deseja excluir esse registro !?</b></p>
       <form>
-        <div class=" col-sm-12 col-lg-1 bg-dark m-2 p-2 rounded" *ngIf="diretor.foto !== undefined">
+        <div class=" col-sm-12 col-lg-1 bg-dark m-2 p-2 rounded" *ngIf="diretor.foto != undefined">
           <img [src]="diretor.foto" class="rounded-circle" width="80" height="80" alt="">
         </div>
         <div class="row   form-group">
@@ -45,9 +45,9 @@
       <i class="fa fa-lg fa-info-circle text-light"> Excluir diretor diretor</i>
     </div>
 
-    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
       <div>
-        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
           <div class="col-2">
             <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
           </div>

@@ -23,7 +23,7 @@ const verificarPermissaoAcesso = (link: any): boolean => {
   const permissoes: Object = Utils.verificarPermissoes();
   const rota: string = link['link'].toString().split(',')[0];
   for (const key in permissoes) {
-    if (permissoes[key]['rota'] === rota) {
+    if (permissoes[key]['rota'] == rota) {
       return true;
     }
   }
@@ -40,13 +40,13 @@ try {
   }
 
   for (let idxGrupo = 0; idxGrupo < localStorageGrupos.length; idxGrupo++) {
-    if (localStorageGrupos[idxGrupo]['modulo'] === 'cadastro') {
+    if (localStorageGrupos[idxGrupo]['modulo'] == 'cadastro') {
       const menuItem = new NbMenuItem();
       menuItem.title = localStorageGrupos[idxGrupo]['texto'];
       menuItem.icon = 'layout-outline';
       const menus = new Array<NbMenuItem>();
       for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
-        if (localStorageGrupos[idxGrupo]['nome'] === localStorageMenus[idxMenu]['grupo']) {
+        if (localStorageGrupos[idxGrupo]['nome'] == localStorageMenus[idxMenu]['grupo']) {
           const menu = new NbMenuItem;
           menu.title = localStorageMenus[idxMenu]['texto'];
           menu.link = `/${localStorageMenus[idxMenu]['link']}`;
@@ -57,14 +57,14 @@ try {
       gruposCadastro.push(menuItem);
     }
 
-    if (localStorageGrupos[idxGrupo]['modulo'] === 'relatorio') {
+    if (localStorageGrupos[idxGrupo]['modulo'] == 'relatorio') {
       const menuItem = new NbMenuItem();
       menuItem.title = localStorageGrupos[idxGrupo]['texto'];
       menuItem.icon = 'layout-outline';
 
       const menus = new Array<NbMenuItem>();
       for (let idxMenu = 0; idxMenu < localStorageMenus.length; idxMenu++) {
-        if (localStorageGrupos[idxGrupo]['nome'] === localStorageMenus[idxMenu]['grupo']) {
+        if (localStorageGrupos[idxGrupo]['nome'] == localStorageMenus[idxMenu]['grupo']) {
           const menu = new NbMenuItem;
           menu.title = localStorageMenus[idxMenu]['texto'];
           menu.link = `/${localStorageMenus[idxMenu]['link']}`;

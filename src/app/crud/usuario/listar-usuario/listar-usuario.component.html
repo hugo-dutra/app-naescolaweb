@@ -77,10 +77,10 @@
                   senha</th>
               </tr>
             </thead>
-            <tbody *ngIf="usuarios !== null">
+            <tbody *ngIf="usuarios != null">
               <tr class="row" *ngFor="let usuario of usuarios" [@chamado]="estado">
                 <td class="col-lg-1 col-md-4 col-sm-12 text-center"><img class="img rounded-circle" width="40"
-                    height="40" src="{{ usuario.foto !== undefined && usuario.foto || 'assets/images/noavatar.jpg' }}"
+                    height="40" src="{{ usuario.foto != undefined && usuario.foto || 'assets/images/noavatar.jpg' }}"
                     alt=""></td>
                 <td class="col-lg-4 col-md-4 col-sm-12 text-left">{{ usuario.nome }}</td>
                 <td class="col-lg-3 col-md-4 col-sm-12 text-left">{{ usuario.email }}</td>
@@ -100,17 +100,17 @@
       </div>
       <nav aria-label="..." class="float-right">
         <ul class="pagination">
-          <li class="page-item" *ngIf="navegacaoInicio === undefined || navegacaoInicio === true">
+          <li class="page-item" *ngIf="navegacaoInicio == undefined || navegacaoInicio == true">
             <a class="page-link fa fa-arrow-left text-danger" (click)="navegarAnterior()"></a>
           </li>
-          <li class="page-item" *ngIf="navegacaoInicio === false">
+          <li class="page-item" *ngIf="navegacaoInicio == false">
             <a class="page-link fa fa-arrow-left text-dark" (click)="navegarAnterior()"></a>
           </li>
 
-          <li class="page-item" *ngIf="navegacaoFim === true">
+          <li class="page-item" *ngIf="navegacaoFim == true">
             <a class="page-link fa fa-arrow-right text-danger" (click)="navegarProximo()"></a>
           </li>
-          <li class="page-item" *ngIf="navegacaoFim === false || navegacaoFim === undefined">
+          <li class="page-item" *ngIf="navegacaoFim == false || navegacaoFim == undefined">
             <a class="page-link fa fa-arrow-right text-dark" (click)="navegarProximo()"></a>
           </li>
         </ul>
@@ -118,22 +118,22 @@
     </div>
 
     <div class="card-footer text-muted bg-dark">
-      <i *ngIf="feedbackUsuario === undefined && (navegacaoFim === false || navegacaoFim === undefined)"
+      <i *ngIf="feedbackUsuario == undefined && (navegacaoFim == false || navegacaoFim == undefined)"
         class="fa fa fa-info-circle text-light" [@chamado]="estado"> Listagem de usuários - Exibindo
         {{ offsetRegistros+1 }} ao {{ offsetRegistros +
           saltarQuantidade
           > totalRegistros ? totalRegistros : offsetRegistros + saltarQuantidade }} de {{ totalRegistros }}</i>
-      <i *ngIf="feedbackUsuario !== undefined" class="fa fa fa-question-circle text-light" [@chamado]="estado">
+      <i *ngIf="feedbackUsuario != undefined" class="fa fa fa-question-circle text-light" [@chamado]="estado">
         Atualizando</i>
-      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-info-circle text-light"
+      <i *ngIf="feedbackUsuario == undefined && navegacaoFim == true" class="fa fa-info-circle text-light"
         [@chamado]="estado">
         Listagem de usuários - Exibindo registros finais do total de {{ totalRegistros }}</i>
     </div>
   </div>
 
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

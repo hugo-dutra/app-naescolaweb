@@ -4,7 +4,6 @@ import { AtividadeExtraClasse } from './../atividade-extra-classe.model';
 import { AtividadeExtraClasseService } from './../atividade-extra-classe.service';
 import { EstudanteService } from './../../estudante/estudante.service';
 import { ProfessorDisciplinaService } from './../../professor-disciplina/professor-disciplina.service';
-import { ProfessorService } from './../../professor/professor.service';
 import { Router } from '@angular/router';
 import { FirebaseService } from './../../../shared/firebase/firebase.service';
 import { AlertModalService } from './../../../shared-module/alert-modal.service';
@@ -234,7 +233,7 @@ export class InserirAtividadeComponent implements OnInit {
       });
     } else {
       this.arrayDeEstudantes = this.arrayDeEstudantes.filter((valor) => {
-        return valor['trm_id'] !== trmIdSelecionada;
+        return valor['trm_id'] != trmIdSelecionada;
       });
     }
   }
@@ -244,13 +243,13 @@ export class InserirAtividadeComponent implements OnInit {
     const selecionarEstudantes = (<HTMLInputElement>event.target).checked;
     if (selecionarEstudantes) {
       this.arrayDeEstudantes.forEach((estudante) => {
-        if (estudante['id'] === estIdSelecionado) {
+        if (estudante['id'] == estIdSelecionado) {
           this.arrayDeEstudantesSelecionados.push(estudante);
         }
       });
     } else {
       this.arrayDeEstudantesSelecionados = this.arrayDeEstudantesSelecionados.filter((estudante) => {
-        return estudante['id'] !== estIdSelecionado ? estudante : null;
+        return estudante['id'] != estIdSelecionado ? estudante : null;
       });
     }
   }
@@ -258,7 +257,7 @@ export class InserirAtividadeComponent implements OnInit {
   public pegarNomeProfessor(): void {
     this.arrayDeProfessorDisciplina.forEach((valor) => {
       const prdId = parseInt(valor['prd_id'], 10);
-      if (prdId === this.prdId, 10) {
+      if (prdId == this.prdId, 10) {
         this.nomeProfessor = valor['professor'];
         this.nomeDisciplina = valor['disciplina'];
       }
@@ -314,7 +313,7 @@ export class InserirAtividadeComponent implements OnInit {
         this.firebaseService.enviarPushFirebase(message.to, message.titulo).toPromise().then(() => {
           pushesEnviados++;
           this.feedbackUsuario = `Enviada(s) ${pushesEnviados} de ${messageFirebase.length} notificações, aguarde...`;
-          if (pushesEnviados === messageFirebase.length) {
+          if (pushesEnviados == messageFirebase.length) {
             resolve('ok');
           }
         }).catch((erro: Response) => {
@@ -349,7 +348,7 @@ export class InserirAtividadeComponent implements OnInit {
             arrayDeMensagensFirebase.push(messageFirebase);
             this.feedbackUsuario = `Gravando ${arrayDeMensagensFirebase.length} de
             ${this.arrayDeEstudantesSelecionados.length}...`;
-            if (arrayDeMensagensFirebase.length === this.arrayDeEstudantesSelecionados.length) {
+            if (arrayDeMensagensFirebase.length == this.arrayDeEstudantesSelecionados.length) {
               resolve(arrayDeMensagensFirebase);
             }
           }).catch((erro: Response) => {
@@ -362,7 +361,7 @@ export class InserirAtividadeComponent implements OnInit {
 
   public excluirArquivoAnexado(nomeArquivo: string): void {
     this.arrayDeDadosDosAnexos = this.arrayDeDadosDosAnexos.filter(anexo => {
-      return anexo['nome'] !== nomeArquivo;
+      return anexo['nome'] != nomeArquivo;
     });
   }
 
@@ -385,7 +384,7 @@ export class InserirAtividadeComponent implements OnInit {
           anexo['url'] = url_download;
           this.arrayDeDadosDosAnexos.push(anexo);
           contadorArquivosEnviados++;
-          if (contadorArquivosEnviados === arquivosSelecionados.length) {
+          if (contadorArquivosEnviados == arquivosSelecionados.length) {
             this.feedbackUsuario = undefined;
           }
         }).catch((erro: Response) => {

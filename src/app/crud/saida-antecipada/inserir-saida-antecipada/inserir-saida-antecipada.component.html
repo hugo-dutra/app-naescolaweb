@@ -45,7 +45,7 @@
                 </label>
               </div>
             </div>
-            <div class='row dias_semana' *ngIf="saidaRecorrente===true" [@chamado]="estado">
+            <div class='row dias_semana' *ngIf="saidaRecorrente==true" [@chamado]="estado">
               <div class="col-sm-12 col-lg-4">
                 <input type="checkbox" class="col-sm-12 col-lg-2 checkbox_2" id="ch_segunda_feira" name="segunda"
                   value="2" (change)="modificarDiaDaSemanaSaidaRecorrente($event)">
@@ -125,9 +125,9 @@
         <i class="fa fa-lg fa-info-circle text-light"> Nova saída antecipada</i>
       </div>
     </div>
-    <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+    <div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
       <div>
-        <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+        <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
           <div class="col-2">
             <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
           </div>

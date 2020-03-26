@@ -140,7 +140,7 @@
             name="periodo_letivo" id="periodo_letivo">
             <option value="" disabled="disabled">Selecione o período letivo</option>
             <option *ngFor="let periodoLetivo of arrayOfPeriodosLetivos"
-              [selected]="periodoLetivo.id === diarioAvaliacao.prl_id ? true : false" id="prl_id_{{ periodoLetivo.id }}"
+              [selected]="periodoLetivo.id == diarioAvaliacao.prl_id ? true : false" id="prl_id_{{ periodoLetivo.id }}"
               [value]="periodoLetivo.id">{{ periodoLetivo.periodo }}</option>
           </select>
           <span class="text-muted"><small>Período letivo da avaliação</small></span>
@@ -187,9 +187,9 @@
       <i class="fa fa-lg fa-info-circle text-light"> Listagem de notas de estudantes</i>
     </div>
   </div>
-  <div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+  <div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
     <div>
-      <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+      <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
         <div class="col-2">
           <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
         </div>

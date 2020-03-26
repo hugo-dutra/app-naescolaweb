@@ -5,7 +5,7 @@
         <a *ngFor="let resultadoEstudante of resultadosEstudantes"
           class="list-group-item list-group-item-action text-center text-small" [id]="resultadoEstudante.est_id"
           data-toggle="list" role="tab" aria-controls="home" (click)="selecionarEstudante(resultadoEstudante)"><img
-            [src]="resultadoEstudante.foto !== undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
+            [src]="resultadoEstudante.foto != undefined && resultadoEstudante.foto || 'assets/images/noavatar.jpg'"
             class="img-fluid rounded-circle ml-1 mt-1" width="135" height="180"
             alt=""><br>{{resultadoEstudante.estudante}}</a>
       </div>
@@ -81,9 +81,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

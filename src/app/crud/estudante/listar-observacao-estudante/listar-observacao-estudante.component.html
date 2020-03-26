@@ -34,7 +34,7 @@
                   Excluir</th>
               </tr>
             </thead>
-            <tbody *ngIf="arrayOfObservacoes !== null" [@chamado]="estado">
+            <tbody *ngIf="arrayOfObservacoes != null" [@chamado]="estado">
               <tr class="row" *ngFor="let observacao of arrayOfObservacoes" [@chamado]="estado">
                 <td class="col-sm-12 col-lg-2 text-left">{{ observacao.data_hora }}</td>
                 <td class="col-sm-12 col-lg-6 text-left">{{ observacao.observacao }}</td>
@@ -112,9 +112,9 @@
   </div>
 </div>
 
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined" [@chamado]="estado">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined" [@chamado]="estado">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-sm-12 col-lg-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

@@ -129,7 +129,7 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
       }
 
       this.mesesComBoleto.forEach(mesComBoleto => {
-        if (mes['numero'] === mesComBoleto['mes']) {
+        if (mes['numero'] == mesComBoleto['mes']) {
           mes['temBoleto'] = true;
           mes['boleto'] = mesComBoleto;
         }
@@ -147,7 +147,7 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
         mes['ativo'] = false;
       }
 
-      if (parseInt(mes['numero'], 10) === parseInt((new Date().getMonth() + 1).toString(), 10)) {
+      if (parseInt(mes['numero'], 10) == parseInt((new Date().getMonth() + 1).toString(), 10)) {
         if (this.diaPadraoVencimento < moment().date()) {
           mes['ativo'] = false;
         }

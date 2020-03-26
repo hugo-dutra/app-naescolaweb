@@ -107,7 +107,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public carregarLayouts(): void {
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILD_SEDF) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
       this.layouts = [
         { id: 0, name: 'Básico-frente' },
         { id: 1, name: 'Básico-frente e verso' },
@@ -117,7 +117,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         { id: 6, name: 'Padrão-Resolvidos' },
       ];
     }
-    if (CONSTANTES.BUILD_DESTINO === CONSTANTES.BUILS_RESOLVIDOS) {
+    if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
       this.layouts = [
         { id: 0, name: 'Básico-frente' },
         { id: 1, name: 'Básico-frente e verso' },
@@ -186,7 +186,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       });
       const tamanhoArrayAntes = this.arrayOfEstudantesCartaoConfeccionado.length;
       /* Se layout não for etiqueta, faz o filtro */
-      if (this.id_layout_selecionado !== 2) {
+      if (this.id_layout_selecionado != 2) {
         this.arrayOfEstudantesCartaoConfeccionado = this.arrayOfEstudantesCartaoConfeccionado.filter((valor) => {
           return valor.foto.length > 0;
         });
@@ -194,14 +194,14 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
       const tamanhoArrayDepois = this.arrayOfEstudantesCartaoConfeccionado.length;
 
       /* Layout etiqueta */
-      if (this.id_layout_selecionado !== 2) {
-        if (tamanhoArrayAntes !== tamanhoArrayDepois) {
+      if (this.id_layout_selecionado != 2) {
+        if (tamanhoArrayAntes != tamanhoArrayDepois) {
           this.alertModalService.showAlertWarning(
             'Alguns estudantes dessa turma não possuem foto. Somente são listados estudantes que possuem foto.');
         }
       }
 
-      if (this.arrayOfEstudantesCartaoConfeccionado.length === 0) {
+      if (this.arrayOfEstudantesCartaoConfeccionado.length == 0) {
         this.alertModalService.showAlertWarning(
           'Nenhum estudante dessa turma possui foto. Foto é um requisito para gerar esse documento');
       }
@@ -255,11 +255,11 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
           html2canvas(document.querySelector(`#etiqueta_${elem['est_id']}`), { useCORS: true }).then(canvas => {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
 
-            if (contaCartao % quantidadeColunas === 0 && contaCartao > 0) {
+            if (contaCartao % quantidadeColunas == 0 && contaCartao > 0) {
               yPos += alturaCartao;
               xPos = 0;
             }
-            if (contaCartao % quantidadeCartoesPorPagina === 0 && contaCartao > 0) {
+            if (contaCartao % quantidadeCartoesPorPagina == 0 && contaCartao > 0) {
               yPos = 0;
               xPos = 0;
               doc.addPage('portrait', 'a4');
@@ -275,7 +275,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['est_id']);
 
             contaCartao += 1;
-            if (contaCartao === this.arrayOfEstudantesCartaoConfeccionado.length) {
+            if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
               this.feedbackUsuario = undefined;
               doc.save(`cartoes.pdf`);
               resolve('ok');
@@ -312,15 +312,15 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
           html2canvas(document.querySelector(`#cartao_${elem['est_id']}`), { useCORS: true }).then(canvas => {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
 
-            if (contaCartao % 2 === 0 && contaCartao > 0) {
+            if (contaCartao % 2 == 0 && contaCartao > 0) {
               yPos += (alturaPagina / 4);
             }
-            if (contaCartao % 8 === 0 && contaCartao > 0) {
+            if (contaCartao % 8 == 0 && contaCartao > 0) {
               yPos = 0;
               xPos = -1 + margem;
               doc.addPage('portrait', 'a4');
             }
-            if (xPos === 0 + margem) {
+            if (xPos == 0 + margem) {
               xPos = (larguraPagina / 2) + margem;
             } else {
               xPos = 0 + margem;
@@ -330,7 +330,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['est_id']);
 
             contaCartao += 1;
-            if (contaCartao === this.arrayOfEstudantesCartaoConfeccionado.length) {
+            if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
               this.feedbackUsuario = undefined;
               doc.save(`cartoes.pdf`);
               resolve('ok');
@@ -369,11 +369,11 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
 
 
-            if (contaCartao % quantidadeColunas === 0 && contaCartao > 0) {
+            if (contaCartao % quantidadeColunas == 0 && contaCartao > 0) {
               yPos += alturaCartao;
               xPos = 0;
             }
-            if (contaCartao % quantidadeCartoesPorPagina === 0 && contaCartao > 0) {
+            if (contaCartao % quantidadeCartoesPorPagina == 0 && contaCartao > 0) {
               yPos = 0;
               xPos = 0;
               doc.addPage('portrait', 'a4');
@@ -389,7 +389,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['est_id']);
 
             contaCartao += 1;
-            if (contaCartao === this.arrayOfEstudantesCartaoConfeccionado.length) {
+            if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
               this.feedbackUsuario = undefined;
               doc.save(`cartoes.pdf`);
               resolve('ok');
@@ -431,11 +431,11 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             { useCORS: true }).then(canvas => {
               this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
 
-              if (contaCartao % quantidadeColunas === 0 && contaCartao > 0) {
+              if (contaCartao % quantidadeColunas == 0 && contaCartao > 0) {
                 yPos += alturaCartao;
                 xPos = 0;
               }
-              if (contaCartao % quantidadeCartoesPorPagina === 0 && contaCartao > 0) {
+              if (contaCartao % quantidadeCartoesPorPagina == 0 && contaCartao > 0) {
                 yPos = 0;
                 xPos = 0;
                 doc.addPage('portrait', 'a4');
@@ -451,7 +451,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
               doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['est_id']);
 
               contaCartao += 1;
-              if (contaCartao === this.arrayOfEstudantesCartaoConfeccionado.length) {
+              if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
                 this.feedbackUsuario = undefined;
                 doc.save(`cartoes.pdf`);
                 resolve('ok');
@@ -481,8 +481,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         html2canvas(document.querySelector(`#frente_sedf_${elem['est_id']}`), { useCORS: true }).then(canvasFrente => {
           arrayOfCanvas.push({ canvas: canvasFrente, est_id: elem['est_id'], face: 'frente', nome: elem['nome'] });
           canvasCartaoFrente++;
-          if (canvasCartaoVerso === this.arrayOfEstudantesCartaoConfeccionado.length &&
-            canvasCartaoFrente === this.arrayOfEstudantesCartaoConfeccionado.length) {
+          if (canvasCartaoVerso == this.arrayOfEstudantesCartaoConfeccionado.length &&
+            canvasCartaoFrente == this.arrayOfEstudantesCartaoConfeccionado.length) {
             this.desenharPDF(arrayOfCanvas, doc);
           }
         });
@@ -492,8 +492,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
         html2canvas(document.querySelector(`#verso_sedf_${elem['est_id']}`), { useCORS: true }).then(canvasVerso => {
           arrayOfCanvas.push({ canvas: canvasVerso, est_id: elem['est_id'], face: 'verso', nome: elem['nome'] });
           canvasCartaoVerso++;
-          if (canvasCartaoVerso === this.arrayOfEstudantesCartaoConfeccionado.length &&
-            canvasCartaoFrente === this.arrayOfEstudantesCartaoConfeccionado.length) {
+          if (canvasCartaoVerso == this.arrayOfEstudantesCartaoConfeccionado.length &&
+            canvasCartaoFrente == this.arrayOfEstudantesCartaoConfeccionado.length) {
             this.desenharPDF(arrayOfCanvas, doc);
           }
         });
@@ -521,8 +521,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
           { useCORS: true }).then(canvasFrente => {
             arrayOfCanvas.push({ canvas: canvasFrente, est_id: elem['est_id'], face: 'frente', nome: elem['nome'] });
             canvasCartaoFrente++;
-            if (canvasCartaoVerso === this.arrayOfEstudantesCartaoConfeccionado.length &&
-              canvasCartaoFrente === this.arrayOfEstudantesCartaoConfeccionado.length) {
+            if (canvasCartaoVerso == this.arrayOfEstudantesCartaoConfeccionado.length &&
+              canvasCartaoFrente == this.arrayOfEstudantesCartaoConfeccionado.length) {
               this.desenharPDF(arrayOfCanvas, doc);
             }
           });
@@ -533,8 +533,8 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
           { useCORS: true }).then(canvasVerso => {
             arrayOfCanvas.push({ canvas: canvasVerso, est_id: elem['est_id'], face: 'verso', nome: elem['nome'] });
             canvasCartaoVerso++;
-            if (canvasCartaoVerso === this.arrayOfEstudantesCartaoConfeccionado.length &&
-              canvasCartaoFrente === this.arrayOfEstudantesCartaoConfeccionado.length) {
+            if (canvasCartaoVerso == this.arrayOfEstudantesCartaoConfeccionado.length &&
+              canvasCartaoFrente == this.arrayOfEstudantesCartaoConfeccionado.length) {
               this.desenharPDF(arrayOfCanvas, doc);
             }
           });
@@ -572,11 +572,11 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
             { useCORS: true }).then(canvas => {
               this.feedbackUsuario = `Criando cartão do(a) estudante ${elem['nome']}`;
 
-              if (contaCartao % quantidadeColunas === 0 && contaCartao > 0) {
+              if (contaCartao % quantidadeColunas == 0 && contaCartao > 0) {
                 yPos += alturaCartao;
                 xPos = 0;
               }
-              if (contaCartao % quantidadeCartoesPorPagina === 0 && contaCartao > 0) {
+              if (contaCartao % quantidadeCartoesPorPagina == 0 && contaCartao > 0) {
                 yPos = 0;
                 xPos = 0;
                 doc.addPage('portrait', 'a4');
@@ -592,7 +592,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
               doc.addImage(imgData, 'JPEG', xPos, yPos, larguraCartao, alturaCartao, elem['est_id']);
 
               contaCartao += 1;
-              if (contaCartao === this.arrayOfEstudantesCartaoConfeccionado.length) {
+              if (contaCartao == this.arrayOfEstudantesCartaoConfeccionado.length) {
                 this.feedbackUsuario = undefined;
                 doc.save(`cartoes.pdf`);
                 resolve('ok');

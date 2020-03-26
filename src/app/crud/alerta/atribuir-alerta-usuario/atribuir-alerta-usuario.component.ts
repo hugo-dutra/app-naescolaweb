@@ -158,8 +158,8 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
       this.arrayOfUsuariosSelecionados.forEach(usr_id => {
         contaUsuario++;
         this.arrayOfRegrasAlertasUsuariosEscola.push({ ral_id: ral_id, usr_id: usr_id, esc_id: this.esc_id });
-        if (contaRegras === this.arrayOfRegrasSelecionadas.length &&
-          contaUsuario === this.arrayOfUsuariosSelecionados.length) {
+        if (contaRegras == this.arrayOfRegrasSelecionadas.length &&
+          contaUsuario == this.arrayOfUsuariosSelecionados.length) {
           this.alertaService.inserirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
             .toPromise()
             .then((response: Response) => {
@@ -193,8 +193,8 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
       this.arrayOfUsuariosSelecionados.forEach(usr_id => {
         contaUsuario++;
         this.arrayOfRegrasAlertasUsuariosEscola.push({ ral_id: ral_id, usr_id: usr_id, esc_id: this.esc_id });
-        if (contaRegras === this.arrayOfRegrasSelecionadas.length &&
-          contaUsuario === this.arrayOfUsuariosSelecionados.length) {
+        if (contaRegras == this.arrayOfRegrasSelecionadas.length &&
+          contaUsuario == this.arrayOfUsuariosSelecionados.length) {
           this.alertaService.excluirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
             .toPromise()
             .then((response: Response) => {

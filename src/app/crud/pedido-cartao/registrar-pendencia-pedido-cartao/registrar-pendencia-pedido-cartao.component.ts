@@ -84,7 +84,7 @@ export class RegistrarPendenciaPedidoCartaoComponent implements OnInit {
   }
 
   public filtrarEnter(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key == 'Enter') {
       this.filtrarPedidoCartao();
     }
   }

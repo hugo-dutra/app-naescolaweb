@@ -65,14 +65,14 @@
                 </th>
               </tr>
             </thead>
-            <tbody *ngIf="estudantes !== null">
+            <tbody *ngIf="estudantes != null">
               <tr class="row" *ngFor="let estudante of estudantes">
                 <td class="col-sm-12 col-lg-1 text-center">
 
                   <!-- Botão -->
                   <a data-toggle="modal" [attr.data-target]="'#modelEstudante' + estudante.id"><img
                       class="img rounded-circle ml-2" width="60" height="60"
-                      [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                      [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                       alt="foto do estudante"></a>
 
                   <!-- Modal -->
@@ -94,13 +94,12 @@
                           <div
                             *ngIf="estudante.foto != '' && estudante.foto != null && estudante.foto != undefined; else semfoto"
                             class="row">
-                            <img [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                            <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                               class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
                           </div>
                           <ng-template #semfoto>
                             <div class="col-sm-12 col-lg-9">
-                              <img
-                                [src]="estudante.foto !== undefined && estudante.foto || 'assets/images/noavatar.jpg'"
+                              <img [src]="estudante.foto != undefined && estudante.foto || 'assets/images/noavatar.jpg'"
                                 class="rounded-circle col-sm-12 col-lg-12" width="150" height="300" alt="">
                             </div>
                           </ng-template>
@@ -135,38 +134,38 @@
 
       <nav aria-label="..." class="float-right">
         <ul class="pagination">
-          <li class="page-item" *ngIf="navegacaoInicio === undefined || navegacaoInicio === true">
+          <li class="page-item" *ngIf="navegacaoInicio == undefined || navegacaoInicio == true">
             <a class="page-link fa fa-arrow-left text-danger" (click)="navegarAnterior()"></a>
           </li>
-          <li class="page-item" *ngIf="navegacaoInicio === false">
+          <li class="page-item" *ngIf="navegacaoInicio == false">
             <a class="page-link fa fa-arrow-left" (click)="navegarAnterior()"></a>
           </li>
 
-          <li class="page-item" *ngIf="navegacaoFim === true">
+          <li class="page-item" *ngIf="navegacaoFim == true">
             <a class="page-link fa fa-arrow-right text-danger" (click)="navegarProximo()"></a>
           </li>
-          <li class="page-item" *ngIf="navegacaoFim === false || navegacaoFim === undefined">
+          <li class="page-item" *ngIf="navegacaoFim == false || navegacaoFim == undefined">
             <a class="page-link fa fa-arrow-right" (click)="navegarProximo()"></a>
           </li>
         </ul>
       </nav>
     </div>
     <div class="card-footer text-muted bg-dark mt-4 text-center">
-      <i *ngIf="feedbackUsuario === undefined && (navegacaoFim === false || navegacaoFim === undefined)"
+      <i *ngIf="feedbackUsuario == undefined && (navegacaoFim == false || navegacaoFim == undefined)"
         class="fa fa-lg fa-info-circle text-light"> Listagem de estudantes - Exibindo
         {{ offsetRegistros+1 }} ao {{ offsetRegistros +
           saltarQuantidade
           > totalRegistros ? totalRegistros : offsetRegistros + saltarQuantidade }} de {{ totalRegistros }}</i>
-      <i *ngIf="feedbackUsuario !== undefined" class="fa fa-lg fa-question-circle text-light">
+      <i *ngIf="feedbackUsuario != undefined" class="fa fa-lg fa-question-circle text-light">
         Atualizando</i>
-      <i *ngIf="feedbackUsuario === undefined && navegacaoFim === true" class="fa fa-lg fa-info-circle text-light">
+      <i *ngIf="feedbackUsuario == undefined && navegacaoFim == true" class="fa fa-lg fa-info-circle text-light">
         Listagem de estudantes - Exibindo registros finais do total de {{ totalRegistros }}</i>
     </div>
   </div>
 </div>
-<div id="loadingDiv" *ngIf="feedbackUsuario !== undefined">
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
   <div>
-    <div class="row mt-2" *ngIf="feedbackUsuario !== undefined">
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
       <div class="col-2">
         <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
       </div>

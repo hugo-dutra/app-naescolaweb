@@ -87,9 +87,9 @@ export class InserirDiretorEscolaComponent implements OnInit {
   }
 
   public listarEscolas(todas: boolean): void {
-    if (todas === false) {
+    if (todas == false) {
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
         /* TODAS POR ESCOPO SEM DIRETOR */
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.escolaService
@@ -113,7 +113,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
         /* REGIONAL POR ESCOPO SEM DIRETOR */
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.escolaService
@@ -128,7 +128,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
         /* REGIONAL POR ESCOPO SEM DIRETOR */
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.escolaService
@@ -145,7 +145,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
 
     } else {
       /* TODAS POR ESCOPO */
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.escolaService
           .listar(5000, 0, true)
@@ -159,7 +159,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
         this.feedbackUsuario = 'Carregando, aguarde...';
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.escolaService
@@ -174,7 +174,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
         this.feedbackUsuario = 'Carregando, aguarde...';
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.escolaService
@@ -194,7 +194,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
   public listarDiretores(todos: boolean): void {
     if (!todos) {
       /* LISTAR SEM ESCOLA */
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
           .listarSemEscola()
@@ -208,7 +208,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
@@ -223,7 +223,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
@@ -240,7 +240,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
 
     } else {
       /* LISTAR COM ESCOLA */
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_GLOBAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
           .listar(5000, 0, true)
@@ -254,7 +254,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_REGIONAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
@@ -269,7 +269,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario === CONSTANTES.ESCOPO_LOCAL) {
+      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
@@ -337,7 +337,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
   }
 
   public listar(): void {
-    if (this.origemChamada !== undefined) {
+    if (this.origemChamada != undefined) {
       this.router.navigateByUrl(this.origemChamada);
     } else {
       this.router.navigateByUrl('listar-diretor');
@@ -353,11 +353,11 @@ export class InserirDiretorEscolaComponent implements OnInit {
   }
 
   public alertarChecksVazios() {
-    if (this.arrayOfDiretores.length !== 0 && this.arrayOfEscolas.length !== 0) {
+    if (this.arrayOfDiretores.length != 0 && this.arrayOfEscolas.length != 0) {
       this.exibirAlerta = false;
     }
 
-    if (this.arrayOfDiretores.length === 0 || this.arrayOfEscolas.length === 0) {
+    if (this.arrayOfDiretores.length == 0 || this.arrayOfEscolas.length == 0) {
       this.exibirAlerta = true;
     }
   }

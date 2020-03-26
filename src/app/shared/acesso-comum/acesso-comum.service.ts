@@ -62,7 +62,7 @@ export class AcessoComumService {
 
   public validarNovoLink(linksAcessados: LinkAcessado[], link: LinkAcessado): boolean {
     for (let i = 0; i < linksAcessados.length; i++) {
-      if (link.link === linksAcessados[i].link) {
+      if (link.link == linksAcessados[i].link) {
         return false;
       }
     }
@@ -72,7 +72,7 @@ export class AcessoComumService {
   public contarLinksAcessados(linksAcessados: LinkAcessado[], link: LinkAcessado): Array<LinkAcessado> {
     let linksAcessadosAtualizados: Array<LinkAcessado>;
     for (let i = 0; i < linksAcessados.length; i++) {
-      if (link.link === linksAcessados[i].link) {
+      if (link.link == linksAcessados[i].link) {
         linksAcessados[i].quantidadeAcessoLink += 1;
       }
     }

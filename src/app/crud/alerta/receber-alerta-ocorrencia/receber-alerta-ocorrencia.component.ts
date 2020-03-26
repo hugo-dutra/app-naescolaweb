@@ -96,7 +96,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     this.arrayOfOcorrenciasPeriodoConsiderado = [];
     this.arrayOfOcorrenciasSelecionadas = [];
     let contaRequisicoes = 0;
-    if (this.arrayOfRegrasAlertasUsuario.length === 0) {
+    if (this.arrayOfRegrasAlertasUsuario.length == 0) {
       this.feedbackUsuario = undefined;
     }
 
@@ -119,7 +119,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
           if (!this.verificarOcorrenciaEstudanteArrayOcorrencias(ocorrenciasRecebias)) {
             this.arrayOfOcorrenciasPeriodoConsiderado.push(...ocorrenciasRecebias);
           }
-          if (contaRequisicoes === this.arrayOfRegrasAlertasUsuario.length) {
+          if (contaRequisicoes == this.arrayOfRegrasAlertasUsuario.length) {
             this.avaliarOcorrenciasDentroRegrasAlertas();
           }
 
@@ -146,7 +146,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
     let retorno = false;
     this.arrayOfOcorrenciasPeriodoConsiderado.forEach(ocorrenciaExistente => {
       ocorrenciasRecebida.forEach(ocorrencia => {
-        if (ocorrenciaExistente['ocd_id'] === ocorrencia['ocd_id']) {
+        if (ocorrenciaExistente['ocd_id'] == ocorrencia['ocd_id']) {
           retorno = true;
         }
       });
@@ -167,7 +167,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
         const quantidadeOcorrenciasDeTipo = parseInt(ocorrencia['quantidade'], 10);
         switch (operador) {
           case 'menor': {
-            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo < valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
                 Object.values(this.arrayOfOcorrenciasSelecionadas));
@@ -175,7 +175,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
             break;
           }
           case 'menor ou igual': {
-            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo <= valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
                 Object.values(this.arrayOfOcorrenciasSelecionadas));
@@ -183,7 +183,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
             break;
           }
           case 'igual': {
-            if (quantidadeOcorrenciasDeTipo === valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo == valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
                 Object.values(this.arrayOfOcorrenciasSelecionadas));
@@ -191,7 +191,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
             break;
           }
           case 'maior ou igual': {
-            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo >= valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
                 Object.values(this.arrayOfOcorrenciasSelecionadas));
@@ -199,7 +199,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
             break;
           }
           case 'maior': {
-            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo > valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
                 Object.values(this.arrayOfOcorrenciasSelecionadas));
@@ -207,7 +207,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
             break;
           }
           case 'diferente': {
-            if (quantidadeOcorrenciasDeTipo !== valor_referencia && ocorrencia['tod_id'] === tod_id) {
+            if (quantidadeOcorrenciasDeTipo != valor_referencia && ocorrencia['tod_id'] == tod_id) {
               this.arrayOfOcorrenciasSelecionadas.push(ocorrencia);
               this.acessoComumService.emitirAlertaOcorrenciaDisciplinar.emit(
                 Object.values(this.arrayOfOcorrenciasSelecionadas));

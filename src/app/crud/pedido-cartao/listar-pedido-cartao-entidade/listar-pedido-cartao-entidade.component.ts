@@ -73,7 +73,7 @@ export class ListarPedidoCartaoEntidadeComponent implements OnInit {
       .toPromise().then((response: Response) => {
         const arrayOfPendencias: Array<Object> = Object.values(response);
         arrayOfPendencias.forEach((elem) => {
-          if (elem['status'] === 'pendente') {
+          if (elem['status'] == 'pendente') {
             this.problemasPendentes++;
           }
         });

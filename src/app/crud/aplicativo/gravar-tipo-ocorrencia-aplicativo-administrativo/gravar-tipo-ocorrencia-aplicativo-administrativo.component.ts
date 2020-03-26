@@ -70,11 +70,11 @@ export class GravarTipoOcorrenciaAplicativoAdministrativoComponent implements On
 
   public gravaStatusTipoOcorrencia(event: Event, tipoOcorrencia: Object): void {
     const statusCheck = (<HTMLInputElement>event.target).checked;
-    if (statusCheck === true) {
+    if (statusCheck == true) {
       this.arrayDeTiposOcorrenciasSelecionadas.push(tipoOcorrencia);
     } else {
       this.arrayDeTiposOcorrenciasSelecionadas = this.arrayDeTiposOcorrenciasSelecionadas.filter((valor) => {
-        return valor['id'] !== tipoOcorrencia['id'];
+        return valor['id'] != tipoOcorrencia['id'];
       });
     }
   }

@@ -90,8 +90,8 @@ export class InserirDiarioAvaliacaoComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
@@ -122,8 +122,8 @@ export class InserirDiarioAvaliacaoComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -312,8 +312,8 @@ export class InserirDiarioAvaliacaoComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;
@@ -335,8 +335,8 @@ export class InserirDiarioAvaliacaoComponent implements OnInit {
     this.diarioAvaliacao.estudantes_avaliados = this.arrayOfRegistrosNotas;
     this.diarioAvaliacao.dip_id = this.diarioSelecionado['dip_id'];
     // console.log(this.diarioAvaliacao);
-    if (this.arrayOfRegistrosNotas.length === this.arrayOfEstudantesTurmaSelecionada.length) {
-      if (this.validarGravacaoNotas() === true) {
+    if (this.arrayOfRegistrosNotas.length == this.arrayOfEstudantesTurmaSelecionada.length) {
+      if (this.validarGravacaoNotas() == true) {
         this.exibirAlerta = false;
         this.feedbackUsuario = 'Salvando notas e avaliação, aguarde...';
         this.diarioRegistroService.inserirAvaliacaoTurmaEstudantes(this.diarioAvaliacao).toPromise().then((response: Response) => {
@@ -349,8 +349,8 @@ export class InserirDiarioAvaliacaoComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
           this.feedbackUsuario = undefined;

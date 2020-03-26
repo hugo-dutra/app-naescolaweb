@@ -127,7 +127,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     this.trm_id = parseInt((<HTMLInputElement>event.target).value, 10);
     this.feedbackUsuario = 'Carregando dados, aguarde...';
     /* Para todos os turnos */
-    if (this.turnoSelecionado === -1) {
+    if (this.turnoSelecionado == -1) {
       if (this.trm_id < 0) {
         // Seleciona todos os estudantes da escola
         this.estudanteService
@@ -156,7 +156,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
       }
     } else {
       /* Para um turno específico */
-      if (this.trm_id === -1) {
+      if (this.trm_id == -1) {
         this.estudanteService.listarTurnoId(this.turnoSelecionado).toPromise().then((response: Response) => {
           this.arrayOfEstudantes = Object.values(response);
           this.feedbackUsuario = undefined;
@@ -226,7 +226,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     comunicado.status_comunicado = 0;
     comunicado.usr_id = this.usr_id;
 
-    if (status_check === true) {
+    if (status_check == true) {
       if (!this.verificarComunicadoExistente(comunicado)) {
         this.arrayOfComunicados.push(comunicado);
       }
@@ -245,7 +245,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   public verificarComunicadoExistente(comunicado: ComunicadoDiverso): boolean {
     let retorno: boolean = false;
     for (let i = 0; i < this.arrayOfComunicados.length; i++) {
-      if (comunicado.est_id !== this.arrayOfComunicados[i].est_id) {
+      if (comunicado.est_id != this.arrayOfComunicados[i].est_id) {
         retorno = false;
       } else {
         retorno = true;
@@ -257,7 +257,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   public removerComunicadoExistente(comunicado: ComunicadoDiverso): number {
     const retorno: number = -1;
     for (let i = 0; i < this.arrayOfComunicados.length; i++) {
-      if (comunicado.est_id === this.arrayOfComunicados[i].est_id) {
+      if (comunicado.est_id == this.arrayOfComunicados[i].est_id) {
         return i;
       }
     }
@@ -267,7 +267,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   public enviarComunicado(): void {
     this.atualizarAssuntoMensagem();
     this.feedbackUsuario = 'Montando mensagens, aguarde...';
-    if (this.assunto.trim() !== '' && this.mensagem.trim() !== '' && this.arrayOfComunicados.length > 0) {
+    if (this.assunto.trim() != '' && this.mensagem.trim() != '' && this.arrayOfComunicados.length > 0) {
       this.montarMensagem();
     } else {
       this.feedbackUsuario = undefined;
@@ -288,7 +288,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     this.arrayOfComunicados = [];
     for (let i = 0; i < checkEstudantes.length; i++) {
       if (!isNaN(parseInt(checkEstudantes[i].id, 10))) {
-        if ((<HTMLInputElement>event.target).checked === true) {
+        if ((<HTMLInputElement>event.target).checked == true) {
           (<HTMLInputElement>document.getElementsByClassName('checkbox')[i])
             .checked = (<HTMLInputElement>event.target).checked;
           const comunicado = new ComunicadoDiverso();
@@ -326,7 +326,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     this.arrayDeMensagens = [];
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
       for (let j = 0; j < this.arrayOfComunicados.length; j++) {
-        if (this.arrayOfEstudantes[i].id === this.arrayOfComunicados[j].est_id) {
+        if (this.arrayOfEstudantes[i].id == this.arrayOfComunicados[j].est_id) {
           const matricula = this.arrayOfEstudantes[i].matricula;
           const nome = this.arrayOfEstudantes[i].nome;
           const messageFirebase = new MessageFirebase();
@@ -375,12 +375,12 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   public EnviarPushComunicadoSimples(topico: string, titulo: string,
     firebase_dbkey: string, total: number, atual: number, messageFirebase: MessageFirebase): void {
     this.feedbackUsuario = `Enviando notificação ${atual} de ${total}, aguarde...`;
-    if (firebase_dbkey !== '') {
+    if (firebase_dbkey != '') {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
         .then((response: Response) => {
-          if (total - 1 === atual) {
+          if (total - 1 == atual) {
             this.inserir();
           }
         }).
@@ -455,7 +455,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           anexo['url'] = url_download;
           this.arrayDeDadosDosAnexos.push(anexo);
           contadorArquivosEnviados++;
-          if (contadorArquivosEnviados === arquivosSelecionados.length) {
+          if (contadorArquivosEnviados == arquivosSelecionados.length) {
             this.feedbackUsuario = undefined;
             this.alertModalService.showAlertSuccess('Anexos enviados com sucesso');
           }
