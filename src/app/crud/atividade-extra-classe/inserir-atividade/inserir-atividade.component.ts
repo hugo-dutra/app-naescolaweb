@@ -1,3 +1,4 @@
+import { AnexoAtividade } from './../anexo.atividade.model';
 import { MessageFirebase } from './../../../shared/firebase/message.model';
 import { AtividadeExtraEstudante } from './../atividade-extra-estudante.model';
 import { AtividadeExtraClasse } from './../atividade-extra-classe.model';
@@ -47,14 +48,12 @@ export class InserirAtividadeComponent implements OnInit {
   public estado: string = 'visivel';
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
-
-
   public escId: number;
   public usrId: number;
   public remetenteAtividade: string = '';
   public anoAtual: number;
   public trnId: number;
-  public prdId: number;
+  public prdId: number = 0;
   public nomeProfessor: string = '';
   public nomeDisciplina: string = '';
   public tituloAtividade: string = '';
@@ -264,8 +263,7 @@ export class InserirAtividadeComponent implements OnInit {
     });
   }
 
-
-  public enviarAtividade(): void {
+  public montarObjectoAtividadeExtraClasse(): AtividadeExtraClasse {
     const atividadeExtraClasse = new AtividadeExtraClasse();
     atividadeExtraClasse.aec_data_entrega = this.dataEntrega;
     atividadeExtraClasse.aec_data_envio = Utils.dataAtual();
@@ -277,33 +275,113 @@ export class InserirAtividadeComponent implements OnInit {
     atividadeExtraClasse.professor = this.nomeProfessor;
     atividadeExtraClasse.disciplina = this.nomeDisciplina;
     atividadeExtraClasse.hora = Utils.horaAtual();
-    this.feedbackUsuario = 'Gravando atividade, aguarde...';
-    this.gravarAtividadesFirestore(atividadeExtraClasse).then((messageFirebase: MessageFirebase[]) => {
-      this.feedbackUsuario = 'Enviando notificações, aguarde...';
-      this.enviarNotificacaoPush(messageFirebase).then(() => {
-        this.feedbackUsuario = undefined;
+    return atividadeExtraClasse;
+  }
+
+  public validarEnvioAtividade(): boolean {
+    let retorno = false;
+    if (this.arrayDeEstudantesSelecionados.length > 0 &&
+      this.tituloAtividade != '' &&
+      this.instrucoesAtividade != '' &&
+      this.dataEntrega != '' &&
+      this.prdId != 0) {
+      retorno = true;
+    }
+    return retorno;
+  }
+
+  public enviarAtividade(): void {
+    if (this.validarEnvioAtividade()) {
+      const atividadeExtraClasse = this.montarObjectoAtividadeExtraClasse();
+      this.feedbackUsuario = 'Enviando atividade, aguarde...';
+      this.gravarAtividadesFirestore(atividadeExtraClasse).then((messagesFirebase: MessageFirebase[]) => {
+        this.feedbackUsuario = 'Enviando notificações, aguarde...';
+        this.enviarNotificacaoPush(messagesFirebase).then(() => {
+          this.feedbackUsuario = 'Salvando atividades, aguarde...';
+          this.gravarAtividadeExtraClasse(atividadeExtraClasse, messagesFirebase)
+            .then((atividadeExtraEstudante: AtividadeExtraEstudante[]) => {
+              this.feedbackUsuario = 'Finalizando...';
+              this.gravarAtividadeExtraEstudante(atividadeExtraEstudante).then(() => {
+                this.feedbackUsuario = 'Finalizando...';
+                this.gravarAnexos(this.arrayDeDadosDosAnexos).then(() => {
+                  this.alertModalService.showAlertSuccess('Atividade extra classe enviada com sucesso');
+                  this.feedbackUsuario = undefined;
+                }).catch((erro: Response) => {
+                  this.tratarErro(erro);
+                });
+                this.feedbackUsuario = undefined;
+              }).catch((erro: Response) => {
+                this.tratarErro(erro);
+              });
+            }).catch((erro: Response) => {
+              this.tratarErro(erro);
+            });
+        }).catch((erro: Response) => {
+          this.tratarErro(erro);
+        });
+      });
+    } else {
+      this.alertModalService.showAlertWarning('Todos os campos devem ser preenchidos.');
+    }
+  }
+
+  public gravarAnexos(arrayDeDadosDosAnexos: Object[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (arrayDeDadosDosAnexos.length > 0) {
+        this.atividadeExtraClasseService.inserirAnexoAtividadeExtraClasse(arrayDeDadosDosAnexos)
+          .toPromise().then(() => {
+            resolve('ok');
+          }).catch((erro: Response) => {
+            reject(erro);
+          });
+      } else {
+        resolve('ok');
+      }
+    });
+  }
+
+  public gravarAtividadeExtraEstudante(atividadeExtraEstudante: AtividadeExtraEstudante[]): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.atividadeExtraClasseService.inserirEstudanteAtividade(atividadeExtraEstudante).toPromise().then(() => {
+        resolve('ok');
       }).catch((erro: Response) => {
-        this.tratarErro(erro);
+        reject(erro);
       });
     });
+  }
 
+  public gravarAtividadeExtraClasse(atividadeExtraClasse: AtividadeExtraClasse,
+    messagesFirebase: MessageFirebase[]): Promise<AtividadeExtraEstudante[]> {
+    return new Promise((resolve, reject) => {
+      this.atividadeExtraClasseService.inserirAtividadeExtraClasse(atividadeExtraClasse)
+        .toPromise()
+        .then((response: Response) => {
+          const aecId = Object.values(response)[0]['aec_id'];
+          this.arrayDeDadosDosAnexos = this.arrayDeDadosDosAnexos.map((dadoAnexo) => {
+            return {
+              nome: dadoAnexo['nome'],
+              tamanho: dadoAnexo['tamanho'],
+              tipo: dadoAnexo['tipo'],
+              url: dadoAnexo['url'],
+              aec_id: aecId,
+            };
+          });
 
-    /* this.atividadeExtraClasseService.inserirAtividadeExtraClasse(atividadeExtraClasse)
-      .toPromise()
-      .then((response: Response) => {
-        const aecId = Object.values(response)[0]['aec_id'];
-        this.feedbackUsuario = undefined;
-
-      }).catch((erro: Response) => {
-        this.tratarErro(erro);
-      }); */
-    /*
-     console.log(this.tituloAtividade);
-     console.log(this.instrucoesAtividade);
-     console.log(this.arrayDeEstudantesSelecionados);
-     console.log(this.arrayDeDadosDosAnexos);
-     */
-    /* this.feedbackUsuario = undefined; */
+          const arrayAtividadeExtraEstudante = new Array<AtividadeExtraEstudante>();
+          messagesFirebase.forEach((messageFirebase) => {
+            const atividadeExtraEstudante = new AtividadeExtraEstudante();
+            atividadeExtraEstudante.aec_id = aecId;
+            atividadeExtraEstudante.aee_firebase_dbkey = messageFirebase['firebase_dbkey'];
+            atividadeExtraEstudante.aee_status_entrega = 0;
+            atividadeExtraEstudante.est_id = parseInt(messageFirebase['est_id'], 10);
+            arrayAtividadeExtraEstudante.push(atividadeExtraEstudante);
+          });
+          resolve(arrayAtividadeExtraEstudante);
+        }).catch((erro: Response) => {
+          this.tratarErro(erro);
+          reject(erro);
+        });
+    });
   }
 
   public enviarNotificacaoPush(messageFirebase: MessageFirebase[]): Promise<any> {
@@ -394,6 +472,10 @@ export class InserirAtividadeComponent implements OnInit {
         this.tratarErro(erro);
       });
     });
+  }
+
+  public voltarGerenciarAtividade(): void {
+    this.router.navigate(['gerenciar-atividade-extra-classe']);
   }
 
   public tratarErro(erro: Response): void {

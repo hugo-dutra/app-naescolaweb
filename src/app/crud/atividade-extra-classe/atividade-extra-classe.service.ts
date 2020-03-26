@@ -29,7 +29,7 @@ export class AtividadeExtraClasseService {
     );
   }
 
-  public inserirAnexoAtividadeExtraClasse(anexosAtividadeExtraClasse: AnexoAtividade[]): Observable<any> {
+  public inserirAnexoAtividadeExtraClasse(anexosAtividadeExtraClasse: Object[]): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
@@ -54,6 +54,51 @@ export class AtividadeExtraClasseService {
       CONSTANTES.HOST_API + 'inserir-estudante-atividade-extra-classe',
       JSON.stringify({
         atividadeExtraEstudante: atividadeExtraEstudante,
+      }),
+      headers,
+    );
+  }
+
+  public listarAtividadeExtraClasse(esc_id: number, dataInicio: string, dataFim: string): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+
+    return this.http.post(
+      CONSTANTES.HOST_API + 'listar-atividade-extra-classe',
+      JSON.stringify({
+        esc_id: esc_id, dataInicio: dataInicio, dataFim: dataFim,
+      }),
+      headers,
+    );
+  }
+
+  public listarAnexoAtividadeExtraClasse(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+
+    return this.http.post(
+      CONSTANTES.HOST_API + 'listar-anexo-atividade-extra-classe',
+      JSON.stringify({
+        esc_id: esc_id,
+      }),
+      headers,
+    );
+  }
+
+  public listarEstudanteAtividadeExtraClasse(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+
+    return this.http.post(
+      CONSTANTES.HOST_API + 'listar-estudante-atividade-extra-classe',
+      JSON.stringify({
+        esc_id: esc_id,
       }),
       headers,
     );

@@ -1,3 +1,4 @@
+// tslint:disable: triple-equals
 import { Component, OnInit } from '@angular/core';
 import { AcessoComumService } from '../../acesso-comum/acesso-comum.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -65,6 +66,7 @@ export class MenuAtalhoComponent implements OnInit {
   }
 
   public limparFiltro(event: KeyboardEvent): void {
+    // tslint:disable: triple-equals
     if (event.key == 'Backspace' || event.key == 'Delete') {
       setTimeout(() => {
         this.arrayOfLinkAcessado = this.matrizReferencia;
