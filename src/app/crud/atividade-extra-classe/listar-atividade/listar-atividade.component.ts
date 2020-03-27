@@ -89,7 +89,6 @@ export class ListarAtividadeComponent implements OnInit {
     this.atividadeExtraClasseService.listarAnexoAtividadeExtraClasse(aecId)
       .toPromise().then((response: Response) => {
         this.arrayDeAnexosAtividadesExtraClasse = Object.values(response);
-        console.log(this.arrayDeAnexosAtividadesExtraClasse);
         this.feedbackUsuario = undefined;
       }).catch((erro: Response) => {
         this.tratarErro(erro);

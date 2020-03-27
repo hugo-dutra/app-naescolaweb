@@ -7,44 +7,44 @@
         </div>
       </div>
       <div class="row">
-        <button class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+        <button class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2 mr-2"
           (click)="gerenciarPedidos()">Gerenciar</button>
-        <div class="col-lg-1 col-sm-12"></div>
         <!--############# CARTÃO SIMPLES - FRENTE id:0 #############-->
         <button *ngIf="id_layout_selecionado == 0"
-          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 btn-sm mt-2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 btn-sm mt-2 mr-2"
           (click)="gerarCarteirinhaBasicoFrenteCanvasEPdf()">GerarDocumento</button>
-        <div class="col-lg-1 col-sm-12"></div>
         <!--############# CARTÃO SIMPLES - FRENTE E VERSO id:1 #############-->
         <button *ngIf="id_layout_selecionado == 1"
-          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2 mr-2"
           (click)="gerarCarteirinhaBasicoFrenteVersoCanvasEPdf()">GerarDocumento</button>
-        <div class="col-lg-1 col-sm-12"></div>
         <!--############# ETIQUETAS - id:2 #############-->
         <button *ngIf="id_layout_selecionado == 2"
-          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2 mr-2"
           (click)="gerarCarteirinhaEtiquetaCanvasEPdf()">GerarDocumento</button>
         <!--############# SEDF FRENTE VERSO - id:3 #############-->
         <button *ngIf="id_layout_selecionado == 3"
-          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2 mr-2"
           (click)="gerarCarteirinhaSEDFFrenteVersoPdf()">GerarDocumento</button>
         <!--############# PVC RESOLVIDOS - id:4 #############-->
         <button *ngIf="id_layout_selecionado == 4"
-          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2 mr-2"
           (click)="gerarCarteirinhaPVCResolvidos()">GerarDocumento</button>
         <!--############# PADRAO PAPEL SEDF - id:5 #############-->
         <button *ngIf="id_layout_selecionado == 5"
-          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2 mr-2"
           (click)="gerarCarteirinhaPadraoSEDFFrenteVersoCanvasEPdf()">GerarDocumento</button>
         <!--############# RESOLVIDOS PAPEL- id:6 #############-->
         <button *ngIf="id_layout_selecionado == 6"
-          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          class="btn btn-dark border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2 mr-2"
           (click)="gerarCarteirinhaPapelResolvidos()">GerarDocumento</button>
+
+        <button class="btn btn-danger border-light form-control col-lg-2 col-sm-12 text-light btn-sm mt-2"
+          (click)="limparDados()">Limpar dados</button>
       </div>
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="dropdown col-sm-12 col-lg-2">
+        <div class="dropdown col-sm-12 col-lg-3">
           <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonTurmas"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ stringTurmaSelecionada }}
@@ -58,8 +58,7 @@
           </div>
         </div>
 
-        <div class="col-lg-1 col-sm-12 mt-2"></div>
-        <div class="dropdown col-sm-12 col-lg-2">
+        <div class="dropdown col-sm-12 col-lg-3 mr-2 ml-2">
           <button class="btn btn-dark text-light dropdown-toggle" type="button" id="dropdownMenuButtonLayouts"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ stringLayoutSelecionado }}
@@ -69,13 +68,34 @@
               class="dropdown-item">{{ layout.name }}</a>
           </div>
         </div>
+
+        <div class="input-group col-lg-5 col-sm-12">
+          <input id="input_filtro_estudante" placeholder="Informe o nome do estudante..." class="form-control"
+            type="text" list="lista-estudantes" [(ngModel)]="estudante" (change)="selecionarEstudante(estudante)"
+            (keydown)="gravarNomeEstudante($event)">
+          <datalist id="lista-estudantes">
+            <option *ngFor="let estudante of arrayDeEstudantesFiltrados">
+              {{estudante.nome}}-{{estudante.id}}</option>
+          </datalist>
+
+          <div class="input-group-append">
+            <button (click)="filtrarEstudante()" class="btn btn-sm btn-primary text-light">Procurar</button>
+          </div>
+          <div class="input-group-append">
+            <button (click)="adicionarEstudante()" class="btn btn-sm btn-warning text-light">Adicionar</button>
+          </div>
+        </div>
+
+
       </div>
 
       <!--############# CARTÃO SIMPLES - FRENTE id:0 #############-->
       <div *ngIf="id_layout_selecionado == 0" class="row mt-3">
         <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="card col-sm-12 col-lg-6 mb-4"
           [id]="'cartao_'+estudante.est_id">
-          <div class="card-header bg-google text-center">
+          <div class="card-header bg-google text-left">
+            <span title="Remover estudante" style="position:relative; left:0px; top:0px;"
+              class="badge badge-danger remove-estudante" (click)="removerEstudante(estudante.est_id)">x</span>
             <div class="col-sm-12 col-lg-12 text-center text-dark align-middle">
               <label>{{nomeRedeEnsino}}</label><br>
               <label>{{nomeEscola}}</label>
@@ -123,7 +143,9 @@
           [id]="'frente_verso'+estudante.est_id">
           <!-- CARD FRENTE -->
           <div class="card col-sm-12 col-lg-6 mb-4" [id]="'frente_cartao_'+estudante.est_id">
-            <div class="card-header bg-google text-dark">
+            <div class="card-header bg-google text-dark text-left">
+              <span title="Remover estudante" style="position:relative; left:0px; top:0px;"
+                class="badge badge-danger remove-estudante" (click)="removerEstudante(estudante.est_id)">x</span>
               <div class="row">
                 <div class="col-sm-12 col-lg-3 bg-google float-left">
                   <img class="img rounded-bottom rounded-top" width="75" height="85"
@@ -207,7 +229,9 @@
       <div *ngIf="id_layout_selecionado == 2" class="row mt-3">
         <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="card col-sm-12 col-lg-4 mb-4"
           [id]="'etiqueta_'+estudante.est_id">
-          <div class="card-body">
+          <div class="card-body text-left">
+            <span title="Remover estudante" style="position:relative; left:0px; top:0px;"
+              class="badge badge-danger remove-estudante" (click)="removerEstudante(estudante.est_id)">x</span>
             <div class="col-sm-12 col-lg-12 text-center">
               <div class="row">
                 <div class="col-sm-12 col-lg-12 text-small text-center text-dark">
@@ -232,8 +256,10 @@
       <div *ngIf="id_layout_selecionado == 3" class="mt-3">
         <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="row">
           <!-- FRENTE -->
-          <div [id]="'frente_sedf_'+estudante.est_id" class="col-lg-6  bg-sedf">
-            <div class="card card_frente">
+          <div [id]="'frente_sedf_'+estudante.est_id" class="col-lg-6  bg-sedf text-left">
+            <span title="Remover estudante" style="position:relative; left:0px; top:0px;"
+              class="badge badge-danger remove-estudante" (click)="removerEstudante(estudante.est_id)">x</span>
+            <div class="card card_frente text-center">
               <div class="card-header bg-sedf pt-5 pb">
                 <p class="color-texto-sedf float-left" style="font-size: 40px; font-weight: 500;">Carteira de
                   Identificação
@@ -363,7 +389,10 @@
       <div *ngIf="id_layout_selecionado == 4" class="mt-3">
         <div *ngFor="let estudante of arrayOfEstudantesCartaoConfeccionado" class="row">
           <!-- FRENTE -->
-          <div [id]="'frente_resolvidos_'+estudante.est_id" class="col-lg-6">
+          <div [id]="'frente_resolvidos_'+estudante.est_id" class="col-lg-6 text-left">
+
+            <span title="Remover estudante" style="position:relative; left:0px; top:0px;"
+              class="badge badge-danger remove-estudante" (click)="removerEstudante(estudante.est_id)">x</span>
 
             <div class="row card-resolvidos-frente pt-5">
               <div class="col-lg-4">
@@ -461,7 +490,10 @@
             <!-- TITULO -->
             <div class="row sedf_border_all">
               <!-- LOGO SEDF -->
-              <div class="col-4">
+              <div class="col-4 text-left">
+                <span title="Remover estudante" style="position:relative; left:0px; top:0px;"
+                  class="badge badge-danger remove-estudante" (click)="removerEstudante(estudante.est_id)">x</span>
+
                 <img [src]="linkLogoGDF" alt="" style="width: 4vw; height: 11vh;">
               </div>
               <!-- DADOS DA REDE -->
@@ -584,9 +616,10 @@
             <div class="row">
               <!-- FRENTE -->
               <div [id]="'papel_frente_resolvidos_'+estudante.est_id"
-                class="card-resolvidos-frente pt-5 resolvidos_border_right col-lg-6">
+                class="card-resolvidos-frente pt-5 resolvidos_border_right col-lg-6 text-left">
+                <span title="Remover estudante" style="position:relative; left:0px; top:0px;"
+                  class="badge badge-danger remove-estudante" (click)="removerEstudante(estudante.est_id)">x</span>
                 <div class="row">
-
                   <div class="col-lg-4">
                     <img class="foto-estudante rounded-circle"
                       style="transform: scale(0.6,0.6); margin-left: -50px; margin-top: -25px;"

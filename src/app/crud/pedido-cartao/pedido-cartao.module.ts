@@ -25,6 +25,7 @@ import {
   RegistrarPendenciaPedidoCartaoComponent,
 } from './registrar-pendencia-pedido-cartao/registrar-pendencia-pedido-cartao.component';
 import { NbCardModule } from '@nebular/theme';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { NbCardModule } from '@nebular/theme';
     NgxBarcodeModule,
     NbCardModule,
     PedidoCartaoRoutingModule,
+    FormsModule,
   ],
 })
 export class PedidoCartaoModule { }

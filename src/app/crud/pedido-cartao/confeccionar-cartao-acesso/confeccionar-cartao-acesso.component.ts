@@ -71,6 +71,9 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   public nomeUsuario: string = '';
   public linkLogoGDF = CONSTANTES.CAMINHO_LOGO_GDF;
   public dataHoraAtual: string = '';
+  public estudante: string = '';
+  public est_id: number;
+  public arrayDeEstudantesFiltrados = new Array<Object>();
 
   ngOnInit() {
     this.dataHoraAtual = Utils.now();
@@ -98,6 +101,9 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
     this.pegarUrlAssinaguraDiretor();
     this.listarTurmas();
     this.carregarLayouts();
+
+    this.stringLayoutSelecionado = this.layouts[2]['name'];
+    this.id_layout_selecionado = this.layouts[2]['id'];
   }
 
   public pegarUrlAssinaguraDiretor(): void {
@@ -155,7 +161,109 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   public selecionarLayout(layout: Object): void {
     this.stringLayoutSelecionado = layout['name'];
     this.id_layout_selecionado = layout['id'];
-    this.listarEstudantesTurmaSelecionada();
+    if (this.arrayOfEstudantesCartaoConfeccionado.length == 0) {
+      this.listarEstudantesTurmaSelecionada();
+    } else {
+      this.ajustarCodigoDeBarras();
+    }
+  }
+
+  public ajustarCodigoDeBarras(): void {
+    if (this.arrayOfEstudantesCartaoConfeccionado.length > 0 && this.id_layout_selecionado >= 0) {
+      this.feedbackUsuario = 'Ajustando layouts, aguarde...';
+      setTimeout(() => {
+        this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
+          if (document.getElementById(`ngx_Barcode_${elem['est_id']}`) != null) {
+            document.getElementById(`ngx_Barcode_${elem['est_id']}`).parentElement
+              .appendChild(document.getElementById(`ngx_Barcode_${elem['est_id']}`).children[0].children[0]);
+            document.getElementById(`ngx_Barcode_${elem['est_id']}`).remove();
+          }
+        });
+        this.feedbackUsuario = undefined;
+      }, 2000);
+    }
+  }
+
+
+  public removerBotoesParaImpressao(): void {
+    if (this.arrayOfEstudantesCartaoConfeccionado.length > 0 && this.id_layout_selecionado >= 0) {
+      setTimeout(() => {
+        this.feedbackUsuario = 'Preparando impressão, aguarde...';
+        const carteirinhas = document.getElementsByClassName('remove-estudante');
+        while (carteirinhas.length > 0) {
+          carteirinhas[0].parentNode.removeChild(carteirinhas[0]);
+        }
+      }, 1000);
+    }
+  }
+
+  /* ************************************* */
+  public selecionarEstudante(estudante: string): void {
+    this.est_id = parseInt(estudante.split('-')[1], 10);
+  }
+
+  public gravarNomeEstudante(event: KeyboardEvent): void {
+    this.estudante = (<HTMLInputElement>event.target).value;
+    if (event.keyCode == 13) {
+      this.est_id = 0;
+      this.filtrarEstudante();
+    }
+
+  }
+
+  public filtrarEstudante(): void {
+    this.feedbackUsuario = 'Procurando estudantes, aguarde...';
+    this.estudanteService.filtrar(this.estudante, 20, 0, this.esc_id).toPromise().then((response: Response) => {
+      this.arrayDeEstudantesFiltrados = Object.values(response);
+      this.feedbackUsuario = undefined;
+    });
+  }
+
+  public adicionarEstudante(): void {
+
+    const estudanteSelecionado = this.arrayDeEstudantesFiltrados.filter((estudante) => {
+      return estudante['id'] == this.est_id ? { estudante } : null;
+    }).filter((filtrado) => {
+      return filtrado != null;
+    })[0];
+    const cartaoAcessoImpressao = new CartaoAcessoImpressao();
+    cartaoAcessoImpressao.dataNascimento = estudanteSelecionado['nascimento'];
+    cartaoAcessoImpressao.est_id = this.est_id;
+    cartaoAcessoImpressao.etapa = estudanteSelecionado['etapa_abrv'];
+    cartaoAcessoImpressao.foto = estudanteSelecionado['foto'];
+    cartaoAcessoImpressao.logoEscola = '';
+    cartaoAcessoImpressao.logoRedeEnsino = '';
+    cartaoAcessoImpressao.nome = estudanteSelecionado['nome'];
+    cartaoAcessoImpressao.serie = estudanteSelecionado['etapa_abrv'];
+    cartaoAcessoImpressao.stringCodigoBarras = Utils.gerarDigitosCodigoDeBarras(
+      cartaoAcessoImpressao.est_id.toString(), this.anoAtual);
+    cartaoAcessoImpressao.turma = estudanteSelecionado['turma'];
+    cartaoAcessoImpressao.turno = estudanteSelecionado['turno_abrv'];
+    this.arrayOfEstudantesCartaoConfeccionado.push(cartaoAcessoImpressao);
+
+    this.ajustarCodigoDeBarras();
+    this.limparCampoFiltroEstudante();
+  }
+
+  public limparCampoFiltroEstudante(): void {
+    this.estudante = null;
+    document.getElementById('input_filtro_estudante').focus();
+  }
+
+  /* ************************************* */
+
+  public removerEstudante(est_id: number): void {
+    this.arrayOfEstudantesCartaoConfeccionado = this.arrayOfEstudantesCartaoConfeccionado.filter((estudante) => {
+      return estudante['est_id'] != est_id;
+    });
+  }
+
+  public limparDados(): void {
+    this.arrayOfEstudantesCartaoConfeccionado = [];
+    this.stringLayoutSelecionado = this.layouts[2]['name'];
+    this.id_layout_selecionado = this.layouts[2]['id'];
+    this.trm_id_selecionada = 0;
+    this.stringTurmaSelecionada = 'Selecione uma turma';
   }
 
   public listarEstudantesTurmaSelecionada(): void {
@@ -206,17 +314,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
           'Nenhum estudante dessa turma possui foto. Foto é um requisito para gerar esse documento');
       }
 
-      if (this.arrayOfEstudantesCartaoConfeccionado.length > 0 && this.id_layout_selecionado >= 0) {
-        this.feedbackUsuario = 'Ajustando layouts, aguarde...';
-        setTimeout(() => {
-          this.arrayOfEstudantesCartaoConfeccionado.forEach(elem => {
-            document.getElementById(`ngx_Barcode_${elem['est_id']}`).parentElement
-              .appendChild(document.getElementById(`ngx_Barcode_${elem['est_id']}`).children[0].children[0]);
-            document.getElementById(`ngx_Barcode_${elem['est_id']}`).remove();
-          });
-          this.feedbackUsuario = undefined;
-        }, 2000);
-      }
+      this.ajustarCodigoDeBarras();
       this.feedbackUsuario = undefined;
 
     }).catch((erro: Response) => {
@@ -229,6 +327,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public gerarCarteirinhaEtiquetaCanvasEPdf(): void {
+    this.removerBotoesParaImpressao();
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     setTimeout(() => {
       const doc = new jsPDF({
@@ -287,6 +386,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public gerarCarteirinhaBasicoFrenteCanvasEPdf(): void {
+    this.removerBotoesParaImpressao();
     this.feedbackUsuario = `Criando cartões, aguarde..`;
 
     setTimeout(() => {
@@ -342,6 +442,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public gerarCarteirinhaBasicoFrenteVersoCanvasEPdf(): void {
+    this.removerBotoesParaImpressao();
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     setTimeout(() => {
       const doc = new jsPDF({
@@ -404,6 +505,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public gerarCarteirinhaPadraoSEDFFrenteVersoCanvasEPdf(): void {
+    this.removerBotoesParaImpressao();
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     setTimeout(() => {
       const doc = new jsPDF({
@@ -463,7 +565,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public gerarCarteirinhaSEDFFrenteVersoPdf(): void {
-
+    this.removerBotoesParaImpressao();
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     let canvasCartaoFrente = 0;
     let canvasCartaoVerso = 0;
@@ -503,6 +605,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public gerarCarteirinhaPVCResolvidos(): void {
+    this.removerBotoesParaImpressao();
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     let canvasCartaoFrente = 0;
     let canvasCartaoVerso = 0;
@@ -544,6 +647,7 @@ export class ConfeccionarCartaoAcessoComponent implements OnInit {
   }
 
   public gerarCarteirinhaPapelResolvidos(): void {
+    this.removerBotoesParaImpressao();
     this.feedbackUsuario = `Criando cartões, aguarde..`;
     setTimeout(() => {
       const doc = new jsPDF({
