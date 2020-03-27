@@ -89,7 +89,7 @@ export class AtividadeExtraClasseService {
     );
   }
 
-  public listarEstudanteAtividadeExtraClasse(esc_id: number): Observable<any> {
+  public listarEstudanteAtividadeExtraClasse(aec_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
@@ -98,7 +98,7 @@ export class AtividadeExtraClasseService {
     return this.http.post(
       CONSTANTES.HOST_API + 'listar-estudante-atividade-extra-classe',
       JSON.stringify({
-        esc_id: esc_id,
+        aec_id: aec_id,
       }),
       headers,
     );

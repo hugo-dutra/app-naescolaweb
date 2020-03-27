@@ -7,6 +7,7 @@ import { ListarAtividadeComponent } from './listar-atividade/listar-atividade.co
 import { InserirAtividadeComponent } from './inserir-atividade/inserir-atividade.component';
 import { NbCardModule } from '@nebular/theme';
 import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { FormsModule } from '@angular/forms';
     AtividadeExtraClasseRoutingModule,
     NbCardModule,
     FormsModule,
+    NgbModule,
   ],
 })
 export class AtividadeExtraClasseModule { }

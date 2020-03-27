@@ -11,14 +11,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [AlterarProfessorComponent, ExcluirProfessorComponent, InserirProfessorComponent, ListarProfessorComponent],
+  declarations: [
+    AlterarProfessorComponent,
+    ExcluirProfessorComponent,
+    InserirProfessorComponent,
+    ListarProfessorComponent],
   imports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
     NgbModule,
     ReactiveFormsModule,
-    ProfessorRoutingModule
-  ]
+    ProfessorRoutingModule,
+  ],
 })
 export class ProfessorModule { }
