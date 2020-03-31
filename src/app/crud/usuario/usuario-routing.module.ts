@@ -8,6 +8,7 @@ import { ExcluirUsuarioComponent } from './excluir-usuario/excluir-usuario.compo
 import { AlterarUsuarioComponent } from './alterar-usuario/alterar-usuario.component';
 import { GerenciarUsuarioComponent } from './gerenciar-usuario/gerenciar-usuario.component';
 import { AlterarSenhaUsuarioComponent } from './alterar-senha-usuario/alterar-senha-usuario.component';
+import { ListarSugestaoUsuarioComponent } from './listar-sugestao-usuario/listar-sugestao-usuario.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
   },
   { path: 'enviar-sugestao-usuario', component: SugestaoUsuarioComponent, data: { objeto: 'objeto' } },
+  {
+    path: 'listar-sugestao-usuario', component: ListarSugestaoUsuarioComponent, data: { objeto: 'objeto' },
+    canActivate: [AuthGuardService],
+  },
 ];
 
 @NgModule({

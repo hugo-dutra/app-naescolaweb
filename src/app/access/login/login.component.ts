@@ -211,8 +211,6 @@ export class LoginComponent implements OnInit {
             this.dados_escola = response['dados_escola'];
             this.escopo_perfil = response['escopo_perfil'];
             this.status_ativo_usuario = (response['status_ativo_usuario'])[0]['status_ativo_usuario'];
-
-
             if (this.status_ativo_usuario == 1) {
               const str_permissoes = JSON.stringify(this.permissoes);
               const str_dados = JSON.stringify(this.dados);

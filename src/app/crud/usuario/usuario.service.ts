@@ -1,4 +1,3 @@
-import { SugestaoUsuario } from './sugestao-usuario/sugestao-usuario.model';
 import { Injectable } from '@angular/core';
 import { Usuario } from './usuario.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -30,6 +29,39 @@ export class UsuarioService {
     return this.http.post(
       CONSTANTES.HOST_API + 'inserir-sugestao-usuario',
       JSON.stringify(sugestao),
+      headers,
+    );
+  }
+
+  public alterarSugestaoUsuario(usrId: number, susId: number,
+    observacao: string, statusSugestao: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+
+    return this.http.post(
+      CONSTANTES.HOST_API + 'alterar-sugestao-usuario',
+      JSON.stringify({ usr_id: usrId, sus_id: susId, observacao: observacao, statusSugestao: statusSugestao }),
+      headers,
+    );
+  }
+
+  public listarSugestaoUsuario(data_inicio: string, data_fim: string,
+    esc_id: number, escopo: string, statusSugestao: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(
+      CONSTANTES.HOST_API + 'listar-sugestao-usuario',
+      JSON.stringify({
+        data_inicio: data_inicio,
+        data_fim: data_fim,
+        est_id: esc_id,
+        escopo: escopo,
+        statusSugestao: statusSugestao,
+      }),
       headers,
     );
   }

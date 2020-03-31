@@ -5,6 +5,8 @@
       <div class="card">
         <div class="card-header bg-dark text-light">
           <label for=""><i class="fa fa-sm fa-bell"></i> Caixa de atendimento</label>
+          <button class="btn btn-sm btn-dark border-light text-light float-right" (click)="listarSugestoesUsuario()"
+            *ngIf="exibirComponente('listar-sugestao-usuario')">Listar</button>
         </div>
         <div class="card-body">
           <div class="form-control-group">

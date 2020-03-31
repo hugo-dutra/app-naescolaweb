@@ -12,6 +12,8 @@ import { ListarUsuarioComponent } from './listar-usuario/listar-usuario.componen
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SugestaoUsuarioComponent } from './sugestao-usuario/sugestao-usuario.component';
+import { ListarSugestaoUsuarioComponent } from './listar-sugestao-usuario/listar-sugestao-usuario.component';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { SugestaoUsuarioComponent } from './sugestao-usuario/sugestao-usuario.co
     GerenciarUsuarioComponent,
     InserirUsuarioComponent,
     ListarUsuarioComponent,
-    SugestaoUsuarioComponent],
+    SugestaoUsuarioComponent,
+    ListarSugestaoUsuarioComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -29,6 +32,8 @@ import { SugestaoUsuarioComponent } from './sugestao-usuario/sugestao-usuario.co
     FormsModule,
     UsuarioRoutingModule,
     NbCardModule,
-  ]
+    NgbModule,
+    NgbPopoverModule,
+  ],
 })
 export class UsuarioModule { }

@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FirebaseService } from './../../../shared/firebase/firebase.service';
 import { AlertModalService } from './../../../shared-module/alert-modal.service';
 import { CONSTANTES } from './../../../shared/constantes.shared';
@@ -43,7 +43,8 @@ export class SugestaoUsuarioComponent implements OnInit {
     private usuarioService: UsuarioService,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
-    private router: Router) { }
+    private router: Router,
+    private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
   }
@@ -77,6 +78,14 @@ export class SugestaoUsuarioComponent implements OnInit {
     } else {
       this.alertModalService.showAlertWarning('Preencha todos os campos');
     }
+  }
+
+  public exibirComponente(rota: string): boolean {
+    return Utils.exibirComponente(rota);
+  }
+
+  public listarSugestoesUsuario(): void {
+    this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/listar-sugestao-usuario`]);
   }
 
   public validarEnvioMensagem(): boolean {

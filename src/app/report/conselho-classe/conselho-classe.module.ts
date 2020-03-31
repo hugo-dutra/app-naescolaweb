@@ -12,7 +12,7 @@ import { HintModule } from 'angular-custom-tour';
     CommonModule,
     ConselhoClasseRoutingModule,
     NgbPopoverModule,
-    HintModule
-  ]
+    HintModule,
+  ],
 })
 export class ConselhoClasseModule { }
