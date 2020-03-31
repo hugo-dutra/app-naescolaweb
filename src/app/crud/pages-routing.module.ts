@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { LoginComponent } from '../access/login/login.component';
 import { MenuAtalhoComponent } from '../shared/pagina-inicial/menu-atalho/menu-atalho.component';
-import { GerenciarIntegracaoComponent } from '../shared/sedf/gerenciar-integracao/gerenciar-integracao.component';
-import { AuthGuardService } from '../guards/auth.guard.service';
 
 const routes: Routes = [{
   path: '',

@@ -16,26 +16,26 @@ import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.se
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
   animations: [
-    trigger("chamado", [
+    trigger('chamado', [
       state(
-        "visivel",
+        'visivel',
         style({
-          opacity: 1
-        })
+          opacity: 1,
+        }),
       ),
-      transition("void => visivel", [
+      transition('void => visivel', [
         style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + "ms ease-in-out")
-      ])
-    ])
-  ]
+        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
+      ]),
+    ]),
+  ],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
-  public linkFotoUsuario = "";
+  public linkFotoUsuario = '';
   public toggled: boolean = false;
-  public estado: string = "visivel";
+  public estado: string = 'visivel';
   userPictureOnly: boolean = false;
   user: any;
 
@@ -71,10 +71,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public esc_id: string;
   public usr_id: string;
   public dashboardMaximizedStatus: boolean = false;
-  public expandedIcon = "expand-outline";
-  public collapseIcon = "collapse-outline";
-  public alertIcon = "alert-triangle"
-  public tourIcon = "question-mark-circle"
+  public expandedIcon = 'expand-outline';
+  public collapseIcon = 'collapse-outline';
+  public alertIcon = 'alert-triangle';
+  public tourIcon = 'question-mark-circle';
   public element;
   public exibirBotaoAlertaOcorrencia: boolean = false;
   public alertasTratados: number = 0;
@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private acessoComumService: AcessoComumService,
 
-    @Inject(DOCUMENT) private document: any
+    @Inject(DOCUMENT) private document: any,
   ) {
   }
 
@@ -103,7 +103,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       } else {
         this.exibirBotaoAlertaOcorrencia = false;
       }
-    })
+    });
     this.element = document.documentElement;
 
     try {
@@ -120,7 +120,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.themeService.changeTheme('default');
       }
     } catch (erro) {
-      console.log('Erro ao carregar Thema.');
+      // console.log('Erro ao carregar Thema.');
       this.themeService.changeTheme('default');
     }
 
@@ -202,11 +202,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public carregarDadosUsuario(): void {
-    this.dadosUsuarioLogado = Object.values(JSON.parse(Utils.decriptAtoB(localStorage.getItem("dados"), CONSTANTES.PASSO_CRIPT)))[0];
-    this.fotoUsuario = this.dadosUsuarioLogado["foto"]
-    this.nomeUsuario = this.dadosUsuarioLogado["nome"]
-    this.emailUsuario = this.dadosUsuarioLogado["email"]
-    this.idUsuario = this.dadosUsuarioLogado["id"];
+    this.dadosUsuarioLogado = Object.values(JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'),
+      CONSTANTES.PASSO_CRIPT)))[0];
+    this.fotoUsuario = this.dadosUsuarioLogado['foto'];
+    this.nomeUsuario = this.dadosUsuarioLogado['nome'];
+    this.emailUsuario = this.dadosUsuarioLogado['email'];
+    this.idUsuario = this.dadosUsuarioLogado['id'];
   }
 
   public alterarTamanhoDashboard(event: Event): void {
@@ -239,9 +240,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  //alert(this.dashboardMaximizedStatus);
+  // alert(this.dashboardMaximizedStatus);
   public carregarDadosEscola(): void {
-    this.nomeEscola = Utils.pegarDadosEscola()["nome_abreviado"];
+    this.nomeEscola = Utils.pegarDadosEscola()['nome_abreviado'];
   }
 
   navigateHome() {

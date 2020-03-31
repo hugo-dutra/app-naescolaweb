@@ -42,6 +42,7 @@ export class ListarSugestaoUsuarioComponent implements OnInit {
   public usrId: number = 0;
   public statusSugestao: number = 0;
   public arrayDeSugestoes = new Array<Object>();
+  public arrayHistoricoAlteracoesSugestoes = new Array<Object>();
   public observacaoAlteracaoDeStatus: string = '';
   public statusAtendimentoModificado: number = -1;
 
@@ -71,6 +72,19 @@ export class ListarSugestaoUsuarioComponent implements OnInit {
 
   public alterarStatusAtendimentoModificado(event: Event): void {
     this.statusAtendimentoModificado = parseInt((<HTMLInputElement>event.target).value, 10);
+  }
+
+  public listarHistoricoAtendimentoModificado(event: Event): void {
+    this.feedbackUsuario = 'Carregando histórico de modificações, aguarde...';
+    const susId = parseInt((<HTMLInputElement>event.target).value, 10);
+    this.arrayHistoricoAlteracoesSugestoes = [];
+    this.usuarioService.listarHistoricoAlteracaoSugestaoUsuario(susId).toPromise().then((response: Response) => {
+      this.arrayHistoricoAlteracoesSugestoes = Object.values(response);
+      this.feedbackUsuario = undefined;
+    }).catch((erro: Response) => {
+      this.tratarErro(erro);
+    });
+
   }
 
   public alterarStatusAtendimento(susId: number): void {

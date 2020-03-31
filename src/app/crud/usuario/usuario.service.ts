@@ -47,6 +47,19 @@ export class UsuarioService {
     );
   }
 
+  public listarHistoricoAlteracaoSugestaoUsuario(susId: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+
+    return this.http.post(
+      CONSTANTES.HOST_API + 'listar-historico-alteracao-sugestao-usuario',
+      JSON.stringify({ sus_id: susId }),
+      headers,
+    );
+  }
+
   public listarSugestaoUsuario(data_inicio: string, data_fim: string,
     esc_id: number, escopo: string, statusSugestao: number): Observable<any> {
     const headers = {

@@ -39,7 +39,8 @@
                 <th class="col-sm-12 col-lg-1" scope="col"><span>Detalhes</span></th>
                 <th class="col-sm-12 col-lg-2" scope="col"><span (click)="ordenarColuna('tipo')">Tipo</span></th>
                 <th class="col-sm-12 col-lg-1" scope="col"><span (click)="ordenarColuna('data')">Data</span></th>
-                <th class="col-sm-12 col-lg-2" scope="col"><span>Alterar</span></th>
+                <th class="col-sm-12 col-lg-1" scope="col"><span>Alterar</span></th>
+                <th class="col-sm-12 col-lg-1" scope="col"><span>Historico</span></th>
               </tr>
             </thead>
             <tbody *ngIf="arrayDeSugestoes != null">
@@ -49,7 +50,8 @@
 
                 <td class="col-lg-1 col-sm-12 text-center"> <button id="btn_atendimento_{{ sugestao.sus_id  }}"
                     type="button" class="btn btn-secondary btn-sm text-light" placement="left" container="body"
-                    [ngbPopover]="popDetalhesAtendimento" [popoverTitle]="popDetalheAtendimento">...</button></td>
+                    [ngbPopover]="popDetalhesAtendimento" [popoverTitle]="popDetalheAtendimento"><i
+                      class="fa fa-lg fa-question"></i></button></td>
                 <ng-template #popDetalhesAtendimento>
                   <div [@chamado]="estado">
                     <div class="card">
@@ -67,7 +69,7 @@
                 <td class="col-sm-12 col-lg-2">{{ sugestao.tipo }}</td>
                 <td class="col-sm-12 col-lg-1">{{ sugestao.data }}</td>
 
-                <td class="col-lg-2 col-sm-12 text-center">
+                <td class="col-lg-1 col-sm-12 text-center">
                   <!-- Botão -->
                   <a data-toggle="modal" class="border-light"
                     [attr.data-target]="'#btn_alterar_atendimento' + sugestao.sus_id">
@@ -110,6 +112,57 @@
                     </div>
                   </div>
                 </td>
+
+                <td class="col-lg-1 col-sm-12 text-center">
+                  <!-- Botão -->
+                  <a data-toggle="modal" class="border-light"
+                    [attr.data-target]="'#btn_historico_atendimento' + sugestao.sus_id">
+                    <button class="btn btn-sm bg-primary text-light form-control" [value]="sugestao.sus_id"
+                      (click)="listarHistoricoAtendimentoModificado($event)"><i
+                        class="fa fa-lg fa-list text-light"></i></button>
+                  </a>
+                  <!-- Modal -->
+                  <div class="modal fade large" id="btn_historico_atendimento{{sugestao.sus_id}}" tabindex="-1"
+                    role="dialog" aria-labelledby="modelLabelHistoricoAtendimento" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="card">
+                          <div class="card-header text-center">
+                            HISTÓRICO DE ALTERAÇÕES
+                          </div>
+                          <div class="card-body historico" *ngIf="arrayHistoricoAlteracoesSugestoes.length > 0">
+                            <div class="row" *ngFor="let itemAlterado of arrayHistoricoAlteracoesSugestoes">
+                              <div class="col-12 text-left">
+                                Status alterado para: <b>{{itemAlterado.status}}</b>
+                              </div>
+                              <div class="col-8 text-left">
+                                Usuário: <b>{{itemAlterado.usuario}}</b>
+                              </div>
+                              <div class="col-4 text-left">
+                                Data: <b>{{itemAlterado.data | date:"dd/MM/yyyy"}}</b>
+                              </div>
+                              <div class="col-12 text-left">
+                                <label for="">Observações:</label>
+                                <textarea style="resize: none" class="form-control" readonly cols="10"
+                                  rows="5">{{itemAlterado.observacao}}</textarea>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div *ngIf="arrayHistoricoAlteracoesSugestoes.length == 0">
+                            ...
+                          </div>
+                          <div class="card-footer">
+                            <button class=" form-control btn-sm col-12 bg-success text-light"
+                              data-dismiss="modal">Fechar</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
               </tr>
             </tbody>
           </table>
