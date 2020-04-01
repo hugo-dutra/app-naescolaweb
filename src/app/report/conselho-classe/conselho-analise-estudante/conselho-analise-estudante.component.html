@@ -68,23 +68,47 @@
             <!-- Botão -->
             <a data-toggle="modal" class="border-light"
               [attr.data-target]="'#modelEstudanteNotificacao' + resultadoEstudante.est_id">
-              <button class="btn btn-sm"><i class="fa fa-comments-o text-light"></i></button>
+              <button class="btn btn-sm" (click)="listarEstatisticaEntregaNotificacoes(resultadoEstudante.est_id)"><i
+                  class="fa fa-comments-o text-light"></i></button>
             </a>
             <!-- Modal -->
             <div class="modal fade large" id="modelEstudanteNotificacao{{ resultadoEstudante.est_id }}" tabindex="-1"
               role="dialog" aria-labelledby="modelLabelEstudante" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                  <div class="modal-header bg-blue text-light">
+                  <div class="modal-header bg-light text-dark">
                     <div class="col-sm-12 col-lg-9">
-                      <b>{{ resultadoEstudante.estudante }}</b>
+                      <b>Entrega de mensagens: {{ resultadoEstudante.estudante }}</b>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true" class="text-light">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body text-justify">
-                    <p>Informação sobre o engajamento dos pais pelo aplicativo</p>
+                    <!-- CHART AQUI -->
+                    <div class="row">
+                      <div class="col-6">
+                        <canvas [id]="'pieChartEstatisticaEntregaAtividades' + resultadoEstudante.est_id"
+                          height="200%"></canvas>
+                      </div>
+
+                      <div class="col-6">
+                        <canvas [id]="'pieChartEstatisticaEntregaComunicados' + resultadoEstudante.est_id"
+                          height="200%"></canvas>
+                      </div>
+
+                      <div class="col-6">
+                        <canvas [id]="'pieChartEstatisticaEntregaFrequencias' + resultadoEstudante.est_id"
+                          height="200%"></canvas>
+                      </div>
+
+                      <div class="col-6">
+                        <canvas [id]="'pieChartEstatisticaEntregaOcorrencias' + resultadoEstudante.est_id"
+                          height="200%"></canvas>
+                      </div>
+                    </div>
+                    <!-- ########## -->
+
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
@@ -125,7 +149,7 @@
                               <th class="col-sm-12 col-lg-5 text-left" scope="col">Detalhe</th>
                             </tr>
                           </thead>
-                          <tbody *ngIf="ocorrencias != null">
+                          <tbody *ngIf="arrayOfOcorrenciasEstudante != null">
                             <tr class="row" *ngFor="let ocorrencia of arrayOfOcorrenciasEstudante">
                               <td class="col-sm-12 col-lg-3 text-left">{{ ocorrencia.data_hora | date:'dd/MM/yyyy' }}
                               </td>

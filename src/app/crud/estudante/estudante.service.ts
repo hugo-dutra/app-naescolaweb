@@ -556,6 +556,16 @@ export class EstudanteService {
     );
   }
 
+  public listarStatusEntregaMensagensEnviadas(est_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(
+      CONSTANTES.HOST_API + 'listar-status-entrega-mensagens-enviadas',
+      JSON.stringify({ est_id: est_id }), headers);
+  }
+
   public filtrarRegional(
     valor: string, limit: number,
     offset: number, esc_id: number,
