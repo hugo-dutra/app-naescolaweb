@@ -896,6 +896,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
     this.feedbackUsuario = 'Listando status de entrega de notificações, aguarde...';
     this.estudanteService.listarStatusEntregaMensagensEnviadas(estId).toPromise().then((response: Response) => {
       const estatisticaRetorno = Object.values(response);
+      console.log(estatisticaRetorno);
       /* -- */
       this.arrayDeEstatisticaMensagensAtividades = estatisticaRetorno.filter((estatistica) => {
         return estatistica['tipo'] == 'atividade_extra_estudante';
@@ -903,7 +904,10 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
       const valoresAtividades = this.arrayDeEstatisticaMensagensAtividades.map((valor) => {
         return valor['quantidade'];
       });
-      this.atualizarChartEstatisticaEntregaAtividades(estId, valoresAtividades);
+      setTimeout(() => {
+        this.atualizarChartEstatisticaEntregaAtividades(estId, valoresAtividades);
+      }, 2000);
+
 
       /* -- */
       this.arrayDeEstatisticaMensagensComunicados = estatisticaRetorno.filter((estatistica) => {
@@ -912,7 +916,10 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
       const valoresComunicados = this.arrayDeEstatisticaMensagensComunicados.map((valor) => {
         return valor['quantidade'];
       });
-      this.atualizarChartEstatisticaEntregaComunicados(estId, valoresComunicados);
+      setTimeout(() => {
+        this.atualizarChartEstatisticaEntregaComunicados(estId, valoresComunicados);
+      }, 2000);
+
 
       /* -- */
       this.arrayDeEstatisticaMensagensFrequencias = estatisticaRetorno.filter((estatistica) => {
@@ -921,7 +928,10 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
       const valoresFrequencia = this.arrayDeEstatisticaMensagensFrequencias.map((valor) => {
         return valor['quantidade'];
       });
-      this.atualizarChartEstatisticaEntregaFrequencias(estId, valoresFrequencia);
+      setTimeout(() => {
+        this.atualizarChartEstatisticaEntregaFrequencias(estId, valoresFrequencia);
+      }, 2000);
+
 
       /* -- */
       this.arrayDeEstatisticaMensagensOcorrencias = estatisticaRetorno.filter((estatistica) => {
@@ -930,9 +940,14 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
       const valoresOcorrencias = this.arrayDeEstatisticaMensagensOcorrencias.map((valor) => {
         return valor['quantidade'];
       });
-      this.atualizarChartEstatisticaEntregaOcorrencias(estId, valoresOcorrencias);
+      setTimeout(() => {
+        this.atualizarChartEstatisticaEntregaOcorrencias(estId, valoresOcorrencias);
+      }, 2000);
 
-      this.feedbackUsuario = undefined;
+      setTimeout(() => {
+        this.feedbackUsuario = undefined;
+      }, 2000);
+
     }).catch((erro: Response) => {
       // Mostra modal
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
