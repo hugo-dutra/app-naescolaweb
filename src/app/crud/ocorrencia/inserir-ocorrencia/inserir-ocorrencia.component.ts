@@ -51,7 +51,6 @@ import { AcessoComumService } from '../../../shared/acesso-comum/acesso-comum.se
 export class InserirOcorrenciaComponent implements OnInit {
 
   public arrayOfEstudantes = new Array<number>();
-  public arrayOfMatriculasEstudantes = new Array<string>();
   public arrayOfNomesEstudantes = new Array<string>();
   public arrayOfEstudantesMultiplo = new Array<MessageFirebase>();
   public arrayOfResumoOcorrencias = new Array<Object>();
@@ -194,7 +193,6 @@ export class InserirOcorrenciaComponent implements OnInit {
           i => resumo_ocorrencias,
         ).length;
         const nome: string = resumo_ocorrencias[0]['nome'];
-        const matricula = resumo_ocorrencias[0]['matricula'];
         const message = `O(a) Estudante ${nome.toUpperCase()} já possui ${quantidade_resumo_ocorrencias}
         ocorrências disciplinares.
         Solicitamos que o(a) Sr.(a) responsável entre em contato com a escola para tratarmos desse assunto.`;
@@ -211,7 +209,7 @@ export class InserirOcorrenciaComponent implements OnInit {
         messageFirebase.nome_estudante = nome;
         messageFirebase.tipo_msg = 'Comunicado'; // CONSTANTES.FIREBASE_MSG_COMUNICADO;
         messageFirebase.titulo = 'Comunicado';
-        messageFirebase.to = `${inep}_${matricula}`;
+        messageFirebase.to = `${inep}_${est_id}`;
         this.arrayDeMensagensSimples.push(messageFirebase);
         this.gravarComunicadoDirecao(this.arrayDeMensagensSimples);
       })
@@ -252,7 +250,6 @@ export class InserirOcorrenciaComponent implements OnInit {
     const inep = dados_escola[0]['inep'];
     this.arrayDeMensagensSimples = [];
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
-      // let matricula = this.arrayOfMatriculasEstudantes[i];
       const nome = this.arrayOfNomesEstudantes[i];
       const message = `${this.tipoOcorrenciaSimples}.`;
       const messageFirebase = new MessageFirebase();
@@ -437,7 +434,6 @@ export class InserirOcorrenciaComponent implements OnInit {
     this.arrayDeMensagensSimples = [];
     this.arrayOfEstudantes = [];
     this.arrayOfEstudantesMultiplo = [];
-    this.arrayOfMatriculasEstudantes = [];
     this.arrayOfMensagens = [];
     this.arrayOfNomesEstudantes = [];
     this.arrayOfResumoOcorrencias = [];
@@ -529,24 +525,19 @@ export class InserirOcorrenciaComponent implements OnInit {
   }
 
   public gravaStatusEstudantes(event: Event): void {
-    const est_id_matricula_nome: string = (<HTMLInputElement>event.target).value;
+    const est_id_nome: string = (<HTMLInputElement>event.target).value;
     const status: boolean = (<HTMLInputElement>event.target).checked;
 
     if (status) {
-      this.arrayOfEstudantes.push(parseInt(est_id_matricula_nome.split('|')[0], 10));
-      this.arrayOfMatriculasEstudantes.push(est_id_matricula_nome.split('|')[1]);
-      this.arrayOfNomesEstudantes.push(est_id_matricula_nome.split('|')[2]);
+      this.arrayOfEstudantes.push(parseInt(est_id_nome.split('|')[0], 10));
+      this.arrayOfNomesEstudantes.push(est_id_nome.split('|')[1]);
     } else {
       this.arrayOfEstudantes.splice(
-        this.arrayOfEstudantes.indexOf(parseInt(est_id_matricula_nome.split('|')[0], 10), 0),
-        1,
-      );
-      this.arrayOfMatriculasEstudantes.splice(
-        this.arrayOfMatriculasEstudantes.indexOf((est_id_matricula_nome.split('|')[1]), 0),
+        this.arrayOfEstudantes.indexOf(parseInt(est_id_nome.split('|')[0], 10), 0),
         1,
       );
       this.arrayOfNomesEstudantes.splice(
-        this.arrayOfNomesEstudantes.indexOf((est_id_matricula_nome.split('|')[2]), 0),
+        this.arrayOfNomesEstudantes.indexOf((est_id_nome.split('|')[1]), 0),
         1,
       );
     }

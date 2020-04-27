@@ -327,7 +327,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     for (let i = 0; i < this.arrayOfEstudantes.length; i++) {
       for (let j = 0; j < this.arrayOfComunicados.length; j++) {
         if (this.arrayOfEstudantes[i].id == this.arrayOfComunicados[j].est_id) {
-          const matricula = this.arrayOfEstudantes[i].matricula;
+          const est_id = this.arrayOfEstudantes[i].id;
           const nome = this.arrayOfEstudantes[i].nome;
           const messageFirebase = new MessageFirebase();
           messageFirebase.cod_inep = inep;
@@ -345,7 +345,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           messageFirebase.nome_estudante = nome;
           messageFirebase.tipo_msg = 'Comunicado escolar';
           messageFirebase.titulo = this.assunto;
-          messageFirebase.to = `${inep}_${matricula}`;
+          messageFirebase.to = `${inep}_${est_id}`;
           this.arrayDeMensagens.push(messageFirebase);
         }
       }
