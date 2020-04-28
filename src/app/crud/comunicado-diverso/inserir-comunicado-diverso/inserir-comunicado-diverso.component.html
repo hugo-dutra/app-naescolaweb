@@ -12,73 +12,95 @@
       </div>
     </div>
     <div class="card-body">
-      <div>
-        <div class="row ml-1">
-          <!-- SELECIONAR TURNO E CHAMAR TURMAS DESSE TURNO -->
-          <select name="select-turno" id="select-turno" class="form-control col-sm-12 col-lg-2 mt-2"
-            (change)="selecionarTurno($event)">
-            <option value="" selected="selected">Selecione um turno</option>
-            <option value="-1">Todos os turnos</option>
-            <option *ngFor="let turno of arrayOfTurnos" [value]="turno.id">{{ turno.nome }}</option>
-          </select>
-          <!-- SELECIONAR TURMA E CHAMAR ESTUDANTES RELACIONADOS -->
-          <select name="select-turma" id="select-turma" class="form-control col-sm-12 col-lg-2 mt-2"
-            (change)="selecionarTurma($event)">
-            <option value="" selected="selected">Selecione uma turma</option>
-            <option value="-1">Todas as turmas</option>
-            <option *ngFor="let turma of arrayOfTurmas" [value]="turma.id">{{ turma.serie }} {{ turma.turma }} - {{
+      <div class="row ml-3">
+        <!-- SELECIONAR TURNO E CHAMAR TURMAS DESSE TURNO -->
+        <select name="select-turno" id="select-turno" class="form-control col-sm-12 col-lg-2 mt-2"
+          (change)="selecionarTurno($event)">
+          <option value="" selected="selected">Selecione um turno</option>
+          <option value="-1">Todos os turnos</option>
+          <option *ngFor="let turno of arrayOfTurnos" [value]="turno.id">{{ turno.nome }}</option>
+        </select>
+        <!-- SELECIONAR TURMA E CHAMAR ESTUDANTES RELACIONADOS -->
+        <select name="select-turma" id="select-turma" class="form-control col-sm-12 col-lg-2 mt-2"
+          (change)="selecionarTurma($event)">
+          <option value="" selected="selected">Selecione uma turma</option>
+          <option value="-1">Todas as turmas</option>
+          <option *ngFor="let turma of arrayOfTurmas" [value]="turma.id">{{ turma.serie }} {{ turma.turma }} - {{
               turma.turno }}</option>
-          </select>
-          <div class="col-sm-12 col-lg-5 mt-2">
-          </div>
-          <div class="col-sm-12 col-lg-2 mt-2">
+        </select>
+        <div class="col-sm-12 col-lg-5 mt-2">
+        </div>
+        <!-- <div class="col-sm-12 col-lg-2 mt-2">
             <button class="btn btn-primary float-right" (click)="enviarComunicado()"> <i
                 class="fa fa-lg fa-comment"></i>&nbsp;Enviar
               comunicado</button>
+          </div> -->
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-5">
+
+          <div class="col-sm-12 col-lg-12 mt-2">
+            <input type="text" class="form-control" name="input-titulo" id="input-titulo" placeholder="Assunto..."
+              maxlength="50" (input)="gravarAssunto($event)">
           </div>
+          <div class="col-sm-12 col-lg-12 mt-2">
+            <textarea style="resize: none;" name="textarea-conteudo" id="textarea-conteudo" cols="30" rows="5"
+              class="form-control" placeholder="Mensagem..." maxlength="1000"
+              (input)="gravarMensagem($event)"></textarea>
+
+            <label for="files" class="btn btn btn-dark border-light col-sm-12 col-lg-12 mt-2">Selecionar
+              anexos</label>
+            <input type="file" multiple="multiple" accept=".*" (change)="selecionarArquivos($event)" id="files"
+              style="visibility: hidden;" class="form-control col-sm-12 col-lg-1 mb-2">
+          </div>
+
+          <div class="anexos col-12">
+            <div class="input-group" *ngFor="let anexo of arrayDeDadosDosAnexos">
+              <input type="text" class="form-control" readonly aria-label="Input group example"
+                aria-describedby="btnGroupAddon" [value]="anexo.nome+'.'+anexo.tipo">
+              <div class="input-group-append">
+                <div class="input-group-text bg-danger text-light" id="btnGroupAddon"
+                  (click)="excluirArquivoAnexado(anexo.nome)"><i class="fa fa-sm fa-remove text-light"></i></div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
-        <div class="row">
-          <div class="row col-sm-12 col-lg-5">
-            <div class="col-sm-12 col-lg-12 mt-2">
-              <input type="text" class="form-control" name="input-titulo" id="input-titulo" placeholder="Assunto..."
-                maxlength="50" (input)="gravarAssunto($event)">
-            </div>
-            <div class="col-sm-12 col-lg-12 mt-2">
-              <textarea name="textarea-conteudo" id="textarea-conteudo" cols="30" rows="10" class="form-control"
-                placeholder="Mensagem..." maxlength="1000" (input)="gravarMensagem($event)"></textarea>
-
-              <label for="files" class="btn btn btn-dark border-light col-sm-12 col-lg-4 mt-2">Selecionar
-                anexos</label>
-              <input type="file" multiple="multiple" accept=".*" (change)="selecionarArquivos($event)" id="files"
-                style="visibility: hidden;" class="form-control col-sm-12 col-lg-1 mb-2">
-            </div>
-          </div>
-          <div class="estudantes col-sm-12 col-lg-7 mt-2">
-            <div class="row">
-              <table class="table table-striped table-hover">
-                <thead class="thead-light">
-                  <tr class="row">
-                    <th class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox"
-                        (click)="selecionarTodosEstudantes($event)">
-                    </th>
-                    <th class="col-sm-12 col-lg-11 text-left" scope="col">Nome<small
-                        class="text-muted text-right float-right"> {{
+        <div class="estudantes col-sm-12 col-lg-7 mt-2">
+          <div class="row">
+            <table class="table table-striped table-hover">
+              <thead class="thead-light">
+                <tr class="row">
+                  <th class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox"
+                      (click)="selecionarTodosEstudantes($event)">
+                  </th>
+                  <th class="col-sm-12 col-lg-11 text-left" scope="col">Nome<small
+                      class="text-muted text-right float-right"> {{
                       mensagemSelecionados }} </small></th>
-                  </tr>
-                </thead>
-                <tbody *ngIf="arrayOfEstudantes != null">
-                  <tr class="row" *ngFor="let estudante of arrayOfEstudantes">
-                    <td class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox" [value]="estudante.id"
-                        [name]="estudante.id" [id]="estudante.id" (click)="adicionarComunicado($event)"></td>
-                    <td class="col-sm-12 col-lg-11 text-left">&nbsp;{{ estudante.nome }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                </tr>
+              </thead>
+              <tbody *ngIf="arrayOfEstudantes != null">
+                <tr class="row" *ngFor="let estudante of arrayOfEstudantes">
+                  <td class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox" [value]="estudante.id"
+                      [name]="estudante.id" [id]="estudante.id" (click)="adicionarComunicado($event)"></td>
+                  <td class="col-sm-12 col-lg-11 text-left">&nbsp;{{ estudante.nome }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-
         </div>
       </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <button class="btn btn-primary float-right" (click)="enviarComunicado()"> <i
+              class="fa fa-lg fa-comment"></i>&nbsp;Enviar
+            comunicado</button>
+        </div>
+
+      </div>
+
+
     </div>
     <div class="card-footer bg-dark text-center text-light">
       <i class="fa fa-lg fa-info-circle">&nbsp;Envio de comunicados diversos</i>

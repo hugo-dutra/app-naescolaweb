@@ -457,7 +457,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           contadorArquivosEnviados++;
           if (contadorArquivosEnviados == arquivosSelecionados.length) {
             this.feedbackUsuario = undefined;
-            this.alertModalService.showAlertSuccess('Anexos enviados com sucesso');
+            this.alertModalService.showAlertInformation('Arquivos anexados');
           }
         }).catch((erro: Response) => {
           this.tratarErro(erro);
@@ -465,6 +465,12 @@ export class InserirComunicadoDiversoComponent implements OnInit {
       }).catch((erro: Response) => {
         this.tratarErro(erro);
       });
+    });
+  }
+
+  public excluirArquivoAnexado(nomeArquivo: string): void {
+    this.arrayDeDadosDosAnexos = this.arrayDeDadosDosAnexos.filter(anexo => {
+      return anexo['nome'] != nomeArquivo;
     });
   }
 }

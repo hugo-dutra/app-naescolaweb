@@ -1,3 +1,4 @@
+import { FirebaseService } from './../../../shared/firebase/firebase.service';
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CONSTANTES } from '../../../shared/constantes.shared';
@@ -36,12 +37,46 @@ export class GerenciarAlertaComponent implements OnInit {
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
   constructor(private router: Router,
     private hintService: HintService,
-    private acessoComumService: AcessoComumService) { }
+    private acessoComumService: AcessoComumService,
+    private firebaseService: FirebaseService) { }
 
   ngOnInit() {
     this.subscribeTour();
   }
 
+  /* public escreverTesteFirebase(): void {
+    const dados_escola = JSON.parse(
+      Utils.decriptAtoB(
+        localStorage.getItem('dados_escola'),
+        CONSTANTES.PASSO_CRIPT,
+      ),
+    )[0];
+    const inep = dados_escola['inep'];
+
+    for (let i = 0; i < 140000; i++) {
+      this.firebaseService.escreverDocumentosTeste(inep).then(() => {
+        console.log(`${i + 1}º documento escrito de ${140000}`);
+      });
+    }
+  } */
+
+  /*  public atualizarStatus_0_1Firebase(): void {
+     const dados_escola = JSON.parse(
+       Utils.decriptAtoB(
+         localStorage.getItem('dados_escola'),
+         CONSTANTES.PASSO_CRIPT,
+       ),
+     )[0];
+     const inep = dados_escola['inep'];
+     console.log('Carregando coleção');
+ 
+     this.firebaseService.atualizarStatusDocumentos_0_1(inep).then((docs: firebase.firestore.QuerySnapshot) => {
+       docs.docs.forEach((doc: firebase.firestore.QueryDocumentSnapshot) => {
+         console.log(doc.data());
+       });
+ 
+     })
+   } */
 
 
   public subscribeTour(): void {
