@@ -1,0 +1,75 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header text-light bg-dark text-center">
+      <label for="">Gerar listagem</label>
+    </div>
+    <div class="card-body">
+
+
+      <div class="row">
+        <label for="upass">Selecione as tabelas:</label>
+      </div>
+      <div class="row ml-2">
+
+        <label for="estudante_est" class="mr-2"><input type="checkbox" class="checkbox-inline" id="estudante_est"
+            (change)="selecionarTabelas($event)" value="estudante_est"> Estudantes</label>
+
+        <label for="serie_sre" class="mr-2"><input type="checkbox" class="checkbox-inline" id="serie_sre" name=""
+            (change)="selecionarTabelas($event)" value="serie_sre"> Série</label>
+
+        <label for="turma_trm" class="mr-2"><input type="checkbox" class="checkbox-inline" id="turma_trm" name=""
+            (change)="selecionarTabelas($event)" value="turma_trm"> Turma</label>
+
+        <label for="turno_trn" class="mr-2"><input type="checkbox" class="checkbox-inline" id="turno_trn" name=""
+            (change)="selecionarTabelas($event)" value="turno_trn"> Turno</label>
+
+        <label for="etapa_ensino_ete" class="mr-2"><input type="checkbox" class="checkbox-inline" id="etapa_ensino_ete"
+            name="" (change)="selecionarTabelas($event)" value="etapa_ensino_ete"> Etapa</label>
+
+      </div>
+
+      <div class="row border-top">
+        <label for="upass">Selecione os campos:</label>
+      </div>
+
+      <div class="campos">
+        <div class="row">
+          <label *ngFor="let campo of arrayDeCamposETabela" [for]="campo.tabela+'_'+campo.campo"
+            class="col-4 border p-2"><input type="checkbox" class="checkbox-inline" [id]="campo.tabela+'_'+campo.campo"
+              (change)="selecionarCampo($event)" [value]="campo.campo" [name]="campo.tabela">
+            {{campo.labelTabela}} : {{campo.label}}
+            <select hidden class="form-control-sm ml-2" [id]="'dropdown'+'_'+campo.campo"
+              (change)="selecionarAscDesc($event,campo.campo)">
+              <option value="null" selected>Selecione ordenamento</option>
+              <option value="asc">Ascendente</option>
+              <option value="desc">Descrescente</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-10">
+          <h6>* A ordem de seleção dos campos impacta no ordenamento da listagem</h6>
+        </div>
+        <div class="col-2">
+          <button class="btn btn-sm btn-primary float-right" (click)="gerarListagem()">Gerar lista</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loadingDiv" *ngIf="feedbackUsuario != undefined">
+  <div>
+    <div class="row mt-2" *ngIf="feedbackUsuario != undefined">
+      <div class="col-2">
+        <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+      </div>
+      <div class="col-10">
+        <h4>
+          <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>

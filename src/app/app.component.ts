@@ -104,16 +104,20 @@ export class AppComponent implements OnInit {
   public logarUsuarioAnonimamenteFirebase(): void {
     const auth = firebase.auth();
     auth.signInAnonymously().then((userCredencials: firebase.auth.UserCredential) => {
-      const uid = userCredencials.user.uid;
-      const nome = Utils.verificarDados()[0]['nome'];
-      const usr_id = Utils.verificarDados()[0]['id'];
-      const escola = Utils.pegarDadosEscola()['nome'];
-      const dados_escola = JSON.parse(
-        Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
-      const inep = dados_escola['inep'];
-      const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id };
-      const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
-      criarUsuarioAnonimo({ user: user, uid: uid }).then(() => { });
+      try {
+        const uid = userCredencials.user.uid;
+        const nome = Utils.verificarDados()[0]['nome'];
+        const usr_id = Utils.verificarDados()[0]['id'];
+        const escola = Utils.pegarDadosEscola()['nome'];
+        const dados_escola = JSON.parse(
+          Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
+        const inep = dados_escola['inep'];
+        const user = { nome: nome, colegio: escola, inep: inep, codigo: usr_id };
+        const criarUsuarioAnonimo = firebase.functions().httpsCallable('supervisorEscolar_GravarUsuarioAdmin');
+        criarUsuarioAnonimo({ user: user, uid: uid }).then(() => { });
+      } catch (error) {
+        console.log(error);
+      }
     });
   }
 

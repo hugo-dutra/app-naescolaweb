@@ -203,6 +203,10 @@ const routes: Routes = [{
       path: 'gerenciar-relatorio-frequencia-geral', loadChildren: () => import('../report/frequencia/frequencia.module')
         .then(m => m.FrequenciaModule),
     },
+    {
+      path: 'gerenciar-gerador-listagem', loadChildren: () => import('../report/listagem/listagem.module')
+        .then(m => m.ListagemModule),
+    },
 
     /* SHARED */
     {
