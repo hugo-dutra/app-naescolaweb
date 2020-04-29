@@ -17,6 +17,7 @@ export class GeradorListagemComponent implements OnInit {
   public estado: string = "visivel";
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public campoAgrupador: string = '';
 
   public arrayDeCamposETabela = new Array<Object>();
   public arrayDeTabelas = new Array<Object>();
@@ -45,10 +46,12 @@ export class GeradorListagemComponent implements OnInit {
     const nomeTabela = (<HTMLInputElement>event.target).value;
     const statusCheck = (<HTMLInputElement>event.target).checked;
     if (statusCheck) {
-      this.arrayDeTabelas.push(nomeTabela);
+      const nome = nomeTabela;
+      const label = nomeTabela.substr(0, nomeTabela.length - 4);
+      this.arrayDeTabelas.push({ nome: nome, label: label });
     } else {
       this.arrayDeTabelas = this.arrayDeTabelas.filter(valor => {
-        return valor != nomeTabela;
+        return valor['nome'] != nomeTabela;
       })
       this.arrayDeCamposSelecionados = this.arrayDeCamposSelecionados.filter((valor) => {
         return valor['tabela'] != nomeTabela;
@@ -62,20 +65,31 @@ export class GeradorListagemComponent implements OnInit {
     if (statusCheck) {
       this.listagemService.listarCamposTabela(tabela).toPromise().then((response: Response) => {
         const arrayAuxiliar = Object.values(response).map((valor) => {
-          const valorLabel = (<string>valor['Field']).substr(0, (<string>valor['Field']).length - 4);
+          let valorLabel = (<string>valor['Field']).substring(4, (<string>valor['Field']).length - 4);
           const labelTabela = (tabela).substr(0, tabela.length - 4);
-
           return { tabela: tabela, campo: valor['Field'], label: valorLabel, labelTabela: labelTabela }
         });
+
         this.arrayDeCamposETabela.push(...arrayAuxiliar);
         this.arrayDeCamposETabela = Utils.eliminaValoresRepetidos(this.arrayDeCamposETabela, 'campo').sort((a, b) => {
           if (a['campo'] > b['campo']) {
+            return 0;
+          } else {
+            return 1;
+          }
+        }).sort((a, b) => {
+          if (a['tabela'] > b['tabela']) {
             return 1;
           } else {
-            return -1;
+            return 0;
           }
         });
         this.feedbackUsuario = undefined;
+
+        setTimeout(() => {
+          this.limparDivsVazias();
+        }, 500);
+
       }).catch((erro: Response) => {
         this.tratarErro(erro);
       });
@@ -84,13 +98,34 @@ export class GeradorListagemComponent implements OnInit {
         return valor['tabela'] != tabela;
       }).sort((a, b) => {
         if (a['campo'] > b['campo']) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }).sort((a, b) => {
+        if (a['tabela'] > b['tabela']) {
           return 1;
         } else {
-          return -1;
+          return 0;
         }
       });
       this.feedbackUsuario = undefined;
+      setTimeout(() => {
+        this.limparDivsVazias();
+      }, 500);
     }
+
+  }
+
+  public limparDivsVazias(): void {
+    const divsVazias: HTMLCollection = document.getElementsByClassName('div_tampos_tabela');
+    const arrayDeDivs = Array.from(divsVazias);
+    arrayDeDivs.forEach((elem: Element) => {
+      if (elem.children.length == 0) {
+        document.getElementById(elem.id).remove();
+      };
+    })
+
   }
 
   public selecionarCampo(event: Event): void {
@@ -112,7 +147,6 @@ export class GeradorListagemComponent implements OnInit {
   }
 
   public selecionarAscDesc(event: Event, campoSelecionado: string): void {
-    console.clear();
     const ascDesc = (<HTMLInputElement>event.target).value;
     const campo = campoSelecionado;
     this.arrayDeOrdenamento = this.arrayDeOrdenamento.filter((valor) => {
@@ -122,7 +156,6 @@ export class GeradorListagemComponent implements OnInit {
     this.arrayDeOrdenamento = this.arrayDeOrdenamento.filter((valor) => {
       return valor['ordem'] != 'null';
     })
-    console.table(this.arrayDeOrdenamento);
   }
 
   public gerarListagem(): void {
@@ -144,7 +177,7 @@ export class GeradorListagemComponent implements OnInit {
     this.feedbackUsuario = 'Listando dados, aguarde...';
     this.listagemService.listarDadosCamposSelecionados(listaDeCampos, this.esc_id, listaDeOrdenamento).toPromise().then((response: Response) => {
       const dadosDaLista = Object.values(response);
-      Utils.gerarLista(dadosDaLista, 'Listagem');
+      Utils.gerarListaAgrupada(dadosDaLista, 'Listagem', this.campoAgrupador);
       this.feedbackUsuario = undefined;
     });
   }

@@ -115,6 +115,71 @@ export class Utils {
     }
   }
 
+  public static gerarListaAgrupada(listagem: Array<Object>, nomeDoArquivoGerado: string, campoAgrupamento: string): void {
+    if (listagem.length > 0) {
+      const colunas = Object.keys(listagem[0]).length;
+      const modeloPlanilhaListagem: ExcelProper.Workbook = new Excel.Workbook();
+
+      const workSheets = Utils.eliminaValoresRepetidos(listagem, campoAgrupamento);
+      const tipoBlobArquivo: string = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
+      workSheets.forEach((workSheet, idx) => {
+        modeloPlanilhaListagem.addWorksheet(workSheet[campoAgrupamento]);
+        modeloPlanilhaListagem.worksheets[idx].addRow([`${nomeDoArquivoGerado}`]);
+        modeloPlanilhaListagem.worksheets[idx].mergeCells(1, colunas, 0, 0);
+        modeloPlanilhaListagem.worksheets[idx].getCell(1, 1).alignment = { vertical: 'middle', horizontal: 'center' };
+        const camposDePreenchimento = Object.keys(listagem[0]);
+        modeloPlanilhaListagem.worksheets[idx].addRows([camposDePreenchimento]);
+      })
+
+      workSheets.forEach((workSheet, idx) => {
+        listagem.forEach((dadoDaLista, idx2) => {
+          if (workSheet[campoAgrupamento] == dadoDaLista[campoAgrupamento]) {
+            const dadosLista = Object.values(dadoDaLista);
+            modeloPlanilhaListagem.worksheets[idx].addRows([dadosLista]);
+          }
+        });
+      })
+
+      // Preenchimento do background da planilha para facilitar a utilização feita pelo usuário
+      workSheets.forEach((wS, idx) => {
+        for (let i = 0; i < listagem.length + 4; i++) {
+          if (i % 2 == 0) {
+            for (let j = 0; j < colunas; j++) {
+              // Formada a entrada de dados para se comportarem como strings.
+              modeloPlanilhaListagem.worksheets[idx].getRow(i).getCell(j + 1).numFmt = '';
+              modeloPlanilhaListagem.worksheets[idx].getRow(i).getCell(j + 1).fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' },
+                bgColor: { argb: 'FFDDDDDD' },
+              };
+              modeloPlanilhaListagem.worksheets[idx].getRow(i).getCell(j + 1).border = {
+                top: { style: 'thin', color: { argb: 'FFBBBBBB' } },
+                left: { style: 'thin', color: { argb: 'FFBBBBBB' } },
+                bottom: { style: 'thin', color: { argb: 'FFBBBBBB' } },
+                right: { style: 'thin', color: { argb: 'FFBBBBBB' } },
+              };
+            }
+          }
+        }
+      });
+
+      // Ajusta tamanho das colunas para preenchimento dos dados
+      workSheets.forEach((wS, idx) => {
+        for (let i = 0; i < modeloPlanilhaListagem.worksheets[idx].columns.length; i++) {
+          modeloPlanilhaListagem.worksheets[idx].columns[i].width = 30;
+        }
+      });
+
+      // Gerar o arquivo e dispara o download
+      modeloPlanilhaListagem.xlsx.writeBuffer().then((data: Blob) => {
+        const blob = new Blob([data], { type: tipoBlobArquivo });
+        FileSaver.saveAs(blob, `${nomeDoArquivoGerado}.xlsx`);
+      });
+    }
+  }
+
 
 
   public static validarCampos(model: { event: Event }): void {

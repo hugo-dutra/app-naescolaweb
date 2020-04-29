@@ -28,24 +28,48 @@ export class FirebaseService {
   // ****************************************************************************/
   // ******************************PUSH******************************************/
   public enviarPushFirebase(topico: string, titulo: string): Observable<any> {
+    debugger;
     try {
-      const headers = {
-        headers: new HttpHeaders()
-          .append('Content-type', 'application/json')
-          .append('Authorization',
-            // tslint:disable-next-line: max-line-length
-            'Key=AAAAH0kr4hA:APA91bGlwDwDSBHclBxLBA74s-GT3otyDdmmmGJpNgoxISElSsrnMq1TevXDea5hBrWRpRsK8JDFsB5Af10wWrkstMkCAqGh-tjGseeZcUjPSJU62JtyD9xNDtC52NzsClr-L5SkmFKE'),
-      };
+      if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
 
-      const message = {
-        to: '/topics/' + topico,
-        notification: {
-          title: 'NaEscola',
-          body: titulo,
-        },
-        TimeToLive: 2400000,
-      };
-      return this.http.post('https://fcm.googleapis.com/fcm/send', message, headers);
+        const headers = {
+          headers: new HttpHeaders()
+            .append('Content-type', 'application/json')
+            .append('Authorization',
+              // tslint:disable-next-line: max-line-length
+              'Key=AAAAH0kr4hA:APA91bGlwDwDSBHclBxLBA74s-GT3otyDdmmmGJpNgoxISElSsrnMq1TevXDea5hBrWRpRsK8JDFsB5Af10wWrkstMkCAqGh-tjGseeZcUjPSJU62JtyD9xNDtC52NzsClr-L5SkmFKE'),
+        };
+        const message = {
+          to: '/topics/' + topico,
+          notification: {
+            title: 'NaEscola',
+            body: titulo,
+          },
+          TimeToLive: 2400000,
+        };
+        return this.http.post('https://fcm.googleapis.com/fcm/send', message, headers);
+
+      }
+
+      if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILD_SEDF) {
+        const headers = {
+          headers: new HttpHeaders()
+            .append('Content-type', 'application/json')
+            .append('Authorization',
+              // tslint:disable-next-line: max-line-length
+              'Key=AAAAEZDu31Y:APA91bHKDazt9EUe8tBSOcf_SpScvwVxDmXNUymAFgmU7HMqKa_SwgXGCVOT2AGPRmd3488KTkvB-VS6bYNIY-EcHXeERxvP24KF7f7GS0OiANmpJq9ptcyB-FIX8wZWnuO2oLqNE3Ry'),
+        };
+        const message = {
+          to: '/topics/' + topico,
+          notification: {
+            title: 'NaEscola',
+            body: titulo,
+          },
+          TimeToLive: 2400000,
+        };
+        return this.http.post('https://fcm.googleapis.com/fcm/send', message, headers);
+      }
+
     } catch (error) {
 
     }

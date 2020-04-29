@@ -6,50 +6,89 @@
     <div class="card-body">
 
 
-      <div class="row">
+      <div class="row text-dark">
         <label for="upass">Selecione as tabelas:</label>
       </div>
       <div class="row ml-2">
 
-        <label for="estudante_est" class="mr-2"><input type="checkbox" class="checkbox-inline" id="estudante_est"
+        <label for="estudante_est" class="mr-2 checkbox-inline text-dark"><input type="checkbox" id="estudante_est"
             (change)="selecionarTabelas($event)" value="estudante_est"> Estudantes</label>
 
-        <label for="serie_sre" class="mr-2"><input type="checkbox" class="checkbox-inline" id="serie_sre" name=""
+        <label for="serie_sre" class="mr-2 checkbox-inline text-dark"><input type="checkbox" id="serie_sre" name=""
             (change)="selecionarTabelas($event)" value="serie_sre"> Série</label>
 
-        <label for="turma_trm" class="mr-2"><input type="checkbox" class="checkbox-inline" id="turma_trm" name=""
+        <label for="turma_trm" class="mr-2 checkbox-inline text-dark"><input type="checkbox" id="turma_trm" name=""
             (change)="selecionarTabelas($event)" value="turma_trm"> Turma</label>
 
-        <label for="turno_trn" class="mr-2"><input type="checkbox" class="checkbox-inline" id="turno_trn" name=""
+        <label for="turno_trn" class="mr-2 checkbox-inline text-dark"><input type="checkbox" id="turno_trn" name=""
             (change)="selecionarTabelas($event)" value="turno_trn"> Turno</label>
 
-        <label for="etapa_ensino_ete" class="mr-2"><input type="checkbox" class="checkbox-inline" id="etapa_ensino_ete"
-            name="" (change)="selecionarTabelas($event)" value="etapa_ensino_ete"> Etapa</label>
+        <label for="etapa_ensino_ete" class="mr-2 checkbox-inline text-dark"><input type="checkbox"
+            id="etapa_ensino_ete" name="" (change)="selecionarTabelas($event)" value="etapa_ensino_ete"> Etapa</label>
+
+        <label
+          *ngIf="arrayDeCamposSelecionados != null && arrayDeCamposSelecionados != undefined && arrayDeCamposSelecionados.length > 0"
+          for="" class="col-lg-3 col-sm-12 text-dark">Selecione um campo agrupador: </label>
+
+        <div *ngIf="arrayDeCamposSelecionados != null && arrayDeCamposSelecionados != undefined"
+          class="col-lg-4 col-sm-12">
+          <div class="col-12" *ngIf="arrayDeCamposSelecionados.length > 0">
+            <div class="row">
+              <select [(ngModel)]="campoAgrupador" class="form-control col-12">
+                <option selected [value]="">Selecione um campo agrupador...</option>
+                <option *ngFor="let campoSelecionado of arrayDeCamposSelecionados" [value]="campoSelecionado.campo">
+                  ({{campoSelecionado.tabela}}) {{campoSelecionado.campo | slice:4:10000}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
 
       </div>
 
-      <div class="row border-top">
+      <div class="row border-top text-dark">
         <label for="upass">Selecione os campos:</label>
       </div>
 
       <div class="campos">
         <div class="row">
-          <label *ngFor="let campo of arrayDeCamposETabela" [for]="campo.tabela+'_'+campo.campo"
-            class="col-4 border p-2"><input type="checkbox" class="checkbox-inline" [id]="campo.tabela+'_'+campo.campo"
-              (change)="selecionarCampo($event)" [value]="campo.campo" [name]="campo.tabela">
-            {{campo.labelTabela}} : {{campo.label}}
-            <select hidden class="form-control-sm ml-2" [id]="'dropdown'+'_'+campo.campo"
-              (change)="selecionarAscDesc($event,campo.campo)">
-              <option value="null" selected>Selecione ordenamento</option>
-              <option value="asc">Ascendente</option>
-              <option value="desc">Descrescente</option>
-            </select>
-          </label>
+          <div class="card col-12" *ngFor="let tabela of arrayDeTabelas" [id]="'card_'+tabela">
+            <div class="card-header bg-secondary text-light text-center">
+              <label for="">{{tabela.label | titlecase}}</label>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div *ngFor="let campo of arrayDeCamposETabela" class="col-4 border p-2 div_tampos_tabela"
+                  [id]="tabela.nome+'_'+campo.tabela+'_'+campo.campo">
+                  <label *ngIf="campo.tabela == tabela.nome" [for]="campo.tabela+'_'+campo.campo"
+                    class="text-dark"><input type="checkbox" class="checkbox-inline" [id]="campo.tabela+'_'+campo.campo"
+                      (change)="selecionarCampo($event)" [value]="campo.campo" [name]="campo.tabela">
+                    {{campo.label}}
+                    <select hidden class="form-control-sm ml-2 text-dark" [id]="'dropdown'+'_'+campo.campo"
+                      (change)="selecionarAscDesc($event,campo.campo)">
+                      <option value="null" selected>Selecione ordenamento</option>
+                      <option value="asc">Ascendente</option>
+                      <option value="desc">Descrescente</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="row mt-2">
         <div class="col-10">
-          <h6>* A ordem de seleção dos campos impacta no ordenamento da listagem</h6>
+          <h6 class="text-dark">* A ordem de seleção dos campos impacta no ordenamento da listagem</h6>
         </div>
         <div class="col-2">
           <button class="btn btn-sm btn-primary float-right" (click)="gerarListagem()">Gerar lista</button>

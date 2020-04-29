@@ -379,7 +379,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
       this.firebaseService
         .enviarPushFirebase(topico, titulo)
         .toPromise()
-        .then((response: Response) => {
+        .then(() => {
           if (total - 1 == atual) {
             this.inserir();
           }
