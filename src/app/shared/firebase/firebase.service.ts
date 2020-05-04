@@ -99,7 +99,7 @@ export class FirebaseService {
   // *****************************************************************************/
   // ***************************FIRESTORE*****************************************/
 
-  /* public escreverDocumentosTeste(inep: string): Promise<any> {
+  public escreverDocumentosTeste(inep: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')
@@ -108,24 +108,22 @@ export class FirebaseService {
           status: 0,
           sincronizado: false,
           data: (new Date()),
-          dados: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
+          dados: 'Lorem Ipsum is simply...'
         }).then((documentReference: firebase.firestore.DocumentReference) => {
           resolve(documentReference);
         }).catch((reason: any) => {
           reject(reason);
         });
     });
-  } */
+  }
 
-  /* public atualizarStatusDocumentos_0_1(inep: string): Promise<firebase.firestore.QuerySnapshot> {
+  public atualizarStatusDocumentos_0_1(inep: string): Promise<firebase.firestore.QuerySnapshot> {
     return new Promise((resolve, reject) => {
       this.firestore.collection('naescolaApp').doc(inep).collection('testeEscrita').where('status', '==', 0).onSnapshot((docs: firebase.firestore.QuerySnapshot) => {
         resolve(docs);
       });
-       var batch = this.firestore.batch();
-      batch.update(docRef, 'status', 1)
     });
-  } */
+  }
 
   public listarPortariaControleRemoto(inep: string): Promise<any> {
     // tslint:disable-next-line: no-shadowed-variable

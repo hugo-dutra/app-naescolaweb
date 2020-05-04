@@ -112,7 +112,7 @@ export class GeradorListagemComponent implements OnInit {
       this.feedbackUsuario = undefined;
       setTimeout(() => {
         this.limparDivsVazias();
-      }, 500);
+      }, 1000);
     }
 
   }
