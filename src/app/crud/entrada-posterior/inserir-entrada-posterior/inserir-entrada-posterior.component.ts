@@ -280,9 +280,6 @@ export class InserirEntradaPosteriorComponent implements OnInit {
       this.arrayOfPortarias.forEach(portaria => {
         portarias.push(portaria['codigo']);
       });
-
-
-
       const est_ids = this.arrayOfIds;
       this.feedbackUsuario = 'Inserindo estudantes em entrada posterior, aguarde...'
       this.entradaPosteriorService.inserir(arrayDeEntradaPosterior).toPromise().then(() => {
@@ -315,7 +312,6 @@ export class InserirEntradaPosteriorComponent implements OnInit {
     this.feedbackUsuario = 'Carregando portarias cadastradas, aguarde...';
     this.portariaService.listar(this.esc_id).toPromise().then((retorno: Response) => {
       this.arrayOfPortarias = Object.values(retorno);
-      console.log(this.arrayOfPortarias);
       this.feedbackUsuario = undefined;
     }).catch(() => {
       this.feedbackUsuario = undefined;

@@ -35,5 +35,17 @@ export class EntradaPosteriorService {
     );
   }
 
+  public excluir(epe_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(
+      CONSTANTES.HOST_API + 'excluir-entrada-posterior',
+      JSON.stringify({ epe_id: epe_id }),
+      headers,
+    );
+  }
+
 
 }

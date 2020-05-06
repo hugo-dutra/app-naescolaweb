@@ -84,10 +84,10 @@
                             </div>
 
                             <div class="card-footer row">
-                              <Button class="btn btn-sm form-control text-light bg-secondary col-lg-6">
+                              <Button disabled class="btn btn-sm form-control text-light bg-secondary col-lg-6">
                                 Data: {{entradaPosterior.data | date:'dd-MM-yyyy' }}
                               </Button>
-                              <Button class="btn btn-sm form-control text-light bg-secondary col-lg-6">
+                              <Button disabled class="btn btn-sm form-control text-light bg-secondary col-lg-6">
                                 Hora: {{entradaPosterior.hora}}
                               </Button>
                             </div>
@@ -101,8 +101,36 @@
                     </div>
                   </div>
                 </td>
-                <td class="col-sm-12 col-lg-1 text-center"><button class="btn btn-sm btn-danger text-light"
-                    (click)="excluirEntradaPosterior(entradaPosterior)"><i class="fa fa-sm fa-close"></i></button></td>
+                <td class="col-sm-12 col-lg-1 text-center">
+                  <!-- Botão -->
+                  <button class="btn btn-danger btn-sm" data-toggle="modal"
+                    [attr.data-target]="'#modalExcluir' + entradaPosterior.epe_id" value="{{entradaPosterior}}"><i
+                      class="fa fa-sm fa-close text-light"></i></button>
+                  <!-- Modal -->
+                  <div class="modal fade large" id="modalExcluir{{ entradaPosterior.epe_id }}" tabindex="-1"
+                    role="dialog" aria-labelledby="modelLabelAlerta" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header bg-danger text-light text-left">
+                          Atenção<br>
+                          <b></b>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-dark">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-justify">
+                          Deseja excluir a autorização de entrada posterior para <br>
+                          {{entradaPosterior.nome}} ?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal"
+                            (click)="excluirEntradaPosterior(entradaPosterior.epe_id, entradaPosterior.est_id)">Sim</button>
+                          <button type="button" class="btn btn-success" data-dismiss="modal">Não</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>

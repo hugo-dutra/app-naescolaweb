@@ -998,6 +998,24 @@ export class FirebaseService {
   }
 
   /**
+   * Remove o estudante das coleções de entrada posterior das portarias cadastradas.
+   * @param est_id
+   * @param codigoPortaria
+   */
+  public excluirEntradaPosteriorFirestore(est_id: string, codigoPortaria: string): Promise<any> {
+    return new Promise((resolve) => {
+      this.firestore
+        .collection('portariaWeb')
+        .doc(codigoPortaria)
+        .collection('entrada_posterior')
+        .doc(est_id).delete()
+        .then(() => {
+          resolve('ok');
+        });
+    });
+  }
+
+  /**
    * Gravar autorização de saída antecipada eventual nas portarias.
    * @param codigoPortaria
    * @param matricula
