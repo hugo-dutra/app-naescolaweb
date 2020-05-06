@@ -1,3 +1,4 @@
+import { EntradaPosteriorModule } from './entrada-posterior/entrada-posterior.module';
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
@@ -41,6 +42,10 @@ const routes: Routes = [{
     {
       path: 'listar-disciplina',
       loadChildren: () => import('./disciplina/disciplina.module').then(m => m.DisciplinaModule),
+    },
+    {
+      path: 'listar-entrada-posterior',
+      loadChildren: () => import('./entrada-posterior/entrada-posterior.module').then(m => m.EntradaPosteriorModule),
     },
     {
       path: 'listar-comunicado-diverso',

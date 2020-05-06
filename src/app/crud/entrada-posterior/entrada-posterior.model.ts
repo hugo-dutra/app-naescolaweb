@@ -12,4 +12,5 @@ export class EntradaPosterior {
   public epe_sexta: number;
   public epe_sabado: number;
   public esc_id: number;
+
 }

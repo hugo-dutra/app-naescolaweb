@@ -1,3 +1,129 @@
-<p>
-  listar-entrada-posterior works!
-</p>
+<div class="container-fluid">
+  <div class="card text-center">
+    <div class="card-header bg-dark">
+      <div class="row">
+        <div class="col-lg-11 col-sm-12 mt-2">
+          <i class="fa fa-lg fa-id-badge text-light text-center"> Entradas posteriores</i>
+        </div>
+        <div class="col-lg-1 col-sm-12 mt-2">
+          <button *ngIf="exibirComponente('inserir-entrada-posterior')"
+            class="btn btn-dark border-light form-control text-light btn-sm"
+            (click)="inserirEntradaPosterior()">Inserir</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <input placeholder="Procurar estudante..." class="form-control col-lg-4 col-sm-12" type="" name="" value=""
+          (change)="filtrarEstudante($event)" (keyup)="filtrarEstudante($event)">
+      </div>
+      <div class="row">
+        <div class="autorizacoes col-sm-12 col-lg-12 mt-2">
+          <table class="table table-striped table-hover">
+            <thead class="thead-light">
+              <tr class="row">
+                <th class="col-sm-12 col-lg-4 text-center" scope="col">Nome</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Série</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Turma</th>
+                <th class="col-sm-12 col-lg-2 text-center" scope="col">Turno</th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col">Detalhes</th>
+                <th class="col-sm-12 col-lg-1 text-center" scope="col">Excluir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row" *ngFor="let entradaPosterior of arrayEntradasPosteriores">
+                <td class="col-sm-12 col-lg-4 text-center">{{ entradaPosterior.nome }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ entradaPosterior.serie }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ entradaPosterior.turma }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ entradaPosterior.turno }}</td>
+                <td class="col-sm-12 col-lg-1 text-center">
+                  <!-- Botão -->
+                  <button class="btn btn-warning btn-sm" data-toggle="modal"
+                    [attr.data-target]="'#modalDetalhe' + entradaPosterior.epe_id"
+                    value="{{entradaPosterior}}">detalhes</button>
+                  <!-- Modal -->
+                  <div class="modal fade large" id="modalDetalhe{{ entradaPosterior.epe_id }}" tabindex="-1"
+                    role="dialog" aria-labelledby="modelLabelAlerta" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header bg-warning text-dark text-left">
+                          Detalhes da saída antecipada: <br>
+                          <b>{{entradaPosterior.nome}}</b>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="text-dark">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body text-justify">
+                          <div class="card">
+                            <div class="card-header text-light bg-dark text-center">
+                              Motivo: {{entradaPosterior.motivo}}
+                            </div>
+                            <div class="card-body">
+                              <table class="table table-striped table-hover">
+                                <thead class="thead-light">
+                                  <tr class="row">
+                                    <th class="col-sm-2 col-lg-2 text-center" scope="col">Seg.</th>
+                                    <th class="col-sm-2 col-lg-2 text-center" scope="col">Ter.</th>
+                                    <th class="col-sm-2 col-lg-2 text-center" scope="col">Qua.</th>
+                                    <th class="col-sm-2 col-lg-2 text-center" scope="col">Qui.</th>
+                                    <th class="col-sm-2 col-lg-2 text-center" scope="col">Sex.</th>
+                                    <th class="col-sm-2 col-lg-2 text-center" scope="col">Sáb.</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="row">
+                                    <td class="col-sm-2 col-lg-2 text-center">{{ entradaPosterior.segunda }}</td>
+                                    <td class="col-sm-2 col-lg-2 text-center">{{ entradaPosterior.terca }}</td>
+                                    <td class="col-sm-2 col-lg-2 text-center">{{ entradaPosterior.quarta }}</td>
+                                    <td class="col-sm-2 col-lg-2 text-center">{{ entradaPosterior.quinta }}</td>
+                                    <td class="col-sm-2 col-lg-2 text-center">{{ entradaPosterior.sexta }}</td>
+                                    <td class="col-sm-2 col-lg-2 text-center">{{ entradaPosterior.sabado }}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+
+                            <div class="card-footer row">
+                              <Button class="btn btn-sm form-control text-light bg-secondary col-lg-6">
+                                Data: {{entradaPosterior.data | date:'dd-MM-yyyy' }}
+                              </Button>
+                              <Button class="btn btn-sm form-control text-light bg-secondary col-lg-6">
+                                Hora: {{entradaPosterior.hora}}
+                              </Button>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="col-sm-12 col-lg-1 text-center"><button class="btn btn-sm btn-danger text-light"
+                    (click)="excluirEntradaPosterior(entradaPosterior)"><i class="fa fa-sm fa-close"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer text-muted bg-dark mt-2">
+      <i class="fa fa-lg fa-info-circle text-light"> Listagem de autorizações para entrada após o horário</i>
+    </div>
+  </div>
+</div>
+
+
+<div id="loadingDiv" class="row mt-2" *ngIf="feedbackUsuario != undefined">
+  <div class="col-2">
+    <img src="assets/gifs/loading.gif" width="{{ gif_width }}" height="{{ gif_width }}" alt="">
+  </div>
+  <div class="col-10">
+    <h4>
+      <p class="text-left text-dark pr-3">{{ feedbackUsuario }}</p>
+    </h4>
+  </div>
+</div>

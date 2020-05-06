@@ -53,9 +53,9 @@ export class GerenciarAlertaComponent implements OnInit {
     )[0];
     const inep = dados_escola['inep'];
 
-    for (let i = 0; i < 150000; i++) {
+    for (let i = 0; i < 450000; i++) {
       this.firebaseService.escreverDocumentosTeste(inep).then(() => {
-        console.log(`${i + 1}º documento escrito de ${150000}`);
+        console.log(`${i + 1}º documento escrito de ${450000}...`);
       });
     }
   }

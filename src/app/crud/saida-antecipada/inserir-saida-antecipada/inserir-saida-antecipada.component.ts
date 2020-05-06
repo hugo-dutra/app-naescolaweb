@@ -164,14 +164,14 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
       if (this.arrayOfEstudantesSelecionados.length != 0 &&
         this.motivoSaidaAntecipada.trim() != "" &&
         this.dataSaidaAntecipada != "" &&
-        this.dataSaidaAntecipada != "") {
+        this.horaSaidaAntecipada != "") {
         return true;
       }
     } else {
       if (this.arrayOfEstudantesSelecionados.length != 0 &&
         this.motivoSaidaAntecipada.trim() != "" &&
         this.dataSaidaAntecipada != "" &&
-        this.dataSaidaAntecipada != "" && (
+        this.horaSaidaAntecipada != "" && (
           this.saidaRecorrenteSegundaFeira != 0 ||
           this.saidaRecorrenteTercaFeira != 0 ||
           this.saidaRecorrenteQuartaFeira != 0 ||
@@ -482,6 +482,13 @@ export class InserirSaidaAntecipadaComponent implements OnInit {
       }
     }
   }
+
+
+
+
+
+
+
 
   public gravarMotivoSaidaAntecipadaEventual(event: Event): void {
     this.motivoSaidaAntecipada = (<HTMLInputElement>event.target).value;

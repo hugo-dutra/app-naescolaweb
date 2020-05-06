@@ -1099,7 +1099,7 @@ export class FirebaseService {
     quarta: number,
     quinta: number,
     sexta: number,
-    sabado: number,
+    sabado: number
   ) => new Promise((resolve) => {
     const gravarSaidaAntecipadaRecorrente = firebase.functions().httpsCallable('gravarSaidaAntecipadaRecorrente');
     gravarSaidaAntecipadaRecorrente({
@@ -1112,7 +1112,43 @@ export class FirebaseService {
       quarta: quarta,
       quinta: quinta,
       sexta: sexta,
+      sabado: sabado
+    }).then(retorno => {
+      resolve(retorno);
+    });
+  })
+
+  /**
+   * Chama a cloud function que grava as entradas posteriores na portaria
+   *
+   * @memberof FirebaseService
+   */
+  public gravarEntradaPosteriorFirebaseFirestore = async (
+    portarias: string[],
+    est_ids: string[],
+    dataEntrada: string,
+    horaEntrada: string,
+    segunda: number,
+    terca: number,
+    quarta: number,
+    quinta: number,
+    sexta: number,
+    sabado: number,
+    motivoSaidaAntecipada: string
+  ) => new Promise((resolve) => {
+    const gravarSaidaAntecipadaRecorrente = firebase.functions().httpsCallable('gravarEntradaPosterior');
+    gravarSaidaAntecipadaRecorrente({
+      portarias: portarias,
+      est_ids: est_ids,
+      dataEntrada: dataEntrada,
+      horaEntrada: horaEntrada,
+      segunda: segunda,
+      terca: terca,
+      quarta: quarta,
+      quinta: quinta,
+      sexta: sexta,
       sabado: sabado,
+      motivoSaidaAntecipada: motivoSaidaAntecipada
     }).then(retorno => {
       resolve(retorno);
     });
