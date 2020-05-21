@@ -27,10 +27,13 @@ export class CONSTANTES {
   public static CAMINHO_LOGO_RESOLVIDOS = '../../../assets/images/supervisor_escolar_login.png';
 
   public static HOST = 'http://localhost:8000'; // 2
+  public static N_HOST = 'http://localhost:3000'; // 2
   // public static HOST = 'https://supervisorescolar.com.br'; // 2
   // public static HOST = 'http://academico.se.df.gov.br'; // 1
 
   public static HOST_API = CONSTANTES.HOST + '/api/';
+  public static N_HOST_API = CONSTANTES.N_HOST + '/';
+
   public static CK = 'OEqpJdFaYtaY0eI087eNA6KKSMsi22vh';
   public static CKQRC = '@R5w7y8b3@';
   // ********************FILES**************************/

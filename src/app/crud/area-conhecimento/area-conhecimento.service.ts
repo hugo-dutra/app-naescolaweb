@@ -6,7 +6,6 @@ import { CONSTANTES } from '../../shared/constantes.shared';
 
 @Injectable()
 export class AreaConhecimentoService {
-
   constructor(private http: HttpClient) { }
 
   public inserir(areaConhecimento: AreaConhecimento): Observable<any> {
@@ -14,7 +13,7 @@ export class AreaConhecimentoService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'inserir-area-conhecimento', JSON.stringify(areaConhecimento), headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'area-conhecimento', JSON.stringify(areaConhecimento), headers);
   }
 
   public listar(): Observable<any> {
@@ -22,15 +21,7 @@ export class AreaConhecimentoService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'areas-conhecimento', null, headers);
-  }
-
-  public excluir(id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(CONSTANTES.HOST_API + 'excluir-area-conhecimento', JSON.stringify({ id: id }), headers);
+    return this.http.get(CONSTANTES.N_HOST_API + 'area-conhecimento', headers);
   }
 
   public alterar(areaConhecimento: AreaConhecimento): Observable<any> {
@@ -38,7 +29,15 @@ export class AreaConhecimentoService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'alterar-area-conhecimento', JSON.stringify(areaConhecimento), headers);
+    return this.http.patch(CONSTANTES.N_HOST_API + 'area-conhecimento', JSON.stringify(areaConhecimento), headers);
+  }
+
+  public excluir(id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')), body: { id: id }
+    };
+    return this.http.delete(CONSTANTES.N_HOST_API + 'area-conhecimento', headers);
   }
 
 }

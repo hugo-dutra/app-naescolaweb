@@ -20,11 +20,14 @@ export class AuthGuardService implements CanActivate {
     const rotaSnapshotString: string = (<string>route['_routerState']['url']).split('?')[0];
     const permissoes: Object = Utils.verificarPermissoes();
     const rota: string = rotaSnapshotString.split('/')[rotaSnapshotString.split('/').length - 1];
-    for (const key in permissoes) {
+    return true;
+
+    //ROTAS LIBERADAS
+    /* for (const key in permissoes) {
       if (permissoes[key]['rota'] == rota) {
         return true;
       }
     }
-    return false;
+    return false; */
   }
 }

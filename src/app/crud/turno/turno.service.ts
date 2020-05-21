@@ -11,46 +11,37 @@ export class TurnoService {
 
   public inserir(turno: Turno): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-turno",
-      JSON.stringify(turno),
-      headers
-    );
-  }
-
-  public integracaoInserir(turnos: Turno[], esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "integracao-inserir-turno",
-      JSON.stringify({ turnos: turnos, esc_id: esc_id }),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + "turno", JSON.stringify(turno), headers);
   }
 
   public listar(esc_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "turnos",
-      JSON.stringify({ esc_id: esc_id }),
-      headers
-    );
-  }
-
-  public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "excluir-turno",
-      JSON.stringify({ id: id }),
-      headers
-    );
+    const headers = {
+      headers: new HttpHeaders()
+        .append("Content-type", "application/json")
+        .append("Authorization", localStorage.getItem("token"))
+    }
+    return this.http.get(CONSTANTES.N_HOST_API + `turno/${esc_id}`, headers);
   }
 
   public alterar(turno: Turno): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-turno",
-      JSON.stringify(turno),
-      headers
-    );
+    return this.http.patch(CONSTANTES.N_HOST_API + "turno", turno, headers);
   }
+
+  public excluir(id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders()
+        .append("Content-type", "application/json")
+        .append("Authorization", localStorage.getItem("token")), body: { id: id }
+    }
+    return this.http.delete(CONSTANTES.N_HOST_API + "turno", headers);
+  }
+
+  public integracaoInserir(turnos: Turno[], esc_id: number): Observable<any> {
+    console.log(turnos)
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(CONSTANTES.N_HOST_API + "turno/integracao", { turnos: turnos, esc_id: esc_id }, headers);
+  }
+
+
 }
