@@ -38,7 +38,6 @@ export class TurnoService {
   }
 
   public integracaoInserir(turnos: Turno[], esc_id: number): Observable<any> {
-    console.log(turnos)
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(CONSTANTES.N_HOST_API + "turno/integracao", { turnos: turnos, esc_id: esc_id }, headers);
   }
