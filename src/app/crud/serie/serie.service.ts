@@ -14,11 +14,7 @@ export class SerieService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'series',
-      null,
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + 'serie', headers);
   }
 
   public inserir(serie: Serie): Observable<any> {
@@ -26,23 +22,7 @@ export class SerieService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-serie',
-      JSON.stringify(serie),
-      headers,
-    );
-  }
-
-  public integracaoInserir(series: Serie[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'integracao-inserir-serie',
-      JSON.stringify({ series: series }),
-      headers,
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'serie', JSON.stringify(serie), headers);
   }
 
   public alterar(serie: Serie): Observable<any> {
@@ -50,23 +30,23 @@ export class SerieService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-serie',
-      JSON.stringify(serie),
-      headers,
-    );
+    return this.http.patch(CONSTANTES.N_HOST_API + 'serie', serie, headers);
   }
 
   public excluir(id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')), body: { id: id }
+    };
+    return this.http.delete(CONSTANTES.N_HOST_API + 'serie', headers);
+  }
+
+  public integracaoInserir(series: Serie[]): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'excluir-serie',
-      JSON.stringify({ id: id }),
-      headers,
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'serie/integracao', series, headers);
   }
 
 }

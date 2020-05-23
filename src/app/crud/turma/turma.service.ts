@@ -12,21 +12,15 @@ export class TurmaService {
 
   public inserir(turmas: Turma[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-turma",
-      JSON.stringify({ turmas: turmas }),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + "turma", turmas, headers);
   }
 
-
-  public integracaoInserir(turmas: Turma[], esc_id: number, ano: number): Observable<any> {
+  public listar(
+    limit: number, offset: number,
+    asc: boolean, esc_id: number
+  ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "integracao-inserir-turma",
-      JSON.stringify({ turmas: turmas, esc_id: esc_id, ano: ano }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `turma/${limit}/${offset}/${asc}/${esc_id}`, headers);
   }
 
   public alterar(turma: Turma): Observable<any> {
@@ -38,24 +32,16 @@ export class TurmaService {
     );
   }
 
-  public listar(
-    limit: number,
-    offset: number,
-    asc: boolean,
-    esc_id: number
-  ): Observable<any> {
+
+  public excluir(id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
-      CONSTANTES.HOST_API + "turmas",
-      JSON.stringify({
-        limit: limit,
-        offset: offset,
-        asc: asc,
-        esc_id: esc_id
-      }),
+      CONSTANTES.HOST_API + "excluir-turma",
+      JSON.stringify({ id: id }),
       headers
     );
   }
+
 
   public listarTurnoId(
     trn_id: number,
@@ -117,11 +103,14 @@ export class TurmaService {
     );
   }
 
-  public excluir(id: number): Observable<any> {
+
+
+
+  public integracaoInserir(turmas: Turma[], esc_id: number, ano: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
-      CONSTANTES.HOST_API + "excluir-turma",
-      JSON.stringify({ id: id }),
+      CONSTANTES.HOST_API + "integracao-inserir-turma",
+      JSON.stringify({ turmas: turmas, esc_id: esc_id, ano: ano }),
       headers
     );
   }

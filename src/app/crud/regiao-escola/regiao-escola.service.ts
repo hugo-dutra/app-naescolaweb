@@ -10,42 +10,30 @@ import { CONSTANTES } from '../../shared/constantes.shared';
 })
 export class RegiaoEscolaService {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient) { }
 
   public alterar(regiaoEscola: RegiaoEscola): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-regiao-escola",
-      JSON.stringify(regiaoEscola),
-      headers
-    );
+    return this.http.patch(CONSTANTES.N_HOST_API + "regiao-escola", regiaoEscola, headers);
   }
 
   public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "excluir-regiao-escola",
-      JSON.stringify({ id: id }),
-      headers
-    );
+    const headers = {
+      headers: new HttpHeaders()
+        .append("Content-type", "application/json")
+        .append("Authorization", localStorage.getItem("token")), body: { id: id }
+    }
+    return this.http.delete(CONSTANTES.N_HOST_API + "regiao-escola", headers);
   }
 
   public inserir(regiaoEscola: RegiaoEscola): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-regiao-escola",
-      JSON.stringify(regiaoEscola),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + "regiao-escola", regiaoEscola, headers);
   }
 
   public listar(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "regioes-escolas",
-      null,
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + "regiao-escola", headers);
   }
 
 }
