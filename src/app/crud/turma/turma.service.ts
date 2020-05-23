@@ -25,21 +25,18 @@ export class TurmaService {
 
   public alterar(turma: Turma): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-turma",
-      JSON.stringify(turma),
-      headers
-    );
+    return this.http.patch(CONSTANTES.N_HOST_API + "turma", turma, headers);
   }
 
 
   public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "excluir-turma",
-      JSON.stringify({ id: id }),
-      headers
-    );
+    const headers =
+    {
+      headers: new HttpHeaders()
+        .append("Content-type", "application/json")
+        .append("Authorization", localStorage.getItem("token")), body: { id: id }
+    }
+    return this.http.delete(CONSTANTES.N_HOST_API + "turma", headers);
   }
 
 
@@ -49,17 +46,11 @@ export class TurmaService {
     ano: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "turmas-turno-id",
-      JSON.stringify({
-        trn_id: trn_id,
-        esc_id: esc_id,
-        ano: ano
-      }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `turma/${trn_id}/${esc_id}/${ano}`, headers);
   }
 
+
+  // Fazer após terminar cadastro de estudantes, importação e enturmação
   public listarTodasAno(
     ano: number,
     esc_id: number
@@ -67,12 +58,7 @@ export class TurmaService {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "turmas-completo-ano-esc",
-      JSON.stringify({
-        ano: ano,
-        esc_id: esc_id
-      }),
-      headers
-    );
+      JSON.stringify({ ano: ano, esc_id: esc_id }), headers);
   }
 
   public filtrar(
@@ -82,36 +68,16 @@ export class TurmaService {
     esc_id: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-turma",
-      JSON.stringify({
-        valor: valor,
-        limit: limit,
-        offset: offset,
-        esc_id: esc_id
-      }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `turma/filtrar/${valor}/${limit}/${offset}/${esc_id}`, headers);
   }
 
   public listarTodas(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "turmas-completo",
-      null,
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + "turma/todas", headers);
   }
-
-
-
 
   public integracaoInserir(turmas: Turma[], esc_id: number, ano: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "integracao-inserir-turma",
-      JSON.stringify({ turmas: turmas, esc_id: esc_id, ano: ano }),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + "turma/integracao", { turmas: turmas, esc_id: esc_id, ano: ano }, headers);
   }
 }

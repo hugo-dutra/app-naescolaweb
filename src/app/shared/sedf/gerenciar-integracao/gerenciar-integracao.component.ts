@@ -173,9 +173,11 @@ export class GerenciarIntegracaoComponent implements OnInit {
           const arrayDeEstudanteId = estudantesDesativados.map(valor => {
             return { est_id: valor['id'] };
           });
-          this.estudanteService.desabilitarTurmaTransferido(arrayDeEstudanteId, this.esc_id).toPromise().then(() => {
+          // Ativar esse código depois e investigar erro
+          /* this.estudanteService.desabilitarTurmaTransferido(arrayDeEstudanteId, this.esc_id).toPromise().then(() => {
             resolve(null);
-          });
+          }); */
+          resolve(null);
         });
       } catch (error) {
         reject(error);
