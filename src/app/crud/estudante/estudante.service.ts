@@ -11,6 +11,31 @@ export class EstudanteService {
 
   constructor(private http: HttpClient) { }
 
+  public integracaoInserir(estudantes: Object[], esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + `estudante/integracao/${esc_id}`, estudantes, headers);
+  }
+
+  public integracaoEnturmar(estudantes: Object[], esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/enturmar/integracao', { estudantes, esc_id }, headers);
+  }
+
+  public desabilitarTurmaTransferido(listaEstId: Object[], esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/desabilitar-turma-estudante-transferido', { listaEstId, esc_id }, headers);
+  }
+
+  /* ################################################################################################## */
   public inserir(estudante: Estudante): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
@@ -19,18 +44,6 @@ export class EstudanteService {
     return this.http.post(
       CONSTANTES.HOST_API + 'inserir-estudante',
       JSON.stringify({ estudante: estudante }),
-      headers,
-    );
-  }
-
-  public desabilitarTurmaTransferido(listaEstId: Object[], esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'desabilitar-turma-estudante-transferido',
-      JSON.stringify({ listaEstId: listaEstId, esc_id: esc_id }),
       headers,
     );
   }
@@ -393,13 +406,7 @@ export class EstudanteService {
   }
 
 
-  public integracaoInserir(estudantes: Object[], esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(CONSTANTES.N_HOST_API + `estudante/integracao/${esc_id}`, estudantes, headers);
-  }
+
 
 
 
@@ -508,17 +515,7 @@ export class EstudanteService {
     );
   }
 
-  public integracaoEnturmar(estudantes: Object[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'integracao-enturmar',
-      JSON.stringify({ estudantes: estudantes }),
-      headers,
-    );
-  }
+
 
   public listarSemTurma(esc_id: number): Observable<any> {
     const headers = {

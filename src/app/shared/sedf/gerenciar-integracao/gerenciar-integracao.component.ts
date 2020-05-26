@@ -172,11 +172,10 @@ export class GerenciarIntegracaoComponent implements OnInit {
           });
           const arrayDeEstudanteId = estudantesDesativados.map(valor => {
             return { est_id: valor['id'] };
-          });
-          // Ativar esse código depois e investigar erro
-          /* this.estudanteService.desabilitarTurmaTransferido(arrayDeEstudanteId, this.esc_id).toPromise().then(() => {
+          })
+          this.estudanteService.desabilitarTurmaTransferido(arrayDeEstudanteId, this.esc_id).toPromise().then(() => {
             resolve(null);
-          }); */
+          });
           resolve(null);
         });
       } catch (error) {
@@ -243,7 +242,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
       let contaRegistroInserido = 0;
       for (let i = 0; i < arrayComEstudantes.length; i += tamanhoBloco) {
         const blocoDeEstudantes = arrayComEstudantes.slice(i, i + tamanhoBloco);
-        this.estudanteService.integracaoEnturmar(blocoDeEstudantes).toPromise().then((response: Response) => {
+        this.estudanteService.integracaoEnturmar(blocoDeEstudantes, this.esc_id).toPromise().then((response: Response) => {
           contaRegistroInserido += tamanhoBloco;
           this.feedbackUsuario = `Inserindo ${contaRegistroInserido} de
           ${arrayComEstudantes.length} registros, aguarde...`;

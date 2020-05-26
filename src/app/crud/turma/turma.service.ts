@@ -15,10 +15,7 @@ export class TurmaService {
     return this.http.post(CONSTANTES.N_HOST_API + "turma", turmas, headers);
   }
 
-  public listar(
-    limit: number, offset: number,
-    asc: boolean, esc_id: number
-  ): Observable<any> {
+  public listar(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `turma/${limit}/${offset}/${asc}/${esc_id}`, headers);
   }
@@ -39,33 +36,19 @@ export class TurmaService {
     return this.http.delete(CONSTANTES.N_HOST_API + "turma", headers);
   }
 
-
-  public listarTurnoId(
-    trn_id: number,
-    esc_id: number,
-    ano: number
-  ): Observable<any> {
+  public listarTurnoId(trn_id: number, esc_id: number, ano: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `turma/${trn_id}/${esc_id}/${ano}`, headers);
   }
 
-
-  // Fazer após terminar cadastro de estudantes, importação e enturmação
-  public listarTodasAno(
-    ano: number,
-    esc_id: number
-  ): Observable<any> {
+  public listarTodasAno(ano: number, esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "turmas-completo-ano-esc",
-      JSON.stringify({ ano: ano, esc_id: esc_id }), headers);
+    return this.http.get(CONSTANTES.N_HOST_API + `turma/completo/${ano}/${esc_id}`, headers);
   }
 
   public filtrar(
-    valor: string,
-    limit: number,
-    offset: number,
-    esc_id: number
+    valor: string, limit: number,
+    offset: number, esc_id: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `turma/filtrar/${valor}/${limit}/${offset}/${esc_id}`, headers);

@@ -65,7 +65,8 @@ export class ListarAlertaComponent implements OnInit {
   public excluir(regra: Object): void {
     const navigationExtras: NavigationExtras = {
       queryParams: {
-        data_criacao: regra['data_criacao'],
+        regra: JSON.stringify(regra)
+        /* data_criacao: regra['data_criacao'],
         data_fim: regra['data_fim'],
         data_inicio: regra['data_inicio'],
         esc_id: regra['esc_id'],
@@ -77,7 +78,7 @@ export class ListarAlertaComponent implements OnInit {
         tod_id: regra['tod_id'],
         usr_id: regra['usr_id'],
         usuario: regra['usuario'],
-        valor_referencia: regra['valor_referencia'],
+        valor_referencia: regra['valor_referencia'], */
       },
     };
     this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/excluir-alerta`], navigationExtras);
@@ -86,7 +87,8 @@ export class ListarAlertaComponent implements OnInit {
   public alterar(regra: Object): void {
     const navigationExtras: NavigationExtras = {
       queryParams: {
-        data_criacao: regra['data_criacao'],
+        regra: JSON.stringify(regra)
+        /* data_criacao: regra['data_criacao'],
         data_fim: regra['data_fim'],
         data_inicio: regra['data_inicio'],
         esc_id: regra['esc_id'],
@@ -98,7 +100,7 @@ export class ListarAlertaComponent implements OnInit {
         tod_id: regra['tod_id'],
         usr_id: regra['usr_id'],
         usuario: regra['usuario'],
-        valor_referencia: regra['valor_referencia'],
+        valor_referencia: regra['valor_referencia'], */
       },
     };
     this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/alterar-alerta`], navigationExtras);

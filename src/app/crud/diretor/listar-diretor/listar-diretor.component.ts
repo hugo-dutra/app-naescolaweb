@@ -78,6 +78,7 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public listar(limit: number = 5, offset: number = 0): void {
+
     if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
       this.saltarQuantidade = limit;
       this.feedbackUsuario = undefined;
@@ -152,12 +153,7 @@ export class ListarDiretorComponent implements OnInit {
   public alterar(diretor: Diretor): void {
     const navigationExtras: NavigationExtras = {
       queryParams: {
-        id: diretor.id,
-        nome: diretor.nome,
-        matricula: diretor.matricula,
-        telefone: diretor.telefone,
-        email: diretor.email,
-        foto: diretor.foto,
+        diretor: JSON.stringify(diretor)
       },
     };
     this.router.navigate([`${this.route.parent.routeConfig.path}/alterar-diretor`], navigationExtras);

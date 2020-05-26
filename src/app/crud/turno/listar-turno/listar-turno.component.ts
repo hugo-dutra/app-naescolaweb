@@ -89,11 +89,7 @@ export class ListarTurnoComponent implements OnInit {
   public alterar(turno: Turno) {
     let navigationExtras: NavigationExtras = {
       queryParams: {
-        id: turno.id,
-        nome: turno.nome,
-        horaInicio: turno.horaInicio,
-        horaFim: turno.horaFim,
-        abreviatura: turno.abreviatura
+        turno: JSON.stringify(turno)
       }
     };
     this.router.navigate([`${this.router.url}/alterar-turno`], navigationExtras)
@@ -102,11 +98,9 @@ export class ListarTurnoComponent implements OnInit {
   public excluir(turno: Turno) {
     let navigationExtras: NavigationExtras = {
       queryParams: {
-        id: turno.id,
-        nome: turno.nome,
-        horaInicio: turno.horaInicio,
-        horaFim: turno.horaFim,
-        abreviatura: turno.abreviatura
+        queryParams: {
+          turno: JSON.stringify(turno)
+        }
       }
     };
     this.router.navigate([`${this.router.url}/excluir-turno`], navigationExtras)

@@ -45,10 +45,7 @@ export class ExcluirPeriodoLetivoComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((periodoLetivo: PeriodoLetivo) => {
-      this.periodoLetivo.id = periodoLetivo.id;
-      this.periodoLetivo.periodo = periodoLetivo.periodo;
-      this.periodoLetivo.inicio = periodoLetivo.inicio;
-      this.periodoLetivo.fim = periodoLetivo.fim;
+      this.periodoLetivo = JSON.parse(periodoLetivo["periodoLetivo"]);
     });
   }
 
@@ -66,8 +63,8 @@ export class ExcluirPeriodoLetivoComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
         this.feedbackUsuario = undefined;

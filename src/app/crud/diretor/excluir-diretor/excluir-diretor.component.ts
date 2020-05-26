@@ -45,7 +45,7 @@ export class ExcluirDiretorComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((diretor: Diretor) => {
-      this.diretor = diretor;
+      this.diretor = JSON.parse(diretor['diretor']);
     });
   }
 

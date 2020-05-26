@@ -51,7 +51,7 @@ export class ExcluirAlertaComponent implements OnInit {
 
   ngOnInit() {
     this.activeRoute.queryParams.subscribe((regra: Object) => {
-      this.regra = regra;
+      this.regra = JSON.parse(regra['regra']);
     });
     this.carregarDados();
   }

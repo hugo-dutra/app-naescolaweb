@@ -48,12 +48,7 @@ export class AlterarDiretorComponent implements OnInit {
 
   ngOnInit() {
     this.activeroute.queryParams.subscribe((diretor: Diretor) => {
-      this.diretor.id = diretor.id;
-      this.diretor.nome = diretor.nome;
-      this.diretor.telefone = diretor.telefone;
-      this.diretor.email = diretor.email;
-      this.diretor.matricula = diretor.matricula;
-      this.diretor.foto = diretor.foto;
+      this.diretor = JSON.parse(diretor["diretor"]);
     });
   }
 
