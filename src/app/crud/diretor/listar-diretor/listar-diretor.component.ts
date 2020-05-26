@@ -162,12 +162,7 @@ export class ListarDiretorComponent implements OnInit {
   public excluir(diretor: Diretor): void {
     const navigationExtras: NavigationExtras = {
       queryParams: {
-        id: diretor.id,
-        nome: diretor.nome,
-        matricula: diretor.matricula,
-        telefone: diretor.telefone,
-        email: diretor.email,
-        foto: diretor.foto,
+        diretor: JSON.stringify(diretor)
       },
     };
     this.router.navigate([`${this.route.parent.routeConfig.path}/excluir-diretor`], navigationExtras);

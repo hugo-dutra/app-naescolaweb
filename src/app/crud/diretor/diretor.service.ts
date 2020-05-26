@@ -46,21 +46,48 @@ export class DiretorService {
     return this.http.patch(CONSTANTES.N_HOST_API + "diretor", diretor, headers);
   }
 
-  public excluir(id: number, foto: string): Observable<any> {
+  public excluir(id: number, foto: string, esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')), body: { id: id }
+    };
+    return this.http.delete(CONSTANTES.N_HOST_API + 'diretor', headers);
+  }
+
+
+  public filtrarLocal(
+    valor: string, limit: number,
+    offset: number, esc_id: number,
+  ): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'excluir-diretor',
-      JSON.stringify({ id: id, foto: foto }),
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `diretor/filtrar-local/${valor}/${limit}/${offset}/${esc_id}`, headers);
   }
 
+  public filtrarRegional(
+    valor: string, limit: number,
+    offset: number, esc_id: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `diretor/filtrar-regional/${valor}/${limit}/${offset}/${esc_id}`, headers);
+  }
 
-
+  public filtrar(
+    valor: string,
+    limit: number,
+    offset: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `diretor/filtrar/${valor}/${limit}/${offset}`, headers);
+  }
 
   //######################################################################//
 
@@ -113,58 +140,11 @@ export class DiretorService {
     );
   }
 
-  public filtrar(
-    valor: string,
-    limit: number,
-    offset: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
 
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-diretor',
-      JSON.stringify({ valor: valor, limit: limit, offset: offset }),
-      headers,
-    );
-  }
 
-  public filtrarRegional(
-    valor: string,
-    limit: number,
-    offset: number,
-    esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
 
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-diretor-regional',
-      JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
-      headers,
-    );
-  }
 
-  public filtrarLocal(
-    valor: string,
-    limit: number,
-    offset: number,
-    esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
 
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-diretor-local',
-      JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
-      headers,
-    );
-  }
 
 
 

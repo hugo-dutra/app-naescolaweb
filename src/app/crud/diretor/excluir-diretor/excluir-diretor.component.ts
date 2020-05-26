@@ -42,17 +42,19 @@ export class ExcluirDiretorComponent implements OnInit {
   public feedbackUsuario: string;
   public gif_width: number = CONSTANTES.GIF_WAITING_WIDTH;
   public gif_heigth: number = CONSTANTES.GIF_WAITING_HEIGTH;
+  public esc_id: number;
 
   ngOnInit() {
     this.route.queryParams.subscribe((diretor: Diretor) => {
-      this.diretor = JSON.parse(diretor['diretor']);
+      this.diretor = JSON.parse(diretor["diretor"]);
     });
+    this.esc_id = Utils.pegarDadosEscolaDetalhado().id;
   }
 
   public excluir(): void {
     this.feedbackUsuario = 'Excluindo dados, aguarde...';
     this.diretorService
-      .excluir(this.diretor.id, this.diretor.foto)
+      .excluir(this.diretor.id, this.diretor.foto, this.esc_id)
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
