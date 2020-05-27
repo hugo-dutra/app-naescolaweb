@@ -62,7 +62,6 @@ export class ListarAreaConhecimentoComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.areasConhecimento = Object.values(response);
-        console.log(this.areasConhecimento);
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {

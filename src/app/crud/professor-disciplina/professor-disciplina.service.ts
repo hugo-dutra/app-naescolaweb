@@ -13,6 +13,27 @@ export class ProfessorDisciplinaService {
   public professorDisciplina = new ProfessorDisciplina();
   constructor(private http: HttpClient) { }
 
+
+  public inserir(
+    professores: number[],
+    disciplinas: number[],
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(
+      CONSTANTES.HOST_API + 'inserir-professor-disciplina',
+      JSON.stringify({ professores: professores, disciplinas: disciplinas }),
+      headers,
+    );
+  }
+
+
+  //#######################################################################################//
+
+
+
   public alterar(professorDisciplina: ProfessorDisciplina): Observable<any> {
     /*   let headers = new Headers();
       headers.append("Content-type", "application/json");
@@ -49,20 +70,7 @@ export class ProfessorDisciplinaService {
     );
   }
 
-  public inserir(
-    professores: number[],
-    disciplinas: number[],
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-professor-disciplina',
-      JSON.stringify({ professores: professores, disciplinas: disciplinas }),
-      headers,
-    );
-  }
+
 
   public integracaoInserir(professoresDisciplinas: Object[]): Observable<any> {
     const headers = {

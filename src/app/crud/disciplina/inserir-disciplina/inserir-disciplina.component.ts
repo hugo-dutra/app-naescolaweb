@@ -99,8 +99,8 @@ export class InserirDisciplinaComponent implements OnInit {
   public inserir(): void {
     this.disciplina.nome = this.formulario.value.nome;
     this.disciplina.abreviatura = this.formulario.value.abreviatura;
-    this.disciplina.arc_id = this.formulario.value.arc_id;
-    this.disciplina.ete_id = this.formulario.value.ete_id;
+    this.disciplina.arc_id = parseInt(this.formulario.value.arc_id);
+    this.disciplina.ete_id = parseInt(this.formulario.value.ete_id);
     this.feedbackUsuario = 'Salvando dados, aguarde...';
     this.disciplinaService
       .inserir(this.disciplina)

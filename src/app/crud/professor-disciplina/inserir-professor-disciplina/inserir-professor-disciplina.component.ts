@@ -199,7 +199,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
     com uma determinda nota, de certa disciplina,
     para associação correta */
 
-  public listarDisciplinasSEDF(): void {
+  /* public listarDisciplinasSEDF(): void {
     this.feedbackUsuario = 'Carregando, aguarde...';
     this.disciplinaService
       .integracaoListar(this.esc_id)
@@ -210,7 +210,7 @@ export class InserirProfessorDisciplinaComponent implements OnInit {
       }).catch((erro: Response) => {
         this.tratarErro(erro);
       });
-  }
+  } */
 
   public listarDisciplinas(): void {
     this.feedbackUsuario = 'Carregando, aguarde...';
