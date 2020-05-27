@@ -54,7 +54,6 @@ export class DiretorService {
     return this.http.delete(CONSTANTES.N_HOST_API + 'diretor', headers);
   }
 
-
   public filtrarLocal(
     valor: string, limit: number,
     offset: number, esc_id: number,
@@ -89,6 +88,24 @@ export class DiretorService {
     return this.http.get(CONSTANTES.N_HOST_API + `diretor/filtrar/${valor}/${limit}/${offset}`, headers);
   }
 
+
+  public listarSemEscola(): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.HOST_API + 'diretor/sem-escola', headers);
+  }
+
+
+  /* public listarSemEscolaRegional(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')), body: { esc_id: esc_id }
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + 'diretor/sem-escola-regional', headers);
+  } */
+
   //######################################################################//
 
 
@@ -99,36 +116,7 @@ export class DiretorService {
   asc: Se os registros virão em ordem ascendente ou decrescente
   */
 
-
-
-
-
-
-  public listarSemEscola(): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'diretores-sem-escola',
-      null,
-      headers,
-    );
-  }
-
-  public listarSemEscolaRegional(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'diretores-sem-escola-regional',
-      JSON.stringify({ esc_id: esc_id }),
-      headers,
-    );
-  }
-
-  public listarSemEscolaLocal(esc_id: number): Observable<any> {
+  /* public listarSemEscolaLocal(esc_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
@@ -138,17 +126,9 @@ export class DiretorService {
       JSON.stringify({ esc_id: esc_id }),
       headers,
     );
-  }
+  } */
 
-
-
-
-
-
-
-
-
-  public enviarArquivo(arquivo: FileList): Observable<any> {
+  /* public enviarArquivo(arquivo: FileList): Observable<any> {
     const formData = new FormData();
     const options = {
       headers: new HttpHeaders().set(
@@ -163,6 +143,6 @@ export class DiretorService {
       formData,
       options,
     );
-  }
+  } */
 
 }

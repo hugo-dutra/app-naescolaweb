@@ -194,21 +194,19 @@ export class InserirDiretorEscolaComponent implements OnInit {
   public listarDiretores(todos: boolean): void {
     if (!todos) {
       /* LISTAR SEM ESCOLA */
-      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
-        this.feedbackUsuario = 'Carregando, aguarde...';
-        this.diretorService
-          .listarSemEscola()
-          .toPromise()
-          .then((response: Response) => {
-            this.diretores = response;
-            this.feedbackUsuario = undefined;
-          })
-          .catch((erro: Response) => {
-            this.tratarErro(erro);
-          });
-      }
+      this.feedbackUsuario = 'Carregando, aguarde...';
+      this.diretorService
+        .listarSemEscola()
+        .toPromise()
+        .then((response: Response) => {
+          this.diretores = response;
+          this.feedbackUsuario = undefined;
+        })
+        .catch((erro: Response) => {
+          this.tratarErro(erro);
+        });
 
-      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+      /* if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
@@ -221,9 +219,9 @@ export class InserirDiretorEscolaComponent implements OnInit {
           .catch((erro: Response) => {
             this.tratarErro(erro);
           });
-      }
+      } */
 
-      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+      /* if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
         const esc_id: number = parseInt(Utils.decriptAtoB(localStorage.getItem('esc_id'), CONSTANTES.PASSO_CRIPT), 10);
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.diretorService
@@ -236,7 +234,7 @@ export class InserirDiretorEscolaComponent implements OnInit {
           .catch((erro: Response) => {
             this.tratarErro(erro);
           });
-      }
+      } */
 
     } else {
       /* LISTAR COM ESCOLA */

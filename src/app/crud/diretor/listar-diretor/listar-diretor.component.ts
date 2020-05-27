@@ -252,7 +252,6 @@ export class ListarDiretorComponent implements OnInit {
   }
 
   public filtrar(limit: number = 5, offset: number = 0): void {
-
     if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
