@@ -22,13 +22,25 @@ export class ProfessorDisciplinaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-professor-disciplina',
-      JSON.stringify({ professores: professores, disciplinas: disciplinas }),
-      headers,
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'professor-disciplina', { professores: professores, disciplinas: disciplinas }, headers);
   }
 
+
+  public integracaoInserir(professoresDisciplinas: Object[]): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'professor-disciplina/integracao', professoresDisciplinas, headers);
+  }
+
+  public desvincularProfessorDisciplina(prf_id: number, dsp_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'professor-disciplina/desvincular', { prf_id: prf_id, dsp_id: dsp_id }, headers);
+  }
 
   //#######################################################################################//
 
@@ -58,31 +70,7 @@ export class ProfessorDisciplinaService {
     return null;
   }
 
-  public desvincularProfessorDisciplina(prf_id: number, dsp_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'desvincular-professor-disciplina',
-      JSON.stringify({ prf_id: prf_id, dsp_id: dsp_id }),
-      headers,
-    );
-  }
 
-
-
-  public integracaoInserir(professoresDisciplinas: Object[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'integracao-inserir-professor-disciplina',
-      JSON.stringify({ professoresDisciplinas: professoresDisciplinas }),
-      headers,
-    );
-  }
 
   public listarDisciplina(esc_id: number, todos: boolean): Observable<any> {
     const headers = {
