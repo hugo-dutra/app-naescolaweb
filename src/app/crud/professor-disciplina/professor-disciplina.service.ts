@@ -39,49 +39,15 @@ export class ProfessorDisciplinaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.N_HOST_API + 'professor-disciplina/desvincular', { prf_id: prf_id, dsp_id: dsp_id }, headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'professor-disciplina/desvincular', { prf_id, dsp_id }, headers);
   }
-
-  //#######################################################################################//
-
-
-
-  public alterar(professorDisciplina: ProfessorDisciplina): Observable<any> {
-    /*   let headers = new Headers();
-      headers.append("Content-type", "application/json");
-      headers.append("Authorization",localStorage.getItem("token"));
-      return this.http.post(
-        CONSTANTES.HOST_API + "alterar-professor-disciplina",
-        JSON.stringify({ professorDisciplina: professorDisciplina }),
-        new RequestOptions({ headers: headers })
-      ); */
-    return null;
-  }
-
-  public excluir(professorDisciplina: ProfessorDisciplina): Observable<any> {
-    /*   let headers = new Headers();
-      headers.append("Content-type", "application/json");
-      headers.append("Authorization",localStorage.getItem("token"));
-      return this.http.post(
-        CONSTANTES.HOST_API + "excluir-professor-disciplina",
-        JSON.stringify({ professorDisciplina: professorDisciplina }),
-        new RequestOptions({ headers: headers })
-      ); */
-    return null;
-  }
-
-
 
   public listarDisciplina(esc_id: number, todos: boolean): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-professor-disciplina',
-      JSON.stringify({ esc_id: esc_id, todos: todos }),
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `professor-disciplina/listar-disciplina/${esc_id}/${todos}`, headers);
   }
 
 }
