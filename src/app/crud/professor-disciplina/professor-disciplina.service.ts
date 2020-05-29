@@ -13,7 +13,6 @@ export class ProfessorDisciplinaService {
   public professorDisciplina = new ProfessorDisciplina();
   constructor(private http: HttpClient) { }
 
-
   public inserir(
     professores: number[],
     disciplinas: number[],
@@ -24,7 +23,6 @@ export class ProfessorDisciplinaService {
     };
     return this.http.post(CONSTANTES.N_HOST_API + 'professor-disciplina', { professores: professores, disciplinas: disciplinas }, headers);
   }
-
 
   public integracaoInserir(professoresDisciplinas: Object[]): Observable<any> {
     const headers = {

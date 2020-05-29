@@ -14,11 +14,7 @@ export class ProfessorTurmaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-professor-turma',
-      JSON.stringify({ professoresTurmas: professoresTurmas }),
-      headers,
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'professor-turma', professoresTurmas, headers);
   }
 
   public integracaoInserir(professoresTurmas: Object[]): Observable<any> {
@@ -26,12 +22,10 @@ export class ProfessorTurmaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'integracao-inserir-professor-turma',
-      JSON.stringify({ professoresTurmas: professoresTurmas }),
-      headers,
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'professor-turma/integracao', professoresTurmas, headers);
   }
+
+  //************************************************************************************************/
 
   public listarProfessorTurmaDisciplinaId(
     prd_id: number,
