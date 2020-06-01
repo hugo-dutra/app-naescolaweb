@@ -13,24 +13,26 @@ export class TipoOcorrenciaDisciplinarService {
 
   public inserir(tipoOcorrenciaDisciplinar: TipoOcorrenciaDisciplinar): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "inserir-tipo-ocorrencia", JSON.stringify({ tipoOcorrenciaDisciplinar: tipoOcorrenciaDisciplinar }), headers);
-  }
-
-  public alterar(tipoOcorrenciaDisciplinar: TipoOcorrenciaDisciplinar): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "alterar-tipo-ocorrencia", JSON.stringify({ tipoOcorrenciaDisciplinar: tipoOcorrenciaDisciplinar }), headers);
-  }
-
-  public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "excluir-tipo-ocorrencia", JSON.stringify({ id: id }), headers);
+    return this.http.post(CONSTANTES.N_HOST_API + "tipo-ocorrencia-disciplinar", tipoOcorrenciaDisciplinar, headers);
   }
 
   public listar(limit: number, offset: number, ascendente: boolean, esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "tipos-ocorrencias", JSON.stringify({ limit: limit, offset: offset, ascendente: ascendente, esc_id: esc_id }), headers);
+    return this.http.get(CONSTANTES.N_HOST_API + `tipo-ocorrencia-disciplinar/${limit}/${offset}/${ascendente}/${esc_id}`, headers);
   }
 
+
+  public alterar(tipoOcorrenciaDisciplinar: TipoOcorrenciaDisciplinar): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.patch(CONSTANTES.N_HOST_API + "tipo-ocorrencia-disciplinar", tipoOcorrenciaDisciplinar, headers);
+  }
+
+  public excluir(id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")), body: { id: id } }
+    return this.http.delete(CONSTANTES.N_HOST_API + "tipo-ocorrencia-disciplinar", headers);
+  }
+
+  /******************************************************************************************************************************************************************/
   public listarEstId(est_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(CONSTANTES.HOST_API + "tipos-ocorrencias-estudante", JSON.stringify({ est_id: est_id }), headers);

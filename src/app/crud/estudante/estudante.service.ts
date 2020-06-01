@@ -35,18 +35,111 @@ export class EstudanteService {
     return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/desabilitar-turma-estudante-transferido', { listaEstId, esc_id }, headers);
   }
 
-  /* ################################################################################################## */
   public inserir(estudante: Estudante): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante', estudante, headers);
+  }
+
+  public listar(
+    limit: number,
+    offset: number,
+    asc: boolean,
+    esc_id: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/local/${limit}/${offset}/${asc}/${esc_id}`, headers);
+  }
+
+  public listarPorRegional(
+    limit: number, offset: number,
+    asc: boolean, esc_id: number,
+  ): Observable<any> {
+
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/regional/${limit}/${offset}/${asc}/${esc_id}`, headers);
+  }
+
+  public listarGlobal(
+    limit: number, offset: number,
+    asc: boolean,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/global/${limit}/${offset}/${asc}`, headers);
+  }
+
+
+  public filtrar(
+    valor: string, limit: number,
+    offset: number, esc_id: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
     return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-estudante',
-      JSON.stringify({ estudante: estudante }),
+      CONSTANTES.HOST_API + 'filtrar-estudante',
+      JSON.stringify({
+        valor: valor,
+        limit: limit,
+        offset: offset,
+        esc_id: esc_id,
+      }),
       headers,
     );
   }
+
+  public filtrarRegional(
+    valor: string, limit: number,
+    offset: number, esc_id: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(
+      CONSTANTES.HOST_API + 'filtrar-estudante-regional',
+      JSON.stringify({
+        valor: valor,
+        limit: limit,
+        offset: offset,
+        esc_id: esc_id,
+      }),
+      headers,
+    );
+  }
+
+  public filtrarGlobal(
+    valor: string, limit: number, offset: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(
+      CONSTANTES.HOST_API + 'filtrar-estudante-global',
+      JSON.stringify({
+        valor: valor,
+        limit: limit,
+        offset: offset,
+      }),
+      headers,
+    );
+  }
+
+  /* ################################################################################################## */
+
 
   public inserirObservacao(
     usr_id: number,
@@ -293,68 +386,6 @@ export class EstudanteService {
     );
   }
 
-  public listar(
-    limit: number,
-    offset: number,
-    asc: boolean,
-    esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'estudantes',
-      JSON.stringify({
-        limit: limit,
-        offset: offset,
-        asc: asc,
-        esc_id: esc_id,
-      }),
-      headers,
-    );
-  }
-
-  public listarPorRegional(
-    limit: number, offset: number,
-    asc: boolean, esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'estudantes-regional',
-      JSON.stringify({
-        limit: limit,
-        offset: offset,
-        asc: asc,
-        esc_id: esc_id,
-      }),
-      headers,
-    );
-  }
-
-  public listarGlobal(
-    limit: number, offset: number,
-    asc: boolean,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'estudantes-global',
-      JSON.stringify({
-        limit: limit,
-        offset: offset,
-        asc: asc,
-      }),
-      headers,
-    );
-  }
-
   public listarSemFoto(
     esc_id: number,
     ano: number,
@@ -404,11 +435,6 @@ export class EstudanteService {
       headers,
     );
   }
-
-
-
-
-
 
   public listarTurmaId(trm_id: number): Observable<any> {
     const headers = {
@@ -530,27 +556,7 @@ export class EstudanteService {
     );
   }
 
-  public filtrar(
-    valor: string,
-    limit: number,
-    offset: number,
-    esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-estudante',
-      JSON.stringify({
-        valor: valor,
-        limit: limit,
-        offset: offset,
-        esc_id: esc_id,
-      }),
-      headers,
-    );
-  }
+
 
   public listarStatusEntregaMensagensEnviadas(est_id: number): Observable<any> {
     const headers = {
@@ -562,45 +568,7 @@ export class EstudanteService {
       JSON.stringify({ est_id: est_id }), headers);
   }
 
-  public filtrarRegional(
-    valor: string, limit: number,
-    offset: number, esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-estudante-regional',
-      JSON.stringify({
-        valor: valor,
-        limit: limit,
-        offset: offset,
-        esc_id: esc_id,
-      }),
-      headers,
-    );
-  }
 
-  public filtrarGlobal(
-    valor: string,
-    limit: number,
-    offset: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-estudante-global',
-      JSON.stringify({
-        valor: valor,
-        limit: limit,
-        offset: offset,
-      }),
-      headers,
-    );
-  }
 
   public filtrarContaOcorrencia(
     valor: string,

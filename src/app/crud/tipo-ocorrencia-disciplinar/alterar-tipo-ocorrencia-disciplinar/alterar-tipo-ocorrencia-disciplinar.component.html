@@ -21,9 +21,8 @@
             value="{{ tipoOcorrenciaDisciplinar.nome }}">
           <div class="col-lg-1 col-sm-12"></div>
           <input type="number" formControlName="valor" placeholder="valor..."
-            class="form-control col-lg-4 col-sm-12 mt-2" name="valor" maxlength="5" required
-            (input)="modificarInputs($event)" (focusout)="modificarInputs($event)"
-            [value]="tipoOcorrenciaDisciplinar.valor">
+            class="form-control col-lg-4 col-sm-12 mt-2" name="valor" required (input)="modificarInputs($event)"
+            (focusout)="modificarInputs($event)" [value]="tipoOcorrenciaDisciplinar.valor">
         </div>
         <div class="row mt-2 form-group">
           <div class="col-lg-10 col-sm-12"></div>
