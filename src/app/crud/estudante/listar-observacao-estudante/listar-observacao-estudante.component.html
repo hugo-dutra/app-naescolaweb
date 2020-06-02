@@ -36,7 +36,7 @@
             </thead>
             <tbody *ngIf="arrayOfObservacoes != null" [@chamado]="estado">
               <tr class="row" *ngFor="let observacao of arrayOfObservacoes" [@chamado]="estado">
-                <td class="col-sm-12 col-lg-2 text-left">{{ observacao.data_hora }}</td>
+                <td class="col-sm-12 col-lg-2 text-left">{{ observacao.data_hora | date:'dd-MM-yyyy HH:mm:ss' }}</td>
                 <td class="col-sm-12 col-lg-6 text-left">{{ observacao.observacao }}</td>
                 <td class="col-sm-12 col-lg-2 text-left">{{ observacao.usuario }}</td>
                 <td *ngIf="exibirComponenteAlterar" class="col-sm-12 col-lg-1 text-center">

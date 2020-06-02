@@ -305,7 +305,6 @@ export class ListarEstudanteComponent implements OnInit {
   }
 
   public filtrar(limit: number = 5, offset: number = 0): void {
-
     if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
@@ -424,7 +423,8 @@ export class ListarEstudanteComponent implements OnInit {
 
   public filtrarNavegacao(limit: number = 5, offset: number = 0): void {
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+    //if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+    if (true) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.feedbackUsuario = undefined;
@@ -461,7 +461,8 @@ export class ListarEstudanteComponent implements OnInit {
       }
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+    //if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+    if (false) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.feedbackUsuario = undefined;
@@ -498,7 +499,8 @@ export class ListarEstudanteComponent implements OnInit {
       }
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+    //if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+    if (false) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.feedbackUsuario = undefined;

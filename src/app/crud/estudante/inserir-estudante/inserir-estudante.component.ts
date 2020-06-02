@@ -109,11 +109,9 @@ export class InserirEstudanteComponent implements OnInit {
       .then((response: Response) => {
         let estudante_id = new Object();
         estudante_id = response;
-        this.est_id = estudante_id[0].est_id;
+        this.est_id = estudante_id['id'];
         this.inserirTelefones();
-      })
-      .catch((erro: Response) => {
-
+      }).catch((erro: Response) => {
         //Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton

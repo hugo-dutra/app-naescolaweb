@@ -308,8 +308,6 @@ export class AlterarEstudanteComponent implements OnInit {
   public excluirTelefone(event: Event): void {
     let telefoneClicado: string = (<HTMLInputElement>event.target).value;
     this.str_telefones.splice(this.str_telefones.indexOf(telefoneClicado), 1);
-
-
   }
 
   public gravarTelefone(event: Event): void {
