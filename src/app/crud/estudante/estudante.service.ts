@@ -219,15 +219,61 @@ export class EstudanteService {
   public alterarEscola(
     estudantes: Object[], esc_id: number
   ): Observable<any> {
+    console.log(estudantes, esc_id)
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.patch(CONSTANTES.N_HOST_API + 'estudante/alterar-escola', { estudantes: estudantes, esc_id: esc_id }, headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'alterar-escola-estudante', JSON.stringify({ estudantes: estudantes, esc_id: esc_id }), headers);
+  }
+
+
+  public validarMatricula(matricula: string): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/validar-matricula/${matricula}`, headers);
+  }
+
+  public listarSemFotoEscolaId(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/sem-foto/${esc_id}`, headers);
+  }
+
+  public listarTurnoId(trn_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/turno-id/${trn_id}`, headers);
+  }
+
+  public listarSemTurma(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/sem-turma/${esc_id}`, headers);
+    //return this.http.post(CONSTANTES.HOST_API + 'listar-sem-turma', JSON.stringify({ esc_id: esc_id }), headers);
   }
 
   /*################################################################################################################*/
+  /*################################################################################################################*/
+  /*################################################################################################################*/
+
+
+
+  public listarEstudantesAplicativo(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.HOST_API + 'listar-estudante-aplicativo', JSON.stringify({ esc_id: esc_id, }), headers);
+  }
 
   public listarDetalhesNotificacoes(est_id: number): Observable<any> {
     const headers = {
@@ -241,43 +287,6 @@ export class EstudanteService {
     );
   }
 
-  public validarMatricula(matricula: string): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'validar-matricula-estudante',
-      JSON.stringify({ matricula: matricula }),
-      headers,
-    );
-  }
-
-
-
-  /** Método que atualiza a foto do estudante
-   * @param matricula Matrícula do estudante
-   * @param link Link para foto
-   * @param sobrescrever Se valor for 1, a foto anterior será reescrita. Se for zero,
-   * a foto existente não será reescrita.
-   */
-  public alterarFoto(
-    matricula: string,
-    link: number,
-    sobrescrever: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-foto-estudantes',
-      JSON.stringify({ matricula: matricula, link: link, sobrescrever: sobrescrever }),
-      headers,
-    );
-  }
-
   public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[],
     sobrescreverFoto: number): Observable<any> {
     const headers = {
@@ -287,39 +296,6 @@ export class EstudanteService {
     return this.http.post(
       CONSTANTES.HOST_API + 'alterar-foto-estudantes-aplicativo-administrativo',
       JSON.stringify({ fotosEstudantes: fotosEstudantes, sobrescreverFoto: sobrescreverFoto }),
-      headers,
-    );
-  }
-
-  public listarEstudantesAplicativo(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-estudante-aplicativo',
-      JSON.stringify({
-        esc_id: esc_id,
-      }),
-      headers,
-    );
-  }
-
-  public listarSemFoto(
-    esc_id: number,
-    ano: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-estudantes-sem-foto',
-      JSON.stringify({
-        esc_id: esc_id,
-        ano: ano,
-      }),
       headers,
     );
   }
@@ -357,19 +333,6 @@ export class EstudanteService {
 
 
 
-  public listarTurnoId(trn_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'estudantes-turno-id',
-      JSON.stringify({ trn_id: trn_id }),
-      headers,
-    );
-  }
-
   public alterarManualNumeroChamada(est_id: number, trm_id: number, numero_chamada: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
@@ -395,22 +358,6 @@ export class EstudanteService {
       headers,
     );
   }
-
-  public listarSemFotoEscolaId(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-estudantes-sem-foto',
-      JSON.stringify({ esc_id: esc_id }),
-      headers,
-    );
-  }
-
-
-
 
 
   public enturmar(estudantes: Array<number>, trm_id: number): Observable<any> {
@@ -438,23 +385,6 @@ export class EstudanteService {
     );
   }
 
-
-
-  public listarSemTurma(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-sem-turma',
-      JSON.stringify({ esc_id: esc_id }),
-      headers,
-    );
-  }
-
-
-
   public listarStatusEntregaMensagensEnviadas(est_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
@@ -464,8 +394,6 @@ export class EstudanteService {
       CONSTANTES.HOST_API + 'listar-status-entrega-mensagens-enviadas',
       JSON.stringify({ est_id: est_id }), headers);
   }
-
-
 
   public filtrarContaOcorrencia(
     valor: string,
@@ -506,5 +434,38 @@ export class EstudanteService {
        headers,
      );
    } */
+
+  /** Método que atualiza a foto do estudante
+  * @param matricula Matrícula do estudante
+  * @param link Link para foto
+  * @param sobrescrever Se valor for 1, a foto anterior será reescrita. Se for zero,
+  * a foto existente não será reescrita.
+  */
+  /* public alterarFoto(
+    matricula: string,
+    link: number,
+    sobrescrever: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+
+    return this.http.post(
+      CONSTANTES.HOST_API + 'alterar-foto-estudantes',
+      JSON.stringify({ matricula: matricula, link: link, sobrescrever: sobrescrever }),
+      headers,
+    );
+  } */
+
+  /* public listarSemFoto(
+      esc_id: number, ano: number,
+    ): Observable<any> {
+      const headers = {
+        headers: new HttpHeaders().append('Content-type', 'application/json')
+          .append('Authorization', localStorage.getItem('token')),
+      };
+      return this.http.post(CONSTANTES.HOST_API + 'listar-estudantes-sem-foto', JSON.stringify({ esc_id: esc_id, ano: ano, }), headers);
+    } */
 
 }
