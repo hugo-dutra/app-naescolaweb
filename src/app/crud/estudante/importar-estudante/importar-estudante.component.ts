@@ -214,20 +214,20 @@ export class ImportarEstudanteComponent implements OnInit {
 
   public inserirEstudanteImportado(): void {
     this.feedbackUsuario = "Inserindo estudantes, aguarde...";
-    this.estudanteService.inserirViaListagem(this.arrayOfEstudantes).toPromise().then((response: Response) => {
-      this.feedbackUsuario = undefined;
-      this.enturmarEstudanteImportado();
-    }).catch((erro: Response) => {
-      //Mostra modal
-      this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-      //registra log de erro no firebase usando serviço singlenton
-      this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-      //Gravar erros no analytics
-      Utils.gravarErroAnalytics(JSON.stringify(erro));
-      //Caso token seja invalido, reenvia rota para login
-      Utils.tratarErro({ router: this.router, response: erro });
-      this.feedbackUsuario = undefined;
-    })
+    this.estudanteService.inserirViaListagem(this.arrayOfEstudantes).toPromise().then((response: Response) => { })
+      .then(() => {
+        this.enturmarEstudanteImportado();
+      }).catch((erro: Response) => {
+        //Mostra modal
+        this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+        //registra log de erro no firebase usando serviço singlenton
+        this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Caso token seja invalido, reenvia rota para login
+        Utils.tratarErro({ router: this.router, response: erro });
+        this.feedbackUsuario = undefined;
+      })
   }
 
   public enturmarEstudanteImportado(): void {

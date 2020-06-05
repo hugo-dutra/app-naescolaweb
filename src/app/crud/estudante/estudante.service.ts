@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵConsole } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Estudante } from './estudante.model';
 import { Observable } from 'rxjs';
@@ -258,22 +258,35 @@ export class EstudanteService {
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.get(CONSTANTES.N_HOST_API + `estudante/sem-turma/${esc_id}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'listar-sem-turma', JSON.stringify({ esc_id: esc_id }), headers);
   }
-
-  /*################################################################################################################*/
-  /*################################################################################################################*/
-  /*################################################################################################################*/
-
-
 
   public listarEstudantesAplicativo(esc_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'listar-estudante-aplicativo', JSON.stringify({ esc_id: esc_id, }), headers);
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/listar-aplicativo/${esc_id}`, headers);
   }
+
+  public inserirViaListagem(estudantes: any[]): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante/via-listagem', estudantes, headers);
+  }
+
+  public enturmarViaImportacao(estudantes: Array<any>): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/enturmar/via-importacao', estudantes, headers);
+  }
+
+  /*################################################################################################################*/
+  /*################################################################################################################*/
+  /*################################################################################################################*/
 
   public listarDetalhesNotificacoes(est_id: number): Observable<any> {
     const headers = {
@@ -287,8 +300,7 @@ export class EstudanteService {
     );
   }
 
-  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[],
-    sobrescreverFoto: number): Observable<any> {
+  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[], sobrescreverFoto: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
@@ -300,6 +312,7 @@ export class EstudanteService {
     );
   }
 
+  /* Pesquisar como ler arquivo em excel no node/nestjs */
   public enviarArquivoExcel(arquivo: FileList): Observable<any> {
     const formData = new FormData();
     const options = {
@@ -318,20 +331,6 @@ export class EstudanteService {
       options,
     );
   }
-
-  public inserirViaListagem(estudantes: any[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-estudante-via-listagem',
-      JSON.stringify({ estudantes: estudantes }),
-      headers,
-    );
-  }
-
-
 
   public alterarManualNumeroChamada(est_id: number, trm_id: number, numero_chamada: number): Observable<any> {
     const headers = {
@@ -373,17 +372,7 @@ export class EstudanteService {
     );
   }
 
-  public enturmarViaImportacao(estudantes: Array<any>): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'enturmar-estudante-via-importacao',
-      JSON.stringify({ estudantes: estudantes }),
-      headers,
-    );
-  }
+
 
   public listarStatusEntregaMensagensEnviadas(est_id: number): Observable<any> {
     const headers = {
@@ -422,25 +411,7 @@ export class EstudanteService {
     return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
   }
 
-  /* public listarDetalhesInformacoes(est_id: number): Observable<any> {
-     const headers = {
-       headers: new HttpHeaders().append('Content-type', 'application/json')
-         .append('Authorization', localStorage.getItem('token')),
-     };
 
-     return this.http.post(
-       CONSTANTES.HOST_API + 'listar-detalhar-informacao-estudante',
-       JSON.stringify({ est_id: est_id }),
-       headers,
-     );
-   } */
-
-  /** Método que atualiza a foto do estudante
-  * @param matricula Matrícula do estudante
-  * @param link Link para foto
-  * @param sobrescrever Se valor for 1, a foto anterior será reescrita. Se for zero,
-  * a foto existente não será reescrita.
-  */
   /* public alterarFoto(
     matricula: string,
     link: number,
@@ -468,4 +439,17 @@ export class EstudanteService {
       return this.http.post(CONSTANTES.HOST_API + 'listar-estudantes-sem-foto', JSON.stringify({ esc_id: esc_id, ano: ano, }), headers);
     } */
 
+
+  /* public listarDetalhesInformacoes(est_id: number): Observable<any> {
+  const headers = {
+    headers: new HttpHeaders().append('Content-type', 'application/json')
+      .append('Authorization', localStorage.getItem('token')),
+  };
+
+  return this.http.post(
+    CONSTANTES.HOST_API + 'listar-detalhar-informacao-estudante',
+    JSON.stringify({ est_id: est_id }),
+    headers,
+  );
+} */
 }

@@ -280,15 +280,11 @@ export class InserirEstudanteComponent implements OnInit {
     let matricula = (<HTMLInputElement>event.target).value;
     this.estudanteService.validarMatricula(matricula).toPromise().then((response: any) => {
       let matriculado = response;
-      alert(JSON.stringify(matriculado));
       if (matriculado == true) {
-        alert(true);
         (<HTMLInputElement>event.target).classList.add("is-invalid");
         document.getElementById("btn_salvar").setAttribute("disabled", "disabled");
         this.extudanteMatriculado = true;
-
       } else {
-        alert(false);
         (<HTMLInputElement>event.target).classList.remove("is-invalid");
         document.getElementById("btn_salvar").removeAttribute("disabled");
         this.extudanteMatriculado = false;
