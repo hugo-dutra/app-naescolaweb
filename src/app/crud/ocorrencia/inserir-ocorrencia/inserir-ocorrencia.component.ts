@@ -499,7 +499,6 @@ export class InserirOcorrenciaComponent implements OnInit {
       Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT),
     )[0].id;
     this.ocorrencia.array_msg = this.arrayDeMensagensSimples;
-    debugger;
     this.ocorrenciaService
       .inserir(this.ocorrencia)
       .toPromise()

@@ -101,6 +101,7 @@ export class GerenciarAplicativoComponent implements OnInit {
   }
 
   public baixarOcorrenciasAplicativoAdministrativo(): void {
+
     this.limparArrays();
     this.feedbackUsuario = 'Verificando ocorrências registradas no aplicativo, aguarde...';
     this.firebaseService.listarOcorrenciasDisciplinaresAplicativoAdministravivo(this.inep)
@@ -109,6 +110,7 @@ export class GerenciarAplicativoComponent implements OnInit {
           this.documentosParaAtualizar = retorno;
           const documentos = retorno.docs;
           documentos.forEach((documento: firebase.firestore.QueryDocumentSnapshot) => {
+
             const firebase_dbkey_admin = documento.id;
             const dados = documento.data();
             const registrarEntradaManual = dados['registrarEntradaManual'];
@@ -139,14 +141,17 @@ export class GerenciarAplicativoComponent implements OnInit {
           this.feedbackUsuario = undefined;
         }
       }).catch((erro: Response) => {
+        console.log(erro);
         this.tratarErro(erro);
       });
   }
 
   public montarMensagensNovasOcorrencias(): void {
+
     this.feedbackUsuario = 'Preparando notificações de ocorrências disciplinares...';
     const inep = Utils.pegarDadosEscolaDetalhado().inep;
     for (let i = 0; i < this.arrayDeOcorrenciasDoAplicativo.length; i++) {
+
       const ocorrenciaAtual = this.arrayDeOcorrenciasDoAplicativo[i];
       const nome = ocorrenciaAtual['nome'];
       const message = ocorrenciaAtual['tipoOcorrencia'];
@@ -169,6 +174,7 @@ export class GerenciarAplicativoComponent implements OnInit {
   }
 
   public gravarOcorrenciaDisciplinarSimples(messagesFirebase: Array<MessageFirebase>): void {
+
     this.feedbackUsuario = 'Gravando ocorrências, aguarde...';
     for (let i = 0; i < messagesFirebase.length; i++) {
       const messageFirebase = messagesFirebase[i];
