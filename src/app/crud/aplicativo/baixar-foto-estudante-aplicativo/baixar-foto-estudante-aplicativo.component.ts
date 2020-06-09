@@ -6,6 +6,7 @@ import { AlertModalService } from '../../../shared-module/alert-modal.service';
 import { FirebaseService } from '../../../shared/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { Utils } from '../../../shared/utils.shared';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ngx-baixar-foto-estudante-aplicativo',
@@ -77,13 +78,13 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
           arrayOfEstudantes.push(dadosEstudantes);
         });
         this.feedbackUsuario = 'Atualizando fotos na base, aguarde...';
-        this.estudanteService
-          .alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes, sobrescrever)
+        this.estudanteService.alterarFotosEstudantesAplicativoAdministrativo(arrayOfEstudantes, sobrescrever)
           .toPromise()
           .then(() => {
             this.sincronizarDadosNoAplicativoAdministrativo();
           });
       }).catch((erro: Response) => {
+        console.log(erro)
         this.mostrarAlertaErro(erro);
       });
   }
@@ -106,16 +107,23 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
       const arrayDeEstudantesAplicativoEstruturado = new Array<Object>();
       const arrayDeEstudantesAplicativo = new Array<Object>();
       this.arrayOfEstudantesAplicativo.forEach(estudante => {
-        let dataFoto = 0;
-        if (estudante['dataFoto'] != null) {
-          dataFoto = parseInt(estudante['dataFoto'], 10) * 1000;
-        }
+        let dataFoto: number;
         const escola = estudante['escola'];
         const etapa = estudante['etapa'];
-        const foto = {
-          datePicture: new Date(dataFoto), url: estudante['foto'],
-          userId: estudante['usr_id_foto'], userName: estudante['usuario'],
-        };
+        let foto: any;
+        if (estudante['data_foto'] != null) {
+          dataFoto = parseInt(moment(estudante['data_foto']).format('X')) * 1000;
+          foto = {
+            datePicture: new Date(dataFoto), url: estudante['foto'],
+            userId: estudante['usr_id_foto'], userName: estudante['usuario'],
+          };
+        } else {
+          foto = {
+            datePicture: new Date(1970, 1, 1, 0, 0, 0, 0), url: estudante['foto'],
+            userId: estudante['usr_id_foto'], userName: estudante['usuario'],
+          };
+        }
+
         const inep = estudante['inep'];
         const est_id = estudante['est_id'];
         const nome = estudante['nome'];
@@ -139,6 +147,7 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
         const pedaco = arrayDeEstudantesAplicativoEstruturado.splice(0, tamanhoDocumento);
         this.firebaseService.gravarListagemEstudantesAplicativoDocumentoUnico(pedaco, parteArray).then(() => { })
           .catch((erro: Response) => {
+            console.log(erro)
             this.mostrarAlertaErro(erro);
           });
         parteArray++;
@@ -149,10 +158,12 @@ export class BaixarFotoEstudanteAplicativoComponent implements OnInit {
           }
           this.feedbackUsuario = undefined;
         }).catch((erro: Response) => {
+          console.log(erro)
           this.mostrarAlertaErro(erro);
         });
       }
     }).catch((erro: Response) => {
+      console.log(erro)
       this.mostrarAlertaErro(erro);
     });
   }

@@ -11,12 +11,9 @@ export class OcorrenciaService {
   constructor(private http: HttpClient, private router: Router) { }
 
   public inserir(ocorrencia: Ocorrencia): Observable<any> {
+    console.log(ocorrencia);
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-ocorrencia",
-      JSON.stringify({ ocorrencia }),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'ocorrencia-disciplinar', ocorrencia, headers);
   }
 
   public inserirDoAplicativo(ocorrencias: Object): Observable<any> {
@@ -27,6 +24,12 @@ export class OcorrenciaService {
       headers
     );
   }
+
+  //*******************************************************************************************************************/
+  //*******************************************************************************************************************/
+  //*******************************************************************************************************************/
+
+
 
   /**
    *
@@ -59,11 +62,8 @@ export class OcorrenciaService {
   }
 
   public listarQuantidadeAlertaNaoVerificado(
-    esc_id: number,
-    usr_id: number,
-    tod_id: number,
-    data_inicio: string,
-    data_fim: string,
+    esc_id: number, usr_id: number, tod_id: number,
+    data_inicio: string, data_fim: string,
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
@@ -80,10 +80,8 @@ export class OcorrenciaService {
   }
 
   public calcularAvaliacaoSocial(
-    trm_id: number,
-    data_inicio: string,
-    data_fim: string,
-    valor_total_avaliacao_social: number): Observable<any> {
+    trm_id: number, data_inicio: string,
+    data_fim: string, valor_total_avaliacao_social: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(
       CONSTANTES.HOST_API + "calcular-avaliacao-social",
@@ -111,10 +109,8 @@ export class OcorrenciaService {
   }
 
   public filtrar(
-    valor: string,
-    limit: number,
-    offset: number,
-    esc_id: number
+    valor: string, limit: number,
+    offset: number, esc_id: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.post(

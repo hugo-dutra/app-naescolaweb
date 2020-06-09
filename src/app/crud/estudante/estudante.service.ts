@@ -284,6 +284,43 @@ export class EstudanteService {
     return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/enturmar/via-importacao', estudantes, headers);
   }
 
+  public alterarManualNumeroChamada(est_id: number, trm_id: number, numero_chamada: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/alterar-manual-numero-chamada', { est_id: est_id, trm_id: trm_id, numero_chamada: numero_chamada }, headers);
+  }
+
+  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[], sobrescreverFoto: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante/alterar-foto-aplicativo-administrativo', { fotosEstudantes, sobrescreverFoto }, headers);
+  }
+
+  public listarTurmaEscolaId(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/turma-escola-id/${esc_id}`, headers);
+  }
+
+  public enturmar(estudantes: Array<number>, trm_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/enturmar', { estudantes: estudantes, trm_id: trm_id }, headers);
+  }
+
+
+  public consultarCEP(cep: string): Observable<any> {
+    return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
+  }
+
   /*################################################################################################################*/
   /*################################################################################################################*/
   /*################################################################################################################*/
@@ -296,18 +333,6 @@ export class EstudanteService {
     return this.http.post(
       CONSTANTES.HOST_API + 'listar-historico-entrega-notificacao-estudante',
       JSON.stringify({ est_id: est_id }),
-      headers,
-    );
-  }
-
-  public alterarFotosEstudantesAplicativoAdministrativo(fotosEstudantes: Object[], sobrescreverFoto: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-foto-estudantes-aplicativo-administrativo',
-      JSON.stringify({ fotosEstudantes: fotosEstudantes, sobrescreverFoto: sobrescreverFoto }),
       headers,
     );
   }
@@ -331,48 +356,6 @@ export class EstudanteService {
       options,
     );
   }
-
-  public alterarManualNumeroChamada(est_id: number, trm_id: number, numero_chamada: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-manual-numero-chamada-estudante',
-      JSON.stringify({ est_id: est_id, trm_id: trm_id, numero_chamada: numero_chamada }),
-      headers,
-    );
-  }
-
-  public listarTurmaEscolaId(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'estudantes-turma-escola-id',
-      JSON.stringify({ esc_id: esc_id }),
-      headers,
-    );
-  }
-
-
-  public enturmar(estudantes: Array<number>, trm_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'enturmar',
-      JSON.stringify({ estudantes: estudantes, trm_id: trm_id }),
-      headers,
-    );
-  }
-
-
 
   public listarStatusEntregaMensagensEnviadas(est_id: number): Observable<any> {
     const headers = {
@@ -407,49 +390,5 @@ export class EstudanteService {
     );
   }
 
-  public consultarCEP(cep: string): Observable<any> {
-    return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
-  }
 
-
-  /* public alterarFoto(
-    matricula: string,
-    link: number,
-    sobrescrever: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-foto-estudantes',
-      JSON.stringify({ matricula: matricula, link: link, sobrescrever: sobrescrever }),
-      headers,
-    );
-  } */
-
-  /* public listarSemFoto(
-      esc_id: number, ano: number,
-    ): Observable<any> {
-      const headers = {
-        headers: new HttpHeaders().append('Content-type', 'application/json')
-          .append('Authorization', localStorage.getItem('token')),
-      };
-      return this.http.post(CONSTANTES.HOST_API + 'listar-estudantes-sem-foto', JSON.stringify({ esc_id: esc_id, ano: ano, }), headers);
-    } */
-
-
-  /* public listarDetalhesInformacoes(est_id: number): Observable<any> {
-  const headers = {
-    headers: new HttpHeaders().append('Content-type', 'application/json')
-      .append('Authorization', localStorage.getItem('token')),
-  };
-
-  return this.http.post(
-    CONSTANTES.HOST_API + 'listar-detalhar-informacao-estudante',
-    JSON.stringify({ est_id: est_id }),
-    headers,
-  );
-} */
 }

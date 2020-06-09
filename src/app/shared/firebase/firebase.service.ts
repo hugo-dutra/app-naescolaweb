@@ -28,7 +28,6 @@ export class FirebaseService {
   // ****************************************************************************/
   // ******************************PUSH******************************************/
   public enviarPushFirebase(topico: string, titulo: string): Observable<any> {
-    debugger;
     try {
       if (CONSTANTES.BUILD_DESTINO == CONSTANTES.BUILS_RESOLVIDOS) {
 
@@ -384,6 +383,11 @@ export class FirebaseService {
    */
   public gravarListagemEstudantesAplicativoDocumentoUnico = (
     estudantes: Object[], parteArray: number): Promise<any> => {
+    const estudantesUndefinedRemovidos = estudantes.map(estudante => {
+      estudante['foto']['userName'] = estudante['foto']['userName'] == undefined ? null : estudante['foto']['userName'];
+      return estudante;
+    });
+    estudantes = estudantesUndefinedRemovidos;
     // **************DADOS ESCOLA**************/
     const dadosEscola = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados_escola'), CONSTANTES.PASSO_CRIPT))[0];
     const inep = dadosEscola['inep'];
@@ -695,6 +699,7 @@ export class FirebaseService {
   }
 
   public lerFotosEstudanteAplicativoAdministrativo = async (inep: string) => new Promise((resolve) => {
+    console.log(inep);
     return this.firestore
       .collection('naescolaApp')
       .doc(inep)

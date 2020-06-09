@@ -19,20 +19,6 @@ import * as moment from 'moment';
   templateUrl: './gerenciar-aplicativo.component.html',
   styleUrls: ['./gerenciar-aplicativo.component.scss'],
   providers: [EstudanteService, FirebaseService, HintService, OcorrenciaService, PortariaService],
-  animations: [
-    trigger('chamado', [
-      state(
-        'visivel',
-        style({
-          opacity: 1,
-        }),
-      ),
-      transition('void => visivel', [
-        style({ opacity: 0 }),
-        animate(CONSTANTES.ANIMATION_DELAY_TIME + 'ms ease-in-out'),
-      ]),
-    ]),
-  ],
 })
 export class GerenciarAplicativoComponent implements OnInit {
 

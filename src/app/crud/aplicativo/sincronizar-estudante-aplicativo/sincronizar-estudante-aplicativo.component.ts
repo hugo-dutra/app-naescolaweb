@@ -64,8 +64,8 @@ export class SincronizarEstudanteAplicativoComponent implements OnInit {
       const arrayDeEstudantesAplicativo = new Array<Object>();
       this.arrayOfEstudantesAplicativo.forEach(estudante => {
         let dataFoto = 0;
-        if (estudante['dataFoto'] != null) {
-          dataFoto = parseInt(estudante['dataFoto'], 10) * 1000;
+        if (estudante['data_foto'] != null) {
+          dataFoto = parseInt(estudante['data_foto'], 10) * 1000;
         }
         const escola = estudante['escola'];
         const etapa = estudante['etapa'];
