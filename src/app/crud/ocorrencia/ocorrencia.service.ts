@@ -59,9 +59,7 @@ export class OcorrenciaService {
     data_fim: string, valor_total_avaliacao_social: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `ocorrencia-disciplinar/calcular-avaliacao-social/${trm_id}/${data_inicio}/${data_fim}/${valor_total_avaliacao_social}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + "calcular-avaliacao-social", JSON.stringify({ trm_id: trm_id, data_inicio: data_inicio, data_fim: data_fim, valor_total_avaliacao_social: valor_total_avaliacao_social }), headers);
   }
-
 
 
   //*******************************************************************************************************************/
@@ -77,18 +75,13 @@ export class OcorrenciaService {
     return this.http.post(
       CONSTANTES.HOST_API + "listar-quantidade-alerta-ocorrencia-nao-verificada",
       JSON.stringify({
-        esc_id: esc_id,
-        usr_id: usr_id,
-        tod_id: tod_id,
-        data_inicio: data_inicio,
+        esc_id: esc_id, usr_id: usr_id,
+        tod_id: tod_id, data_inicio: data_inicio,
         data_fim: data_fim
       }),
       headers
     );
   }
-
-
-
 
   public alterarStatusEntregaMensagem(arrayDeOcorrenciasVerificadas: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }

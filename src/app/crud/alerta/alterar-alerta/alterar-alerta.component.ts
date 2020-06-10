@@ -37,7 +37,7 @@ export class AlterarAlertaComponent implements OnInit {
   public estado: string = 'visivel';
   public esc_id: number;
   public usr_id: number;
-  public ral_id: number;
+  public id: number;
   public anoAtual: number;
 
   public regra: Object;
@@ -52,6 +52,7 @@ export class AlterarAlertaComponent implements OnInit {
   public stringDeOperadorDeAlerta = 'Operadores';
   public dataInicial: string;
   public dataFinal: string;
+  public dataCriacao: string;
   public quantidadeDeOcorrencias: number;
   public dataAtual: string;
 
@@ -74,14 +75,10 @@ export class AlterarAlertaComponent implements OnInit {
   public alterarAlerta(): void {
     this.feedbackUsuario = 'Alterando alerta, aguarde...';
     this.alertaService.alterarRegraAlerta(
-      this.ral_id,
-      this.tod_id,
-      this.opa_id,
-      this.quantidadeDeOcorrencias,
-      this.dataInicial,
-      this.dataFinal,
-      this.esc_id,
-      this.usr_id).toPromise().then((response: Response) => {
+      this.id, this.tod_id, this.opa_id,
+      this.quantidadeDeOcorrencias, this.dataInicial, this.dataFinal,
+      this.dataCriacao, this.esc_id, this.usr_id)
+      .toPromise().then((response: Response) => {
         this.feedbackUsuario = undefined;
         this.listarAlertas();
       }).catch((erro: Response) => {
@@ -107,12 +104,13 @@ export class AlterarAlertaComponent implements OnInit {
     this.dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
     this.esc_id = parseInt(this.dados_escola['id'], 10);
     this.usr_id = parseInt(this.dados_usuario['id'], 10);
-    this.ral_id = parseInt(this.regra['ral_id'], 10);
+    this.id = parseInt(this.regra['id'], 10);
     this.tod_id = parseInt(this.regra['tod_id'], 10);
     this.opa_id = parseInt(this.regra['opa_id'], 10);
     this.quantidadeDeOcorrencias = parseInt(this.regra['valor_referencia'], 10);
-    this.dataInicial = this.regra['data_inicio'];
-    this.dataFinal = this.regra['data_fim'];
+    this.dataInicial = (<string>this.regra['data_inicio']).split('T')[0];
+    this.dataFinal = (<string>this.regra['data_fim']).split('T')[0];
+    this.dataCriacao = (<string>this.regra['data_criacao']).split('T')[0];
     this.stringDeTipoDeOcorrencia = this.regra['tipo_ocorrencia'];
     this.stringDeOperadorDeAlerta = this.regra['operador'];
   }

@@ -39,7 +39,7 @@ export class ExcluirAlertaComponent implements OnInit {
   public valorReferencia: number = 0;
   public dataInicio: string = '';
   public dataFim: string = '';
-  public ral_id: number = 0;
+  public id: number = 0;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -61,17 +61,17 @@ export class ExcluirAlertaComponent implements OnInit {
   }
 
   public carregarDados(): void {
-    this.ral_id = parseInt(this.regra['ral_id'], 10);
+    this.id = parseInt(this.regra['id'], 10);
     this.stringTipoOcorrencia = this.regra['tipo_ocorrencia'];
     this.stringTipoOperador = this.regra['operador'];
     this.valorReferencia = parseInt(this.regra['valor_referencia'], 10);
-    this.dataInicio = this.regra['data_inicio'];
-    this.dataFim = this.regra['data_fim'];
+    this.dataInicio = (<string>this.regra['data_inicio']).split('T')[0];
+    this.dataFim = (<string>this.regra['data_fim']).split('T')[0];
   }
 
   public excluirAlerta(): void {
     this.feedbackUsuario = 'Excluindo regra de alerta, aguarde...';
-    this.alertaService.excluirRegraAlerta(this.ral_id).toPromise().then((response: Response) => {
+    this.alertaService.excluirRegraAlerta(this.id).toPromise().then((response: Response) => {
       this.feedbackUsuario = undefined;
       this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/listar-alerta`]);
     }).catch((erro: Response) => {

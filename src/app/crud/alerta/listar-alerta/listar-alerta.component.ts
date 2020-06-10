@@ -66,19 +66,6 @@ export class ListarAlertaComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         regra: JSON.stringify(regra)
-        /* data_criacao: regra['data_criacao'],
-        data_fim: regra['data_fim'],
-        data_inicio: regra['data_inicio'],
-        esc_id: regra['esc_id'],
-        escola: regra['escola'],
-        opa_id: regra['opa_id'],
-        operador: regra['operador'],
-        ral_id: regra['ral_id'],
-        tipo_ocorrencia: regra['tipo_ocorrencia'],
-        tod_id: regra['tod_id'],
-        usr_id: regra['usr_id'],
-        usuario: regra['usuario'],
-        valor_referencia: regra['valor_referencia'], */
       },
     };
     this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/excluir-alerta`], navigationExtras);
@@ -88,19 +75,6 @@ export class ListarAlertaComponent implements OnInit {
     const navigationExtras: NavigationExtras = {
       queryParams: {
         regra: JSON.stringify(regra)
-        /* data_criacao: regra['data_criacao'],
-        data_fim: regra['data_fim'],
-        data_inicio: regra['data_inicio'],
-        esc_id: regra['esc_id'],
-        escola: regra['escola'],
-        opa_id: regra['opa_id'],
-        operador: regra['operador'],
-        ral_id: regra['ral_id'],
-        tipo_ocorrencia: regra['tipo_ocorrencia'],
-        tod_id: regra['tod_id'],
-        usr_id: regra['usr_id'],
-        usuario: regra['usuario'],
-        valor_referencia: regra['valor_referencia'], */
       },
     };
     this.router.navigate([`${this.activeRoute.parent.routeConfig.path}/alterar-alerta`], navigationExtras);

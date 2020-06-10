@@ -11,29 +11,28 @@ export class AlertaService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Lista regras de alertas criados para determinada escola.
-   * @param esc_id id da escola no qual os alertas foram criados
-   */
-  public listarRegraAlerta(esc_id: number): Observable<any> {
+     * Metodo lista os operadores lógicos que definem o critério de ativação dos alertas.
+     */
+  public listarOperadorAlerta(): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'listar-regra-alerta', JSON.stringify({ esc_id: esc_id }), headers);
+    return this.http.get(CONSTANTES.N_HOST_API + 'operador-alerta', headers);
   }
 
   /**
-   * Insere uma nova regra de alerta que será, posteriormente,
-   * associada a um determinado conjunto de usuários de determinada escola.
-   * @param valor_referencia Valor no qual o alerta será acionado.
-   * @param opa_id Operador alerta que será usado na comparação.
-   * @param tod_id Tipo de ocorrencia disciplinar que será analisada.
-   * @param usr_id ID do usuário que será criando o alerta
-   * @param esc_id Escola na qual o alerta é válido
-   * @param data_criacao Data da criação do alerta
-   * @param data_inicio Período inicial no qual será considerado filtro das ocorrencias a serem analizadas
-   * @param data_fim Período final no qual será considerado filtro das ocorrencias a serem analizadas.
-   */
+      * Insere uma nova regra de alerta que será, posteriormente,
+      * associada a um determinado conjunto de usuários de determinada escola.
+      * @param valor_referencia Valor no qual o alerta será acionado.
+      * @param opa_id Operador alerta que será usado na comparação.
+      * @param tod_id Tipo de ocorrencia disciplinar que será analisada.
+      * @param usr_id ID do usuário que será criando o alerta
+      * @param esc_id Escola na qual o alerta é válido
+      * @param data_criacao Data da criação do alerta
+      * @param data_inicio Período inicial no qual será considerado filtro das ocorrencias a serem analizadas
+      * @param data_fim Período final no qual será considerado filtro das ocorrencias a serem analizadas.
+      */
   public inserirRegraAlerta(
     valor_referencia: number, opa_id: number, tod_id: number,
     usr_id: number, esc_id: number, data_criacao: string,
@@ -43,13 +42,20 @@ export class AlertaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'inserir-regra-alerta',
-      JSON.stringify({
-        valor_referencia: valor_referencia, opa_id: opa_id, tod_id: tod_id,
-        usr_id: usr_id, esc_id: esc_id, data_criacao: data_criacao,
-        data_inicio: data_inicio, data_fim: data_fim,
-      }),
-      headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'regra-alerta', { valor_referencia, opa_id, tod_id, usr_id, esc_id, data_criacao, data_inicio, data_fim }, headers);
+  }
+
+  /**
+     * Lista regras de alertas criados para determinada escola.
+     * @param esc_id id da escola no qual os alertas foram criados
+     */
+  public listarRegraAlerta(esc_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `regra-alerta/${esc_id}`, headers);
+    //return this.http.post(CONSTANTES.HOST_API + 'listar-regra-alerta', JSON.stringify({ esc_id: esc_id }), headers);
   }
 
   /**
@@ -64,21 +70,15 @@ export class AlertaService {
    * @param usr_id
    */
   public alterarRegraAlerta(
-    ral_id: number, tod_id: number, opa_id: number,
-    valor_referencia: number, data_inicio: string, data_fim: string,
+    id: number, tod_id: number, opa_id: number,
+    valor_referencia: number, data_inicio: string, data_fim: string, data_criacao: string,
     esc_id: number, usr_id: number): Observable<any> {
-
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'alterar-regra-alerta', JSON.stringify(
-      {
-        ral_id: ral_id, tod_id: tod_id, opa_id: opa_id,
-        valor_referencia: valor_referencia, data_inicio: data_inicio, data_fim: data_fim,
-        esc_id: esc_id, usr_id: usr_id,
-      }),
-      headers);
+    return this.http.patch(CONSTANTES.N_HOST_API + 'regra-alerta', { id, tod_id, opa_id, valor_referencia, data_inicio, data_fim, data_criacao, esc_id, usr_id, }, headers);
+    //return this.http.post(CONSTANTES.HOST_API + 'alterar-regra-alerta', JSON.stringify({ ral_id: ral_id, tod_id: tod_id, opa_id: opa_id, valor_referencia: valor_referencia, data_inicio: data_inicio, data_fim: data_fim, esc_id: esc_id, usr_id: usr_id, }), headers);
   }
 
 
@@ -86,14 +86,21 @@ export class AlertaService {
    * Exclui uma regra de alerta
    * @param ral_id id da regra de alerta que será excluído.
    */
-  public excluirRegraAlerta(ral_id: number): Observable<any> {
+  public excluirRegraAlerta(id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
+        .append('Authorization', localStorage.getItem('token')), body: { id: id }
     };
-    return this.http.post(CONSTANTES.HOST_API + 'excluir-regra-alerta',
-      JSON.stringify({ ral_id: ral_id }), headers);
+    return this.http.delete(CONSTANTES.N_HOST_API + 'regra-alerta', headers);
+    //return this.http.post(CONSTANTES.HOST_API + 'excluir-regra-alerta', JSON.stringify({ ral_id: ral_id }), headers);
   }
+
+
+
+  /**********************************************************************************************************************/
+  /**********************************************************************************************************************/
+  /**********************************************************************************************************************/
+
 
   /**
  * Método que envia matriz com alertas na qual o usuário poderá ser informado.
@@ -181,15 +188,6 @@ export class AlertaService {
       JSON.stringify({ observacao: observacao, data_verificacao: data_verificacao }), headers);
   }
 
-  /**
-   * Metodo lista os operadores lógicos que definem o critério de ativação dos alertas.
-   */
-  public listarOperadorAlerta(): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(CONSTANTES.HOST_API + 'listar-operador-alerta', null, headers);
-  }
+
 
 }
