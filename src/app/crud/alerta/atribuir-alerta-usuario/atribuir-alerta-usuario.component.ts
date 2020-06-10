@@ -76,6 +76,7 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
+        console.log(Object.values(response));
         this.arrayOfRegrasAlertasUsuarioSelecionado = Object.values(response);
         this.marcarComponentesDeAlertasDoUsuario(usr_id);
       }).catch((erro: Response) => {
@@ -152,17 +153,16 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
     this.arrayOfRegrasAlertasUsuariosEscola = [];
     this.feedbackUsuario = 'Associando regras selecionados aos usuários informados,aguarde...';
     let contaRegras = 0;
-    let contaUsuario = 0;
     this.arrayOfRegrasSelecionadas.forEach(ral_id => {
       contaRegras++;
+      let contaUsuario = 0;
       this.arrayOfUsuariosSelecionados.forEach(usr_id => {
         contaUsuario++;
         this.arrayOfRegrasAlertasUsuariosEscola.push({ ral_id: ral_id, usr_id: usr_id, esc_id: this.esc_id });
-        if (contaRegras == this.arrayOfRegrasSelecionadas.length &&
-          contaUsuario == this.arrayOfUsuariosSelecionados.length) {
+        if (contaRegras == this.arrayOfRegrasSelecionadas.length && contaUsuario == this.arrayOfUsuariosSelecionados.length) {
           this.alertaService.inserirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
             .toPromise()
-            .then((response: Response) => {
+            .then(() => {
               this.feedbackUsuario = undefined;
               this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
               this.limparMatrizesComponentes();
@@ -187,9 +187,9 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
     this.arrayOfRegrasAlertasUsuariosEscola = [];
     this.feedbackUsuario = 'Revogando regras selecionados aos usuários informados,aguarde...';
     let contaRegras = 0;
-    let contaUsuario = 0;
     this.arrayOfRegrasSelecionadas.forEach(ral_id => {
       contaRegras++;
+      let contaUsuario = 0;
       this.arrayOfUsuariosSelecionados.forEach(usr_id => {
         contaUsuario++;
         this.arrayOfRegrasAlertasUsuariosEscola.push({ ral_id: ral_id, usr_id: usr_id, esc_id: this.esc_id });
@@ -197,7 +197,7 @@ export class AtribuirAlertaUsuarioComponent implements OnInit {
           contaUsuario == this.arrayOfUsuariosSelecionados.length) {
           this.alertaService.excluirRegraAlertaUsuario(this.arrayOfRegrasAlertasUsuariosEscola)
             .toPromise()
-            .then((response: Response) => {
+            .then(() => {
               this.feedbackUsuario = undefined;
               this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');
               this.limparMatrizesComponentes();

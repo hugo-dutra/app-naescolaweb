@@ -76,9 +76,9 @@ export class AlterarAlertaComponent implements OnInit {
     this.feedbackUsuario = 'Alterando alerta, aguarde...';
     this.alertaService.alterarRegraAlerta(
       this.id, this.tod_id, this.opa_id,
-      this.quantidadeDeOcorrencias, this.dataInicial, this.dataFinal,
-      this.dataCriacao, this.esc_id, this.usr_id)
-      .toPromise().then((response: Response) => {
+      this.quantidadeDeOcorrencias, new Date(this.dataInicial + ' 00:00:00'), new Date(this.dataFinal + ' 00:00:00'),
+      new Date(this.dataCriacao + ' 00:00:00'), this.esc_id, this.usr_id)
+      .toPromise().then(() => {
         this.feedbackUsuario = undefined;
         this.listarAlertas();
       }).catch((erro: Response) => {
@@ -104,7 +104,7 @@ export class AlterarAlertaComponent implements OnInit {
     this.dados_usuario = JSON.parse(Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT))[0];
     this.esc_id = parseInt(this.dados_escola['id'], 10);
     this.usr_id = parseInt(this.dados_usuario['id'], 10);
-    this.id = parseInt(this.regra['id'], 10);
+    this.id = parseInt(this.regra['ral_id'], 10);
     this.tod_id = parseInt(this.regra['tod_id'], 10);
     this.opa_id = parseInt(this.regra['opa_id'], 10);
     this.quantidadeDeOcorrencias = parseInt(this.regra['valor_referencia'], 10);

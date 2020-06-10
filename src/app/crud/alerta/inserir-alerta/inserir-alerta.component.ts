@@ -80,8 +80,8 @@ export class InserirAlertaComponent implements OnInit {
       this.feedbackUsuario = 'Criando nova regra de alerta, aguarde...';
       this.alertaService.inserirRegraAlerta(
         this.quantidadeDeOcorrencias, this.opa_id, this.tod_id,
-        this.usr_id, this.esc_id, this.dataAtual,
-        this.dataInicial, this.dataFinal)
+        this.usr_id, this.esc_id, new Date(this.dataAtual + ' 00:00:00'),
+        new Date(this.dataInicial + ' 00:00:00'), new Date(this.dataAtual + ' 00:00:00'))
         .toPromise().then((response: Response) => {
           this.feedbackUsuario = undefined;
           this.alertModalService.showAlertSuccess('Operação finalizada com sucesso!');

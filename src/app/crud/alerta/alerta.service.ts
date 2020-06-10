@@ -35,8 +35,8 @@ export class AlertaService {
       */
   public inserirRegraAlerta(
     valor_referencia: number, opa_id: number, tod_id: number,
-    usr_id: number, esc_id: number, data_criacao: string,
-    data_inicio: string, data_fim: string): Observable<any> {
+    usr_id: number, esc_id: number, data_criacao: Date,
+    data_inicio: Date, data_fim: Date): Observable<any> {
 
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
@@ -71,7 +71,7 @@ export class AlertaService {
    */
   public alterarRegraAlerta(
     id: number, tod_id: number, opa_id: number,
-    valor_referencia: number, data_inicio: string, data_fim: string, data_criacao: string,
+    valor_referencia: number, data_inicio: Date, data_fim: Date, data_criacao: Date,
     esc_id: number, usr_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
@@ -96,12 +96,6 @@ export class AlertaService {
   }
 
 
-
-  /**********************************************************************************************************************/
-  /**********************************************************************************************************************/
-  /**********************************************************************************************************************/
-
-
   /**
  * Método que envia matriz com alertas na qual o usuário poderá ser informado.
  * @param arrayOfRegraAlertaUsuario Array contando objetos com o stributo ral_id(regra alerta),
@@ -112,23 +106,8 @@ export class AlertaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'inserir-regra-alerta-usuario',
-      JSON.stringify({ arrayOfRegraAlertaUsuario: arrayOfRegraAlertaUsuario }), headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'regra-alerta-usuario', arrayOfRegraAlertaUsuario, headers);
   }
-
-  /**
-   *
-   * @param arrayOfRegraAlertaUsuario
-   */
-  public excluirRegraAlertaUsuario(arrayOfRegraAlertaUsuario: Object[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(CONSTANTES.HOST_API + 'excluir-regra-alerta-usuario',
-      JSON.stringify({ arrayOfRegraAlertaUsuario: arrayOfRegraAlertaUsuario }), headers);
-  }
-
 
   /**
    * Lista alertas associados ao usuário e escola informado.
@@ -140,9 +119,25 @@ export class AlertaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'listar-regra-alerta-usuario',
-      JSON.stringify({ usr_id: usr_id, esc_id: esc_id }), headers);
+    return this.http.get(CONSTANTES.N_HOST_API + `regra-alerta-usuario/${usr_id}/${esc_id}`, headers);
   }
+
+  /**
+    *
+    * @param arrayOfRegraAlertaUsuario
+    */
+  public excluirRegraAlertaUsuario(arrayOfRegraAlertaUsuario: Object[]): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'regra-alerta-usuario/excluir', arrayOfRegraAlertaUsuario, headers);
+  }
+
+  /**********************************************************************************************************************/
+  /**********************************************************************************************************************/
+  /**********************************************************************************************************************/
+
 
   /**
   * Insere qual ocorrencia já foi verificada por determinado usuário, em determinada

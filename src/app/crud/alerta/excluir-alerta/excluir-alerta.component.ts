@@ -61,7 +61,7 @@ export class ExcluirAlertaComponent implements OnInit {
   }
 
   public carregarDados(): void {
-    this.id = parseInt(this.regra['id'], 10);
+    this.id = parseInt(this.regra['ral_id'], 10);
     this.stringTipoOcorrencia = this.regra['tipo_ocorrencia'];
     this.stringTipoOperador = this.regra['operador'];
     this.valorReferencia = parseInt(this.regra['valor_referencia'], 10);
