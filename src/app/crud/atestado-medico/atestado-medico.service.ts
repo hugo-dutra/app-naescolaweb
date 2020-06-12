@@ -26,11 +26,7 @@ export class AtestadoMedicoService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-atestado-medico',
-      JSON.stringify({ atestadoMedico: atestadoMedico }),
-      headers,
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'atestado-medico', atestadoMedico, headers);
   }
 
   public alterar(atestadoMedico: AtestadoMedico): Observable<any> {
@@ -38,23 +34,7 @@ export class AtestadoMedicoService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-atestado-medico',
-      JSON.stringify({ atestadoMedico: atestadoMedico }),
-      headers,
-    );
-  }
-
-  public excluir(atm_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'excluir-atestado-medico',
-      JSON.stringify({ atm_id: atm_id }),
-      headers,
-    );
+    return this.http.patch(CONSTANTES.N_HOST_API + 'atestado-medico', atestadoMedico, headers);
   }
 
   public listar(nomeEstudante: string, esc_id: number): Observable<any> {
@@ -62,11 +42,16 @@ export class AtestadoMedicoService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-atestado-medico',
-      JSON.stringify({ nomeEstudante: nomeEstudante, esc_id: esc_id }),
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `atestado-medico/${nomeEstudante}/${esc_id}`, headers);
+  }
+
+
+  public excluir(atm_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')), body: { atm_id }
+    };
+    return this.http.delete(CONSTANTES.N_HOST_API + 'atestado-medico', headers);
   }
 
 }
