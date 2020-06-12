@@ -61,27 +61,19 @@ export class OcorrenciaService {
     return this.http.get(CONSTANTES.N_HOST_API + `ocorrencia-disciplinar/calcular-avaliacao-social/${trm_id}/${data_inicio}/${data_fim}/${valor_total_avaliacao_social}`, headers);
   }
 
-
-  //*******************************************************************************************************************/
-  //*******************************************************************************************************************/
-  //*******************************************************************************************************************/
-
-
   public listarQuantidadeAlertaNaoVerificado(
     esc_id: number, usr_id: number, tod_id: number,
-    data_inicio: string, data_fim: string,
+    data_inicio: Date, data_fim: Date,
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "listar-quantidade-alerta-ocorrencia-nao-verificada",
-      JSON.stringify({
-        esc_id: esc_id, usr_id: usr_id,
-        tod_id: tod_id, data_inicio: data_inicio,
-        data_fim: data_fim
-      }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `ocorrencia-disciplinar/listar-quantidade-alerta-nao-verificada/${esc_id}/${usr_id}/${tod_id}/${data_inicio}/${data_fim}`, headers);
   }
+
+
+  //*******************************************************************************************************************/
+  //*******************************************************************************************************************/
+  //*******************************************************************************************************************/
+
 
   public alterarStatusEntregaMensagem(arrayDeOcorrenciasVerificadas: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }

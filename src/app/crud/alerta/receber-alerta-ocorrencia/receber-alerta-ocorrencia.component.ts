@@ -164,6 +164,8 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
       const operador = regraAlerta['operador'];
       const tod_id = regraAlerta['tod_id'];
       this.arrayOfOcorrenciasPeriodoConsiderado.forEach(ocorrencia => {
+
+
         const quantidadeOcorrenciasDeTipo = parseInt(ocorrencia['quantidade'], 10);
         switch (operador) {
           case 'menor': {
@@ -217,6 +219,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
           default:
             break;
         }
+        this.arrayOfOcorrenciasSelecionadas = Utils.eliminaValoresRepetidos(this.arrayOfOcorrenciasSelecionadas, 'est_id');
       });
     });
   }
@@ -247,7 +250,7 @@ export class ReceberAlertaOcorrenciaComponent implements OnInit {
 
     this.alertaService.inserirObservacaoAlertaOcorrenciaVerificada(data_verificacao, observacao)
       .toPromise().then((response: Response) => {
-        oov_id = Object.values(response)[0]['oov_id'];
+        oov_id = response['oov_id'];
       }).then(() => {
         this.feedbackUsuario = 'finalizando...';
         this.alertaService.inserirAlertaOcorrenciaVerificada(

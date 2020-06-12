@@ -55,7 +55,6 @@ export class AlertaService {
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.get(CONSTANTES.N_HOST_API + `regra-alerta/${esc_id}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'listar-regra-alerta', JSON.stringify({ esc_id: esc_id }), headers);
   }
 
   /**
@@ -78,7 +77,6 @@ export class AlertaService {
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.patch(CONSTANTES.N_HOST_API + 'regra-alerta', { id, tod_id, opa_id, valor_referencia, data_inicio, data_fim, data_criacao, esc_id, usr_id, }, headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'alterar-regra-alerta', JSON.stringify({ ral_id: ral_id, tod_id: tod_id, opa_id: opa_id, valor_referencia: valor_referencia, data_inicio: data_inicio, data_fim: data_fim, esc_id: esc_id, usr_id: usr_id, }), headers);
   }
 
 
@@ -92,7 +90,6 @@ export class AlertaService {
         .append('Authorization', localStorage.getItem('token')), body: { id: id }
     };
     return this.http.delete(CONSTANTES.N_HOST_API + 'regra-alerta', headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'excluir-regra-alerta', JSON.stringify({ ral_id: ral_id }), headers);
   }
 
 
@@ -134,23 +131,33 @@ export class AlertaService {
     return this.http.post(CONSTANTES.N_HOST_API + 'regra-alerta-usuario/excluir', arrayOfRegraAlertaUsuario, headers);
   }
 
-  /**********************************************************************************************************************/
-  /**********************************************************************************************************************/
-  /**********************************************************************************************************************/
+  /**
+     *
+     * @param data_verificacao
+     * @param observacao
+     */
+  public inserirObservacaoAlertaOcorrenciaVerificada(data_verificacao: string, observacao: string): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'observacao-alerta-ocorrencia-verificada', { observacao, data_verificacao }, headers);
+  }
+
 
 
   /**
-  * Insere qual ocorrencia já foi verificada por determinado usuário, em determinada
-  *  data, e o que foi feito referente aquele alerta.
-  * @param est_id Id do estudante para aplicar o filtro e inserir na tabela de alertas de ocorrencias verificadas
-  * @param tod_id Id do tipo de ocorrência do alerta
-  * @param usr_id Id do usuário que recebeu o alerta
-  * @param esc_id Id da escola cujo usuário recebeu o alerta
-  * @param data_verificacao Data da verificação do alerta
-  * @param data_inicio_considerado Período inicial do filtro para localizar as ocorrências a serem data como tratadas
-  * @param data_fim_considerado Período final do filtro para localizar as ocorrências a serem data como tratadas
-  * @param observacao Observação registrada no ato da conclusão / Fechamento do alerta de ocorrência
-  */
+      * Insere qual ocorrencia já foi verificada por determinado usuário, em determinada
+      *  data, e o que foi feito referente aquele alerta.
+      * @param est_id Id do estudante para aplicar o filtro e inserir na tabela de alertas de ocorrencias verificadas
+      * @param tod_id Id do tipo de ocorrência do alerta
+      * @param usr_id Id do usuário que recebeu o alerta
+      * @param esc_id Id da escola cujo usuário recebeu o alerta
+      * @param data_verificacao Data da verificação do alerta
+      * @param data_inicio_considerado Período inicial do filtro para localizar as ocorrências a serem data como tratadas
+      * @param data_fim_considerado Período final do filtro para localizar as ocorrências a serem data como tratadas
+      * @param observacao Observação registrada no ato da conclusão / Fechamento do alerta de ocorrência
+      */
   public inserirAlertaOcorrenciaVerificada(
     est_id: number, tod_id: number, usr_id: number,
     esc_id: number, data_inicio_considerado: string, data_fim_considerado: string,
@@ -159,30 +166,7 @@ export class AlertaService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(CONSTANTES.HOST_API + 'inserir-alerta-ocorrencia-verificada',
-      JSON.stringify({
-        est_id: est_id, tod_id: tod_id, usr_id: usr_id,
-        esc_id: esc_id, data_inicio_considerado: data_inicio_considerado, data_fim_considerado: data_fim_considerado,
-        oov_id: oov_id,
-      }), headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'alerta-ocorrencia-verificada', { est_id, tod_id, usr_id, esc_id, data_inicio_considerado, data_fim_considerado, oov_id }, headers);
   }
-
-  /**
-   *
-   * @param data_verificacao
-   * @param observacao
-   */
-  public inserirObservacaoAlertaOcorrenciaVerificada(
-    data_verificacao: string,
-    observacao: string): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(CONSTANTES.HOST_API + 'inserir-observacao-alerta-ocorrencia-verificada',
-      JSON.stringify({ observacao: observacao, data_verificacao: data_verificacao }), headers);
-  }
-
-
 
 }
