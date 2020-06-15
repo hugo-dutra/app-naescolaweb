@@ -19,29 +19,7 @@ export class AtividadeExtraClasseService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-atividade-extra-classe',
-      JSON.stringify({
-        atividadeExtraClasse: atividadeExtraClasse,
-      }),
-      headers,
-    );
-  }
-
-  public inserirAnexoAtividadeExtraClasse(anexosAtividadeExtraClasse: Object[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-anexo-atividade-extra-classe',
-      JSON.stringify({
-        anexosAtividadeExtraClasse: anexosAtividadeExtraClasse,
-      }),
-      headers,
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'atividade-extra-classe', atividadeExtraClasse, headers);
   }
 
   public inserirEstudanteAtividade(atividadeExtraEstudante: AtividadeExtraEstudante[]): Observable<any> {
@@ -49,14 +27,15 @@ export class AtividadeExtraClasseService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
+    return this.http.post(CONSTANTES.N_HOST_API + 'atividade-extra-estudante', atividadeExtraEstudante, headers);
+  }
 
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-estudante-atividade-extra-classe',
-      JSON.stringify({
-        atividadeExtraEstudante: atividadeExtraEstudante,
-      }),
-      headers,
-    );
+  public inserirAnexoAtividadeExtraClasse(anexosAtividadeExtraClasse: Object[]): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.post(CONSTANTES.N_HOST_API + 'anexo-atividade-extra', anexosAtividadeExtraClasse, headers);
   }
 
   public listarAtividadeExtraClasse(esc_id: number, dataInicio: string, dataFim: string): Observable<any> {
@@ -64,29 +43,16 @@ export class AtividadeExtraClasseService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-atividade-extra-classe',
-      JSON.stringify({
-        esc_id: esc_id, dataInicio: dataInicio, dataFim: dataFim,
-      }),
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `atividade-extra-classe/${esc_id}/${dataInicio}/${dataFim}`, headers);
   }
 
-  public listarAnexoAtividadeExtraClasse(esc_id: number): Observable<any> {
+
+  public listarAnexoAtividadeExtraClasse(aec_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-anexo-atividade-extra-classe',
-      JSON.stringify({
-        esc_id: esc_id,
-      }),
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `anexo-atividade-extra/${aec_id}`, headers);
   }
 
   public listarEstudanteAtividadeExtraClasse(aec_id: number): Observable<any> {
@@ -94,15 +60,17 @@ export class AtividadeExtraClasseService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-estudante-atividade-extra-classe',
-      JSON.stringify({
-        aec_id: aec_id,
-      }),
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `atividade-extra-estudante/${aec_id}`, headers);
   }
+
+
+
+
+
+
+
+
+
 
 
 }

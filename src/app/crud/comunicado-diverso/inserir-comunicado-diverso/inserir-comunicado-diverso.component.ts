@@ -84,7 +84,6 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     this.usr_id = JSON.parse(
       Utils.decriptAtoB(localStorage.getItem('dados'), CONSTANTES.PASSO_CRIPT),
     )[0].id;
-
     this.listarTurnos();
     this.listarTurmas();
     this.inep = Utils.pegarDadosEscola()['inep'];
@@ -174,24 +173,26 @@ export class InserirComunicadoDiversoComponent implements OnInit {
             this.tratarErro(erro);
           });
       }
-
     }
-
   }
 
   public listarTurmas(): void {
-    (<HTMLInputElement>document.getElementById('select-turma')).value = 'Selecione uma turma';
-    this.feedbackUsuario = 'Carregando dados, aguarde...';
-    this.turmaService
-      .listarTurnoId(this.turnoSelecionado, this.esc_id, this.anoAtual)
-      .toPromise()
-      .then((response: Response) => {
-        this.arrayOfTurmas = Object.values(response);
-        this.feedbackUsuario = undefined;
-      })
-      .catch((erro: Response) => {
-        this.tratarErro(erro);
-      });
+    if ((<HTMLInputElement>document.getElementById('select-turma'))) {
+      (<HTMLInputElement>document.getElementById('select-turma')).value = 'Selecione uma turma';
+      this.feedbackUsuario = 'Carregando dados, aguarde...';
+      this.turmaService
+        .listarTurnoId(this.turnoSelecionado, this.esc_id, this.anoAtual)
+        .toPromise()
+        .then((response: Response) => {
+          this.arrayOfTurmas = Object.values(response);
+          this.feedbackUsuario = undefined;
+        })
+        .catch((erro: Response) => {
+          this.tratarErro(erro);
+        });
+    }
+
+
   }
 
   public exibirComponente(rota: string): boolean {
@@ -284,12 +285,12 @@ export class InserirComunicadoDiversoComponent implements OnInit {
   }
 
   public selecionarTodosEstudantes(event: Event): void {
-    const checkEstudantes = document.getElementsByClassName('checkbox');
+    const checkEstudantes = document.getElementsByClassName('form-check-input');
     this.arrayOfComunicados = [];
     for (let i = 0; i < checkEstudantes.length; i++) {
       if (!isNaN(parseInt(checkEstudantes[i].id, 10))) {
         if ((<HTMLInputElement>event.target).checked == true) {
-          (<HTMLInputElement>document.getElementsByClassName('checkbox')[i])
+          (<HTMLInputElement>document.getElementsByClassName('form-check-input')[i])
             .checked = (<HTMLInputElement>event.target).checked;
           const comunicado = new ComunicadoDiverso();
           comunicado.assunto = this.assunto;
@@ -305,7 +306,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
           comunicado.usr_id = this.usr_id;
           this.arrayOfComunicados.push(comunicado);
         } else {
-          (<HTMLInputElement>document.getElementsByClassName('checkbox')[i])
+          (<HTMLInputElement>document.getElementsByClassName('form-check-input')[i])
             .checked = (<HTMLInputElement>event.target).checked;
         }
       }

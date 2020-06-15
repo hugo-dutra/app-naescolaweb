@@ -82,9 +82,20 @@
               </thead>
               <tbody *ngIf="arrayOfEstudantes != null">
                 <tr class="row" *ngFor="let estudante of arrayOfEstudantes">
-                  <td class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox" [value]="estudante.id"
+                  <td>
+                    <div class="form-check col-12 m-2">
+                      <input type="checkbox" class="form-check-input" [value]="estudante.id"
+                        [id]="estudante.id+'_checkEstudante'" [name]="estudante.id"
+                        (click)="adicionarComunicado($event)">
+                      <label class="form-check-label"
+                        [for]="estudante.id+'_checkEstudante'">{{ estudante.nome }}</label>
+                    </div>
+                  </td>
+                  <!-- <td class="col-sm-12 col-lg-1"><input type="checkbox" class="checkbox" [value]="estudante.id"
                       [name]="estudante.id" [id]="estudante.id" (click)="adicionarComunicado($event)"></td>
-                  <td class="col-sm-12 col-lg-11 text-left">&nbsp;{{ estudante.nome }}</td>
+                  <td class="col-sm-12 col-lg-11 text-left">&nbsp;{{ estudante.nome }}</td> -->
+
+
                 </tr>
               </tbody>
             </table>
