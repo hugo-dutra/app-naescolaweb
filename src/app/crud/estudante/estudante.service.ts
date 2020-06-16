@@ -316,26 +316,35 @@ export class EstudanteService {
     return this.http.post(CONSTANTES.N_HOST_API + 'estudante-turma/enturmar', { estudantes: estudantes, trm_id: trm_id }, headers);
   }
 
-
   public consultarCEP(cep: string): Observable<any> {
     return this.http.get(`https://viacep.com.br/ws/${cep}/json/`);
   }
 
-  /*################################################################################################################*/
-  /*################################################################################################################*/
-  /*################################################################################################################*/
+  public filtrarContaOcorrencia(
+    valor: string, limit: number,
+    offset: number, esc_id: number,
+  ): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/filtrar-conta-ocorrencia/${valor}/${limit}/${offset}/${esc_id}`, headers);
+  }
 
   public listarDetalhesNotificacoes(est_id: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-historico-entrega-notificacao-estudante',
-      JSON.stringify({ est_id: est_id }),
-      headers,
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/listar-historico-entrega-notificacao/${est_id}`, headers);
+    //return this.http.post(CONSTANTES.HOST_API + 'listar-historico-entrega-notificacao-estudante', JSON.stringify({ est_id: est_id }), headers,);
   }
+
+  /*################################################################################################################*/
+  /*################################################################################################################*/
+  /*################################################################################################################*/
+
+
 
   /* Pesquisar como ler arquivo em excel no node/nestjs */
   public enviarArquivoExcel(arquivo: FileList): Observable<any> {
@@ -367,28 +376,7 @@ export class EstudanteService {
       JSON.stringify({ est_id: est_id }), headers);
   }
 
-  public filtrarContaOcorrencia(
-    valor: string,
-    limit: number,
-    offset: number,
-    esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
 
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-estudante-com-ocorrencia',
-      JSON.stringify({
-        valor: valor,
-        limit: limit,
-        offset: offset,
-        esc_id: esc_id,
-      }),
-      headers,
-    );
-  }
 
 
 }

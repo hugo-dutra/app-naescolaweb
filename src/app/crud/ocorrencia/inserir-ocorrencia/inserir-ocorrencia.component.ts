@@ -580,7 +580,6 @@ export class InserirOcorrenciaComponent implements OnInit {
         const estudantesArray: Array<Object> = Object.keys(this.estudantes).map(
           i => this.estudantes[i],
         );
-
         this.tipoOcorrenciaDisciplinarService.listarNomeEstudante(this.nomeEstudanteProcurado, this.esc_id)
           .toPromise().then((response: Response) => {
             this.arrayOfResumoOcorrencias.push(response);

@@ -391,7 +391,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     }
   }
 
-  public gravarComunicadoDiverso(messageFirebase: MessageFirebase): void {
+  /* public gravarComunicadoDiverso(messageFirebase: MessageFirebase): void {
     this.feedbackUsuario = 'Finalizando comunicado, aguarde...';
     this.comunicadoDiverso.assunto = messageFirebase.titulo;
     this.comunicadoDiverso.data_comunicado = new Date().getFullYear().toString() +
@@ -409,7 +409,7 @@ export class InserirComunicadoDiversoComponent implements OnInit {
     }).catch((erro: Response) => {
       this.tratarErro(erro);
     });
-  }
+  } */
 
   public inserir(): void {
     this.feedbackUsuario = 'Finalizando, aguarde...';
