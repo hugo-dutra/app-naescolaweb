@@ -69,17 +69,10 @@ export class OcorrenciaService {
     return this.http.get(CONSTANTES.N_HOST_API + `ocorrencia-disciplinar/listar-quantidade-alerta-nao-verificada/${esc_id}/${usr_id}/${tod_id}/${data_inicio}/${data_fim}`, headers);
   }
 
-  //*******************************************************************************************************************/
-  //*******************************************************************************************************************/
-  //*******************************************************************************************************************/
-
 
   public alterarStatusEntregaMensagem(arrayDeOcorrenciasVerificadas: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    //return this.http.post(CONSTANTES.N_HOST_API + 'ocorrencia-disciplinar/alterar-status-entrega-mensagem', arrayDeOcorrenciasVerificadas, headers);
-    return this.http.post(CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-ocorrencia-disciplinar", JSON.stringify({ arrayDeOcorrenciasVerificadas: arrayDeOcorrenciasVerificadas }), headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'ocorrencia-disciplinar/alterar-status-entrega-mensagem', arrayDeOcorrenciasVerificadas, headers);
   }
-
-
 
 }

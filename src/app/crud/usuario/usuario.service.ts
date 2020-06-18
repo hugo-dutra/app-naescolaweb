@@ -9,6 +9,21 @@ export class UsuarioService {
   public usuario = new Usuario();
   constructor(private http: HttpClient) { }
 
+
+  public listarPorEscola(esc_id: number, todos: boolean): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `usuario/por-escola-id/${esc_id}/${todos}`, headers);
+  }
+
+
+  /********************************************************************************************************************************************************************/
+  /********************************************************************************************************************************************************************/
+  /********************************************************************************************************************************************************************/
+
+
   public inserir(usuario: Usuario): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
@@ -187,17 +202,7 @@ export class UsuarioService {
     );
   }
 
-  public listarPorEscola(esc_id: number, todos: boolean): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'usuarios-por-escola-id',
-      JSON.stringify({ esc_id: esc_id, todos: todos }),
-      headers,
-    );
-  }
+
 
   public filtrar(
     valor: string, limit: number,

@@ -337,7 +337,15 @@ export class EstudanteService {
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.get(CONSTANTES.N_HOST_API + `estudante/listar-historico-entrega-notificacao/${est_id}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'listar-historico-entrega-notificacao-estudante', JSON.stringify({ est_id: est_id }), headers,);
+  }
+
+  public listarStatusEntregaMensagensEnviadas(est_id: number): Observable<any> {
+    const headers = {
+      headers: new HttpHeaders().append('Content-type', 'application/json')
+        .append('Authorization', localStorage.getItem('token')),
+    };
+    return this.http.get(CONSTANTES.N_HOST_API + `estudante/listar-status-entrega-mensagens-enviadas/${est_id}`, headers);
+    //return this.http.post(CONSTANTES.HOST_API + 'listar-status-entrega-mensagens-enviadas', JSON.stringify({ est_id: est_id }), headers);
   }
 
   /*################################################################################################################*/
@@ -366,15 +374,7 @@ export class EstudanteService {
     );
   }
 
-  public listarStatusEntregaMensagensEnviadas(est_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-status-entrega-mensagens-enviadas',
-      JSON.stringify({ est_id: est_id }), headers);
-  }
+
 
 
 

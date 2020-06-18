@@ -17,34 +17,35 @@ export class DiarioRegistroService {
   constructor(private http: HttpClient) { }
 
   public inserir(diarioRegistro: DiarioRegistro): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')) };
+    return this.http.post(CONSTANTES.N_HOST_API + 'registro-diario', diarioRegistro, headers);
+  }
 
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-diario-registro',
-      JSON.stringify({ diarioRegistro: diarioRegistro }),
-      headers,
-    );
+  public listar(dip_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `registro-diario/${dip_id}`, headers);
+  }
+
+  public listarFrequencia(rdi_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `registro-frequencia/${rdi_id}`, headers,);
   }
 
   public alterar(rdi_id: number, conteudo: string, data_registro: string): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-diario-registro',
-      JSON.stringify({
-        rdi_id: rdi_id,
-        conteudo: conteudo,
-        data_registro: data_registro,
-      }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.patch(CONSTANTES.N_HOST_API + 'registro-diario', { rdi_id: rdi_id, conteudo: conteudo, data_registro: data_registro }, headers,);
   }
+
+  public alterarFrequencia(ref_id: number, presente: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.patch(CONSTANTES.N_HOST_API + 'registro-frequencia', { ref_id, presente }, headers,);
+  }
+
+
+  /**********************************************************************************************************************************************/
+  /**********************************************************************************************************************************************/
+  /**********************************************************************************************************************************************/
+
 
   public gravarNotasImportacaoPlanilha(prl_id: number, resultadosEstudante: any[], anoLetivo: number): Observable<any> {
     const headers = {
@@ -77,52 +78,9 @@ export class DiarioRegistroService {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
     };
-
     return this.http.post(
       CONSTANTES.HOST_API + 'inserir-lancamento-periodo-letivo-manual',
       JSON.stringify({ notasFaltasEstudante: notasFaltasEstudante }),
-      headers,
-    );
-  }
-
-  public listar(dip_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-diario-registro',
-      JSON.stringify({ dip_id: dip_id }),
-      headers,
-    );
-  }
-
-  public listarFrequencia(rdi_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-frequencia-diario-registro',
-      JSON.stringify({ rdi_id: rdi_id }),
-      headers,
-    );
-  }
-
-  public alterarFrequencia(ref_id: number, presente: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-frequencia-diario-registro',
-      JSON.stringify({
-        ref_id: ref_id,
-        presente: presente,
-      }),
       headers,
     );
   }

@@ -8,76 +8,29 @@ export class DiarioProfessorService {
 
   constructor(private http: HttpClient) { }
 
-  public listarProfessorHabilitado(
-    esc_id: number,
-    limit: number,
-    offset: number
-  ): Observable<any> {
+  public listarProfessorHabilitado(esc_id: number, limit: number, offset: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "listar-professor-habilitado",
-      JSON.stringify({ esc_id: esc_id, limit: limit, offset: offset }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `diario-professor/listar-habilitado/${esc_id}/${limit}/${offset}`, headers);
   }
 
-  public filtrarProfessorHabilitado(
-    esc_id: number,
-    limit: number,
-    offset: number,
-    valor_filtro: string
-  ): Observable<any> {
+  public filtrarProfessorHabilitado(esc_id: number, limit: number, offset: number, valor_filtro: string): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-professor-habilitado",
-      JSON.stringify({
-        esc_id: esc_id,
-        limit: limit,
-        offset: offset,
-        valor_filtro: valor_filtro
-      }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `diario-professor/filtrar-habilitado/${esc_id}/${limit}/${offset}/${valor_filtro}`, headers);
   }
 
-  public inserir(
-    prd_id: number,
-    arrayOfTurmas: Array<number>,
-    nomesDiarios: Array<string>
-  ): Observable<any> {
+  public inserir(prd_id: number, arrayOfTurmas: Array<number>, nomesDiarios: Array<string>): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-diario-professor",
-      JSON.stringify({
-        prd_id: prd_id,
-        arrayOfTurmas: arrayOfTurmas,
-        nomesDiarios: nomesDiarios
-      }),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'diario-professor', { prd_id: prd_id, arrayOfTurmas: arrayOfTurmas, nomesDiarios: nomesDiarios }, headers);
   }
 
   public listarDiarioProfessorDisciplinaIdAno(prd_id: number, ano: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "listar-diario-professor-disciplina-ano",
-      JSON.stringify({ prd_id: prd_id, ano: ano }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `diario-professor/listar-disciplina-ano/${prd_id}/${ano}`, headers);
   }
 
   public listarPorUsuarioEscola(usr_id: number, esc_id: number, ano: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "listar-diario-usuario-escola",
-      JSON.stringify({ usr_id: usr_id, esc_id: esc_id, ano: ano }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `diario-professor/listar-usuario-escola/${usr_id}/${esc_id}/${ano}`, headers);
   }
 
 }

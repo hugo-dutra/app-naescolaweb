@@ -34,8 +34,9 @@
           </thead>
           <tbody *ngIf="notificacoesDiversas != null">
             <tr class="row" *ngFor="let notificacao of notificacoesDiversas">
-              <td class="col-sm-12 col-md-4 col-lg-3 text-center">{{ notificacao.data_registro }}</td>
-              <td class="col-sm-12 col-md-4 col-lg-2 text-center">{{ notificacao.hora_registro }}</td>
+              <td class="col-sm-12 col-md-4 col-lg-3 text-center">{{ notificacao.data_registro | date:'dd-MM-yyyy'}}
+              </td>
+              <td class="col-sm-12 col-md-4 col-lg-2 text-center">{{ notificacao.hora_registro | date:'HH:mm:ss'}}</td>
               <td class="col-sm-12 col-md-4 col-lg-3 text-center">{{ notificacao.tipo }}</td>
               <td *ngIf="notificacao.tipo == 'comunicado'" class="col-sm-12 col-md-4 col-lg-2 text-center"> <button
                   type="button" class="btn btn-sm btn-warning" placement="left" container="body"

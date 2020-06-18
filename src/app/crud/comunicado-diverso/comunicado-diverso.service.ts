@@ -43,14 +43,4 @@ export class ComunicadoDiversoService {
     return this.http.post(CONSTANTES.N_HOST_API + 'comunicado-diverso/alterar-status-entrega-mensagem', arrayDeComunicadosVerificados, headers);
   }
 
-  /*************************************************************************************************/
-  /*************************************************************************************************/
-  /*************************************************************************************************/
-
-
-
-
-
-
-
 }

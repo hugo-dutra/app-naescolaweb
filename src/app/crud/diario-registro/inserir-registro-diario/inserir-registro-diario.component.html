@@ -28,7 +28,7 @@
             <tbody>
               <tr class="row" *ngFor="let diario of arrayOfDiariosProfessor">
                 <td class="col-sm-12 col-lg-8 text-left">{{ diario.diario}} - {{ diario.disciplina }}</td>
-                <td class="col-sm-12 col-lg-2 text-left">{{ diario.data_criacao}}</td>
+                <td class="col-sm-12 col-lg-2 text-left">{{ diario.data_criacao | date:'dd-MM-yyyy'}}</td>
                 <td class="col-sm-12 col-lg-2 text-center"><button
                     class="btn fa fa-2x fa-plus text-light bg-warning btn-block" [value]="diario"
                     (click)="adicionarRegistroAula(diario)"></button></td>
