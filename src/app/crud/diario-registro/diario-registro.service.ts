@@ -41,24 +41,26 @@ export class DiarioRegistroService {
     return this.http.patch(CONSTANTES.N_HOST_API + 'registro-frequencia', { ref_id, presente }, headers,);
   }
 
-
-  /**********************************************************************************************************************************************/
-  /**********************************************************************************************************************************************/
-  /**********************************************************************************************************************************************/
-
-
   public gravarNotasImportacaoPlanilha(prl_id: number, resultadosEstudante: any[], anoLetivo: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'gravar-notas-importacao-planilha',
-      JSON.stringify({ prl_id: prl_id, resultadosEstudante: resultadosEstudante, anoLetivo: anoLetivo }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + `boletim-escolar/gravar-notas-planilha`, { prl_id: prl_id, resultadosEstudante: resultadosEstudante, anoLetivo: anoLetivo }, headers);
   }
+
+  public gravarLancamentoPeriodoLetivoManual(notasFaltasEstudante: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'boletim-escolar/lancamento-periodo-letivo-manual', notasFaltasEstudante, headers,);
+  }
+
+  public inserirAvaliacaoTurmaEstudantes(diarioAvaliacao: DiarioAvaliacao): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'diario-avaliacao/avaliacao-diario-registro', diarioAvaliacao, headers,);
+    //return this.http.post(CONSTANTES.HOST_API + 'inserir-avaliacao-diario-registro', JSON.stringify({ diarioAvaliacao: diarioAvaliacao, }), headers,);
+  }
+
+  /**********************************************************************************************************************************************/
+  /**********************************************************************************************************************************************/
+  /**********************************************************************************************************************************************/
+
 
   public integracaoGravarNotasImportacao(resultadosEstudante: Object[], anoLetivo: number): Observable<any> {
     const headers = {
@@ -73,32 +75,7 @@ export class DiarioRegistroService {
     );
   }
 
-  public gravarLancamentoPeriodoLetivoManual(notasFaltasEstudante: Object[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-lancamento-periodo-letivo-manual',
-      JSON.stringify({ notasFaltasEstudante: notasFaltasEstudante }),
-      headers,
-    );
-  }
 
-  public inserirAvaliacaoTurmaEstudantes(diarioAvaliacao: DiarioAvaliacao): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-avaliacao-diario-registro',
-      JSON.stringify({
-        diarioAvaliacao: diarioAvaliacao,
-      }),
-      headers,
-    );
-  }
 
   public alterarAvaliacaoTurmaEstudantes(diarioAvaliacao: DiarioAvaliacao): Observable<any> {
     const headers = {

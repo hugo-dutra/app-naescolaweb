@@ -159,7 +159,7 @@ export class ImportarNotaBoletimComponent implements OnInit {
     abreviturasDisciplinas.push('');
     abreviturasDisciplinas.push('N.º');
     Array.from(this.disciplinas).forEach(disciplina => {
-      abreviturasDisciplinas.push(disciplina['abreviatura']);
+      abreviturasDisciplinas.push(disciplina['id'] + '-' + disciplina['abreviatura']);
       abreviturasDisciplinas.push('');
     });
 
@@ -201,7 +201,7 @@ export class ImportarNotaBoletimComponent implements OnInit {
     //Centraliza o texto nas celulas das descrições das disciplinas
     for (let i = 0; i < this.disciplinas.length * 2 + 3; i++) {
       if (modeloPlanilhaImportarNotasBoletim.worksheets[0].columns[i] != undefined) {
-        modeloPlanilhaImportarNotasBoletim.worksheets[0].columns[i].width = 6;
+        modeloPlanilhaImportarNotasBoletim.worksheets[0].columns[i].width = 10;
       }
     }
 
@@ -313,6 +313,7 @@ export class ImportarNotaBoletimComponent implements OnInit {
           let id: number;
           //let nome: string;
           let disciplinaAtual: string;
+          let dspId: number;
           let faltaAtual: any;
           let notaAtual: any;
           let idxDisciplinaAtual: number = 0;
@@ -327,12 +328,15 @@ export class ImportarNotaBoletimComponent implements OnInit {
               //Pega quantidade de faltas e a disciplina atual
               if (idxResultadoEstudante % 2 == 0) {
                 disciplinaAtual = arrayOfDisciplinas[idxDisciplinaAtual + 1];
-                faltaAtual = arrayOfResultadosNotasFaltas[idxResultadoEstudante + 1];
+                if (disciplinaAtual != undefined) {
+                  dspId = parseInt((<string>disciplinaAtual).split('-')[0]);
+                  faltaAtual = arrayOfResultadosNotasFaltas[idxResultadoEstudante + 1];
+                }
                 idxDisciplinaAtual++;
               } else {
                 //Pega resultado da nota e cria o objeto com os dados da disciplina
                 notaAtual = arrayOfResultadosNotasFaltas[idxResultadoEstudante + 1];
-                resultadosEstudanteOrganizado.push({ id: id, /*nome: nome,*/ disciplina: disciplinaAtual, faltas: faltaAtual, nota: notaAtual });
+                resultadosEstudanteOrganizado.push({ id: id, /*nome: nome,*/ disciplina: disciplinaAtual, dsp_id: dspId, faltas: faltaAtual, nota: notaAtual });
               }
             }
             idxResultadoEstudante++;
