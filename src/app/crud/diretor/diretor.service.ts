@@ -66,63 +66,8 @@ export class DiretorService {
 
   public listarSemEscola(): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
-    return this.http.get(CONSTANTES.HOST_API + 'diretor/sem-escola', headers);
+    return this.http.get(CONSTANTES.N_HOST_API + 'diretor/sem-escola', headers);
   }
 
-  /***********************************************************************************************************************************************/
-  /***********************************************************************************************************************************************/
-  /***********************************************************************************************************************************************/
-
-
-
-
-
-
-  /* public listarSemEscolaRegional(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')), body: { esc_id: esc_id }
-    };
-    return this.http.get(CONSTANTES.N_HOST_API + 'diretor/sem-escola-regional', headers);
-  } */
-
-  //######################################################################//
-
-
-
-  /*
-  limit: Quantidade de registros
-  offset: Posição a partir da qual os registros serão exibitos
-  asc: Se os registros virão em ordem ascendente ou decrescente
-  */
-
-  /* public listarSemEscolaLocal(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'diretores-sem-escola-local',
-      JSON.stringify({ esc_id: esc_id }),
-      headers,
-    );
-  } */
-
-  /* public enviarArquivo(arquivo: FileList): Observable<any> {
-    const formData = new FormData();
-    const options = {
-      headers: new HttpHeaders().set(
-        'Authorization',
-        localStorage.getItem('token'),
-      ),
-    };
-
-    formData.append('image', arquivo[0], arquivo[0].name);
-    return this.http.post(
-      CONSTANTES.HOST_API + 'enviar-avatar',
-      formData,
-      options,
-    );
-  } */
 
 }

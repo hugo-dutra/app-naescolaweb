@@ -17,17 +17,21 @@ export class EscolaService {
     private http: HttpClient,
   ) { }
 
+
   public inserir(escola: Escola): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-escola',
-      JSON.stringify(escola),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'escola', escola, headers,);
   }
+
+  public listarLocal(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.HOST_API + 'escolas-local', JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }), headers,);
+    //return this.http.post(CONSTANTES.HOST_API + 'escolas-local', JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }), headers,);
+  }
+
+  /*************************************************************************************************************************************************/
+  /*************************************************************************************************************************************************/
+  /*************************************************************************************************************************************************/
 
   public listarAssinaturaGestor(esc_id: number): Observable<any> {
     const headers = {
@@ -66,6 +70,7 @@ export class EscolaService {
   }
 
   public listar(limit: number, offset: number, asc: boolean): Observable<any> {
+    alert('listarGlobal');
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
@@ -78,6 +83,7 @@ export class EscolaService {
   }
 
   public listarRegional(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    alert('listarRegional');
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
         .append('Authorization', localStorage.getItem('token')),
@@ -89,17 +95,7 @@ export class EscolaService {
     );
   }
 
-  public listarLocal(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'escolas-local',
-      JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
-      headers,
-    );
-  }
+
 
   public listarDadosBoletoPagamento(esc_id: number): Observable<any> {
     const headers = {

@@ -92,8 +92,7 @@ export class InserirEscolaComponent implements OnInit {
       .inserir(this.escola)
       .toPromise()
       .then((response: Response) => {
-        if (Object.values(response).length == 0) {
-          this.feedbackUsuario = 'Dados Salvos';
+        if (response == null) {
           this.formulario.reset();
           this.feedbackUsuario = undefined;
           this.escola.logo = undefined;
@@ -169,8 +168,6 @@ export class InserirEscolaComponent implements OnInit {
     }
   }
 
-
-
   public listarRegiaoEscola(): void {
     this.feedbackUsuario = 'Carregando dados, aguarde...';
     this.regiaoEscolaService
@@ -181,6 +178,7 @@ export class InserirEscolaComponent implements OnInit {
         this.feedbackUsuario = undefined;
       })
       .catch((erro: Response) => {
+        console.log(erro);
         this.tratarErro(erro);
       });
   }
@@ -192,9 +190,7 @@ export class InserirEscolaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
-        let escolaTemp: Object;
-        escolaTemp = response[0];
-        const redeEnsino: RedeEnsino = <RedeEnsino>escolaTemp;
+        const redeEnsino = <RedeEnsino><unknown>response;
         localStorage.setItem('ren_id', redeEnsino.id.toString());
       })
       .catch((erro: Response) => {
