@@ -28,7 +28,7 @@
             <tbody>
               <tr class="row" *ngFor="let diario of arrayOfDiariosProfessor">
                 <td class="col-sm-12 col-lg-8 text-center">{{ diario.diario}} - {{ diario.disciplina }}</td>
-                <td class="col-sm-12 col-lg-2 text-center">{{ diario.data_criacao}}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ diario.data_criacao | date:'dd-MM-yyyy'}}</td>
                 <td class="col-sm-12 col-lg-2 text-center"><button class="btn bg-warning btn-block" [value]="diario"
                     (click)="listarRegistrosAvaliacao(diario)"><span
                       class="fa fa-lg fa-pencil-square text-light"></span></button></td>
@@ -73,7 +73,7 @@
             </thead>
             <tbody>
               <tr class="row" *ngFor="let avaliacao of arrayOfAvaliacoesDiario">
-                <td class="col-sm-12 col-lg-2 text-center">{{ avaliacao.data }}</td>
+                <td class="col-sm-12 col-lg-2 text-center">{{ avaliacao.data | date:'dd-MM-yyyy'}}</td>
                 <td class="col-sm-12 col-lg-5 text-center">{{ avaliacao.metodologia }}</td>
                 <td class="col-sm-12 col-lg-1 text-center">{{ avaliacao.valor }}</td>
                 <td class="col-sm-12 col-lg-1 text-center">{{ avaliacao.peso }}</td>

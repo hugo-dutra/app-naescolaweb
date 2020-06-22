@@ -54,67 +54,38 @@ export class DiarioRegistroService {
   public inserirAvaliacaoTurmaEstudantes(diarioAvaliacao: DiarioAvaliacao): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.post(CONSTANTES.N_HOST_API + 'diario-avaliacao/avaliacao-diario-registro', diarioAvaliacao, headers,);
-    //return this.http.post(CONSTANTES.HOST_API + 'inserir-avaliacao-diario-registro', JSON.stringify({ diarioAvaliacao: diarioAvaliacao, }), headers,);
-  }
-
-  /**********************************************************************************************************************************************/
-  /**********************************************************************************************************************************************/
-  /**********************************************************************************************************************************************/
-
-
-  public integracaoGravarNotasImportacao(resultadosEstudante: Object[], anoLetivo: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'integracao-gravar-notas',
-      JSON.stringify({ resultadosEstudante: resultadosEstudante, anoLetivo: anoLetivo }),
-      headers,
-    );
-  }
-
-
-
-  public alterarAvaliacaoTurmaEstudantes(diarioAvaliacao: DiarioAvaliacao): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(CONSTANTES.HOST_API + 'alterar-avaliacao-diario-registro',
-      JSON.stringify({ diarioAvaliacao: diarioAvaliacao }), headers);
   }
 
   public listarAvaliacaoDiarioProfessor(dip_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-avaliacao-diario-registro',
-      JSON.stringify({
-        dip_id: dip_id,
-      }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')) };
+    return this.http.get(CONSTANTES.N_HOST_API + `diario-avaliacao/avaliacao-diario-registro/${dip_id}`, headers);
   }
 
   public listarAvaliacaoEstudanteDiarioAvaliacao(dav_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-avaliacao-estudante-diario-registro',
-      JSON.stringify({
-        dav_id: dav_id,
-      }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `avaliacao-estudante/diario-registro/${dav_id}`, headers);
   }
+
+  public alterarAvaliacaoTurmaEstudantes(diarioAvaliacao: DiarioAvaliacao): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.patch(CONSTANTES.N_HOST_API + 'diario-avaliacao/avaliacao-diario-registro', diarioAvaliacao, headers);
+  }
+
+  public integracaoGravarNotasImportacao(resultadosEstudante: Object[], anoLetivo: number): Observable<any> {
+    alert('Baixar notas da integração');
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.HOST_API + 'integracao-gravar-notas', JSON.stringify({ resultadosEstudante: resultadosEstudante, anoLetivo: anoLetivo }), headers,);
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 }
