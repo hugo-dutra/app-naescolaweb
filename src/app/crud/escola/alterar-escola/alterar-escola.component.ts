@@ -78,7 +78,7 @@ export class AlterarEscolaComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         this.feedbackUsuario = undefined;
-        this.router.navigateByUrl('listar-escola');
+        this.router.navigate(['listar-escola']);
       })
       .catch((erro: Response) => {
         this.tratarErro(erro);

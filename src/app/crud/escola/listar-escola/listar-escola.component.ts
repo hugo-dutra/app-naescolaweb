@@ -103,15 +103,7 @@ export class ListarEscolaComponent implements OnInit {
           this.verificaLimitesNavegacao();
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
 
@@ -134,15 +126,7 @@ export class ListarEscolaComponent implements OnInit {
           this.verificaLimitesNavegacao();
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
 
@@ -165,15 +149,7 @@ export class ListarEscolaComponent implements OnInit {
           this.verificaLimitesNavegacao();
         })
         .catch((erro: Response) => {
-          //Mostra modal
-          this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-          //registra log de erro no firebase usando serviço singlenton
-          this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-          //Gravar erros no analytics
-          Utils.gravarErroAnalytics(JSON.stringify(erro));
-          //Caso token seja invalido, reenvia rota para login
-          Utils.tratarErro({ router: this.router, response: erro });
-          this.feedbackUsuario = undefined;
+          this.tratarErro(erro);
         });
     }
 
@@ -289,7 +265,6 @@ export class ListarEscolaComponent implements OnInit {
   }
 
   public filtrar(limit: number = 5, offset: number = 0): void {
-
     if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
@@ -310,15 +285,7 @@ export class ListarEscolaComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
@@ -346,15 +313,7 @@ export class ListarEscolaComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);;
           });
       } else {
         this.listar(limit, offset);
@@ -381,15 +340,7 @@ export class ListarEscolaComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
@@ -417,22 +368,15 @@ export class ListarEscolaComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
       }
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+    /* if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) { */
+    if (false) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.feedbackUsuario = undefined;
@@ -452,22 +396,15 @@ export class ListarEscolaComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
       }
     }
 
-    if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+    /* if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) { */
+    if (false) {
       if (this.statusFiltro) {
         this.saltarQuantidade = limit;
         this.feedbackUsuario = undefined;
@@ -487,15 +424,7 @@ export class ListarEscolaComponent implements OnInit {
             this.verificaLimitesNavegacao();
           })
           .catch((erro: Response) => {
-            //Mostra modal
-            this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
-            //registra log de erro no firebase usando serviço singlenton
-            this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-            //Gravar erros no analytics
-            Utils.gravarErroAnalytics(JSON.stringify(erro));
-            //Caso token seja invalido, reenvia rota para login
-            Utils.tratarErro({ router: this.router, response: erro });
-            this.feedbackUsuario = undefined;
+            this.tratarErro(erro);
           });
       } else {
         this.listar(limit, offset);
@@ -516,6 +445,18 @@ export class ListarEscolaComponent implements OnInit {
 
   public exibirComponente(rota: string): boolean {
     return Utils.exibirComponente(rota);
+  }
+
+  public tratarErro(erro: Response): void {
+    //Mostra modal
+    this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
+    //registra log de erro no firebase usando serviço singlenton
+    this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
+    //Gravar erros no analytics
+    Utils.gravarErroAnalytics(JSON.stringify(erro));
+    //Caso token seja invalido, reenvia rota para login
+    Utils.tratarErro({ router: this.router, response: erro });
+    this.feedbackUsuario = undefined;
   }
 
 }

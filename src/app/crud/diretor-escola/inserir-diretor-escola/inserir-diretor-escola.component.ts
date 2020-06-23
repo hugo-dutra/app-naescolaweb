@@ -89,7 +89,8 @@ export class InserirDiretorEscolaComponent implements OnInit {
   public listarEscolas(todas: boolean): void {
     if (todas == false) {
 
-      if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
+      /* if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) { */
+      if (true) {
         /* TODAS POR ESCOPO SEM DIRETOR */
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.escolaService
@@ -113,7 +114,8 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) {
+      if (false) {
+        /* if (this.escopoUsuario == CONSTANTES.ESCOPO_REGIONAL) { */
         /* REGIONAL POR ESCOPO SEM DIRETOR */
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.escolaService
@@ -128,7 +130,8 @@ export class InserirDiretorEscolaComponent implements OnInit {
           });
       }
 
-      if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) {
+      if (false) {
+        /* if (this.escopoUsuario == CONSTANTES.ESCOPO_LOCAL) { */
         /* REGIONAL POR ESCOPO SEM DIRETOR */
         this.feedbackUsuario = 'Carregando, aguarde...';
         this.escolaService
