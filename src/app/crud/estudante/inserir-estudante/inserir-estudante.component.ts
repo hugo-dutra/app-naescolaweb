@@ -172,7 +172,7 @@ export class InserirEstudanteComponent implements OnInit {
       });
   }
 
-  public enviarArquivoExcel(event: Event): void {
+  /* public enviarArquivoExcel(event: Event): void {
     this.feedbackUsuario = "Carregando estudantes, aguarde...";
     let arquivos: FileList = (<HTMLInputElement>event.target).files;
     this.estudanteService.enviarArquivoExcel(arquivos).toPromise().then((response: Response) => {
@@ -189,7 +189,7 @@ export class InserirEstudanteComponent implements OnInit {
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
     })
-  }
+  } */
 
   public inserirTelefones(): void {
     let telefones = new Array<Telefone>();

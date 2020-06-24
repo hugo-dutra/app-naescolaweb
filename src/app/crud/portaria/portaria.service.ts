@@ -10,23 +10,28 @@ export class PortariaService {
 
   constructor(private http: HttpClient) { }
 
+
   //########################## PORTARIA ##########################//
   public inserir(portaria: Portaria): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-portaria',
-      JSON.stringify({ portaria: portaria }),
-      headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'portaria', portaria, headers);
   }
+
 
   public listar(esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "portarias",
-      JSON.stringify({ esc_id: esc_id }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `portaria/${esc_id}`, headers);
   }
+
+  public alterar(portaria: Portaria): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.patch(CONSTANTES.N_HOST_API + 'portaria', portaria, headers);
+  }
+
+
+  /**********************************************************************************************************************************/
+  /**********************************************************************************************************************************/
+  /**********************************************************************************************************************************/
 
 
   public alterarStatusEntregaMensagem(arrayPassagensPortaria: Object[]): Observable<any> {
@@ -135,14 +140,7 @@ export class PortariaService {
     );
   }
 
-  public alterar(portaria: Portaria): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-portaria",
-      JSON.stringify({ portaria: portaria }),
-      headers
-    );
-  }
+
 
   public excluir(por_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }

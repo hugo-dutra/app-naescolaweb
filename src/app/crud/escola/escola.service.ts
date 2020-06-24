@@ -53,25 +53,17 @@ export class EscolaService {
     return this.http.patch(CONSTANTES.N_HOST_API + 'escola', escola, headers,);
   }
 
-  public filtrarLocal(
-    valor: string, limit: number,
-    offset: number, esc_id: number,
-  ): Observable<any> {
+  public filtrarLocal(valor: string, limit: number, offset: number, esc_id: number,): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `escola/filtrar-local/${valor}/${limit}/${offset}/${esc_id}`, headers,);
   }
 
-  public filtrarRegional(
-    valor: string, limit: number,
-    offset: number, esc_id: number,
-  ): Observable<any> {
+  public filtrarRegional(valor: string, limit: number, offset: number, esc_id: number,): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `escola/filtrar-regional/${valor}/${limit}/${offset}/${esc_id}`, headers,);
   }
 
-  public filtrar(
-    valor: string, limit: number, offset: number,
-  ): Observable<any> {
+  public filtrar(valor: string, limit: number, offset: number,): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `escola/filtrar/${valor}/${limit}/${offset}`, headers);
   }
@@ -84,48 +76,16 @@ export class EscolaService {
   public listarSemDiretor(): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `escola/sem-diretor`, headers,);
-    //return this.http.post(CONSTANTES.HOST_API + 'escolas-sem-diretor', null, headers,);
   }
 
-
-  /*************************************************************************************************************************************************/
-  /*************************************************************************************************************************************************/
-  /*************************************************************************************************************************************************/
-
-
-
   public listarSemDiretorRegional(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'escolas-sem-diretor-regional',
-      JSON.stringify({ esc_id: esc_id }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `escola/sem-diretor-regional/${esc_id}`, headers,);
   }
 
   public listarSemDiretorLocal(esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'escolas-sem-diretor-local',
-      JSON.stringify({ esc_id: esc_id }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `escola/sem-diretor-local/${esc_id}`, headers,);
   }
 
-  public enviarArquivo(arquivo: FileList): Observable<any> {
-    const formData = new FormData();
-    const options = { headers: new HttpHeaders().set('Authorization', localStorage.getItem('token')) };
-    formData.append('image', arquivo[0], arquivo[0].name);
-    return this.http.post(
-      CONSTANTES.HOST_API + 'enviar-logo',
-      formData,
-      options,
-    );
-  }
 }

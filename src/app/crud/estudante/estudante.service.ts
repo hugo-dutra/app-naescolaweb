@@ -345,38 +345,5 @@ export class EstudanteService {
         .append('Authorization', localStorage.getItem('token')),
     };
     return this.http.get(CONSTANTES.N_HOST_API + `estudante/listar-status-entrega-mensagens-enviadas/${est_id}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'listar-status-entrega-mensagens-enviadas', JSON.stringify({ est_id: est_id }), headers);
   }
-
-  /*################################################################################################################*/
-  /*################################################################################################################*/
-  /*################################################################################################################*/
-
-
-
-  /* Pesquisar como ler arquivo em excel no node/nestjs */
-  public enviarArquivoExcel(arquivo: FileList): Observable<any> {
-    const formData = new FormData();
-    const options = {
-      headers: new HttpHeaders().set(
-        'Authorization',
-        localStorage.getItem('token'),
-      ),
-    };
-
-    formData.append('Content-Type', 'multipart/form-dat');
-    formData.append(arquivo[0].name, arquivo[0]);
-    formData.append('esc_id', Utils.pegarDadosEscola()['id']);
-    return this.http.post(
-      CONSTANTES.HOST_API + 'enviar-arquivo-excel',
-      formData,
-      options,
-    );
-  }
-
-
-
-
-
-
 }
