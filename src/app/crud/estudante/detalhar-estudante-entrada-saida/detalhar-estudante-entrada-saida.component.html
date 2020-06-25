@@ -36,12 +36,12 @@
           <tbody *ngIf="historicoEntradasSaidas != null">
             <tr class="row" *ngFor="let historico of historicoEntradasSaidas">
               <!--###-->
-              <td class="col-sm-12 col-lg-2 text-center">{{ historico.dia_letivo }}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{ historico.dia_letivo| date:'dd-MM-yyyy' }}</td>
               <!--###-->
               <td *ngIf="historico.data_registro == '-'" class="col-sm-12 col-lg-2 text-center"><img
                   src="../../../../assets/images/sem_registro_portaria.png" alt=""></td>
               <td *ngIf="historico.data_registro != '-'" class="col-sm-12 col-lg-2 text-center">
-                {{ historico.data_registro }}</td>
+                {{ historico.data_registro | date:'dd-MM-yyyy' }}</td>
               <!--###-->
               <td *ngIf="historico.data_registro == '-'" class="col-sm-12 col-lg-2 text-center"><img
                   src="../../../../assets/images/sem_registro_portaria.png" alt=""></td>
