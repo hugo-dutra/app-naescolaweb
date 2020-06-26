@@ -17,7 +17,6 @@ export class PortariaService {
     return this.http.post(CONSTANTES.N_HOST_API + 'portaria', portaria, headers);
   }
 
-
   public listar(esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `portaria/${esc_id}`, headers);
@@ -66,7 +65,6 @@ export class PortariaService {
     return this.http.get(CONSTANTES.N_HOST_API + `frequencia-portaria/historico-entrada-saida/${est_id}`, headers);
   }
 
-
   /**
      *
      * @param esc_id  Recupera o registro mais recente de passagem da portaria, subtraindo 3 dias desse valor.
@@ -75,7 +73,6 @@ export class PortariaService {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `frequencia-portaria/verificar-passagem-recente/${esc_id}`, headers);
   }
-
 
   /**
      *
@@ -89,12 +86,10 @@ export class PortariaService {
     return this.http.get(CONSTANTES.N_HOST_API + `frequencia-portaria/absenteismo-total-turma/${trm_id}/${esc_id}/${data_inicio}/${data_fim}/${limite}`, headers);
   }
 
-
   public excluir(por_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")), body: { por_id } }
     return this.http.delete(CONSTANTES.N_HOST_API + 'portaria', headers);
   }
-
 
   //########################## CRONOGRAMA PORTARIA ##########################//
 
@@ -111,87 +106,43 @@ export class PortariaService {
   public excluirCronogramaPortaria(crp_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")), body: { crp_id } }
     return this.http.delete(CONSTANTES.N_HOST_API + 'cronograma-portaria', headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'excluir-cronograma-portaria', JSON.stringify({ crp_id: crp_id }), headers);
   }
-
-
-
-
-
-
-  /**********************************************************************************************************************************/
-  /**********************************************************************************************************************************/
-  /**********************************************************************************************************************************/
-
-
-  public alterarStatusEntregaMensagem(arrayPassagensPortaria: Object[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-entrada-saida",
-      JSON.stringify({ arrayPassagensPortaria: arrayPassagensPortaria }),
-      headers
-    );
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   //########################## FREQUENCIA DA PORTARIA ##########################//
+
   public inserirEntradas(por_id: number, entradas: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-frequencia-entrada-portaria',
-      JSON.stringify({ por_id: por_id, entradas: entradas }),
-      headers);
-  }
-
-  public inserirEntradasDoAplicativo(por_id: number, entradas: Object[]): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-frequencia-entrada-do-aplicativo',
-      JSON.stringify({ por_id: por_id, entradas: entradas }),
-      headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'frequencia-portaria/entradas', { por_id, entradas }, headers);
   }
 
   public inserirSaidas(por_id: number, saidas: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-frequencia-saida-portaria',
-      JSON.stringify({ por_id: por_id, saidas: saidas }),
-      headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'frequencia-portaria/saidas', { por_id, saidas }, headers);
   }
 
   //########################## OCORRÊNCIAS DISCIPLINARES DA PORTARIA ##########################//
+
   public inserirAtrasos(usr_id: number, esc_id: number, atrasos: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-atraso-portaria',
-      JSON.stringify({ usr_id: usr_id, esc_id: esc_id, atrasos: atrasos }),
-      headers);
+    return this.http.post(CONSTANTES.N_HOST_API + 'ocorrencia-disciplinar/inserir-atraso-da-portaria', { usr_id, esc_id, atrasos }, headers);
   }
 
   public inserirSemUniforme(usr_id: number, esc_id: number, semUniforme: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(CONSTANTES.N_HOST_API + 'ocorrencia-disciplinar/inserir-sem-uniforme-da-portaria', { usr_id, esc_id, semUniforme }, headers);
+  }
 
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-sem-uniforme-portaria',
-      JSON.stringify({ usr_id: usr_id, esc_id: esc_id, semUniforme: semUniforme }),
-      headers);
+
+  public inserirEntradasDoAplicativo(por_id: number, entradas: Object[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(CONSTANTES.N_HOST_API + 'frequencia-portaria/inserir-do-aplicativo', { por_id, entradas }, headers);
+  }
+
+
+  public alterarStatusEntregaMensagem(arrayPassagensPortaria: Object[]): Observable<any> {
+    console.log(arrayPassagensPortaria);
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.post(CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-entrada-saida", JSON.stringify({ arrayPassagensPortaria: arrayPassagensPortaria }), headers);
   }
 
 }
