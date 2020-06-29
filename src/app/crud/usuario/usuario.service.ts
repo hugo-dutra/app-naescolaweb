@@ -11,12 +11,10 @@ export class UsuarioService {
 
 
   public listarPorEscola(esc_id: number, todos: boolean): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `usuario/por-escola-id/${esc_id}/${todos}`, headers);
   }
+
 
 
   /********************************************************************************************************************************************************************/

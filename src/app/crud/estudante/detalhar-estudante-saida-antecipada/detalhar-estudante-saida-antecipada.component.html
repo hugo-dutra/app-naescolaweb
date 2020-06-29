@@ -29,7 +29,7 @@
           </thead>
           <tbody *ngIf="saidasAntecipadasEventuais != null">
             <tr class="row" *ngFor="let saidaAntecipadaEventual of saidasAntecipadasEventuais">
-              <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.data }}</td>
+              <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.data | date:'dd-MM-yyyy' }}</td>
               <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.hora }}</td>
               <td class="col-sm-12 col-lg-6 text-center">{{ saidaAntecipadaEventual.motivo }}</td>
               <td class="col-sm-12 col-lg-2 text-center">{{ saidaAntecipadaEventual.usuario_responsavel }}</td>

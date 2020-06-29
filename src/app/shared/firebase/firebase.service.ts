@@ -257,7 +257,6 @@ export class FirebaseService {
    * @param inep Código ine da escola
    */
   public listarStatusEntregaMensagensColecao(colecao: string, est_id: string, inep: string): Promise<any> {
-    // tslint:disable-next-line: no-shadowed-variable
     return new Promise((resolve, reject) => {
       this.firestore
         .collection('naescolaApp')

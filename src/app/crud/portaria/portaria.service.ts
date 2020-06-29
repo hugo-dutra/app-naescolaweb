@@ -140,9 +140,8 @@ export class PortariaService {
 
 
   public alterarStatusEntregaMensagem(arrayPassagensPortaria: Object[]): Observable<any> {
-    console.log(arrayPassagensPortaria);
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(CONSTANTES.HOST_API + "alterar-status-entrega-mensagem-entrada-saida", JSON.stringify({ arrayPassagensPortaria: arrayPassagensPortaria }), headers);
+    return this.http.patch(CONSTANTES.N_HOST_API + `frequencia-portaria/status-entrega-mensagem-entrada-saida`, arrayPassagensPortaria, headers);
   }
 
 }

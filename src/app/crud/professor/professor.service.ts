@@ -15,8 +15,7 @@ export class ProfessorService {
 
   public inserir(professor: Professor): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.N_HOST_API + "professor", professor, headers);
+    return this.http.post(CONSTANTES.N_HOST_API + "professor", professor, headers);
   }
 
   public listar(limit: number, offset: number, asc: boolean, usr_id: number, esc_id: number): Observable<any> {
@@ -47,7 +46,6 @@ export class ProfessorService {
   public listarPorEscola(esc_id: number, todos: boolean): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `professor-escola/listar-escola-id/${esc_id}/${todos}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + "professores-listar-escola-id", JSON.stringify({ esc_id: esc_id, todos: todos }), headers);
   }
 
 

@@ -33,7 +33,7 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
   constructor(
     private saidaAntecipadaService: SaidaAntecipadaService,
     private router: Router,
-    private route:ActivatedRoute,
+    private route: ActivatedRoute,
     private alertModalService: AlertModalService,
     private firebaseService: FirebaseService,
     private portariaService: PortariaService) { }
@@ -62,7 +62,7 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
     this.saidasAntecipadasEventuais = undefined;
   }
 
-  public excluir(sae_id: number, matricula: string): void {
+  /* public excluir(sae_id: number, matricula: string): void {
     this.feedbackUsuario = "Excluindo registro, aguarde...";
     this.saidaAntecipadaService.excluirEventual(sae_id).toPromise().then((response: Response) => {
       this.excluirSaidaAntecipadaEventualPortarias(matricula);
@@ -77,7 +77,7 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
     })
-  }
+  } */
 
   public excluirSaidaAntecipadaEventualPortarias(matricula: string): void {
     this.portariaService.listar(this.esc_id).toPromise().then((response: Response) => {
@@ -91,8 +91,8 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
           //registra log de erro no firebase usando serviço singlenton
           this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+          //Gravar erros no analytics
+          Utils.gravarErroAnalytics(JSON.stringify(erro));
           //Caso token seja invalido, reenvia rota para login
           Utils.tratarErro({ router: this.router, response: erro });
         })
@@ -104,8 +104,8 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
     })
@@ -147,8 +147,8 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       })
@@ -173,8 +173,8 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
         //registra log de erro no firebase usando serviço singlenton
         this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+        //Gravar erros no analytics
+        Utils.gravarErroAnalytics(JSON.stringify(erro));
         //Caso token seja invalido, reenvia rota para login
         Utils.tratarErro({ router: this.router, response: erro });
       })
