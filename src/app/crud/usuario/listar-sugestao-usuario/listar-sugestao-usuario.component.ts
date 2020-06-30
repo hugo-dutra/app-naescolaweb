@@ -74,9 +74,8 @@ export class ListarSugestaoUsuarioComponent implements OnInit {
     this.statusAtendimentoModificado = parseInt((<HTMLInputElement>event.target).value, 10);
   }
 
-  public listarHistoricoAtendimentoModificado(event: Event): void {
+  public listarHistoricoAtendimentoModificado(susId: number): void {
     this.feedbackUsuario = 'Carregando histórico de modificações, aguarde...';
-    const susId = parseInt((<HTMLInputElement>event.target).value, 10);
     this.arrayHistoricoAlteracoesSugestoes = [];
     this.usuarioService.listarHistoricoAlteracaoSugestaoUsuario(susId).toPromise().then((response: Response) => {
       this.arrayHistoricoAlteracoesSugestoes = Object.values(response);

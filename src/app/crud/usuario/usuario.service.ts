@@ -15,11 +15,64 @@ export class UsuarioService {
     return this.http.get(CONSTANTES.N_HOST_API + `usuario/por-escola-id/${esc_id}/${todos}`, headers);
   }
 
+  public inserirSugestaoUsuario(sugestao: Object): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'susgestao-usuario', sugestao, headers);
+  }
+
+  public listarSugestaoUsuario(data_inicio: string, data_fim: string,
+    esc_id: number, escopo: string, statusSugestao: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `sugestao-usuario/${data_inicio}/${data_fim}/${esc_id}/${escopo}/${statusSugestao}`, headers,);
+  }
+
+  public alterarSugestaoUsuario(usrId: number, susId: number,
+    observacao: string, statusSugestao: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.patch(CONSTANTES.N_HOST_API + 'sugestao-usuario', { usrId, susId, observacao, statusSugestao }, headers);
+  }
+
+  public listarHistoricoAlteracaoSugestaoUsuario(susId: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `sugestao-usuario-historico/${susId}`, headers,);
+  }
+
+  public listarLocal(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `usuario/local/${limit}/${offset}/${asc}/${esc_id}`, headers,);
+  }
+
+  public listarRegional(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `usuario/regional/${limit}/${offset}/${asc}/${esc_id}`, headers,);
+  }
+
+  public listar(limit: number, offset: number, asc: boolean): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `usuario/${limit}/${offset}/${asc}`, headers);
+  }
+
+  public filtrarLocal(valor: string, limit: number, offset: number, esc_id: number,): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `usuario/filtrar-local/${valor}/${limit}/${offset}/${esc_id}`, headers);
+    //return this.http.post(CONSTANTES.HOST_API + 'filtrar-usuario-local', JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }), headers,);
+  }
 
 
+
+
+
   /********************************************************************************************************************************************************************/
   /********************************************************************************************************************************************************************/
   /********************************************************************************************************************************************************************/
+
+
+
+
+
+
+
+
 
 
   public inserir(usuario: Usuario): Observable<any> {
@@ -30,64 +83,6 @@ export class UsuarioService {
     return this.http.post(
       CONSTANTES.HOST_API + 'inserir-usuario',
       JSON.stringify(usuario),
-      headers,
-    );
-  }
-
-  public inserirSugestaoUsuario(sugestao: Object): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-sugestao-usuario',
-      JSON.stringify(sugestao),
-      headers,
-    );
-  }
-
-  public alterarSugestaoUsuario(usrId: number, susId: number,
-    observacao: string, statusSugestao: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'alterar-sugestao-usuario',
-      JSON.stringify({ usr_id: usrId, sus_id: susId, observacao: observacao, statusSugestao: statusSugestao }),
-      headers,
-    );
-  }
-
-  public listarHistoricoAlteracaoSugestaoUsuario(susId: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-historico-alteracao-sugestao-usuario',
-      JSON.stringify({ sus_id: susId }),
-      headers,
-    );
-  }
-
-  public listarSugestaoUsuario(data_inicio: string, data_fim: string,
-    esc_id: number, escopo: string, statusSugestao: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-sugestao-usuario',
-      JSON.stringify({
-        data_inicio: data_inicio,
-        data_fim: data_fim,
-        est_id: esc_id,
-        escopo: escopo,
-        statusSugestao: statusSugestao,
-      }),
       headers,
     );
   }
@@ -128,42 +123,6 @@ export class UsuarioService {
     );
   }
 
-  public listar(limit: number, offset: number, asc: boolean): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'usuarios',
-      JSON.stringify({ limit: limit, offset: offset, asc: asc }),
-      headers,
-    );
-  }
-
-  public listarRegional(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'usuarios-regional',
-      JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
-      headers,
-    );
-  }
-
-  public listarLocal(limit: number, offset: number, asc: boolean, esc_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'usuarios-local',
-      JSON.stringify({ limit: limit, offset: offset, asc: asc, esc_id: esc_id }),
-      headers,
-    );
-  }
-
   public alterarStatusUsuario(use_id: number, status_ativo: number): Observable<any> {
     const headers = {
       headers: new HttpHeaders().append('Content-type', 'application/json')
@@ -200,8 +159,6 @@ export class UsuarioService {
     );
   }
 
-
-
   public filtrar(
     valor: string, limit: number,
     offset: number,
@@ -232,36 +189,7 @@ export class UsuarioService {
     );
   }
 
-  public filtrarLocal(
-    valor: string, limit: number,
-    offset: number, esc_id: number,
-  ): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'filtrar-usuario-local',
-      JSON.stringify({ valor: valor, limit: limit, offset: offset, esc_id: esc_id }),
-      headers,
-    );
-  }
 
-  public enviarArquivo(arquivo: FileList): Observable<any> {
-    const formData = new FormData();
-    const options = {
-      headers: new HttpHeaders().set(
-        'Authorization',
-        localStorage.getItem('token'),
-      ),
-    };
-    formData.append('image', arquivo[0], arquivo[0].name);
-    return this.http.post(
-      CONSTANTES.HOST_API + 'enviar-avatar-usuario',
-      formData,
-      options,
-    );
-  }
 
   public logar(nome: string, senha: string): Observable<any> {
     const headers = {

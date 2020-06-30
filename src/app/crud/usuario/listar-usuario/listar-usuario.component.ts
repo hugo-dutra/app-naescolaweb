@@ -113,7 +113,6 @@ export class ListarUsuarioComponent implements OnInit {
   }
 
   public listar(limit: number = 5, offset: number = 0): void {
-
     if (this.escopoUsuario == CONSTANTES.ESCOPO_GLOBAL) {
       this.saltarQuantidade = limit;
       this.feedbackUsuario = undefined;

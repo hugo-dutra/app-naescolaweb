@@ -118,7 +118,7 @@
                   <a data-toggle="modal" class="border-light"
                     [attr.data-target]="'#btn_historico_atendimento' + sugestao.sus_id">
                     <button class="btn btn-sm bg-primary text-light form-control" [value]="sugestao.sus_id"
-                      (click)="listarHistoricoAtendimentoModificado($event)"><i
+                      (click)="listarHistoricoAtendimentoModificado(sugestao.sus_id)"><i
                         class="fa fa-lg fa-list text-light"></i></button>
                   </a>
                   <!-- Modal -->
