@@ -8,25 +8,8 @@ import { UsuarioEscola } from './usuario-escola.model';
 export class UsuarioEscolaService {
   constructor(private http: HttpClient) { }
 
-  public inserir(
-    usuarios: number[],
-    escolas: number[],
-    perfis: number[]
-  ): Observable<any> {
+  public inserir(usuarios: number[], escolas: number[], perfis: number[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-usuario-escola",
-      JSON.stringify({ usuarios: usuarios, escolas: escolas, perfis: perfis }),
-      headers
-    );
-  }
-
-  public excluir(usuarioEscola: UsuarioEscola): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "excluir-usuario-escola",
-      JSON.stringify(usuarioEscola),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'usuario-escola', { usuarios, escolas, perfis }, headers);
   }
 }

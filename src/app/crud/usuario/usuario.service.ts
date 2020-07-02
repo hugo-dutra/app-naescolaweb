@@ -9,7 +9,6 @@ export class UsuarioService {
   public usuario = new Usuario();
   constructor(private http: HttpClient) { }
 
-
   public listarPorEscola(esc_id: number, todos: boolean): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `usuario/por-escola-id/${esc_id}/${todos}`, headers);
@@ -77,62 +76,24 @@ export class UsuarioService {
     return this.http.get(CONSTANTES.N_HOST_API + `usuario-escola/escola-perfil-status/${usr_id}/${esc_id}/${usr_id_solicitante}`, headers,);
   }
 
-
   public alterar(usuario: Usuario): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.patch(CONSTANTES.N_HOST_API + 'usuario', usuario, headers,);
   }
 
-
   public excluir(id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), body: { id } };
     return this.http.delete(CONSTANTES.N_HOST_API + 'usuario', headers,);
-    //return this.http.post(CONSTANTES.HOST_API + 'excluir-usuario', JSON.stringify({ id: id }), headers,);
   }
-
-
-  /********************************************************************************************************************************************************************/
-  /********************************************************************************************************************************************************************/
-  /********************************************************************************************************************************************************************/
-
-
 
   public inserir(usuario: Usuario): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-usuario',
-      JSON.stringify(usuario),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'usuario', usuario, headers,);
   }
-
 
   public modificarSenha(usr_id: number, senha: string): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'modificar-senha-usuario',
-      JSON.stringify({ usr_id: usr_id, senha: senha }),
-      headers,
-    );
-  }
-
-
-  public logar(nome: string, senha: string): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'logar-usuario',
-      JSON.stringify({ nome: nome, senha: senha }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + `usuario/modificar-senha`, { usr_id, senha }, headers,);
   }
 
 

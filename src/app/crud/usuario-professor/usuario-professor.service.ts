@@ -11,29 +11,26 @@ export class UsuarioProfessorService {
   constructor(private http: HttpClient) { }
 
 
-
-  /************************************************************************************************************************************************/
-  /************************************************************************************************************************************************/
-  /************************************************************************************************************************************************/
-
-
   public inserir(usuarioProfessor: UsuarioProfessor): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')) };
+    debugger;
     return this.http.post(CONSTANTES.N_HOST_API + 'usuario-professor', usuarioProfessor, headers);
-    /*IMPLEMENTADO MAS NAO TESTADO. DEPENTE DA LISTAGEM VIR DO BANCO POSGRES. VIOLACAO DE CHAVE POR ESTAR EM BANCOS DIFERENTES.*/
-    //return this.http.post(CONSTANTES.HOST_API + 'inserir-usuario-professor', JSON.stringify({ usuarioProfessor: usuarioProfessor }), headers,);
   }
 
   public desvincular(usr_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'desvincular-usuario-professor',
-      JSON.stringify({ usr_id: usr_id }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')) };
+    return this.http.post(CONSTANTES.N_HOST_API + 'usuario-professor/desvincular', { usr_id }, headers);
   }
+
+
+
+
+  /************************************************************************************************************************************************/
+  /************************************************************************************************************************************************/
+  /************************************************************************************************************************************************/
+
+
+
+
 
 }
