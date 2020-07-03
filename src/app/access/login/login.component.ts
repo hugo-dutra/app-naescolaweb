@@ -196,7 +196,7 @@ export class LoginComponent implements OnInit {
       .toPromise()
       .then((response: Response) => {
         const token: Object = response;
-        localStorage.setItem('token', 'Bearer ' + token['token']);
+        localStorage.setItem('token', token['token']);
       })
       .then(() => {
         this.feedbackUsuario = 'Verificando permissoes, aguarde...';
@@ -204,8 +204,9 @@ export class LoginComponent implements OnInit {
           .listarPermissoes(this.esc_id)
           .toPromise()
           .then((response: Response) => {
-            this.dados = response['dados'];
+            debugger;
             this.permissoes = response['permissoes'];
+            this.dados = response['dados'];
             this.grupos = response['grupos'];
             this.menus = response['menus'];
             this.dados_escola = response['dados_escola'];
