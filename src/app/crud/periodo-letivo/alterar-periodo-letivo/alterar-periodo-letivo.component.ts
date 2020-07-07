@@ -57,7 +57,8 @@ export class AlterarPeriodoLetivoComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((periodoLetivo: PeriodoLetivo) => {
       this.periodoLetivo = JSON.parse(periodoLetivo["periodoLetivo"]);
-
+      this.periodoLetivo.inicio = this.periodoLetivo.inicio.toString().split('T')[0];
+      this.periodoLetivo.fim = this.periodoLetivo.fim.toString().split('T')[0];
       this.formulario.value.id = this.periodoLetivo.id;
       this.formulario.value.periodo = this.periodoLetivo.periodo;
       this.formulario.value.inicio = this.periodoLetivo.inicio;

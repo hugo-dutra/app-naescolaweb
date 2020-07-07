@@ -48,35 +48,26 @@ export class ProfessorService {
     return this.http.get(CONSTANTES.N_HOST_API + `professor-escola/listar-escola-id/${esc_id}/${todos}`, headers);
   }
 
-
-
-
-
-  /*********************************************************************************************************************/
-  /*********************************************************************************************************************/
-  /*********************************************************************************************************************/
-
-
   public listarTurmaDisciplina(esc_id: number, usr_id: number, ano: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "professores-listar-turma-disciplina",
-      JSON.stringify({ esc_id: esc_id, usr_id: usr_id, ano: ano }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `professor/turma-disciplina/${esc_id}/${usr_id}/${ano}`, headers);
   }
 
-  public listarSemDisciplina(
-    limit: number, offset: number, asc: boolean,
-    usr_id: number, esc_id: number,
-  ): Observable<any> {
+  public listarSemDisciplina(limit: number, offset: number, asc: boolean, usr_id: number, esc_id: number,): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "professores-sem-disciplina",
-      JSON.stringify({ limit: limit, offset: offset, asc: asc, usr_id: usr_id, esc_id: esc_id }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `professor/sem-disciplina/${limit}/${offset}/${asc}/${usr_id}/${esc_id}`, headers);
+    //return this.http.post(CONSTANTES.HOST_API + "professores-sem-disciplina", JSON.stringify({ limit: limit, offset: offset, asc: asc, usr_id: usr_id, esc_id: esc_id }), headers);
   }
+
+
+  /*********************************************************************************************************************/
+  /*********************************************************************************************************************/
+  /*********************************************************************************************************************/
+
+
+
+
+
 
   public listarSemEscola(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }

@@ -11,56 +11,36 @@ export class PeriodoLetivoService {
 
   public inserir(periodoLetivo: PeriodoLetivo): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-periodo-letivo",
-      JSON.stringify(periodoLetivo),
-      headers
-    );
+    return this.http.post(CONSTANTES.N_HOST_API + 'periodo-letivo', periodoLetivo, headers);
   }
 
   public listar(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "periodos-letivos",
-      null,
-      headers
-    );
-  }
-
-  public listarPorId(prl_id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "periodo-letivo-por-id",
-      JSON.stringify({ prl_id: prl_id }),
-      headers
-    );
-  }
-
-  public listarPorAno(ano: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "periodos-letivos-por-ano",
-      JSON.stringify({ ano: ano }),
-      headers
-    );
-  }
-
-  public excluir(id: number): Observable<any> {
-    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "excluir-periodo-letivo",
-      JSON.stringify({ id: id }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + 'periodo-letivo', headers);
   }
 
   public alterar(periodoLetivo: PeriodoLetivo): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-periodo-letivo",
-      JSON.stringify(periodoLetivo),
-      headers
-    );
+    return this.http.patch(CONSTANTES.N_HOST_API + 'periodo-letivo', periodoLetivo, headers);
   }
+
+  public excluir(id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")), body: { id } }
+    return this.http.delete(CONSTANTES.N_HOST_API + 'periodo-letivo', headers);
+  }
+
+  public listarPorId(prl_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.get(CONSTANTES.N_HOST_API + `periodo-letivo/prl_id/${prl_id}`, headers);
+  }
+
+  public listarPorAno(ano: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
+    return this.http.get(CONSTANTES.N_HOST_API + `periodo-letivo/ano/${ano}`, headers);
+  }
+
+
+
+
 
 }

@@ -204,7 +204,6 @@ export class LoginComponent implements OnInit {
           .listarPermissoes(this.esc_id)
           .toPromise()
           .then((response: Response) => {
-            debugger;
             this.permissoes = response['permissoes'];
             this.dados = response['dados'];
             this.grupos = response['grupos'];

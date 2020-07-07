@@ -13,7 +13,6 @@ export class UsuarioProfessorService {
 
   public inserir(usuarioProfessor: UsuarioProfessor): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')) };
-    debugger;
     return this.http.post(CONSTANTES.N_HOST_API + 'usuario-professor', usuarioProfessor, headers);
   }
 
@@ -21,15 +20,6 @@ export class UsuarioProfessorService {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')) };
     return this.http.post(CONSTANTES.N_HOST_API + 'usuario-professor/desvincular', { usr_id }, headers);
   }
-
-
-
-
-  /************************************************************************************************************************************************/
-  /************************************************************************************************************************************************/
-  /************************************************************************************************************************************************/
-
-
 
 
 

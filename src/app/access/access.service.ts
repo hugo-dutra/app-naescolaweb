@@ -22,7 +22,6 @@ export class AccessService {
   public listarPermissoes(esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `usuario/listar-permissao/${esc_id}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + 'pegar-permissao-usuario', JSON.stringify({ esc_id: esc_id }), headers);
   }
 
 

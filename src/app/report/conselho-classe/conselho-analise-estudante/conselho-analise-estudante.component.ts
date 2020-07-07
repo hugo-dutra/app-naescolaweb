@@ -197,6 +197,7 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
   }
 
   public selecionarPeriodo(event: Event): void {
+
     this.prl_id_selecionado = parseInt((<HTMLInputElement>event.target).value, 10);
     if (this.trm_id_selecionada != 0 && this.prl_id_selecionado != 0) {
       this.carregarDadosDoPeriodoSelecionado();

@@ -46,6 +46,8 @@ export class ExcluirPeriodoLetivoComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((periodoLetivo: PeriodoLetivo) => {
       this.periodoLetivo = JSON.parse(periodoLetivo["periodoLetivo"]);
+      this.periodoLetivo.inicio = this.periodoLetivo.inicio.toString().split('T')[0];
+      this.periodoLetivo.fim = this.periodoLetivo.fim.toString().split('T')[0];
     });
   }
 
