@@ -17,20 +17,20 @@ export class BoletimEstudanteService {
    * @memberof BoletimEstudanteService
    */
   public inserirBoletimEscolar(arrayOfEstudantes: Object[], ano_letivo: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-boletim-estudante',
-      JSON.stringify({
-        arrayOfEstudantes: arrayOfEstudantes,
-        ano_letivo: ano_letivo,
-      }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'boletim-escolar/inserir', { arrayOfEstudantes, ano_letivo }, headers,);
   }
+
+
+
+
+  /**********************************************************************************************************************************************************/
+  /**********************************************************************************************************************************************************/
+  /**********************************************************************************************************************************************************/
+
+
+
+
 
   /**
    * Método lista o estudantes destaque em ordem alfabética.

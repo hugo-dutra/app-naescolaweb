@@ -65,12 +65,10 @@ export class LoginComponent implements OnInit {
     this.verificarDiaNoite();
     setTimeout(() => {
       particlesJS.load('particles-js', '../../../assets/particles.json', function () {
-        // console.log('callback - particles.js config loaded');
       });
     }, 200);
     this.definirDadosDoSistema();
-
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.accessService
         .deslogar()
         .toPromise()
@@ -79,7 +77,7 @@ export class LoginComponent implements OnInit {
         }).catch((erro: Response) => {
           this.limparSenha();
         });
-    }, 500);
+    }, 500); */
   }
 
   public verificarDiaNoite(): void {

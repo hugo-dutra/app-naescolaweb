@@ -18,36 +18,9 @@ export class AccessService {
     return this.http.get(CONSTANTES.N_HOST_API + `escola/email-usuario/${email}`, headers);
   }
 
-
   public listarPermissoes(esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
     return this.http.get(CONSTANTES.N_HOST_API + `usuario/listar-permissao/${esc_id}`, headers);
   }
-
-
-
-  /**************************************************************************************************************************************************/
-  /**************************************************************************************************************************************************/
-  /**************************************************************************************************************************************************/
-
-  public deslogar(): Observable<any> {
-    /* const headers = { headers: new HttpHeaders().append("Content-type", "application/json") } */
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(CONSTANTES.HOST_API + 'invalidar-token', null, headers);
-
-  }
-
-
-
-  public listarEscolas(limit: number, offset: number, asc: boolean): Observable<any> {
-    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json') };
-    return this.http.post(CONSTANTES.HOST_API + 'escolas',
-      JSON.stringify({ limit: limit, offset: offset, asc: asc }), headers);
-  }
-
-
 
 }

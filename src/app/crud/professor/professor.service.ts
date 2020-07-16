@@ -56,45 +56,17 @@ export class ProfessorService {
   public listarSemDisciplina(limit: number, offset: number, asc: boolean, usr_id: number, esc_id: number,): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `professor/sem-disciplina/${limit}/${offset}/${asc}/${usr_id}/${esc_id}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + "professores-sem-disciplina", JSON.stringify({ limit: limit, offset: offset, asc: asc, usr_id: usr_id, esc_id: esc_id }), headers);
   }
-
-
-  /*********************************************************************************************************************/
-  /*********************************************************************************************************************/
-  /*********************************************************************************************************************/
-
-
-
-
 
 
   public listarSemEscola(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "professores-sem-escola",
-      null,
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `professor/sem-escola`, headers);
   }
 
-  public filtrar(
-    valor: string, limit: number, offset: number,
-    esc_id: number, usr_id: number
-  ): Observable<any> {
+  public filtrar(valor: string, limit: number, offset: number, esc_id: number, usr_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-    return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-professor",
-      JSON.stringify({
-        valor: valor,
-        limit: limit,
-        offset: offset,
-        esc_id: esc_id,
-        usr_id: usr_id
-      }),
-      headers
-    );
+    return this.http.get(CONSTANTES.N_HOST_API + `professor/filtrar/${valor}/${limit}/${offset}/${esc_id}/${usr_id}`, headers);
   }
-
 
 }
