@@ -49,7 +49,7 @@
         <table class="table table-striped table-hover" [@chamado]="estado">
           <thead class="thead-light">
             <tr class="row">
-              <th class="col-sm-12 col-lg-5 text-left" scope="col"><span
+              <th class="col-sm-12 col-lg-4 text-left" scope="col"><span
                   (click)="ordenarColuna('nome')">&nbsp;&nbsp;Nome</span></th>
               <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('serie')">Série</span>
               </th>
@@ -65,12 +65,12 @@
               </th>
               <th class="col-sm-12 col-lg-1 text-left" scope="col"><span (click)="ordenarColuna('hora')">Hora</span>
               </th>
-              <!-- <th class="col-sm-12 col-lg-1 text-left" scope="col">Excluir</th> -->
+              <th class="col-sm-12 col-lg-1 text-left" scope="col">Excluir</th>
             </tr>
           </thead>
           <tbody *ngIf="saidasAntecipadasEventuais != null">
             <tr class="row" *ngFor="let saidaAntecipadaEventual of saidasAntecipadasEventuais">
-              <td class="col-sm-12 col-lg-5 text-left">&nbsp;&nbsp;{{ saidaAntecipadaEventual.nome }}</td>
+              <td class="col-sm-12 col-lg-4 text-left">&nbsp;&nbsp;{{ saidaAntecipadaEventual.nome }}</td>
               <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.serie }}</td>
               <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.turma }}</td>
               <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.turno }}</td>
@@ -103,9 +103,9 @@
               </td>
               <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.data }}</td>
               <td class="col-sm-12 col-lg-1 text-left">{{ saidaAntecipadaEventual.hora }}</td>
-              <!-- <td class="col-sm-12 col-lg-1 text-left"><button class="btn btn-sm btn-danger text-light"
+              <td class="col-sm-12 col-lg-1 text-left"><button class="btn btn-sm btn-danger text-light"
                   (click)="excluir(saidaAntecipadaEventual.id,saidaAntecipadaEventual.matricula)"><i
-                    class="fa fa-lg fa-remove"></i></button></td> -->
+                    class="fa fa-lg fa-remove"></i></button></td>
             </tr>
           </tbody>
         </table>

@@ -29,7 +29,6 @@ export class OcorrenciaService {
   public listarQuantidadeTipoPeriodo(tod_id: number, data_inicio: string, data_fim: string, ordenamento: string): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `ocorrencia-disciplinar/listar-quantidade-tipo-periodo/${tod_id}/${data_inicio}/${data_fim}/${ordenamento}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + "listar-quantidade-tipo-periodo", JSON.stringify({ tod_id: tod_id, data_inicio: data_inicio, data_fim: data_fim, ordenamento: ordenamento }), headers);
   }
 
   /**

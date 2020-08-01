@@ -14,17 +14,4 @@ export class DiretorEscolaService {
     return this.http.post(CONSTANTES.N_HOST_API + 'diretor-escola', { diretores: diretores, escolas: escolas }, headers);
   }
 
-  /* public listar(diretorEscola: DiretorEscola): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-diretor-escola',
-      JSON.stringify({ diretorEscola: DiretorEscola }),
-      headers,
-    );
-  } */
-
-
 }

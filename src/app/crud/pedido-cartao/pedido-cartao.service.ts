@@ -11,32 +11,32 @@ export class PedidoCartaoService {
 
   public listarModeloCartao(): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "modelos-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "modelos-cartao",
       null,
       headers
-    );
+    ); */
   }
 
   public inserir(pedidoCartao: PedidoCartao): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "inserir-pedido-cartao",
       JSON.stringify({ pedidoCartao }),
       headers
-    );
+    ); */
   }
 
   public cancelar(pec_id: number, usr_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "cancelar-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "cancelar-pedido-cartao",
       JSON.stringify({ pec_id: pec_id, usr_id: usr_id }),
       headers
-    );
+    ); */
   }
 
   public alterarStatusPedidoEntidade(
@@ -45,16 +45,16 @@ export class PedidoCartaoService {
     cod_status: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-status-pedido-entidade",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "alterar-status-pedido-entidade",
       JSON.stringify({
         pec_id: pec_id,
         usr_id: usr_id,
         cod_status: cod_status
       }),
       headers
-    );
+    ); */
   }
 
   public alterarStatusPendencia(
@@ -62,15 +62,15 @@ export class PedidoCartaoService {
     status: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "alterar-status-pendencia-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "alterar-status-pendencia-pedido-cartao",
       JSON.stringify({
         id: id,
         status: status
       }),
       headers
-    );
+    ); */
   }
 
   public listarPeriodoEscId(
@@ -79,16 +79,16 @@ export class PedidoCartaoService {
     esc_id: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "listar-pedido-cartao-periodo",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "listar-pedido-cartao-periodo",
       JSON.stringify({
         data_inicio: data_inicio,
         data_fim: data_fim,
         esc_id: esc_id
       }),
       headers
-    );
+    ); */
   }
 
   public listarPedidoUsuarioEntidade(
@@ -97,36 +97,36 @@ export class PedidoCartaoService {
     data_fim: string
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "lista-pedido-usuario-entidade",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "lista-pedido-usuario-entidade",
       JSON.stringify({
         usr_id: usr_id,
         data_inicio: data_inicio,
         data_fim: data_fim
       }),
       headers
-    );
+    ); */
   }
 
   public detalharPecId(pec_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "detalhar-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "detalhar-pedido-cartao",
       JSON.stringify({ pec_id: pec_id }),
       headers
-    );
+    ); */
   }
 
   public gerarPlanilhaEntidade(arrayOfPedidos: Object[]): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "gerar-planilha-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "gerar-planilha-pedido-cartao",
       JSON.stringify({ arrayOfPedidos: arrayOfPedidos }),
       headers
-    );
+    ); */
   }
 
   public inserirPendencia(
@@ -136,12 +136,12 @@ export class PedidoCartaoService {
     pec_id: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "inserir-pendencia-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "inserir-pendencia-pedido-cartao",
       JSON.stringify({ descricao: descricao, est_id: est_id, usr_id: usr_id, pec_id: pec_id }),
       headers
-    );
+    ); */
   }
 
   public listarPendencia(
@@ -150,22 +150,22 @@ export class PedidoCartaoService {
     usr_id: number
   ): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "listar-pendencia-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "listar-pendencia-pedido-cartao",
       JSON.stringify({ data_inicio: data_inicio, data_fim: data_fim, usr_id: usr_id }),
       headers
-    );
+    ); */
   }
 
   public filtrarPedidoNomeEstudante(nome: string, esc_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
-
-    return this.http.post(
-      CONSTANTES.HOST_API + "filtrar-nome-pedido-cartao",
+    return null;
+    /* return this.http.post(
+      CONSTANTES.N_HOST_API + "filtrar-nome-pedido-cartao",
       JSON.stringify({ nome: nome, esc_id: esc_id }),
       headers
-    );
+    ); */
   }
 
 }

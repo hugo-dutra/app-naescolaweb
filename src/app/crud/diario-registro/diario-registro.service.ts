@@ -73,8 +73,10 @@ export class DiarioRegistroService {
 
   public integracaoGravarNotasImportacao(resultadosEstudante: Object[], anoLetivo: number): Observable<any> {
     alert('Baixar notas da integração');
-    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
-    return this.http.post(CONSTANTES.HOST_API + 'integracao-gravar-notas', JSON.stringify({ resultadosEstudante: resultadosEstudante, anoLetivo: anoLetivo }), headers,);
+    return null;
+    // IMPLEMENTAR NA INTEGRAÇÃO COM O OUTRO SISTEMA.
+    /* const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'integracao-gravar-notas', JSON.stringify({ resultadosEstudante: resultadosEstudante, anoLetivo: anoLetivo }), headers,); */
   }
 
 

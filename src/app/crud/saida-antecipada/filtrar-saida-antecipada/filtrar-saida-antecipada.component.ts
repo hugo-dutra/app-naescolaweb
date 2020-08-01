@@ -62,7 +62,7 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
     this.saidasAntecipadasEventuais = undefined;
   }
 
-  /* public excluir(sae_id: number, matricula: string): void {
+  public excluir(sae_id: number, matricula: string): void {
     this.feedbackUsuario = "Excluindo registro, aguarde...";
     this.saidaAntecipadaService.excluirEventual(sae_id).toPromise().then((response: Response) => {
       this.excluirSaidaAntecipadaEventualPortarias(matricula);
@@ -71,21 +71,30 @@ export class FiltrarSaidaAntecipadaComponent implements OnInit {
       this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
       //registra log de erro no firebase usando serviço singlenton
       this.firebaseService.gravarLogErro(`${this.constructor.name}\n${(new Error).stack.split('\n')[1]}`, JSON.stringify(erro));
-    //Gravar erros no analytics
-    Utils.gravarErroAnalytics(JSON.stringify(erro));
+      //Gravar erros no analytics
+      Utils.gravarErroAnalytics(JSON.stringify(erro));
       //Caso token seja invalido, reenvia rota para login
       Utils.tratarErro({ router: this.router, response: erro });
       this.feedbackUsuario = undefined;
     })
-  } */
+  }
 
   public excluirSaidaAntecipadaEventualPortarias(matricula: string): void {
     this.portariaService.listar(this.esc_id).toPromise().then((response: Response) => {
       const portarias = Object.values(response);
+      if (portarias.length == 0) {
+        this.feedbackUsuario = undefined;
+      }
+      let portariasAtualiadas = 0;
+      this.feedbackUsuario = `Atualizando portarias, aguarde...`;
       portarias.forEach(portaria => {
         const codigo = portaria['codigo'];
         this.firebaseService.apagarSaidaAntecipadaEventual(codigo, matricula).then(() => {
-          this.feedbackUsuario = `Atualizando portaria ${portaria['nome']}...`;
+          portariasAtualiadas++;
+          if (portariasAtualiadas == portarias.length) {
+            this.alertModalService.showAlertSuccess('Operação finalizada');
+            this.feedbackUsuario = undefined;
+          }
         }).catch((erro: Response) => {
           //Mostra modal
           this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);

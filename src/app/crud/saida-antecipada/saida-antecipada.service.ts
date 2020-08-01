@@ -31,10 +31,9 @@ export class SaidaAntecipadaService {
     return this.http.post(CONSTANTES.N_HOST_API + `saida-antecipada-recorrente`, saidaRecorrente, headers)
   }
 
-  /*  public excluirEventual(sae_id: number): Observable<any> {
-     //const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")), body: { sae_id } }
-     //return this.http.delete(CONSTANTES.N_HOST_API + 'saida-antecipada-eventual', headers);
-     //return this.http.post(CONSTANTES.HOST_API + 'excluir-saida-antecipada-eventual', JSON.stringify({ sae_id: sae_id }), headers);
-   } */
+  public excluirEventual(sae_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")), body: { sae_id } }
+    return this.http.delete(CONSTANTES.N_HOST_API + 'saida-antecipada-eventual', headers);
+  }
 
 }

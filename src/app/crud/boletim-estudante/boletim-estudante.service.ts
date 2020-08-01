@@ -22,15 +22,29 @@ export class BoletimEstudanteService {
   }
 
 
+  /**
+    *Método consolida as notas do diário informada, para um certo período letivo, como média ou somatório
+    * @param {number} media_somatorio: 0: Calcula a média ponderada. 1: Calcula a soma das avaliações
+    * @param {number} prl_id: Id do período letivo desejada para a consolidação das notas
+    * @param {number} dip_id: Diário onde estão as notas a serem consolidadas.
+    * @returns {Observable<any>}
+    * @memberof BoletimEstudanteService
+    */
+  public consolidarNotasBoletimEscolar(media_somatorio: number, prl_id: number, dip_id: number): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `avaliacao-estudante/consolidar-notas/${media_somatorio}/${prl_id}/${dip_id}`, headers,);
+  }
 
-
-  /**********************************************************************************************************************************************************/
-  /**********************************************************************************************************************************************************/
-  /**********************************************************************************************************************************************************/
-
-
-
-
+  /**
+   *Recebe um array de boletins e envia esse array para a API inserir os dados no banco.
+   * @param {ResultadoBoletim[]} resultadosBoletins
+   * @returns {Observable<any>}
+   * @memberof BoletimEstudanteService
+   */
+  public inserirResultadoBoletim(resultadosBoletins: ResultadoBoletim[]): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.post(CONSTANTES.N_HOST_API + 'resultado-boletim', resultadosBoletins, headers);
+  }
 
   /**
    * Método lista o estudantes destaque em ordem alfabética.
@@ -43,82 +57,13 @@ export class BoletimEstudanteService {
    */
   public listarEstudantesDestaque(prl_id: number, nota_corte: number, esc_id: number,
     quantidade_dsp: number, ree_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-estudantes-destaque',
-      JSON.stringify({
-        prl_id: prl_id,
-        nota_corte: nota_corte,
-        esc_id: esc_id,
-        quantidade_dsp: quantidade_dsp,
-        ree_id: ree_id,
-      }),
-      headers,
-    );
-  }
-
-  /**
-   *Método consolida as notas do diário informada, para um certo período letivo, como média ou somatório
-   * @param {number} media_somatorio: 0: Calcula a média ponderada. 1: Calcula a soma das avaliações
-   * @param {number} prl_id: Id do período letivo desejada para a consolidação das notas
-   * @param {number} dip_id: Diário onde estão as notas a serem consolidadas.
-   * @returns {Observable<any>}
-   * @memberof BoletimEstudanteService
-   */
-  public consolidarNotasBoletimEscolar(media_somatorio: number, prl_id: number, dip_id: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'consolidar-notas-estudante',
-      JSON.stringify({
-        media_somatorio: media_somatorio,
-        prl_id: prl_id,
-        dip_id: dip_id,
-      }),
-      headers,
-    );
-  }
-
-  /**
-   *Recebe um array de boletins e envia esse array para a API inserir os dados no banco.
-   * @param {ResultadoBoletim[]} resultadosBoletins
-   * @returns {Observable<any>}
-   * @memberof BoletimEstudanteService
-   */
-  public inserirResultadoBoletim(resultadosBoletins: ResultadoBoletim[]): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'inserir-resultado-boletim-estudante',
-      JSON.stringify({
-        resultadosBoletins: resultadosBoletins,
-      }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + `resultado-boletim/estudantes-destaque/${prl_id}/${nota_corte}/${esc_id}/${quantidade_dsp}/${ree_id}`, headers);
   }
 
   public listarFaltasTurmaGeralBoletim(esc_id: number, trm_id: number, minimo_faltas: number): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-
-    return this.http.post(
-      CONSTANTES.HOST_API + 'listar-faltas-turma-geral-boletim',
-      JSON.stringify({ esc_id: esc_id, trm_id: trm_id, minimo_faltas: minimo_faltas }),
-      headers,
-    );
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')) };
+    return this.http.get(CONSTANTES.N_HOST_API + `resultado-boletim/listar-infrequentes/${esc_id}/${trm_id}/${minimo_faltas}`, headers);
   }
-
 
 }
