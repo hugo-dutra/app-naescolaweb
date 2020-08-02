@@ -103,6 +103,7 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
       .listarBoletoAnoEscolaId(new Date().getFullYear(), this.esc_id)
       .toPromise()
       .then((response: Response) => {
+        debugger;
         this.meses = [];
         this.mesesComBoleto = Object.values(response);
         this.gerarListaMeses();
@@ -124,11 +125,13 @@ export class ListarBoletoBancarioMensalidadeComponent implements OnInit {
 
   public atualizarLista(): void {
     this.meses.forEach(mes => {
+
       if (parseInt(mes['numero'], 10) < parseInt((new Date().getMonth() + 1).toString(), 10)) {
         mes['ativo'] = false;
       }
 
       this.mesesComBoleto.forEach(mesComBoleto => {
+
         if (mes['numero'] == mesComBoleto['mes']) {
           mes['temBoleto'] = true;
           mes['boleto'] = mesComBoleto;

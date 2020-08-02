@@ -106,7 +106,8 @@ export class InserirPedidoCartaoComponent implements OnInit {
   }
 
   public gerarBoletoBancario(dataVencimento: string, valor: number, pec_id: number): void {
-    const cobranca = new Cobranca();
+    alert('Boleto bancário de pedido de cartão está desativado');
+    /* const cobranca = new Cobranca();
     cobranca.amount = valor;
     cobranca.description =
       'Pagamento referente a solicitação de cartões de acesso do sistema de gestão \'NaEscola\'';
@@ -157,7 +158,7 @@ export class InserirPedidoCartaoComponent implements OnInit {
       })
       .catch((erro: Response) => {
         this.tratarErro(erro);
-      });
+      }); */
   }
 
   public calcularTodalPedido(): void {
