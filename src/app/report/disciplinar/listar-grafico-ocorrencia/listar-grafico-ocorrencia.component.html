@@ -172,8 +172,8 @@
             <div class="col-4">
               <select name="turmas" id="turmas" class="form-control" (change)="gravarTurmaId($event)">
                 <option value="" disabled="disabled">selecione uma turma</option>
-                <option *ngFor="let turma of turmas" [value]="turma.id">{{ turma.serie }} {{ turma.etapa }} {{
-                    turma.nome }} - {{ turma.turno }} </option>
+                <option *ngFor="let turma of turmas" [value]="turma.id">{{turma.serie}} {{turma.etapa}} {{turma.nome}} -
+                  {{turma.turno}}</option>
               </select>
             </div>
             <div class="col-1"></div>

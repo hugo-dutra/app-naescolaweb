@@ -218,7 +218,7 @@ export class ListarGraficoOcorrenciaComponent implements OnInit {
         this.quantidadeOcorrenciasPeriodo = response;
         for (let i = 0; i < responseLength; i++) {
           this.arrayOfLabelsOcorrenciasPeriodo.push(
-            this.quantidadeOcorrenciasPeriodo[i]["data"]
+            this.quantidadeOcorrenciasPeriodo[i]["data"].split('T')[0]
           );
           this.arrayOfDadosOcorrenciasPeriodo.push(
             this.quantidadeOcorrenciasPeriodo[i]["quantidade"]
