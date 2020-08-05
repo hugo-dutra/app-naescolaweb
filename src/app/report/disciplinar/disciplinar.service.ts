@@ -31,7 +31,6 @@ export class DisciplinarService {
   public listarGraficoQuantitativoTipoPeriodo(prl_id: number, trm_id: number): Observable<any> {
     const headers = { headers: new HttpHeaders().append("Content-type", "application/json").append("Authorization", localStorage.getItem("token")) }
     return this.http.get(CONSTANTES.N_HOST_API + `ocorrencia-disciplinar/grafico-quantidade-periodo-letivo-turma/${prl_id}/${trm_id}`, headers);
-    //return this.http.post(CONSTANTES.HOST_API + "listar-grafico-quantidade-tipo-periodo", JSON.stringify({ prl_id: prl_id, trm_id: trm_id }), headers);
   }
 
 

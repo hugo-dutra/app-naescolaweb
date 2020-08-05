@@ -117,7 +117,7 @@ export class GerenciarIntegracaoComponent implements OnInit {
   public autenticar(): void {
     this.feedbackUsuario = 'Atualizando dados, aguarde...';
     this.sedfService.listarDadosIntegracaoIEducar().toPromise().then((response: string) => {
-      const cypher = response;
+      const cypher = response['config'];
       const dcypher = Utils.decypher(cypher);
       const auth = JSON.parse(dcypher);
       const matricula = auth['matricula'];
@@ -129,7 +129,9 @@ export class GerenciarIntegracaoComponent implements OnInit {
         localStorage.setItem('token_intg', token_intg);
         this.tokenIntegracao = localStorage.getItem('token_intg');
         this.feedbackUsuario = undefined;
-      });
+      }).catch((erro: Response) => {
+        this.gravarErroMostrarMensagem(erro);
+      })
     }).catch((erro: Response) => {
       this.gravarErroMostrarMensagem(erro);
     });

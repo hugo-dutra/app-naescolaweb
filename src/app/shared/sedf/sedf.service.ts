@@ -7,36 +7,39 @@ import { Utils } from '../utils.shared';
 @Injectable()
 export class SedfService {
 
-  private HOST_TOKEN_INTEGRACAO;
-  private HOST_INTEGRACAO;
+  private HOST_TOKEN_INTEGRACAO: any;
+  private HOST_INTEGRACAO: any;
 
   constructor(private http: HttpClient) {
     this.pegarUrlHostTokenIntegracao().toPromise().then((response: string) => {
-      const ct = response;
+      const ct = response['config'];
       const cfg = Utils.decypher(ct);
       this.HOST_TOKEN_INTEGRACAO = cfg;
     });
 
     this.pegarUrlHostIntegracao().toPromise().then((response: string) => {
-      const ct = response;
+      const ct = response['config'];
       const cfg = Utils.decypher(ct);
       this.HOST_INTEGRACAO = cfg;
     });
   }
 
-  /* public gerarUrlHost(): void {
-    console.log(Utils.cypher('...').toString());
-  } */
+  public pegarUrlHostIntegracao(): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + 'sistema/phi', headers);
+  }
+
+  public pegarUrlHostTokenIntegracao(): Observable<any> {
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + 'sistema/phti', headers,);
+  }
 
   /**
    * Pega dados para serem usado na requisição do Token de integração
    */
   public listarDadosIntegracaoIEducar(): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(CONSTANTES.HOST_API + 'ldai', null, headers);
+    const headers = { headers: new HttpHeaders().append('Content-type', 'application/json').append('Authorization', localStorage.getItem('token')), };
+    return this.http.get(CONSTANTES.N_HOST_API + 'sistema/ldai', headers);
   }
 
   /**
@@ -103,29 +106,9 @@ export class SedfService {
     return this.http.get(this.HOST_INTEGRACAO + metodo + id_turma, headers);
   }
 
-  public pegarUrlHostTokenIntegracao(): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'phti',
-      null,
-      headers,
-    );
-  }
 
-  public pegarUrlHostIntegracao(): Observable<any> {
-    const headers = {
-      headers: new HttpHeaders().append('Content-type', 'application/json')
-        .append('Authorization', localStorage.getItem('token')),
-    };
-    return this.http.post(
-      CONSTANTES.HOST_API + 'phi',
-      null,
-      headers,
-    );
-  }
+
+
 
 
 }

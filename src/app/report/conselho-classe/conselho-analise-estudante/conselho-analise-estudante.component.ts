@@ -588,7 +588,6 @@ export class ConselhoAnaliseEstudanteComponent implements OnInit {
           this.limparDadosDetalhes();
           this.feedbackUsuario = undefined;
         }
-
       }).catch((erro: Response) => {
         // Mostra modal
         this.alertModalService.showAlertDanger(CONSTANTES.MSG_ERRO_PADRAO);
