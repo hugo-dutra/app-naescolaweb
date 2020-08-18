@@ -14,7 +14,7 @@ export class CONSTANTES {
   public static ESCOPO_REGIONAL = 'Regional';
   public static ESCOPO_LOCAL = 'Local';
   // ********************URLS****************************/
-  public static BUILD_DESTINO = '1';
+  public static BUILD_DESTINO = '2';
   /* ------ */
   public static BUILD_SEDF = '1';
   public static BUILS_RESOLVIDOS = '2';
@@ -26,19 +26,19 @@ export class CONSTANTES {
   public static CAMINHO_LOGO_GDF = '../../assets/images/logo_gdf.png';
   public static CAMINHO_LOGO_RESOLVIDOS = '../../../assets/images/supervisor_escolar_login.png';
 
-  public static HOST = 'http://localhost:8000'; // 2
+  //public static HOST = 'http://localhost:8000'; // 2
   public static N_HOST = 'http://localhost:3000'; // 2
   // public static HOST = 'https://supervisorescolar.com.br'; // 2
   // public static HOST = 'http://academico.se.df.gov.br'; // 1
 
-  public static HOST_API = CONSTANTES.HOST + '/api/';
+  //public static HOST_API = CONSTANTES.HOST + '/api/';
   public static N_HOST_API = CONSTANTES.N_HOST + '/';
 
   public static CK = 'OEqpJdFaYtaY0eI087eNA6KKSMsi22vh';
   public static CKQRC = '@R5w7y8b3@';
   // ********************FILES**************************/
-  public static NO_AVATAR_URL = CONSTANTES.HOST + '/images/avatars/noavatar.jpg';
-  public static NO_LOGO_URL = CONSTANTES.HOST + '/images/logos/nologo.jpg';
+  public static NO_AVATAR_URL = CONSTANTES.N_HOST + '/images/avatars/noavatar.jpg';
+  public static NO_LOGO_URL = CONSTANTES.N_HOST + '/images/logos/nologo.jpg';
   // ******************PARAMETERS ANIMATIONS*************************/
   public static ANIMATION_DELAY_TIME: number = 400;
   // ******************IMAGES PARAMETERS*************************/
