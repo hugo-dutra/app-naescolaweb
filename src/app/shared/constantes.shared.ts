@@ -27,7 +27,8 @@ export class CONSTANTES {
   public static CAMINHO_LOGO_RESOLVIDOS = '../../../assets/images/supervisor_escolar_login.png';
 
   //public static HOST = 'http://localhost:8000'; // 2
-  public static N_HOST = 'http://localhost:3000'; // 2
+  //public static N_HOST = 'http://localhost:3000'; // 2
+  public static N_HOST = 'http://35.208.22.175:3000'; // 2
   // public static HOST = 'https://supervisorescolar.com.br'; // 2
   // public static HOST = 'http://academico.se.df.gov.br'; // 1
 

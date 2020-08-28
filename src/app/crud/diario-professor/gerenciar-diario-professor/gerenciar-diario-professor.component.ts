@@ -43,7 +43,8 @@ export class GerenciarDiarioProfessorComponent implements OnInit {
     this.router.navigate([`${this.router.url}/transferir-diario-professor`]);
   }
   public listar(): void {
-    this.router.navigate([`${this.router.url}/listar-diario-professor`]);
+    alert('Implementar listragem de diários da escola aqui...');
+    //this.router.navigate([`${this.router.url}/listar-diario-professor`]);
   }
   public arquivar(): void {
     this.router.navigate([`${this.router.url}/arquivar-diario-professor`]);

@@ -175,6 +175,7 @@ export class InserirUsuarioProfessorComponent implements OnInit {
   }
 
   public inserir(): void {
+
     this.feedbackUsuario = "Salvando dados, aguarde...";
     let usuarioProfessor = new UsuarioProfessor();
     usuarioProfessor.usr_id = this.usr_id_selecionado;
@@ -195,6 +196,7 @@ export class InserirUsuarioProfessorComponent implements OnInit {
         Utils.tratarErro({ router: this.router, response: erro });
       })
     } else {
+      this.feedbackUsuario = undefined;
       this.alertarChecksVazios();
     }
   }
