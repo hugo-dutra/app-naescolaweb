@@ -103,8 +103,8 @@ export class CONSTANTES {
   // public static BOLETO_FACIL_URL_BASE = "https://sandbox.boletobancario.com/boletofacil/integration/api/v1/issue-charge?token=";
   public static BOLETO_FACIL_URL_BASE =
     'https://www.boletobancario.com/boletofacil/integration/api/v1/issue-charge?token=';
-  // public static BOLETO_FACIL_TOKEN = "E29D110AE6CBF24F6EEABC7FA5093D7950AB7E003A1142DAF8BDBC9EE9BB3FF5";
-  public static BOLETO_FACIL_TOKEN = 'E655E1F6A5192B2034BA769887C2EA1B12ABF8624EEF89B9A94B530582E4366A';
+  // public static BOLETO_FACIL_TOKEN = "";
+  public static BOLETO_FACIL_TOKEN = ''; //put env
   public static BOLETO_FACIL_LIMITE_DIAS_PAGAMENTO = 29;
   public static BOLETO_FACIL_LIMITE_DIAS_PAGAMENTO_PEDIDO_CARTAO = 7;
   public static BOLETO_FACIL_DIAS_ADICIONADOS_BOLETO_PEDIDO_CARTAO = 5;
